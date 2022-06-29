@@ -18,7 +18,7 @@
     <i>~ Links will be added once a release is available. ~</i>
   </p>
 </p>
-Safe is an open source mobile platorm to discretely capture incidents with ease (such as school shootings or traffic stops), powered by a multithreaded compression engine for sharded databases written in native Swift and Kotlin.
+Safe is an open source mobile platorm to discretely capture incidents with ease, powered by a multithreaded compression engine for sharded databases written in native Swift and Kotlin.
 <br/>
 <br/>
 
