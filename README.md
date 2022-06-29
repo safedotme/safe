@@ -12,7 +12,7 @@
     <a href="https://joinsafe.me"><strong>joinsafe.me »</strong></a>
     <br />
     <br />
-    <b>Download for </b>
+    <b>Available for </b>
     iOS & Android
     <br />
     <i>~ Links will be added once a release is available. ~</i>
