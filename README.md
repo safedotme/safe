@@ -26,8 +26,6 @@ Safe is an open source mobile platorm to discretely capture incidents with ease,
 
 With the press of a button, begin to record your front camera, upload the footage to the cloud real-time, track your exact location, notify your emergency contacts through SMS and Whatsapp, and alert 911 if necessary. Emergency contacts (*and 911*) will receive a video and location livestream of the incident while also getting access to key information such as realtime updates of your battery life.
 
-From the start, Safe was designed for the fragile situations where one's safety is the first, and most critical priority. For students, it acts as a necessary tool for alerting authorities of your wearabouts during a school shooting. For people of color, it's a discrete and all-encompassing documentation tool in the case of a traffic stop. **Broadly, it seeks to expose injustice in any form it may present itself.**
-
 <p align="center">
   <img src="https://raw.githubusercontent.com/spacedriveapp/.github/main/profile/app.png" alt="Logo">
   <br />
@@ -47,7 +45,9 @@ From the start, Safe was designed for the fragile situations where one's safety 
 
 # Motivation
 
-Many of us have multiple cloud accounts, drives that aren’t backed up and data at risk of loss. We depend on cloud services like Google Photos and iCloud, but are locked in with limited capacity and almost zero interoperability between services and operating systems. Photo albums shouldn’t be stuck in a device ecosystem, or harvested for advertising data. They should be OS agnostic, permanent and personally owned. Data we create is our legacy, that will long outlive us—open source technology is the only way to ensure we retain absolute control over the data that defines our lives, at unlimited scale.
+From the start, Safe was designed for the fragile situations where one's safety is the first, and most critical priority. For students, it acts as a necessary tool for alerting authorities of your wearabouts during a school shooting. For people of color, it's a discrete and all-encompassing documentation tool in the case of a traffic stop. **Broadly, it seeks to expose injustice in any form it may present itself.**
+
+On a more personal note, I {[Mark Music](https://twitter.com/markmusic27)} have been devastated by the news of countless school shootings and instances of police brutality. As a 17-year-old latino, gun violence (through school shootings) and other forms of physical discrimination pose a threat to me, my friends, and my family. **Safe was built no one has to succumb to the status quo.**
 
 # Infrastructure
 
@@ -103,3 +103,4 @@ This project is using what I'm calling the **"PRRTT"** stack (Prisma, Rust, Reac
 
 ## App Structure & Format
 
+### ❤️ Built in Honor of
