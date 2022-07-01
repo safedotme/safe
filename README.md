@@ -18,7 +18,7 @@
     <i>~ Links will be added once a release is available. ~</i>
   </p>
 </p>
-Safe is an open source mobile platorm to discretely capture incidents with ease, powered by a multithreaded compression engine for sharded databases written in native Swift and Kotlin.
+Safe is an open source mobile platorm to discretely capture incidents with ease, powered by a multithreaded compression engine (<a href="#Infrastructure-|-`MCEs`">MCE</a>) for sharded databases written in native Swift and Kotlin.
 <br/>
 <br/>
 
@@ -49,9 +49,11 @@ From the start, Safe was designed for the fragile situations where one's safety 
 
 On a more personal note, I {[Mark Music](https://twitter.com/markmusic27)} have been devastated by the news of countless school shootings and instances of police brutality in the US. As a 17-year-old latino, gun violence (through school shootings) and other forms of physical discrimination pose a threat to me, my friends, and my family. **Safe was built no one has to succumb to the status quo.**
 
-# Infrastructure
+# Infrastructure | `MCEs`
 
-A VDFS (virtual distributed filesystem) is a filesystem designed to work across a variety of storage layers. With a uniform API to manipulate and access content across many devices, VSFS is not restricted to a single machine. It achieves this by maintaining a virtual index of all storage locations, synchronizing the database between clients in realtime. This implementation also uses [CAS](https://en.wikipedia.org/wiki/Content-addressable_storage) (Content-addressable storage) to uniquely identify files, while keeping record of logical file paths relative to the storage locations.
+An MCE (multithreaded compression engine) is an agorithm designed to take realtime camera footage, cut it into digestable clips, and compress said across a variety of threads. These clips (shards) are then distributed across multiple storage layers; making it harder for a possible attacker to obtain a complete file. By processing the footage concurrently, the video is processed and uploaded as the camera records in realtime. To compose the shards together, a map is stored with and ordered list of the paths to each shard. Concurrency also enables for powerful phone CPUs that have more cores to be used optimally by spawning isolates based on the thread availability. This enables for faster compression times in faster phones. The following is a diagram of Safe's `MCE` implementation:
+
+
 
 <img src="https://github.com/safedotme/.github/blob/main/profile/diagram.png?raw=true">
 
@@ -89,18 +91,38 @@ _Note: Links are for highlight purposes only until feature specific documentatio
 - **[Spacedrive Cloud](#features)** - We'll host an always-on cloud device for you, with pay-as-you-go plans for storage.
 - **[Self hosted](#features)** - Spacedrive can be deployed as a service, behaving as just another device powering your personal cloud.
 
+# App Structure & Format
+
+The Safe application houses most of its actual code in the `lib` directory. This includes all of the Dart / Flutter code such as screens and utils. The iOS (`ios/Runner`) and Android (`android/app`) folders both house the native components of the compression algorithm. These are connected to the flutter code through a bridge implemented in the `lib` folder.
+
+Anything outside of the `lib`, `ios`, and `android` directory is generic files that come with every program, such as `pubspec.yaml`, `.gitignore`, the `README.md`, etc.
+
+The Safe folder structure can be visualized in the following way:
+
+```
+| -lib
+|   | -models
+|   | -providers
+|   | -services
+|   | -core
+|   | -state
+|   | -screens
+|   | -utils
+|   | -widgets
+|   | -main.dart
+| -pubspec.yaml
+| -.gitignore
+| -.firebaserc
+| -ios
+| -android
+| -LICENSE
+| -README.md
+| -other files
+```
+
 # Developer Guide
 
-Please refer to the [contributing guide](CONTRIBUTING.md) for how to install Spacedrive from sources.
+Please refer to the [contributing guide](CONTRIBUTING.md) for how to install Safe from sources.
 
-# Architecture
 
-This project is using what I'm calling the **"PRRTT"** stack (Prisma, Rust, React, TypeScript, Tauri).
-
-- Prisma on the front-end? 🤯 Made possible thanks to [prisma-client-rust](https://github.com/brendonovich/prisma-client-rust), developed by [Brendonovich](https://github.com/brendonovich). Gives us access to the powerful migration CLI in development, along with the Prisma syntax for our schema. The application bundles with the Prisma query engine and codegen for a beautiful Rust API. Our lightweight migration runner is custom built for a desktop app context.
-- Tauri allows us to create a pure Rust native OS webview, without the overhead of your average Electron app. This brings the bundle size and average memory usage down dramatically. It also contributes to a more native feel, especially on macOS due to Safari's close integration with the OS.
-- The core (`sdcore`) is written in pure Rust.
-
-## App Structure & Format
-
-### ❤️ Built in Honor of
+### Built and maintained with ❤️ by **[@markmusic2727](https://twitter.com/markmusic27)**
