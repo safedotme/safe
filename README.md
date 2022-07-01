@@ -128,5 +128,8 @@ The Safe folder structure can be visualized in the following way:
 
 Please refer to the [contributing guide](CONTRIBUTING.md) for how to install Safe from sources.
 
+# Contributors
 
-### Built and maintained with ❤️ by **[@markmusic2727](https://twitter.com/markmusic27)**
+|Contributor|Commits|
+|-----|-----|
+|**[@markmusic2727](https://twitter.com/markmusic27)**|55|
