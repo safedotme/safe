@@ -24,9 +24,9 @@ Safe is an open source mobile platorm to discretely capture incidents with ease,
 
 > NOTE: Safe is under active development, most of the listed features are still experimental and subject to change.
 
-Organize files across many devices in one place. From cloud services to offline hard drives, Spacedrive combines the storage capacity and processing power of your devices into one personal distributed cloud, that is both secure and intuitive to use.
+With the press of a button, begin to record your front camera, upload the footage to the cloud real-time, track your exact location, notify your emergency contacts through SMS and Whatsapp, and alert 911 if necessary. Emergency contacts (*and 911*) will receive a video and location livestream of the incident while also getting access to key information such as realtime updates of your battery life.
 
-For independent creatives, hoarders and those that want to own their digital footprint, Spacedrive provides a free file management experience like no other.
+From the start, Safe was designed for the fragile situations where one's safety is the first, and most critical priority. For students, it acts as a necessary tool for alerting authorities of your wearabouts during a school shooting. For people of color, it's a discrete and all-encompassing documentation tool in the case of a traffic stop. **Broadly, it seeks to expose injustice in any form it may present itself.**
 
 <p align="center">
   <img src="https://raw.githubusercontent.com/spacedriveapp/.github/main/profile/app.png" alt="Logo">
