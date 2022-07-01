@@ -94,7 +94,7 @@ The Safe folder structure can be visualized in the following way:
 
 # Developer Guide
 
-Please refer to the [contributing guide](CONTRIBUTING.md) for how to install Safe from sources.
+Please refer to the [contributing guide](CONTRIBUTING.md) for how to install Safe from sources. (*not setup yet, please contact for now [mark@joinsafe.me](mailto:mark@joinsafe.me)*)
 
 # Contributors
 
