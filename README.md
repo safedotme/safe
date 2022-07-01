@@ -130,6 +130,6 @@ Please refer to the [contributing guide](CONTRIBUTING.md) for how to install Saf
 
 # Contributors
 
-|Contributor|Commits|
-|-----|-----|
-|**[@markmusic2727](https://twitter.com/markmusic27)**|55|
+|Contributor|Commits| Tags |
+|-----|-----|-----|
+|**[@markmusic2727](https://twitter.com/markmusic27)**|55|Founder|
