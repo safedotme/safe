@@ -53,6 +53,8 @@ On a more personal note, I {[Mark Music](https://twitter.com/markmusic27)} have 
 
 An SMCE (multithreaded compression engine for sharded databases) is an agorithm designed to take realtime camera footage, cut it into digestable clips, and compress said across a variety of threads. These clips (shards) are then distributed across multiple storage layers; making it harder for a possible attacker to obtain a complete file. By processing the footage concurrently, the video is processed and uploaded as the camera records in realtime. To compose the shards together, a map is stored with and ordered list of the paths to each shard. Concurrency also enables for powerful phone CPUs that have more cores to be used optimally by spawning isolates based on the thread availability. This enables for faster compression times in faster phones.
 
+> NOTE: The compression engine does not utilize FFMPEG as it is in many ways slow, bloated, and the GNU license can become an obstacle for commercial apps.
+
 This algorithm was inspired by this Stanford [paper](http://cva.stanford.edu/people/milad/accelerator_multithreading.pdf) titled "*Accelerator Multi-Threading*" (2012) by Nic McDonald, Subhasis Das, and Milad Mohammadi.
 
 ### **Diagram of Safe's `SMCE` implementation:**
