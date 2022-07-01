@@ -18,7 +18,7 @@
     <i>~ Links will be added once a release is available. ~</i>
   </p>
 </p>
-Safe is an open source mobile platorm to discretely capture incidents with ease, powered by a multithreaded compression engine (<a href="#Infrastructure-|-`SMCEs`">SMCE</a>) for sharded databases written in native Swift and Kotlin.
+Safe is an open source mobile platorm to discretely capture incidents with ease, powered by a multithreaded compression engine (<a href="#Infrastructure-|-SMCEs">SMCE</a>) for sharded databases written in native Swift and Kotlin.
 <br/>
 <br/>
 
@@ -49,7 +49,7 @@ From the start, Safe was designed for the fragile situations where one's safety 
 
 On a more personal note, I {[Mark Music](https://twitter.com/markmusic27)} have been devastated by the news of countless school shootings and instances of police brutality in the US. As a 17-year-old latino, gun violence (through school shootings) and other forms of physical discrimination pose a threat to me, my friends, and my family. **Safe was built no one has to succumb to the status quo.**
 
-# Infrastructure | `SMCEs`
+# Infrastructure | SMCEs
 
 An SMCE (multithreaded compression engine for sharded databases) is an agorithm designed to take realtime camera footage, cut it into digestable clips, and compress said across a variety of threads. These clips (shards) are then distributed across multiple storage layers; making it harder for a possible attacker to obtain a complete file. By processing the footage concurrently, the video is processed and uploaded as the camera records in realtime. To compose the shards together, a map is stored with and ordered list of the paths to each shard. Concurrency also enables for powerful phone CPUs that have more cores to be used optimally by spawning isolates based on the thread availability. This enables for faster compression times in faster phones.
 
