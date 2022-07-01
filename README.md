@@ -100,4 +100,4 @@ Please refer to the [contributing guide](CONTRIBUTING.md) for how to install Saf
 
 |Contributor|Commits| Tags |
 |-----|-----|-----|
-|**[@markmusic27](https://twitter.com/markmusic27)**|55|Founder|
+|**[@markmusic27](https://twitter.com/markmusic27)**|55 (*broken*)|Founder|
