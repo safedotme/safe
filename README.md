@@ -54,10 +54,6 @@ Many of us have multiple cloud accounts, drives that aren’t backed up and data
 A VDFS (virtual distributed filesystem) is a filesystem designed to work across a variety of storage layers. With a uniform API to manipulate and access content across many devices, VSFS is not restricted to a single machine. It achieves this by maintaining a virtual index of all storage locations, synchronizing the database between clients in realtime. This implementation also uses [CAS](https://en.wikipedia.org/wiki/Content-addressable_storage) (Content-addressable storage) to uniquely identify files, while keeping record of logical file paths relative to the storage locations.
 
 <img src="https://github.com/safedotme/.github/blob/main/profile/diagram.png?raw=true">
-<br />
-<br />
-
-
 
 # Features
 
