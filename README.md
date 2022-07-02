@@ -59,9 +59,8 @@ The `SMCE` algorithm was inspired by this Stanford [paper](http://cva.stanford.e
 
 ### **Diagram of Safe's `SMCE` implementation:**
 
-
-
 <img src="https://github.com/safedotme/.github/blob/main/profile/diagram.png?raw=true">
+
 
 # App Structure & Format
 
@@ -94,10 +93,14 @@ The Safe folder structure can be visualized in the following way:
 
 # Developer Guide
 
-Please refer to the [contributing guide](CONTRIBUTING.md) for how to install Safe from sources. (*not setup yet, please contact for now [mark@joinsafe.me](mailto:mark@joinsafe.me)*)
+Any help or contributions with Safe would be highly appreciated ❤️. Feel free to help out and contribute to the future of personal and community safety.
+
+Please refer to the [contributing guide](CONTRIBUTING.md) for how to install and run Safe from sources.
+
+Have a question regarding any of these topics? Reach out to me at [mark@joinsafe.me](mailto:mark@joinsafe.me) or join our [Discord Server](https://discord.gg/WZrjydnM) and ask questions there 🙂
 
 # Contributors
 
 |Contributor|Commits| Tags |
 |-----|-----|-----|
-|**[@markmusic27](https://twitter.com/markmusic27)**|55 (*broken*)|Founder|
+|**[@markmusic27](https://twitter.com/markmusic27)**|55|Creator, Lead Maintainer|
