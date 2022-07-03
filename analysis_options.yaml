@@ -4,5 +4,6 @@ linter:
   # `// ignore_for_file: name_of_lint` syntax on the line or in the file
   rules:
     prefer_const_constructors: false
+    prefer_const_constructors_in_immutables: false
     use_key_in_widget_constructors: false
     avoid_print: true

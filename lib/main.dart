@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
+import 'package:safe/screens/testing/testing.screen.dart';
+import 'package:safe/screens/welcome/welcome.screen.dart';
 import 'package:safe/utils/firebase.util.dart';
 
 Future<void> main() async {
@@ -25,18 +27,11 @@ class Safe extends StatelessWidget {
       child: MaterialApp(
         title: "Safe",
         debugShowCheckedModeBanner: false,
-        home: Scaffold(
-          body: Center(
-            child: Text(
-              "Hello world",
-              style: TextStyle(
-                color: Colors.black,
-                fontSize: 30,
-                fontFamily: "RoundedHeavy",
-              ),
-            ),
-          ),
-        ),
+        routes: {
+          WelcomeScreen.id: (_) => WelcomeScreen(),
+          TestingScreen.id: (_) => TestingScreen(),
+        },
+        initialRoute: WelcomeScreen.id,
       ),
     );
   }

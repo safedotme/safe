@@ -42,6 +42,7 @@ dependencies:
   figma_squircle: ^0.5.3
   cloud_firestore: ^3.2.1
   firebase_storage: ^10.3.1
+  flutter_inset_box_shadow: ^1.0.8
   firebase_dynamic_links: ^4.3.1
   firebase_core: ^1.19.1
   magic_sdk: ^1.1.0
