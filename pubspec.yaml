@@ -36,6 +36,7 @@ dependencies:
   card_swiper: ^2.0.4
   flip_card: ^0.6.0
   permission_handler: ^10.0.0
+  flutter_dotenv: ^5.0.2
   image_picker: ^0.8.5+3
   flutter_local_notifications: ^9.6.1
   figma_squircle: ^0.5.3
@@ -60,9 +61,8 @@ flutter_native_splash:
 flutter:
   uses-material-design: true
 
-  # assets:
-  #   - images/a_dot_burr.jpeg
-  #   - images/a_dot_ham.jpeg
+  assets:
+    - .env
 
   fonts:
     # SF Pro Rounded

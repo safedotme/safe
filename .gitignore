@@ -10,6 +10,11 @@
 .history
 .svn/
 
+# Firebase
+android/app/google-services.json
+ios/firebase_app_id_file.json
+*.env
+
 # IntelliJ related
 *.iml
 *.ipr
@@ -20,7 +25,6 @@
 .classpath
 .project
 .settings/
-.vscode/
 
 # Flutter repo-specific
 /bin/cache/
