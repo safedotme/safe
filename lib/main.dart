@@ -5,7 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
 import 'package:safe/screens/testing/testing.screen.dart';
 import 'package:safe/screens/welcome/welcome.screen.dart';
-import 'package:safe/utils/firebase.util.dart';
+import 'package:safe/utils/firebase/firebase.util.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();

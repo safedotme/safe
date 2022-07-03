@@ -46,6 +46,8 @@ const Map<MutableColor, Color> kColorMap = {
   MutableColor.secondaryRed: Color(0xffFC645D),
 };
 
+// OPACITY
+
 enum Transparency {
   opaque,
   v80,
@@ -57,3 +59,15 @@ enum Transparency {
   v8,
   v4,
 }
+
+const Map<Transparency, double> kTransparencyMap = {
+  Transparency.opaque: 1,
+  Transparency.v80: 0.8,
+  Transparency.v64: 0.64,
+  Transparency.v56: 0.56,
+  Transparency.v40: 0.4,
+  Transparency.v24: 0.24,
+  Transparency.v16: 0.16,
+  Transparency.v8: 0.08,
+  Transparency.v4: 0.04,
+};
