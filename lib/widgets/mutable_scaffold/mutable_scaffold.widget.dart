@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:safe/utils/constants/constants.util.dart';
 
 class MutableScaffold extends StatelessWidget {
   final bool resizeToAvoidBottomInsets;
@@ -15,7 +16,9 @@ class MutableScaffold extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(),
+      resizeToAvoidBottomInset: resizeToAvoidBottomInsets,
+      body: body,
+      backgroundColor: kColorMap[MutableColor.neutral10],
     );
   }
 }
