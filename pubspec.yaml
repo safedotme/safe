@@ -1,18 +1,8 @@
 name: safe
-description: A new Flutter project.
+description: A powerful tool for personal and community safety.
 
 publish_to: "none"
 
-# The following defines the version and build number for your application.
-# A version number is three numbers separated by dots, like 1.2.43
-# followed by an optional build number separated by a +.
-# Both the version and the builder number may be overridden in flutter
-# build by specifying --build-name and --build-number, respectively.
-# In Android, build-name is used as versionName while build-number used as versionCode.
-# Read more about Android versioning at https://developer.android.com/studio/publish/versioning
-# In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
-# Read more about iOS versioning at
-# https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
 version: 1.0.0+1
 
 environment:
@@ -21,13 +11,46 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-
   cupertino_icons: ^1.0.2
+  flutter_svg: ^1.1.1+1
+  flutter_linkify: ^5.0.2
+  provider: ^6.0.3
+  sliding_up_panel: ^2.0.0+1
+  url_launcher: ^6.1.4
+  http: ^0.13.4
+  flutter_webrtc: ^0.8.10
+  logger: ^1.1.0
+  connectivity_plus: ^2.3.5
+  cron: ^0.5.0
+  dart_code_metrics: ^4.16.0
+  cached_network_image: ^3.2.1
+  local_auth: ^2.1.0
+  mobx: ^2.0.7+4
+  flutter_mobx: ^2.0.6+1
+  emojis: ^0.9.9
+  shimmer: ^2.0.0
+  intl: ^0.17.0
+  shared_preferences: ^2.0.15
+  dotted_border: ^2.0.0+2
+  animated_text_kit: ^4.2.2
+  card_swiper: ^2.0.4
+  flip_card: ^0.6.0
+  permission_handler: ^10.0.0
+  image_picker: ^0.8.5+3
+  flutter_local_notifications: ^9.6.1
+  figma_squircle: ^0.5.3
+  cloud_firestore: ^3.2.1
+  firebase_storage: ^10.3.1
+  firebase_dynamic_links: ^4.3.1
+  firebase_core: ^1.19.1
+  magic_sdk: ^1.1.0
+  share_plus: ^4.0.10
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-
+  build_runner:
+  mobx_codegen: ^2.0.7
   flutter_lints: ^2.0.0
 
 flutter:
