@@ -95,7 +95,7 @@ The Safe folder structure can be visualized in the following way:
 
 Any help or contributions with Safe would be highly appreciated ❤️. Feel free to help out and contribute to the future of personal and community safety.
 
-Please refer to the [contributing guide](CONTRIBUTING.md) for how to install and run Safe from sources.
+Please refer to the [contributing guide](https://github.com/safedotme/safe/blob/main/CONTRIBUTING.md) for how to install and run Safe from sources.
 
 Have a question regarding any of these topics? Reach out to me at [mark@joinsafe.me](mailto:mark@joinsafe.me) or join our [Discord Server](https://discord.gg/WZrjydnM) and ask questions there 🙂
 
