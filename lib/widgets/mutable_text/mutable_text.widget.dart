@@ -52,11 +52,6 @@ class _MutableTextState extends State<MutableText> {
               .toDouble()),
     );
 
-    print(
-      kFontFamilyGen(
-        weight: widget.weight ?? kTypeStyleMap[widget.style]["weight"],
-      ),
-    );
     return widget.selectable
         ? SelectableText(
             widget.data,
