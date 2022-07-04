@@ -2,7 +2,9 @@ import 'package:figma_squircle/figma_squircle.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
+import 'package:safe/screens/welcome/welcome.screen.dart';
 import 'package:safe/utils/constants/constants.util.dart';
+import 'package:safe/widgets/mutable_button/mutable_button.widget.dart';
 import 'package:safe/widgets/mutable_text/mutable_text.widget.dart';
 
 enum MessageType {
@@ -58,12 +60,8 @@ class _MutableBannerState extends State<MutableBanner> {
       ),
       child: Align(
         alignment: Alignment.bottomCenter,
-        child: GestureDetector(
-          onTap: () {
-            if (widget.onTap != null) {
-              widget.onTap!();
-            }
-          },
+        child: MutableButton(
+          onTap: widget.onTap,
           child: Container(
             width: double.infinity,
             height: 64,
