@@ -5,19 +5,20 @@ class MutableScaffold extends StatelessWidget {
   final bool resizeToAvoidBottomInsets;
   final EdgeInsets? margin;
   final Widget body;
-  // TODO: Implement notifications and other popups
+  final List<Widget>? overlays;
 
   MutableScaffold({
     required this.body,
     this.resizeToAvoidBottomInsets = false,
     this.margin,
+    this.overlays,
   });
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: resizeToAvoidBottomInsets,
-      body: body,
+      body: overlays != null ? Stack(children: [body, ...overlays!]) : body,
       backgroundColor: kColorMap[MutableColor.neutral10],
     );
   }

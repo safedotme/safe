@@ -15,11 +15,15 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
   @override
   Widget build(BuildContext context) {
     return MutableScaffold(
-      body: MutablePopup(
-        type: PopupType.input,
-        defaultState: PanelState.OPEN,
-        style: MutablePopupStyle(),
-        body: Container(),
+      overlays: [
+        Container(
+          color: Colors.green,
+          height: 100,
+          width: 100,
+        )
+      ],
+      body: Container(
+        color: Colors.red,
       ),
     );
   }
