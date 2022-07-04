@@ -1,3 +1,4 @@
+import 'package:figma_squircle/figma_squircle.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
@@ -64,21 +65,29 @@ class _MutableBannerState extends State<MutableBanner> {
           },
           child: Container(
             width: double.infinity,
-            height: 64,
             padding: EdgeInsets.all(15),
-            decoration: BoxDecoration(
+            decoration: ShapeDecoration(
               color: core.utils.color.translucify(
                 widget.type == MessageType.success
                     ? MutableColor.secondaryGreen
                     : MutableColor.secondaryRed,
                 Transparency.v16,
               ),
-              border: Border.all(
-                color: kColorMap[widget.type == MessageType.success
-                    ? MutableColor.secondaryGreen
-                    : MutableColor.secondaryRed]!,
-                width: kBorderWidth,
+              shape: SmoothRectangleBorder(
+                borderRadius: SmoothBorderRadius(
+                  cornerSmoothing: kCornerSmoothing,
+                  cornerRadius: 16,
+                ),
+                side: BorderSide(
+                  color: kColorMap[widget.type == MessageType.success
+                      ? MutableColor.secondaryGreen
+                      : MutableColor.secondaryRed]!,
+                  width: kBorderWidth,
+                ),
               ),
+            ),
+            child: Column(
+              children: [],
             ),
           ),
         ),

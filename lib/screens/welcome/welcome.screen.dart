@@ -20,9 +20,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
       overlays: [
         MutableBanner(),
       ],
-      body: Container(
-        color: Colors.blue,
-      ),
+      body: Container(),
     );
   }
 }

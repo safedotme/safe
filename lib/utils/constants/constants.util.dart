@@ -1,5 +1,87 @@
-// COLORS
+// TYPOGRAPHY
+
 import 'package:flutter/material.dart';
+
+enum TypeStyle {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  body,
+  footnote,
+}
+
+enum TypeWeight {
+  thin,
+  regular,
+  medium,
+  semiBold,
+  bold,
+  heavy,
+  black,
+}
+
+Map<TypeWeight, String> weightMap = {
+  TypeWeight.thin: "Thin",
+  TypeWeight.regular: "Regular",
+  TypeWeight.medium: "Medium",
+  TypeWeight.semiBold: "Semibold",
+  TypeWeight.bold: "Bold",
+  TypeWeight.heavy: "Heavy",
+  TypeWeight.black: "Black"
+};
+
+String kFontFamilyGen({required TypeWeight weight}) {
+  return "Rounded${weightMap[weight]}";
+}
+
+const Map<TypeStyle, int> kTypeStyleSize = {
+  TypeStyle.h1: 30,
+  TypeStyle.h2: 24,
+  TypeStyle.h3: 20,
+  TypeStyle.h4: 18,
+  TypeStyle.h5: 16,
+  TypeStyle.body: 14,
+  TypeStyle.footnote: 12,
+};
+
+enum LetterSpacingType {
+  numeric,
+  regular,
+  heading,
+}
+
+const Map<LetterSpacingType, double> kLetterSpacingMap = {
+  LetterSpacingType.heading: 0.02, // 2%
+  LetterSpacingType.regular: 0.01, // 1.%
+  LetterSpacingType.numeric: 0.04, // 4%
+};
+
+const Map<TypeStyle, dynamic> kTypeStyleMap = {
+  TypeStyle.h1: {
+    "weight": TypeWeight.heavy,
+    "spacing": LetterSpacingType.heading,
+  },
+  TypeStyle.h2: {
+    "weight": TypeWeight.heavy,
+    "spacing": LetterSpacingType.heading,
+  },
+  TypeStyle.h3: {
+    "weight": TypeWeight.medium,
+    "spacing": LetterSpacingType.heading,
+  },
+  TypeStyle.body: {
+    "weight": TypeWeight.regular,
+    "spacing": LetterSpacingType.regular,
+  },
+  TypeStyle.footnote: {
+    "weight": TypeWeight.regular,
+    "spacing": LetterSpacingType.regular,
+  },
+};
+
+// COLORS
 
 enum MutableColor {
   neutral1,
@@ -77,6 +159,8 @@ const Map<Transparency, double> kTransparencyMap = {
 const double kPanelPopupBorderRadius = 35;
 const double kInputPopupBorderRadius = 20;
 const double kPreviewPopupBorderRadius = 18;
+
+const double kCornerSmoothing = 0.6;
 
 // POPUPS
 const double kSideMarginPreviewPopup = 11;
