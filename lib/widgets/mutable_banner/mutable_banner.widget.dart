@@ -39,8 +39,11 @@ class _MutableBannerState extends State<MutableBanner>
 
   // Properties for animation
   late AnimationController controller;
-  late Animation animation;
-  double topPosition = -120;
+  late Animation positionAnimation;
+  late Animation opacityAnimation;
+  late Animation scaleAnimation;
+  double topPosition = -116;
+  double opacity = 0;
   bool dismissed = false;
 
   @override
@@ -59,14 +62,19 @@ class _MutableBannerState extends State<MutableBanner>
       duration: Duration(milliseconds: 200),
     );
 
-    // Initialize animation
-    animation = Tween<double>(begin: -120.0, end: 0.0).animate(
+    // Initialize animations
+    positionAnimation = Tween<double>(begin: -116.0, end: 0.0).animate(
       CurvedAnimation(parent: controller, curve: Curves.decelerate),
+    );
+
+    opacityAnimation = Tween<double>(begin: 0, end: 1).animate(
+      CurvedAnimation(parent: controller, curve: Curves.easeOutCirc),
     );
 
     controller.addListener(() {
       setState(() {
-        topPosition = animation.value;
+        topPosition = positionAnimation.value;
+        opacity = opacityAnimation.value;
       });
     });
   }
@@ -96,77 +104,80 @@ class _MutableBannerState extends State<MutableBanner>
     queryData = MediaQuery.of(context);
     return Positioned(
       top: topPosition,
-      child: Container(
-        width: queryData.size.width,
-        height: 115,
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [
-              kColorMap[MutableColor.neutral10]!
-                  .withOpacity(kTransparencyMap[Transparency.v80]!),
-              kColorMap[MutableColor.neutral10]!.withOpacity(0),
-            ],
+      child: Opacity(
+        opacity: opacity,
+        child: Container(
+          width: queryData.size.width,
+          height: 115,
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [
+                kColorMap[MutableColor.neutral10]!
+                    .withOpacity(kTransparencyMap[Transparency.v80]!),
+                kColorMap[MutableColor.neutral10]!.withOpacity(0),
+              ],
+            ),
           ),
-        ),
-        padding: EdgeInsets.symmetric(
-          horizontal: kSideScreenMargin,
-        ),
-        child: Align(
-          alignment: Alignment.bottomCenter,
-          child: MutableButton(
-            onTap: () {
-              dismiss();
-              if (widget.onTap != null) {
-                widget.onTap!();
-              }
-            },
-            child: Container(
-              width: double.infinity,
-              height: 64,
-              padding: EdgeInsets.symmetric(horizontal: 15),
-              decoration: ShapeDecoration(
-                color: core.utils.color.translucify(
-                  widget.type == MessageType.success
-                      ? MutableColor.secondaryGreen
-                      : MutableColor.secondaryRed,
-                  Transparency.v16,
-                ),
-                shape: SmoothRectangleBorder(
-                  borderRadius: SmoothBorderRadius(
-                    cornerSmoothing: kCornerSmoothing,
-                    cornerRadius: 16,
-                  ),
-                  side: BorderSide(
-                    color: kColorMap[widget.type == MessageType.success
+          padding: EdgeInsets.symmetric(
+            horizontal: kSideScreenMargin,
+          ),
+          child: Align(
+            alignment: Alignment.bottomCenter,
+            child: MutableButton(
+              onTap: () {
+                dismiss();
+                if (widget.onTap != null) {
+                  widget.onTap!();
+                }
+              },
+              child: Container(
+                width: double.infinity,
+                height: 64,
+                padding: EdgeInsets.symmetric(horizontal: 15),
+                decoration: ShapeDecoration(
+                  color: core.utils.color.translucify(
+                    widget.type == MessageType.success
                         ? MutableColor.secondaryGreen
-                        : MutableColor.secondaryRed]!,
-                    width: kBorderWidth,
+                        : MutableColor.secondaryRed,
+                    Transparency.v16,
+                  ),
+                  shape: SmoothRectangleBorder(
+                    borderRadius: SmoothBorderRadius(
+                      cornerSmoothing: kCornerSmoothing,
+                      cornerRadius: 16,
+                    ),
+                    side: BorderSide(
+                      color: kColorMap[widget.type == MessageType.success
+                          ? MutableColor.secondaryGreen
+                          : MutableColor.secondaryRed]!,
+                      width: kBorderWidth,
+                    ),
                   ),
                 ),
-              ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  MutableText(
-                    widget.title,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    weight: TypeWeight.semiBold,
-                    style: TypeStyle.body,
-                  ),
-                  SizedBox(height: 2),
-                  MutableText(
-                    widget.description,
-                    maxLines: 1,
-                    size: 13,
-                    overflow: TextOverflow.ellipsis,
-                    weight: TypeWeight.regular,
-                    color: MutableColor.neutral2,
-                  ),
-                ],
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    MutableText(
+                      widget.title,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      weight: TypeWeight.semiBold,
+                      style: TypeStyle.body,
+                    ),
+                    SizedBox(height: 2),
+                    MutableText(
+                      widget.description,
+                      maxLines: 1,
+                      size: 13,
+                      overflow: TextOverflow.ellipsis,
+                      weight: TypeWeight.regular,
+                      color: MutableColor.neutral2,
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
