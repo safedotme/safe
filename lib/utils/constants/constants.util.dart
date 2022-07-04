@@ -81,3 +81,10 @@ const double kPreviewPopupBorderRadius = 18;
 // POPUPS
 const double kSideMarginPreviewPopup = 11;
 const double kBottomMarginPreviewPopup = 34;
+
+// MARGINS
+const double kSideScreenMargin = 15;
+const double kBottomScreenMargin = 40;
+
+// BORDERS
+const double kBorderWidth = 1.5;
