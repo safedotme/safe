@@ -71,3 +71,9 @@ const Map<Transparency, double> kTransparencyMap = {
   Transparency.v8: 0.08,
   Transparency.v4: 0.04,
 };
+
+// BORDER RADIUS
+
+const double kPanelPopupBorderRadius = 35;
+const double kInputPopupBorderRadius = 20;
+const double kPreviewPopupBorderRadius = 18;
