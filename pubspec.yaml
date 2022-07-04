@@ -91,3 +91,7 @@ flutter:
     - family: RoundedUltralight
       fonts:
         - asset: assets/fonts/rounded/SF-Pro-Rounded-Ultralight.ttf
+
+    - family: RoundedMedium
+      fonts:
+        - asset: assets/fonts/rounded/SF-Pro-Rounded-Medium.ttf

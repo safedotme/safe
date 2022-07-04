@@ -4,6 +4,7 @@ import 'package:safe/widgets/mutable_banner/mutable_banner.widget.dart';
 import 'package:safe/widgets/mutable_popup/local_widgets/mutable_popup_style.widget.dart';
 import 'package:safe/widgets/mutable_popup/mutable_popup.widget.dart';
 import 'package:safe/widgets/mutable_scaffold/mutable_scaffold.widget.dart';
+import 'package:safe/widgets/mutable_text/mutable_text.widget.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class WelcomeScreen extends StatefulWidget {
@@ -20,7 +21,12 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
       overlays: [
         MutableBanner(),
       ],
-      body: Container(),
+      body: Center(
+        child: MutableText(
+          "Hello world",
+          size: 40,
+        ),
+      ),
     );
   }
 }
