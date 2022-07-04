@@ -1,42 +1,58 @@
 import 'package:flutter/material.dart';
-import 'package:safe/utils/constants/constants.util.dart';
-import 'package:safe/widgets/mutable_popup/local_widgets/big_mutable_popup.widget.dart';
-import 'package:safe/widgets/mutable_popup/local_widgets/mutable_popup_style.widget.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 enum PopupType {
-  big,
-  medium,
-  small,
+  pannel,
+  input,
+  preview,
 }
 
-class MutablePopup extends StatelessWidget {
+class MutablePopupStyle {
+  final Color? backdropColor; // n10
+  final Color? backgroundColor; // n9
+  final bool backdropEnabled; // TRUE
+  final double? backdropOpacity; // 0.8
+
+  MutablePopupStyle({
+    this.backdropColor,
+    this.backgroundColor,
+    this.backdropEnabled = true,
+    this.backdropOpacity,
+  });
+}
+
+class MutablePopup extends StatefulWidget {
   final PopupType type;
-  final Widget? body;
-  final bool dismissable;
-  final double? height;
-
-  /// Are only used in the PopupType.big component
-  final double? minPoint;
-
-  /// Are only used in the PopupType.big component
-  final double? maxPoint;
-
-  /// This will override the default styling of the component
+  final void Function()? onOpened;
+  final void Function()? onClosed;
+  final void Function(double state)? onSlide;
+  final PanelController? controller;
+  final PanelState defaultState;
+  final bool backdropTapClose;
+  final bool draggable;
+  final Widget body;
   final MutablePopupStyle? style;
 
   MutablePopup({
-    this.type = PopupType.big,
-    this.body,
-    this.dismissable = true,
-    this.height,
-    this.minPoint,
-    this.maxPoint,
+    required this.type,
+    this.onOpened,
+    this.onClosed,
+    this.onSlide,
+    this.controller,
+    this.defaultState = PanelState.CLOSED,
+    this.backdropTapClose = true,
+    required this.body,
     this.style,
+    this.draggable = true,
   });
 
   @override
+  State<MutablePopup> createState() => _MutablePopupState();
+}
+
+class _MutablePopupState extends State<MutablePopup> {
+  @override
   Widget build(BuildContext context) {
-    return BigMutablePopup();
+    return;
   }
 }
