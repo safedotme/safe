@@ -78,4 +78,6 @@ const double kPanelPopupBorderRadius = 35;
 const double kInputPopupBorderRadius = 20;
 const double kPreviewPopupBorderRadius = 18;
 
-// POPUP
+// POPUPS
+const double kSideMarginPreviewPopup = 11;
+const double kBottomMarginPreviewPopup = 34;

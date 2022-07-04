@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:logger/logger.dart';
+import 'package:safe/utils/constants/constants.util.dart';
 import 'package:safe/widgets/mutable_popup/local_widgets/mutable_popup_style.widget.dart';
+import 'package:safe/widgets/mutable_popup/local_widgets/non_pannel_body.widget.dart';
 import 'package:safe/widgets/mutable_popup/local_widgets/panel_popup_painter.widget.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
@@ -54,12 +55,14 @@ class MutablePopup extends StatefulWidget {
 class _MutablePopupState extends State<MutablePopup> {
   late MediaQueryData queryData;
 
-  // Used to determine height and width for non-panel popups
+  // Determine height and width for non-panel popups
   late Size size;
   void setSize() {
     size = Size(
       widget.width ??
-          (widget.type == PopupType.input ? 265 : queryData.size.width - 22),
+          (widget.type == PopupType.input
+              ? 265
+              : queryData.size.width - (kSideMarginPreviewPopup * 2)),
       widget.height ?? (widget.type == PopupType.input ? 243 : 323),
     );
   }
@@ -80,6 +83,7 @@ class _MutablePopupState extends State<MutablePopup> {
     );
 
     return SlidingUpPanel(
+      // Adds custom border for panel popups
       panel: CustomPaint(
         // Will paint special border for Pannel popup
         painter: widget.type == PopupType.pannel
@@ -89,22 +93,10 @@ class _MutablePopupState extends State<MutablePopup> {
             : null,
         child: widget.type == PopupType.pannel
             ? widget.body
-            : Align(
-                alignment: Alignment.topCenter,
-                child: Container(
-                  // EXTRACT
-                  height: size.height,
-                  width: size.width,
-                  decoration: BoxDecoration(
-                    color: style.backgroundColor,
-                    border: style.border,
-                    borderRadius: style.borderRadius,
-                  ),
-                  child: SizedBox(
-                    height: 60,
-                    child: widget.body,
-                  ),
-                ),
+            : NonPannelBody(
+                size: size,
+                style: style,
+                body: widget.body,
               ),
       ),
       onPanelOpened: widget.onOpened,
@@ -114,12 +106,18 @@ class _MutablePopupState extends State<MutablePopup> {
       defaultPanelState: widget.defaultState,
       backdropTapClosesPanel: widget.backdropTapClose,
       isDraggable: widget.draggable,
+
+      // Hides non-panel popups
       minHeight: widget.type == PopupType.pannel ? widget.minHeight : 0,
+
+      // Generates heigt to center non-panel popups
       maxHeight: widget.type == PopupType.pannel
           ? widget.minHeight
           : widget.type == PopupType.input
               ? (queryData.size.height / 2) + (size.height / 2)
-              : size.height + 34,
+              : size.height + kBottomMarginPreviewPopup,
+
+      // Removes default shadows
       boxShadow: [],
       color: widget.type == PopupType.pannel
           ? style.backgroundColor!
@@ -127,6 +125,8 @@ class _MutablePopupState extends State<MutablePopup> {
       backdropColor: style.backdropColor!,
       backdropEnabled: style.backdropEnabled,
       backdropOpacity: style.backdropOpacity!,
+
+      // Removes popup border for non-panel popups
       borderRadius: widget.type == PopupType.pannel ? style.borderRadius : null,
       border: widget.type == PopupType.pannel ? style.border : null,
     );
