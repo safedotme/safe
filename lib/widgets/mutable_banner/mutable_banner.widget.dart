@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
 import 'package:safe/utils/constants/constants.util.dart';
+import 'package:safe/widgets/mutable_text/mutable_text.widget.dart';
 
 enum MessageType {
   error,
@@ -65,7 +66,8 @@ class _MutableBannerState extends State<MutableBanner> {
           },
           child: Container(
             width: double.infinity,
-            padding: EdgeInsets.all(15),
+            height: 64,
+            padding: EdgeInsets.symmetric(horizontal: 15),
             decoration: ShapeDecoration(
               color: core.utils.color.translucify(
                 widget.type == MessageType.success
@@ -87,7 +89,26 @@ class _MutableBannerState extends State<MutableBanner> {
               ),
             ),
             child: Column(
-              children: [],
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                MutableText(
+                  widget.title,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  weight: TypeWeight.semiBold,
+                  style: TypeStyle.body,
+                ),
+                SizedBox(height: 2),
+                MutableText(
+                  widget.description,
+                  maxLines: 1,
+                  size: 13,
+                  overflow: TextOverflow.ellipsis,
+                  weight: TypeWeight.regular,
+                  color: MutableColor.neutral2,
+                ),
+              ],
             ),
           ),
         ),

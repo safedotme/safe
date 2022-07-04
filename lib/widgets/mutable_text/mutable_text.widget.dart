@@ -11,6 +11,7 @@ class MutableText extends StatefulWidget {
   final MutableColor? color;
   final TypeWeight? weight;
   final TextAlign align;
+  final int? maxLines;
   final TextDecoration? decoration;
 
   /// [overflow] property doesn't apply if [selectable] is set to true
@@ -22,6 +23,7 @@ class MutableText extends StatefulWidget {
     this.decoration,
     this.overflow,
     this.letterSpacing,
+    this.maxLines,
     this.selectable = false,
     this.align = TextAlign.left,
     this.color = MutableColor.neutral1,
@@ -57,12 +59,14 @@ class _MutableTextState extends State<MutableText> {
             widget.data,
             textAlign: widget.align,
             style: style,
+            maxLines: widget.maxLines,
           )
         : Text(
             widget.data,
             textAlign: widget.align,
             style: style,
             overflow: widget.overflow,
+            maxLines: widget.maxLines,
           );
   }
 }
