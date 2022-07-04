@@ -45,13 +45,22 @@ class MutablePopupStyle {
       backgroundColor:
           style.backgroundColor ?? kColorMap[MutableColor.neutral9]!,
       backdropEnabled: style.backdropEnabled,
-      backdropOpacity: style.backdropOpacity ?? 0.8,
+      backdropOpacity:
+          style.backdropOpacity ?? kTransparencyMap[Transparency.v80],
       border: style.border ?? customBorder,
       borderColor: style.borderColor,
       borderRadius: style.borderRadius ??
           BorderRadius.only(
             topRight: Radius.circular(customBorderRadius),
             topLeft: Radius.circular(customBorderRadius),
+
+            // Adds bottom border radius when visible to users
+            bottomLeft: type == PopupType.input || type == PopupType.preview
+                ? Radius.circular(customBorderRadius)
+                : Radius.zero,
+            bottomRight: type == PopupType.input || type == PopupType.preview
+                ? Radius.circular(customBorderRadius)
+                : Radius.zero,
           ),
     );
   }
