@@ -1,5 +1,6 @@
 import 'package:logger/logger.dart';
 import 'package:safe/utils/color/color.util.dart';
+import 'package:safe/utils/language/language.util.dart';
 
 class Utils {
   ColorUtils color = ColorUtils();
@@ -11,4 +12,5 @@ class Utils {
         printTime: false // Should each log print contain a timestamp
         ),
   );
+  LanguageUtil language = LanguageUtil()..initMap();
 }

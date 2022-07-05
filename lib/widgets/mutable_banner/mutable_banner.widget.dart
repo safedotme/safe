@@ -143,7 +143,7 @@ class _MutableBannerState extends State<MutableBanner>
                     widget.type == MessageType.success
                         ? MutableColor.secondaryGreen
                         : MutableColor.secondaryRed,
-                    Transparency.v16,
+                    Transparency.v20,
                   ),
                   shape: SmoothRectangleBorder(
                     borderRadius: SmoothBorderRadius(

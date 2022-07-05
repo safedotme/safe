@@ -19,14 +19,12 @@ class WelcomeScreen extends StatefulWidget {
 class _WelcomeScreenState extends State<WelcomeScreen> {
   late Core core;
   late MediaQueryData queryData;
-  late BannerController controller;
 
   @override
   void initState() {
     super.initState();
 
     core = Provider.of<Core>(context, listen: false);
-    controller = BannerController();
   }
 
   @override
@@ -49,6 +47,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
         ),
       ],
       body: Container(
+        // Position the buttons & logo in the screen
         padding: EdgeInsets.only(bottom: (queryData.size.height / 2) + 50),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.end,

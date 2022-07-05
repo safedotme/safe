@@ -20,8 +20,8 @@ class GradientBorderPainter extends CustomPainter {
     Paint paint = Paint()
       ..shader = LinearGradient(
         colors: kPrimaryGradientColors,
-        begin: Alignment.topLeft,
-        end: Alignment.bottomRight,
+        begin: Alignment(-1.5, 1.5),
+        end: Alignment(1, -1),
       ).createShader(rect)
       ..style = PaintingStyle.stroke
       ..strokeWidth = width;
