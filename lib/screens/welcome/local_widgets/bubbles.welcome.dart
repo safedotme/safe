@@ -1,5 +1,6 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide BoxDecoration, BoxShadow;
 import 'package:safe/utils/constants/constants.util.dart';
+import 'package:flutter_inset_box_shadow/flutter_inset_box_shadow.dart';
 
 class Bubble extends StatefulWidget {
   final int index;
@@ -111,6 +112,24 @@ class _BubbleState extends State<Bubble> with TickerProviderStateMixin {
                 end: Alignment.bottomRight,
               ),
               boxShadow: [
+                // Inner 1
+                BoxShadow(
+                  offset: Offset(-1, 1),
+                  color: Colors.white.withOpacity(0.4),
+                  spreadRadius: 2,
+                  blurRadius: 10,
+                  inset: true,
+                ),
+
+                // Inner 2
+                BoxShadow(
+                  offset: Offset(-1, 1),
+                  color: Colors.white.withOpacity(0.7),
+                  spreadRadius: 1,
+                  blurRadius: 1,
+                  inset: true,
+                ),
+
                 // Red
                 BoxShadow(
                   offset: Offset(-4, -4),
