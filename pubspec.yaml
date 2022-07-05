@@ -64,6 +64,8 @@ flutter:
 
   assets:
     - .env
+    - assets/svgs/logo.svg
+    - assets/svgs/button.svg
 
   fonts:
     # SF Pro Rounded

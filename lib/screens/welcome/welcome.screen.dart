@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
+import 'package:safe/screens/welcome/local_widgets/auth_button.welcome.dart';
 import 'package:safe/screens/welcome/local_widgets/bubbles.welcome.dart';
 import 'package:safe/utils/constants/constants.util.dart';
 import 'package:safe/widgets/mutable_banner/mutable_banner.widget.dart';
@@ -33,7 +35,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
     return MutableScaffold(
       overlays: [
         Positioned(
-          bottom: -150,
+          bottom: -175,
           child: SizedBox(
             width: queryData.size.width,
             height: queryData.size.height,
@@ -54,12 +56,12 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(
-                  Icons.ac_unit,
-                  size: 44,
-                  color: Colors.white,
+                SvgPicture.asset(
+                  "assets/svgs/button.svg",
+                  height: 55,
+                  width: 55,
                 ),
-                SizedBox(width: 14),
+                SizedBox(width: 10),
                 MutableText(
                   "Safe",
                   size: 34,
@@ -70,17 +72,9 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
             SizedBox(
               height: 38,
             ),
-            Container(
-              height: 54,
-              width: 228,
-              color: Colors.red,
-            ),
+            AuthButton(AuthButtonType.signup),
             SizedBox(height: 16),
-            Container(
-              height: 54,
-              width: 228,
-              color: Colors.blue,
-            )
+            AuthButton(AuthButtonType.login),
           ],
         ),
       ),
