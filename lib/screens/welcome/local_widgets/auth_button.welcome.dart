@@ -38,6 +38,13 @@ class _AuthButtonState extends State<AuthButton> {
   @override
   Widget build(BuildContext context) {
     return MutableButton(
+      onTap: () {
+        if (widget.type == AuthButtonType.signup) {
+          core.state.signup.nameInputController.open();
+        } else {
+          // Add open functionality for login
+        }
+      },
       child: displayBorder(
         Container(
           height: 60,

@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
-import 'package:safe/screens/auth/flows/login.auth.dart';
-import 'package:safe/screens/auth/flows/signup.flow.dart';
 import 'package:safe/screens/welcome/local_widgets/auth_button.welcome.dart';
 import 'package:safe/screens/welcome/local_widgets/bubbles.welcome.dart';
 import 'package:safe/utils/constants/constants.util.dart';
@@ -46,6 +44,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
             ),
           ),
         ),
+        ...core.utils.flows.signup.widgets
       ],
       body: Container(
         // Position the buttons & logo in the screen

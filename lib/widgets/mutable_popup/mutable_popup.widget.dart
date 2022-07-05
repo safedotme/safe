@@ -112,7 +112,7 @@ class _MutablePopupState extends State<MutablePopup> {
 
       // Generates heigt to center non-panel popups
       maxHeight: widget.type == PopupType.pannel
-          ? widget.minHeight
+          ? widget.maxHeight
           : widget.type == PopupType.input
               ? (queryData.size.height / 2) + (size.height / 2)
               : size.height + kBottomMarginPreviewPopup,

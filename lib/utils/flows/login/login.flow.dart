@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class SignupFlow {
+class LoginFlow {
   final List<Widget> widgets = [
     Container(),
     Container(),
