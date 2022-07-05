@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
+import 'package:safe/screens/auth/flows/login.auth.dart';
+import 'package:safe/screens/auth/flows/signup.auth.dart';
 import 'package:safe/screens/welcome/local_widgets/auth_button.welcome.dart';
 import 'package:safe/screens/welcome/local_widgets/bubbles.welcome.dart';
 import 'package:safe/utils/constants/constants.util.dart';
-import 'package:safe/widgets/mutable_banner/mutable_banner.widget.dart';
 import 'package:safe/widgets/mutable_scaffold/mutable_scaffold.widget.dart';
 import 'package:safe/widgets/mutable_text/mutable_text.widget.dart';
 
@@ -45,6 +46,8 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
             ),
           ),
         ),
+        Signup(),
+        Login(),
       ],
       body: Container(
         // Position the buttons & logo in the screen
