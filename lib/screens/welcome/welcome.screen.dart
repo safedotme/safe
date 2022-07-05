@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
+import 'package:safe/utils/constants/constants.util.dart';
 import 'package:safe/widgets/mutable_banner/mutable_banner.widget.dart';
 import 'package:safe/widgets/mutable_scaffold/mutable_scaffold.widget.dart';
 import 'package:safe/widgets/mutable_text/mutable_text.widget.dart';
@@ -49,18 +50,21 @@ class _BubbleState extends State<Bubble> with TickerProviderStateMixin {
   late double size;
   late AnimationController controller;
   late Animation animation;
+  late MediaQueryData queryData;
   double scale = 1;
 
   Future<void> animate() async {
     int baseline = 1080;
     int increment = 352;
+    double breathIncrement = 0.15;
+
     // Animate into scene
     controller = AnimationController(
       vsync: this,
       duration: Duration(milliseconds: baseline + (increment * widget.index)),
     );
 
-    animation = Tween<double>(begin: 0.0, end: 1.0).animate(
+    animation = Tween<double>(begin: 0.0, end: 1 + breathIncrement).animate(
       CurvedAnimation(parent: controller, curve: Curves.ease),
     );
 
@@ -72,12 +76,13 @@ class _BubbleState extends State<Bubble> with TickerProviderStateMixin {
 
     await controller.forward();
 
+    // Animate pulsations
     controller = AnimationController(
       vsync: this,
       duration: Duration(milliseconds: 1500),
     );
 
-    animation = Tween<double>(begin: 1, end: 1.15).animate(
+    animation = Tween<double>(begin: 1 + breathIncrement, end: 1).animate(
       CurvedAnimation(parent: controller, curve: Curves.easeInOut),
     );
 
@@ -112,24 +117,42 @@ class _BubbleState extends State<Bubble> with TickerProviderStateMixin {
     genSize();
 
     // Animate bubble
-    animate();
+    //animate();
   }
 
-  // 540
   @override
   Widget build(BuildContext context) {
+    queryData = MediaQuery.of(context);
     return Positioned(
-      bottom: 50,
-      right: -80,
+      bottom: -size * 0.8,
+      right: (queryData.size.width / 2) - (size / 2),
       child: Transform.scale(
         scale: scale,
         child: Container(
           height: size,
           width: size,
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            color: Colors.red[(widget.index + 1) * 100],
-          ),
+          decoration: BoxDecoration(shape: BoxShape.circle, boxShadow: [
+            // Red
+            BoxShadow(
+              offset: Offset(-4, -4),
+              blurRadius: 20,
+              color: kColorMap[MutableColor.primaryRed]!.withOpacity(0.1),
+            ),
+
+            // Purple
+            BoxShadow(
+              offset: Offset(-4, -4),
+              blurRadius: 20,
+              color: kColorMap[MutableColor.primaryPurple]!.withOpacity(0.1),
+            ),
+
+            // Yellow
+            BoxShadow(
+              offset: Offset(-4, -4),
+              blurRadius: 20,
+              color: kColorMap[MutableColor.primaryYellow]!.withOpacity(0.1),
+            ),
+          ]),
         ),
       ),
     );
