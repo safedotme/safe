@@ -52,6 +52,7 @@ class _MutableBannerState extends State<MutableBanner>
 
     core = Provider.of<Core>(context, listen: false);
 
+    // Used to attach external controller
     if (widget.controller != null) {
       widget.controller!.setState(this);
     }
@@ -71,6 +72,7 @@ class _MutableBannerState extends State<MutableBanner>
       CurvedAnimation(parent: controller, curve: Curves.easeOutCirc),
     );
 
+    // Listens for any changes
     controller.addListener(() {
       setState(() {
         topPosition = positionAnimation.value;
