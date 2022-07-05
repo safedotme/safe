@@ -8,11 +8,13 @@ class MutableInputPanel extends StatelessWidget {
   final Widget body;
   final void Function()? onTap;
   final String title;
+  final IconData icon;
   final String description;
 
   MutableInputPanel({
     required this.body,
     this.onTap,
+    required this.icon,
     this.title = "Title",
     this.description = "Description",
   });
@@ -31,7 +33,9 @@ class MutableInputPanel extends StatelessWidget {
         children: [
           Center(child: MutableHandle()),
           SizedBox(height: 38),
-          Center(child: MutableIconSphere()),
+          Center(
+            child: MutableIconSphere(icon),
+          ),
           SizedBox(height: 32),
           MutableText(
             title,
@@ -50,7 +54,7 @@ class MutableInputPanel extends StatelessWidget {
           Spacer(),
           Container(
             height: 50,
-            color: Colors.amber,
+            color: Color.fromARGB(255, 20, 20, 20),
           ),
         ],
       ),

@@ -36,6 +36,7 @@ class _NameInputScreenState extends State<NameInputScreen> {
         title: "What should we call you?",
         description:
             "Please provide your full real name. It's\nimportant for others to identify you.",
+        icon: Icons.ac_unit_rounded,
       ),
     );
   }
