@@ -17,9 +17,13 @@ class _BubbleState extends State<Bubble> with TickerProviderStateMixin {
   double scale = 1;
 
   Future<void> animate() async {
-    int baseline = 1080;
+    // Time it takes for each bubble to enter
+    int baseline = 1200;
+
+    // Percentage increase of each bubble
     double breathIncrement = 0.15;
 
+    // Adds delay between each bubble to give pulsating effect
     await Future.delayed(Duration(
       milliseconds: 150 * widget.index,
     ));
