@@ -68,7 +68,7 @@ const Map<TypeStyle, dynamic> kTypeStyleMap = {
     "spacing": LetterSpacingType.heading,
   },
   TypeStyle.h3: {
-    "weight": TypeWeight.medium,
+    "weight": TypeWeight.bold,
     "spacing": LetterSpacingType.heading,
   },
   TypeStyle.h4: {
