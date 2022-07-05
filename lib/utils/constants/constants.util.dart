@@ -136,6 +136,14 @@ const Map<MutableColor, Color> kColorMap = {
   MutableColor.secondaryRed: Color(0xffFC645D),
 };
 
+final List<Color> kPrimaryGradientColors = [
+  kColorMap[MutableColor.primaryYellow]!,
+  kColorMap[MutableColor.primaryOrange]!,
+  kColorMap[MutableColor.primaryRed]!,
+  kColorMap[MutableColor.primaryMagenta]!,
+  kColorMap[MutableColor.primaryPurple]!,
+];
+
 // OPACITY
 
 enum Transparency {
