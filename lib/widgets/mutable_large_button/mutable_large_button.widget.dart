@@ -40,6 +40,7 @@ class MutableLargeButton extends StatelessWidget {
     return MutableButton(
       onTap: onTap,
       child: MutableShimmer(
+        active: shimmer,
         child: Container(
           height: kLargeButtonHeight,
           decoration: BoxDecoration(

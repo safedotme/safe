@@ -12,6 +12,7 @@ class MutableInputPanel extends StatelessWidget {
   final ButtonState buttonState;
   final String buttonText;
   final String title;
+  final bool shimmer;
   final MutableIcons icon;
   final String description;
 
@@ -19,6 +20,7 @@ class MutableInputPanel extends StatelessWidget {
     required this.body,
     this.onTap,
     required this.icon,
+    this.shimmer = false,
     this.title = "Title",
     this.description = "Description",
     required this.buttonState,
@@ -62,6 +64,7 @@ class MutableInputPanel extends StatelessWidget {
             onTap: onTap,
             text: buttonText,
             state: buttonState,
+            shimmer: shimmer,
           ),
         ],
       ),
