@@ -1,6 +1,7 @@
 import 'package:logger/logger.dart';
 import 'package:safe/utils/color/color.util.dart';
 import 'package:safe/utils/flows/flows.dart';
+import 'package:safe/utils/icon/icon.util.dart';
 import 'package:safe/utils/language/language.util.dart';
 
 class Utils {
@@ -15,4 +16,5 @@ class Utils {
   );
   LanguageUtil language = LanguageUtil()..initMap();
   Flows flows = Flows();
+  IconUtil icons = IconUtil()..init();
 }

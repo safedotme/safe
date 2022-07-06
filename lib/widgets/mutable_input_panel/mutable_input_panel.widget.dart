@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:safe/utils/constants/constants.util.dart';
+import 'package:safe/utils/icon/icon.util.dart';
 import 'package:safe/widgets/mutable_handle/mutable_handle.dart';
 import 'package:safe/widgets/mutable_icon_sphere/mutable_icon_sphere.widget.dart';
 import 'package:safe/widgets/mutable_text/mutable_text.widget.dart';
@@ -8,7 +9,7 @@ class MutableInputPanel extends StatelessWidget {
   final Widget body;
   final void Function()? onTap;
   final String title;
-  final IconData icon;
+  final MutableIcons icon;
   final String description;
 
   MutableInputPanel({

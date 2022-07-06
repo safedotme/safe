@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart' hide BoxShadow, BoxDecoration;
 import 'package:flutter_inset_box_shadow/flutter_inset_box_shadow.dart';
 import 'package:safe/utils/constants/constants.util.dart';
+import 'package:safe/utils/icon/icon.util.dart';
+import 'package:safe/widgets/mutable_icon/mutable_icon.widget.dart';
 
 class MutableIconSphere extends StatelessWidget {
-  final IconData icon;
+  final MutableIcons icon;
   MutableIconSphere(this.icon);
 
   @override
@@ -13,9 +15,9 @@ class MutableIconSphere extends StatelessWidget {
       width: 64,
       // ignore: sort_child_properties_last
       child: Center(
-        child: Icon(
+        child: MutableIcon(
           icon,
-          size: 30,
+          size: Size(30, 30),
           color: kColorMap[MutableColor.neutral1]!.withOpacity(0.7),
         ),
       ),

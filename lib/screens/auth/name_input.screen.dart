@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
-import 'package:safe/utils/constants/constants.util.dart';
-import 'package:safe/widgets/mutable_handle/mutable_handle.dart';
-import 'package:safe/widgets/mutable_icon_sphere/mutable_icon_sphere.widget.dart';
+import 'package:safe/utils/icon/icon.util.dart';
 import 'package:safe/widgets/mutable_input_panel/mutable_input_panel.widget.dart';
 import 'package:safe/widgets/mutable_popup/mutable_popup.widget.dart';
-import 'package:safe/widgets/mutable_text/mutable_text.widget.dart';
 
 class NameInputScreen extends StatefulWidget {
   @override
@@ -36,7 +33,7 @@ class _NameInputScreenState extends State<NameInputScreen> {
         title: "What should we call you?",
         description:
             "Please provide your full real name. It's\nimportant for others to identify you.",
-        icon: Icons.ac_unit_rounded,
+        icon: MutableIcons.profile,
       ),
     );
   }
