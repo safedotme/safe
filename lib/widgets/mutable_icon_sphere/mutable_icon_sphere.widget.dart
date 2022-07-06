@@ -16,7 +16,7 @@ class MutableIconSphere extends StatelessWidget {
         child: Icon(
           icon,
           size: 30,
-          color: kColorMap[MutableColor.neutral1]!.withOpacity(0.7),
+          color: kColorMap[MutableColor.neutral1]!.withOpacity(0.75),
         ),
       ),
       decoration: BoxDecoration(
@@ -39,6 +39,8 @@ class MutableIconSphere extends StatelessWidget {
               ),
             ),
           ),
+
+          // Inner shadows
           BoxShadow(
             offset: Offset(2, -2),
             color: Colors.black.withOpacity(0.6),
