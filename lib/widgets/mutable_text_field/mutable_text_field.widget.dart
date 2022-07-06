@@ -3,58 +3,42 @@ import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
 import 'package:safe/utils/constants/constants.util.dart';
 
-class MutableTextField extends StatefulWidget {
+class MutableTextField extends StatelessWidget {
   final FocusNode? focusNode;
   final String hintText;
+  final void Function(String? value) onChange;
 
   MutableTextField({
+    required this.onChange,
     this.focusNode,
     this.hintText = "",
   });
 
   @override
-  State<MutableTextField> createState() => _MutableTextFieldState();
-}
-
-class _MutableTextFieldState extends State<MutableTextField> {
-  late Core core;
-  late FocusNode node;
-  Color cursorColor = Colors.white;
-
-  @override
-  void initState() {
-    super.initState();
-
-    core = Provider.of<Core>(context, listen: false);
-    node = widget.focusNode ?? FocusNode();
-  }
-
-  @override
   Widget build(BuildContext context) {
+    Core core = Provider.of(context, listen: false);
+
     return TextField(
       cursorColor: core.utils.color.translucify(
         MutableColor.neutral5,
         Transparency.v64,
       ),
+      onChanged: onChange,
+
+      // Height is based on fontSize (16)
       cursorHeight: 18,
-      focusNode: node,
-      style: TextStyle(
-        color: kColorMap[MutableColor.neutral1],
-        fontFamily: kFontFamilyGen(weight: TypeWeight.medium),
-        fontSize: 16,
-      ),
+      focusNode: focusNode,
+      style: kTextInputStyle,
       decoration: InputDecoration(
-        hintText: widget.hintText,
-        hintStyle: TextStyle(
+        hintText: hintText,
+        hintStyle: kTextInputStyle.copyWith(
           color: kColorMap[MutableColor.neutral4],
-          fontFamily: kFontFamilyGen(weight: TypeWeight.medium),
-          fontSize: 16,
         ),
         fillColor: kColorMap[MutableColor.neutral8]!,
         filled: true,
         contentPadding: EdgeInsets.symmetric(horizontal: 16),
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(23),
+          borderRadius: BorderRadius.circular(25),
           borderSide: BorderSide(
             color: kColorMap[MutableColor.neutral7]!,
             width: kBorderWidth,

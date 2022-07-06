@@ -89,6 +89,13 @@ const Map<TypeStyle, dynamic> kTypeStyleMap = {
   },
 };
 
+// TYPOGRAPHY SPECIFIC
+final TextStyle kTextInputStyle = TextStyle(
+  color: kColorMap[MutableColor.neutral1],
+  fontFamily: kFontFamilyGen(weight: TypeWeight.medium),
+  fontSize: 16,
+);
+
 // COLORS
 
 enum MutableColor {
