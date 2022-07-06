@@ -3,11 +3,15 @@ import 'package:safe/utils/constants/constants.util.dart';
 
 class GradientBorderPainter extends CustomPainter {
   final double width;
+  final Alignment? begin;
+  final Alignment? end;
   final double borderRadius;
 
   GradientBorderPainter({
     required this.width,
     required this.borderRadius,
+    this.begin,
+    this.end,
   });
 
   @override
@@ -20,8 +24,12 @@ class GradientBorderPainter extends CustomPainter {
     Paint paint = Paint()
       ..shader = LinearGradient(
         colors: kPrimaryGradientColors,
-        begin: Alignment(-1.5, 1.5),
-        end: Alignment(1, -1),
+        // begin: Alignment(-1.5, 1.5),
+        // end: Alignment(1, -1),
+        // begin: Alignment(-1.2, -4),
+        // end: Alignment(0.78, 4),
+        begin: begin ?? kPrimaryGradientAlignmentBegin,
+        end: end ?? kPrimaryGradientAlignmentEnd,
       ).createShader(rect)
       ..style = PaintingStyle.stroke
       ..strokeWidth = width;

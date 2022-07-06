@@ -144,6 +144,9 @@ final List<Color> kPrimaryGradientColors = [
   kColorMap[MutableColor.primaryPurple]!,
 ];
 
+final Alignment kPrimaryGradientAlignmentBegin = Alignment(-0.1, -2.5);
+final Alignment kPrimaryGradientAlignmentEnd = Alignment(0.1, 3);
+
 // OPACITY
 
 enum Transparency {
@@ -190,3 +193,7 @@ const double kBottomScreenMargin = 40;
 
 // BORDERS
 const double kBorderWidth = 1.5;
+
+// LARGE BUTTON
+const double kLargeButtonHeight = 50;
+const double kLargeButtonBorderRadius = kLargeButtonHeight / 2;

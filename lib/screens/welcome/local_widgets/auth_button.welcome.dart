@@ -32,7 +32,13 @@ class _AuthButtonState extends State<AuthButton> {
   }
 
   Widget displayBorder(Widget body) => widget.type == AuthButtonType.signup
-      ? MutableGradientBorder(borderRadius: 30, width: 3, child: body)
+      ? MutableGradientBorder(
+          borderRadius: 30,
+          width: 3,
+          begin: Alignment(-1.5, 1.5),
+          end: Alignment(1, -2.5),
+          child: body,
+        )
       : body;
 
   @override
@@ -57,7 +63,7 @@ class _AuthButtonState extends State<AuthButton> {
                             e.withOpacity(kTransparencyMap[Transparency.v20]!))
                         .toList(),
                     begin: Alignment(-1.5, 1.5),
-                    end: Alignment(1, -1),
+                    end: Alignment(1, -2.5),
                   )
                 : null,
             borderRadius: BorderRadius.circular(30),

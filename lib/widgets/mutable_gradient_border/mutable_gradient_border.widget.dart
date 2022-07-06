@@ -4,11 +4,15 @@ import 'package:safe/widgets/mutable_gradient_border/local_widgets/gradient_bord
 class MutableGradientBorder extends StatefulWidget {
   final double width;
   final double borderRadius;
+  final Alignment? begin;
+  final Alignment? end;
   final Widget child;
 
   MutableGradientBorder({
     this.width = 1.5,
     this.borderRadius = 0,
+    this.begin,
+    this.end,
     required this.child,
   });
 
@@ -23,6 +27,8 @@ class _MutableGradientBorderState extends State<MutableGradientBorder> {
       painter: GradientBorderPainter(
         width: widget.width,
         borderRadius: widget.borderRadius,
+        begin: widget.begin,
+        end: widget.end,
       ),
       child: widget.child,
     );

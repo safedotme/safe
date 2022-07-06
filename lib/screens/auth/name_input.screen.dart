@@ -35,7 +35,7 @@ class _NameInputScreenState extends State<NameInputScreen> {
         description:
             "Please provide your full real name. It's\nimportant for others to identify you.",
         icon: MutableIcons.profile,
-        buttonState: ButtonState.inactive,
+        buttonState: ButtonState.active,
         buttonText: "Next",
       ),
     );
