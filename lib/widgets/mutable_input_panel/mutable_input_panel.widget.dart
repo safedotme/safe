@@ -3,11 +3,14 @@ import 'package:safe/utils/constants/constants.util.dart';
 import 'package:safe/utils/icon/icon.util.dart';
 import 'package:safe/widgets/mutable_handle/mutable_handle.dart';
 import 'package:safe/widgets/mutable_icon_sphere/mutable_icon_sphere.widget.dart';
+import 'package:safe/widgets/mutable_large_button/mutable_large_button.widget.dart';
 import 'package:safe/widgets/mutable_text/mutable_text.widget.dart';
 
 class MutableInputPanel extends StatelessWidget {
   final Widget body;
   final void Function()? onTap;
+  final ButtonState buttonState;
+  final String buttonText;
   final String title;
   final MutableIcons icon;
   final String description;
@@ -18,6 +21,8 @@ class MutableInputPanel extends StatelessWidget {
     required this.icon,
     this.title = "Title",
     this.description = "Description",
+    required this.buttonState,
+    required this.buttonText,
   });
 
   @override
@@ -53,9 +58,10 @@ class MutableInputPanel extends StatelessWidget {
           Spacer(),
           body,
           Spacer(),
-          Container(
-            height: 50,
-            color: Color.fromARGB(255, 20, 20, 20),
+          MutableLargeButton(
+            onTap: onTap,
+            text: buttonText,
+            state: buttonState,
           ),
         ],
       ),

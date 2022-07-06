@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
 import 'package:safe/utils/icon/icon.util.dart';
 import 'package:safe/widgets/mutable_input_panel/mutable_input_panel.widget.dart';
+import 'package:safe/widgets/mutable_large_button/mutable_large_button.widget.dart';
 import 'package:safe/widgets/mutable_popup/mutable_popup.widget.dart';
 
 class NameInputScreen extends StatefulWidget {
@@ -34,6 +35,8 @@ class _NameInputScreenState extends State<NameInputScreen> {
         description:
             "Please provide your full real name. It's\nimportant for others to identify you.",
         icon: MutableIcons.profile,
+        buttonState: ButtonState.inactive,
+        buttonText: "Next",
       ),
     );
   }
