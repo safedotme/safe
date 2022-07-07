@@ -16,13 +16,15 @@ enum PermissionType {
 
 class MutablePermissionCard extends StatefulWidget {
   final PermissionType type;
-  final void Function()? onTap;
-  final bool isAllowed;
+
+  static const List<PermissionType> permissionList = [
+    PermissionType.microphone,
+    PermissionType.camera,
+    PermissionType.location
+  ];
 
   MutablePermissionCard({
     required this.type,
-    this.isAllowed = false,
-    this.onTap,
   });
 
   @override
@@ -82,7 +84,7 @@ class _MutablePermissionCardState extends State<MutablePermissionCard> {
                   ),
                 ],
               ),
-              StatusCircle(!widget.isAllowed)
+              StatusCircle(true)
             ],
           ),
         ),
