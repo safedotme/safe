@@ -42,7 +42,7 @@ class _MutableBannerState extends State<MutableBanner>
   late Animation positionAnimation;
   late Animation opacityAnimation;
   late Animation scaleAnimation;
-  double topPosition = -116;
+  double topPosition = -(kMutableBannerHeight + 1);
   double opacity = 0;
   bool dismissed = false;
 
@@ -60,11 +60,12 @@ class _MutableBannerState extends State<MutableBanner>
     // Initialize controller
     controller = AnimationController(
       vsync: this,
-      duration: Duration(milliseconds: 200),
+      duration: kMutableBannerDuration,
     );
 
     // Initialize animations
-    positionAnimation = Tween<double>(begin: -116.0, end: 0.0).animate(
+    positionAnimation =
+        Tween<double>(begin: -(kMutableBannerHeight + 1), end: 0.0).animate(
       CurvedAnimation(parent: controller, curve: Curves.decelerate),
     );
 
@@ -110,7 +111,7 @@ class _MutableBannerState extends State<MutableBanner>
         opacity: opacity,
         child: Container(
           width: queryData.size.width,
-          height: 115,
+          height: kMutableBannerHeight,
           decoration: BoxDecoration(
             gradient: LinearGradient(
               begin: Alignment.topCenter,

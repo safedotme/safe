@@ -68,6 +68,13 @@ class _MutableInputPanelState extends State<MutableInputPanel> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+
+    notifier.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     queryData = MediaQuery.of(context);
     // Listens to bottom insets (keyboard) to update layout

@@ -5,8 +5,10 @@ import 'package:safe/screens/auth/phone_input.screen.dart';
 
 class SignupFlow {
   final List<Widget> widgets = [
-    SignupMessageBanner(),
     NameInputScreen(),
     PhoneInputScreen(),
+
+    // Positioned at the bottom to always overlay screens
+    SignupMessageBanner(),
   ];
 }

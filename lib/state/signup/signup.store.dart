@@ -38,4 +38,10 @@ abstract class _SignupStore with Store {
 
   @action
   void setOnTap(void Function() function) => onTap = function;
+
+  @observable
+  Duration delay = Duration(seconds: 3);
+
+  @action
+  void setDelay(Duration d) => delay = d;
 }

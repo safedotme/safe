@@ -183,7 +183,6 @@ const Map<Transparency, double> kTransparencyMap = {
 };
 
 // BORDER RADIUS
-
 const double kPanelPopupBorderRadius = 35;
 const double kInputPopupBorderRadius = 20;
 const double kPreviewPopupBorderRadius = 18;
@@ -206,6 +205,9 @@ const double kLargeButtonHeight = 50;
 const double kLargeButtonBorderRadius = kLargeButtonHeight / 2;
 
 // TEXT FIELDS
-
 const double kObjectKeyboardMargin = 20;
 const double kKeyboardHeight = 336;
+
+// BANNER
+const double kMutableBannerHeight = 115;
+final Duration kMutableBannerDuration = Duration(milliseconds: 200);

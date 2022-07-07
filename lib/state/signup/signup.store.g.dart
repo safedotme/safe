@@ -104,6 +104,21 @@ mixin _$SignupStore on _SignupStore, Store {
     });
   }
 
+  late final _$delayAtom = Atom(name: '_SignupStore.delay', context: context);
+
+  @override
+  Duration get delay {
+    _$delayAtom.reportRead();
+    return super.delay;
+  }
+
+  @override
+  set delay(Duration value) {
+    _$delayAtom.reportWrite(value, super.delay, () {
+      super.delay = value;
+    });
+  }
+
   late final _$_SignupStoreActionController =
       ActionController(name: '_SignupStore', context: context);
 
@@ -152,6 +167,17 @@ mixin _$SignupStore on _SignupStore, Store {
   }
 
   @override
+  void setDelay(Duration d) {
+    final _$actionInfo = _$_SignupStoreActionController.startAction(
+        name: '_SignupStore.setDelay');
+    try {
+      return super.setDelay(d);
+    } finally {
+      _$_SignupStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 nameInputController: ${nameInputController},
@@ -159,7 +185,8 @@ bannerController: ${bannerController},
 bannerState: ${bannerState},
 bannerTitle: ${bannerTitle},
 bannerMessage: ${bannerMessage},
-onTap: ${onTap}
+onTap: ${onTap},
+delay: ${delay}
     ''';
   }
 }
