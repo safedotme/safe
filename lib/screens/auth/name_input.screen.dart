@@ -70,6 +70,9 @@ class _NameInputScreenState extends State<NameInputScreen>
       minHeight: 0,
       maxHeight: queryData.size.height - topMargin,
       controller: core.state.signup.nameInputController,
+      onClosed: () {
+        core.state.signup.bannerController.dismiss();
+      },
       body: MutableInputPanel(
         body: MutableTextField(
           onChange: (_) {
