@@ -13,5 +13,29 @@ class LanguageUtil {
       "signupButton": "Create an account",
       "loginButton": "I already have one",
     },
+    "auth": {
+      "name_input": {
+        "error-emptyField/title": "Hold up! You forgot to add your name",
+        "error-emptyField/desc": "Please provide your full real name",
+        "error-lastName/title": "Hold up! You forgot to add your last name",
+        "error-lastName/desc": "Please provide your full real name",
+        "hintNames": [
+          "Chandler Bing",
+          "Ted Mosby",
+          "Eleven Hopper",
+          "Elle Woods",
+          "Regina George",
+          "Merideth Grey",
+          "Joe Goldberg",
+          "Derek Shepard",
+          "Daenerys Targaryen",
+          "Erlich Bachman"
+        ],
+        "title": "What should we call you?",
+        "desc":
+            "Please provide your full real name. It's\nimportant for others to identify you.",
+        "buttonText": "Next"
+      }
+    },
   };
 }

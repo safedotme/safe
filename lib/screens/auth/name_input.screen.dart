@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
+import 'dart:math';
 import 'package:safe/utils/constants/constants.util.dart';
 import 'package:safe/utils/icon/icon.util.dart';
 import 'package:safe/widgets/mutable_banner/mutable_banner.widget.dart';
@@ -76,10 +77,12 @@ class _NameInputScreenState extends State<NameInputScreen>
 
       core.state.signup.setBannerState(MessageType.error);
       core.state.signup.setBannerTitle(
-        "Hold up! You forgot to add your name",
+        core.utils.language.langMap[core.state.preferences.language]!["auth"]
+            ["name_input"]["error-emptyField/title"],
       );
       core.state.signup.setBannerMessage(
-        "Please provide your full real name",
+        core.utils.language.langMap[core.state.preferences.language]!["auth"]
+            ["name_input"]["error-emptyField/desc"],
       );
       core.state.signup.bannerController.show();
     }
@@ -88,10 +91,12 @@ class _NameInputScreenState extends State<NameInputScreen>
       error = true;
       core.state.signup.setBannerState(MessageType.error);
       core.state.signup.setBannerTitle(
-        "Hold up! You forgot to add your last name",
+        core.utils.language.langMap[core.state.preferences.language]!["auth"]
+            ["name_input"]["error-lastName/title"],
       );
       core.state.signup.setBannerMessage(
-        "Please provide your full real name",
+        core.utils.language.langMap[core.state.preferences.language]!["auth"]
+            ["name_input"]["error-lastName/desc"],
       );
       core.state.signup.bannerController.show();
     }
@@ -101,6 +106,14 @@ class _NameInputScreenState extends State<NameInputScreen>
     if (!error) {
       // Navigate
     }
+  }
+
+  String generateRandomName() {
+    List<String> names =
+        core.utils.language.langMap[core.state.preferences.language]!["auth"]
+            ["name_input"]["hintNames"];
+
+    return names[Random().nextInt(names.length)];
   }
 
   @override
@@ -125,15 +138,20 @@ class _NameInputScreenState extends State<NameInputScreen>
             onSubmit: (_) {
               submit();
             },
-            hintText: "Barney Stinson",
+            hintText: generateRandomName(),
           ),
-          title: "What should we call you?",
-          description:
-              "Please provide your full real name. It's\nimportant for others to identify you.",
+          title: core.utils.language
+                  .langMap[core.state.preferences.language]!["auth"]
+              ["name_input"]["title"],
+          description: core.utils.language
+                  .langMap[core.state.preferences.language]!["auth"]
+              ["name_input"]["desc"],
           icon: MutableIcons.profile,
           isActive: !core.state.signup.nameError,
           onTap: submit,
-          buttonText: "Next",
+          buttonText: core.utils.language
+                  .langMap[core.state.preferences.language]!["auth"]
+              ["name_input"]["buttonText"],
         ),
       ),
     );
