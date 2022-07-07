@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart' hide BoxShadow, BoxDecoration;
 import 'package:flutter_inset_box_shadow/flutter_inset_box_shadow.dart';
+import 'package:provider/provider.dart';
+import 'package:safe/core.dart';
 import 'package:safe/utils/constants/constants.util.dart';
 import 'package:safe/utils/icon/icon.util.dart';
 import 'package:safe/widgets/mutable_icon/mutable_icon.widget.dart';
@@ -10,6 +12,8 @@ class MutableIconSphere extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Core core = Provider.of(context, listen: false);
+
     return Container(
       height: 64,
       width: 64,
@@ -28,38 +32,7 @@ class MutableIconSphere extends StatelessWidget {
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
-        boxShadow: [
-          // Color Shadows
-          ...List.generate(
-            3,
-            (i) => BoxShadow(
-              color: kPrimaryGradientColors[2 * i].withOpacity(0.1),
-              blurRadius: 20,
-              offset: Offset(
-                (i.isEven ? -1 : 1) * 4,
-                4 * (i > 1 ? -1 : 1),
-              ),
-            ),
-          ),
-          BoxShadow(
-            offset: Offset(2, -2),
-            color: Colors.black.withOpacity(0.6),
-            blurRadius: 20,
-            inset: true,
-          ),
-          BoxShadow(
-            offset: Offset(2, 2),
-            blurRadius: 20,
-            color: Colors.white.withOpacity(0.4),
-            inset: true,
-          ),
-          BoxShadow(
-            offset: Offset(0, 2),
-            color: Colors.white.withOpacity(0.7),
-            blurRadius: 1,
-            inset: true,
-          ),
-        ],
+        boxShadow: core.utils.color.applyGradientShadow(64),
       ),
     );
   }

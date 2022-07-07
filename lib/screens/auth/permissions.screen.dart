@@ -1,14 +1,15 @@
+import 'package:figma_squircle/figma_squircle.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
-import 'dart:math';
 import 'package:safe/utils/constants/constants.util.dart';
 import 'package:safe/utils/icon/icon.util.dart';
-import 'package:safe/widgets/mutable_banner/mutable_banner.widget.dart';
+import 'package:safe/widgets/mutable_button/mutable_button.widget.dart';
 import 'package:safe/widgets/mutable_input_panel/mutable_input_panel.widget.dart';
+import 'package:safe/widgets/mutable_permission_card/mutable_permission_card.widget.dart';
 import 'package:safe/widgets/mutable_popup/mutable_popup.widget.dart';
-import 'package:safe/widgets/mutable_text_field/mutable_text_field.widget.dart';
+import 'package:safe/widgets/mutable_text/mutable_text.widget.dart';
 
 class PermissionsScreen extends StatefulWidget {
   @override
@@ -84,7 +85,22 @@ class _PermissionsScreenState extends State<PermissionsScreen>
       },
       body: Observer(
         builder: (_) => MutableInputPanel(
-          body: Container(),
+          body: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              MutablePermissionCard(
+                type: PermissionType.microphone,
+              ),
+              SizedBox(height: 12),
+              MutablePermissionCard(
+                type: PermissionType.camera,
+              ),
+              SizedBox(height: 12),
+              MutablePermissionCard(
+                type: PermissionType.location,
+              ),
+            ],
+          ),
           title: "Enable Permissions",
           description:
               "We'll need you to allow a few permissions\nto get started",
