@@ -2,6 +2,13 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 	<dict>
+		<!-- Camera Permissions -->
+		<key>NSCameraUsageDescription</key>
+		<string>Used only to record incidents</string>
+		<key>NSMicrophoneUsageDescription</key>
+		<string>Used only to record incidents</string>
+		<!-- Camera Permissions -->
+		
 		<key>CADisableMinimumFrameDurationOnPhone</key>
 		<true/>
 		<key>CFBundleDevelopmentRegion</key>

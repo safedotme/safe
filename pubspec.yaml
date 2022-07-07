@@ -26,6 +26,7 @@ dependencies:
   flutter_native_splash: ^2.2.3+1
   local_auth: ^2.1.0
   mobx: ^2.0.7+4
+  camera: ^0.9.8+1
   flutter_mobx: ^2.0.6+1
   emojis: ^0.9.9
   shimmer: ^2.0.0
@@ -35,7 +36,6 @@ dependencies:
   animated_text_kit: ^4.2.2
   card_swiper: ^2.0.4
   flip_card: ^0.6.0
-  permission_handler: ^10.0.0
   flutter_dotenv: ^5.0.2
   image_picker: ^0.8.5+3
   flutter_local_notifications: ^9.6.1
