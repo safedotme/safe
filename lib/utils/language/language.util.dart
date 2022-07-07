@@ -55,6 +55,56 @@ class LanguageUtil {
             "header": "Location",
             "desc": "To keep track of your location in incidents",
           },
+        },
+        "errors": {
+          "location": {
+            "limited": {
+              "header": "Warning: you granted low accuracy location",
+              "desc":
+                  "Your exact location can be critical during an incident. Tap to change",
+              "fatal": false,
+            },
+            "denied": {
+              "header": "Hold up! You denied location access to Safe",
+              "desc":
+                  "Tap here to learn more about why Safe needs location access",
+              "fatal": true,
+            },
+            "default": {
+              "header": "Hold up! You denied location access to Safe",
+              "desc":
+                  "Change this through settings. Tap here to learn how to do so",
+              "fatal": true,
+            }
+          },
+          "microphone": {
+            "denied": {
+              "header": "Hold up! You denied microphone access to Safe",
+              "desc":
+                  "Tap here to learn more about why Safe needs microphone access",
+              "fatal": true,
+            },
+            "default": {
+              "header": "Hold up! You denied microphone access to Safe",
+              "desc":
+                  "Change this through settings. Tap here to learn how to do so",
+              "fatal": true,
+            },
+          },
+          "camera": {
+            "denied": {
+              "header": "Hold up! You denied camera access to Safe",
+              "desc":
+                  "Tap here to learn more about why Safe needs camera access",
+              "fatal": true,
+            },
+            "default": {
+              "header": "Hold up! You denied camera access to Safe",
+              "desc":
+                  "Change this through settings. Tap here to learn how to do so",
+              "fatal": true,
+            }
+          }
         }
       },
     },

@@ -1,7 +1,8 @@
 import 'package:permission_handler/permission_handler.dart';
+import 'package:safe/core.dart';
 
 class PermissionsUtil {
-  Future<Map<String, dynamic>> requestLocation() async {
+  Future<Map<String, dynamic>> requestLocation(Core core) async {
     PermissionStatus status = await Permission.locationWhenInUse.status;
 
     if (status == PermissionStatus.denied) {
@@ -16,47 +17,35 @@ class PermissionsUtil {
       case PermissionStatus.limited:
         return {
           "status": false,
-          "error": {
-            "header": "Warning: you granted low accuracy location",
-            "desc":
-                "Your exact location can be critical during an incident. Tap to change",
-            "fatal": false,
-          }
+          "error": core.utils.language
+                  .langMap[core.state.preferences.language]!["permissions"]
+              ["errors"]["location"]["limited"]
         };
       case PermissionStatus.denied:
         return {
           "status": false,
-          "error": {
-            "header": "Hold up! You denied location access to Safe",
-            "desc":
-                "Tap here to learn more about why Safe needs location access",
-            "fatal": true,
-          }
+          "error": core.utils.language
+                  .langMap[core.state.preferences.language]!["permissions"]
+              ["errors"]["location"]["denied"]
         };
       case PermissionStatus.permanentlyDenied:
         return {
           "status": false,
-          "error": {
-            "header": "Hold up! You denied location access to Safe",
-            "desc":
-                "Change this through settings. Tap here to learn how to do so",
-            "fatal": true,
-          }
+          "error": core.utils.language
+                  .langMap[core.state.preferences.language]!["permissions"]
+              ["errors"]["location"]["default"]
         };
       case PermissionStatus.restricted:
         return {
           "status": false,
-          "error": {
-            "header": "Hold up! You denied location access to Safe",
-            "desc":
-                "Change this through settings. Tap here to learn how to do so",
-            "fatal": true,
-          }
+          "error": core.utils.language
+                  .langMap[core.state.preferences.language]!["permissions"]
+              ["errors"]["location"]["default"],
         };
     }
   }
 
-  Future<Map<String, dynamic>> requestMicrophone() async {
+  Future<Map<String, dynamic>> requestMicrophone(Core core) async {
     PermissionStatus status = await Permission.microphone.status;
 
     if (status == PermissionStatus.denied) {
@@ -71,27 +60,21 @@ class PermissionsUtil {
       case PermissionStatus.denied:
         return {
           "status": false,
-          "error": {
-            "header": "Hold up! You denied microphone access to Safe",
-            "desc":
-                "Tap here to learn more about why Safe needs microphone access",
-            "fatal": true,
-          }
+          "error": core.utils.language
+                  .langMap[core.state.preferences.language]!["permissions"]
+              ["errors"]["location"]["denied"]
         };
       default:
         return {
           "status": false,
-          "error": {
-            "header": "Hold up! You denied microphone access to Safe",
-            "desc":
-                "Change this through settings. Tap here to learn how to do so",
-            "fatal": true,
-          }
+          "error": core.utils.language
+                  .langMap[core.state.preferences.language]!["permissions"]
+              ["errors"]["location"]["default"]
         };
     }
   }
 
-  Future<Map<String, dynamic>> requestCamera() async {
+  Future<Map<String, dynamic>> requestCamera(Core core) async {
     PermissionStatus status = await Permission.camera.status;
 
     if (status == PermissionStatus.denied) {
@@ -106,21 +89,16 @@ class PermissionsUtil {
       case PermissionStatus.denied:
         return {
           "status": false,
-          "error": {
-            "header": "Hold up! You denied camera access to Safe",
-            "desc": "Tap here to learn more about why Safe needs camera access",
-            "fatal": true,
-          }
+          "error": core.utils.language
+                  .langMap[core.state.preferences.language]!["permissions"]
+              ["errors"]["location"]["denied"],
         };
       default:
         return {
           "status": false,
-          "error": {
-            "header": "Hold up! You denied camera access to Safe",
-            "desc":
-                "Change this through settings. Tap here to learn how to do so",
-            "fatal": true,
-          }
+          "error": core.utils.language
+                  .langMap[core.state.preferences.language]!["permissions"]
+              ["errors"]["location"]["default"],
         };
     }
   }
