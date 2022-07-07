@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
 import 'package:safe/utils/constants/constants.util.dart';
 import 'package:safe/utils/icon/icon.util.dart';
+import 'package:safe/widgets/mutable_banner/mutable_banner.widget.dart';
 import 'package:safe/widgets/mutable_input_panel/mutable_input_panel.widget.dart';
-import 'package:safe/widgets/mutable_large_button/mutable_large_button.widget.dart';
 import 'package:safe/widgets/mutable_popup/mutable_popup.widget.dart';
 import 'package:safe/widgets/mutable_text_field/mutable_text_field.widget.dart';
 
@@ -18,9 +19,11 @@ class _NameInputScreenState extends State<NameInputScreen>
   late Core core;
   late MediaQueryData queryData;
   late AnimationController controller;
+  FocusNode node = FocusNode();
+  bool error = false;
 
   // Animation stuff
-  double topMargin = 42;
+  double topMargin = kTopMargin;
   void initializeAnimation() {
     controller = AnimationController(
       vsync: this,
@@ -61,6 +64,43 @@ class _NameInputScreenState extends State<NameInputScreen>
     super.dispose();
 
     controller.dispose();
+    node.dispose();
+  }
+
+  void submit() {
+    bool error = false;
+
+    // Check for name
+    if (core.state.signup.name.isEmpty) {
+      error = true;
+
+      core.state.signup.setBannerState(MessageType.error);
+      core.state.signup.setBannerTitle(
+        "Hold up! You forgot to add your name",
+      );
+      core.state.signup.setBannerMessage(
+        "Please provide your full real name",
+      );
+      core.state.signup.bannerController.show();
+    }
+
+    if (!core.state.signup.name.contains(" ") && !error) {
+      error = true;
+      core.state.signup.setBannerState(MessageType.error);
+      core.state.signup.setBannerTitle(
+        "Hold up! You forgot to add your last name",
+      );
+      core.state.signup.setBannerMessage(
+        "Please provide your full real name",
+      );
+      core.state.signup.bannerController.show();
+    }
+
+    core.state.signup.setNameError(error);
+
+    if (!error) {
+      // Navigate
+    }
   }
 
   @override
@@ -71,24 +111,30 @@ class _NameInputScreenState extends State<NameInputScreen>
       maxHeight: queryData.size.height - topMargin,
       controller: core.state.signup.nameInputController,
       onClosed: () {
+        node.unfocus();
         core.state.signup.bannerController.dismiss();
       },
-      body: MutableInputPanel(
-        body: MutableTextField(
-          onChange: (_) {
-            print(_);
-          },
-          hintText: "Barney Stinson",
+      body: Observer(
+        builder: (_) => MutableInputPanel(
+          body: MutableTextField(
+            type: TextInputType.name,
+            focusNode: node,
+            onChange: (name) {
+              core.state.signup.setName(name ?? "");
+            },
+            onSubmit: (_) {
+              submit();
+            },
+            hintText: "Barney Stinson",
+          ),
+          title: "What should we call you?",
+          description:
+              "Please provide your full real name. It's\nimportant for others to identify you.",
+          icon: MutableIcons.profile,
+          isActive: !core.state.signup.nameError,
+          onTap: submit,
+          buttonText: "Next",
         ),
-        title: "What should we call you?",
-        description:
-            "Please provide your full real name. It's\nimportant for others to identify you.",
-        icon: MutableIcons.profile,
-        buttonState: ButtonState.active,
-        onTap: () async {
-          core.state.signup.bannerController.show();
-        },
-        buttonText: "Next",
       ),
     );
   }

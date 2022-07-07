@@ -7,9 +7,6 @@ part 'signup.store.g.dart';
 class SignupStore extends _SignupStore with _$SignupStore {}
 
 abstract class _SignupStore with Store {
-  @observable
-  PanelController nameInputController = PanelController();
-
   // BANNER RELATED
 
   @observable
@@ -58,4 +55,21 @@ abstract class _SignupStore with Store {
 
   @action
   void setDelay(Duration d) => delay = d;
+
+  // NAME
+
+  @observable
+  String name = "";
+
+  @action
+  void setName(String _) => name = _;
+
+  @observable
+  PanelController nameInputController = PanelController();
+
+  @observable
+  bool nameError = false;
+
+  @action
+  void setNameError(bool v) => nameError = v;
 }

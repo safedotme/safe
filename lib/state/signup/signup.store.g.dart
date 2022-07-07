@@ -9,22 +9,6 @@ part of 'signup.store.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
 mixin _$SignupStore on _SignupStore, Store {
-  late final _$nameInputControllerAtom =
-      Atom(name: '_SignupStore.nameInputController', context: context);
-
-  @override
-  PanelController get nameInputController {
-    _$nameInputControllerAtom.reportRead();
-    return super.nameInputController;
-  }
-
-  @override
-  set nameInputController(PanelController value) {
-    _$nameInputControllerAtom.reportWrite(value, super.nameInputController, () {
-      super.nameInputController = value;
-    });
-  }
-
   late final _$bannerControllerAtom =
       Atom(name: '_SignupStore.bannerController', context: context);
 
@@ -152,6 +136,53 @@ mixin _$SignupStore on _SignupStore, Store {
     });
   }
 
+  late final _$nameAtom = Atom(name: '_SignupStore.name', context: context);
+
+  @override
+  String get name {
+    _$nameAtom.reportRead();
+    return super.name;
+  }
+
+  @override
+  set name(String value) {
+    _$nameAtom.reportWrite(value, super.name, () {
+      super.name = value;
+    });
+  }
+
+  late final _$nameInputControllerAtom =
+      Atom(name: '_SignupStore.nameInputController', context: context);
+
+  @override
+  PanelController get nameInputController {
+    _$nameInputControllerAtom.reportRead();
+    return super.nameInputController;
+  }
+
+  @override
+  set nameInputController(PanelController value) {
+    _$nameInputControllerAtom.reportWrite(value, super.nameInputController, () {
+      super.nameInputController = value;
+    });
+  }
+
+  late final _$nameErrorAtom =
+      Atom(name: '_SignupStore.nameError', context: context);
+
+  @override
+  bool get nameError {
+    _$nameErrorAtom.reportRead();
+    return super.nameError;
+  }
+
+  @override
+  set nameError(bool value) {
+    _$nameErrorAtom.reportWrite(value, super.nameError, () {
+      super.nameError = value;
+    });
+  }
+
   late final _$_SignupStoreActionController =
       ActionController(name: '_SignupStore', context: context);
 
@@ -233,9 +264,30 @@ mixin _$SignupStore on _SignupStore, Store {
   }
 
   @override
+  void setName(String _) {
+    final _$actionInfo = _$_SignupStoreActionController.startAction(
+        name: '_SignupStore.setName');
+    try {
+      return super.setName(_);
+    } finally {
+      _$_SignupStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void setNameError(bool v) {
+    final _$actionInfo = _$_SignupStoreActionController.startAction(
+        name: '_SignupStore.setNameError');
+    try {
+      return super.setNameError(v);
+    } finally {
+      _$_SignupStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
-nameInputController: ${nameInputController},
 bannerController: ${bannerController},
 bannerState: ${bannerState},
 bannerTitle: ${bannerTitle},
@@ -243,7 +295,10 @@ bannerMessage: ${bannerMessage},
 onBannerTap: ${onBannerTap},
 onBannerForward: ${onBannerForward},
 onBannerReverse: ${onBannerReverse},
-delay: ${delay}
+delay: ${delay},
+name: ${name},
+nameInputController: ${nameInputController},
+nameError: ${nameError}
     ''';
   }
 }

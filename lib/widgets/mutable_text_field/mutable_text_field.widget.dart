@@ -5,11 +5,15 @@ import 'package:safe/utils/constants/constants.util.dart';
 
 class MutableTextField extends StatelessWidget {
   final FocusNode? focusNode;
+  final TextInputType type;
   final String hintText;
-  final void Function(String? value) onChange;
+  final void Function(String? value)? onChange;
+  final void Function(String? value)? onSubmit;
 
   MutableTextField({
     required this.onChange,
+    this.onSubmit,
+    this.type = TextInputType.name,
     this.focusNode,
     this.hintText = "",
   });
@@ -28,7 +32,9 @@ class MutableTextField extends StatelessWidget {
       // Height is based on fontSize (16)
       cursorHeight: 18,
       focusNode: focusNode,
+      onSubmitted: onSubmit,
       style: kTextInputStyle,
+      keyboardType: type,
       decoration: InputDecoration(
         hintText: hintText,
         hintStyle: kTextInputStyle.copyWith(

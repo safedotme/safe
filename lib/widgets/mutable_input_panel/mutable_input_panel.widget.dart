@@ -9,7 +9,7 @@ import 'package:safe/widgets/mutable_text/mutable_text.widget.dart';
 class MutableInputPanel extends StatefulWidget {
   final Widget body;
   final void Function()? onTap;
-  final ButtonState buttonState;
+  final bool isActive;
   final String buttonText;
   final String title;
   final bool shimmer;
@@ -25,7 +25,7 @@ class MutableInputPanel extends StatefulWidget {
     this.shimmer = false,
     this.title = "Title",
     this.description = "Description",
-    required this.buttonState,
+    this.isActive = true,
     required this.buttonText,
   });
 
@@ -124,7 +124,7 @@ class _MutableInputPanelState extends State<MutableInputPanel> {
           MutableLargeButton(
             onTap: widget.onTap,
             text: widget.buttonText,
-            state: widget.buttonState,
+            isActive: widget.isActive,
             shimmer: widget.shimmer,
           ),
         ],

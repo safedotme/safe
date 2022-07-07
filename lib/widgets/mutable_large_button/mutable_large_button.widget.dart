@@ -12,19 +12,19 @@ enum ButtonState {
 
 class MutableLargeButton extends StatelessWidget {
   final void Function()? onTap;
-  final ButtonState state;
+  final bool isActive;
   final String text;
   final bool shimmer;
 
   MutableLargeButton({
     this.onTap,
-    this.state = ButtonState.active,
+    this.isActive = true,
     this.text = "",
     this.shimmer = false,
   });
 
   Widget genBorder({required Widget child}) {
-    if (state == ButtonState.active) {
+    if (isActive) {
       return MutableGradientBorder(
         borderRadius: kLargeButtonBorderRadius,
         child: child,
@@ -43,17 +43,15 @@ class MutableLargeButton extends StatelessWidget {
         child: Container(
           height: kLargeButtonHeight,
           decoration: BoxDecoration(
-            color: state == ButtonState.inactive
-                ? kColorMap[MutableColor.neutral7]!
-                : null,
-            border: state == ButtonState.inactive
+            color: !isActive ? kColorMap[MutableColor.neutral7]! : null,
+            border: !isActive
                 ? Border.all(
                     color: kColorMap[MutableColor.neutral5]!,
                     width: kBorderWidth,
                   )
                 : null,
             borderRadius: BorderRadius.circular(kLargeButtonBorderRadius),
-            gradient: state == ButtonState.active
+            gradient: isActive
                 ? LinearGradient(
                     colors: kPrimaryGradientColors
                         .map((e) =>
@@ -70,9 +68,8 @@ class MutableLargeButton extends StatelessWidget {
                 text,
                 style: TypeStyle.h4,
                 weight: TypeWeight.bold,
-                color: state == ButtonState.inactive
-                    ? MutableColor.neutral3
-                    : MutableColor.neutral1,
+                color:
+                    !isActive ? MutableColor.neutral3 : MutableColor.neutral1,
               ),
             ),
           ),
