@@ -68,7 +68,7 @@ class _NameInputScreenState extends State<NameInputScreen>
     node.dispose();
   }
 
-  void submit() {
+  void submit() async {
     bool error = false;
 
     // Check for name
@@ -105,8 +105,12 @@ class _NameInputScreenState extends State<NameInputScreen>
 
     if (!error) {
       // Navigate
-      core.state.signup.permissionsController.open();
-      core.state.signup.nameInputController.close();
+
+      core.utils.popupNavigation.navigate(
+        core.state.signup.nameInputController,
+        core.state.signup.permissionsController,
+        controller,
+      );
     }
   }
 

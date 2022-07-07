@@ -22,6 +22,7 @@ class MutablePopup extends StatefulWidget {
   final bool draggable;
   final double minHeight;
   final double maxHeight;
+
   final MutablePopupStyle? style;
   final Widget body;
 
