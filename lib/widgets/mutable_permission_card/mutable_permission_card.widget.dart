@@ -13,9 +13,13 @@ enum PermissionType {
 
 class MutablePermissionCard extends StatelessWidget {
   final PermissionType type;
+  final void Function()? onTap;
+  final bool isAllowed;
 
   MutablePermissionCard({
     required this.type,
+    this.isAllowed = false,
+    this.onTap,
   });
 
   @override
@@ -56,7 +60,7 @@ class MutablePermissionCard extends StatelessWidget {
                 ),
               ],
             ),
-            StatusCircle(true)
+            StatusCircle(isAllowed)
           ],
         ),
       ),

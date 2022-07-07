@@ -1,9 +1,14 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide BoxShadow, BoxDecoration;
+import 'package:flutter_inset_box_shadow/flutter_inset_box_shadow.dart';
+import 'package:provider/provider.dart';
+import 'package:safe/core.dart';
 import 'package:safe/utils/constants/constants.util.dart';
 
 class StatusCircle extends StatefulWidget {
   final bool isAllowed;
-  StatusCircle(this.isAllowed);
+  StatusCircle(
+    this.isAllowed,
+  );
 
   @override
   State<StatusCircle> createState() => _StatusCircleState();
@@ -12,6 +17,8 @@ class StatusCircle extends StatefulWidget {
 class _StatusCircleState extends State<StatusCircle> {
   @override
   Widget build(BuildContext context) {
+    Core core = Provider.of(context, listen: false);
+
     return Container(
       height: 20,
       width: 20,
@@ -22,6 +29,8 @@ class _StatusCircleState extends State<StatusCircle> {
                 color: kColorMap[MutableColor.neutral4]!,
               )
             : null,
+        boxShadow:
+            widget.isAllowed ? core.utils.color.applyGradientShadow(20) : null,
         gradient: widget.isAllowed
             ? LinearGradient(
                 colors: kPrimaryGradientColors,
