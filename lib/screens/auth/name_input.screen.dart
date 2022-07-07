@@ -32,6 +32,9 @@ class _NameInputScreenState extends State<NameInputScreen> {
       controller: core.state.signup.nameInputController,
       body: MutableInputPanel(
         body: MutableTextField(
+          onChange: (_) {
+            print(_);
+          },
           hintText: "Barney Stinson",
         ),
         title: "What should we call you?",
