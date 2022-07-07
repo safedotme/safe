@@ -46,6 +46,14 @@ class _NameInputScreenState extends State<NameInputScreen>
 
     core = Provider.of<Core>(context, listen: false);
     initializeAnimation();
+
+    // Sync forward & reverse functionality with banner
+    core.state.signup.setOnBannerForward(() {
+      controller.forward();
+    });
+    core.state.signup.setOnBannerReverse(() {
+      controller.reverse();
+    });
   }
 
   @override
@@ -74,10 +82,8 @@ class _NameInputScreenState extends State<NameInputScreen>
             "Please provide your full real name. It's\nimportant for others to identify you.",
         icon: MutableIcons.profile,
         buttonState: ButtonState.active,
-        onTap: () {
-          controller.forward();
+        onTap: () async {
           core.state.signup.bannerController.show();
-          print("here");
         },
         buttonText: "Next",
       ),

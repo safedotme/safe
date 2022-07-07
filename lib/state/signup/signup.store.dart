@@ -34,10 +34,24 @@ abstract class _SignupStore with Store {
   void setBannerMessage(String m) => bannerMessage = m;
 
   @observable
-  void Function() onTap = () {};
+  void Function() onBannerTap = () {};
 
   @action
-  void setOnTap(void Function() function) => onTap = function;
+  void setOnBannerTap(void Function() function) => onBannerTap = function;
+
+  @observable
+  void Function() onBannerForward = () {};
+
+  @action
+  void setOnBannerForward(void Function() function) =>
+      onBannerForward = function;
+
+  @observable
+  void Function() onBannerReverse = () {};
+
+  @action
+  void setOnBannerReverse(void Function() function) =>
+      onBannerReverse = function;
 
   @observable
   Duration delay = Duration(seconds: 3);

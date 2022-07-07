@@ -18,6 +18,8 @@ class MutableBanner extends StatefulWidget {
   final Duration? duration;
   final String description;
   final void Function()? onTap;
+  final void Function()? onForward;
+  final void Function()? onReverse;
 
   MutableBanner({
     this.type = MessageType.success,
@@ -26,6 +28,8 @@ class MutableBanner extends StatefulWidget {
     this.title = "",
     this.description = "",
     this.onTap,
+    this.onForward,
+    this.onReverse,
   });
 
   @override
@@ -84,15 +88,25 @@ class _MutableBannerState extends State<MutableBanner>
 
   Future<void> show() async {
     dismissed = false;
+    if (widget.onForward != null) {
+      widget.onForward!();
+    }
     await controller.forward();
+
     await Future.delayed(widget.duration ?? Duration(seconds: 3));
     if (!dismissed) {
+      if (widget.onReverse != null) {
+        widget.onReverse!();
+      }
       await controller.reverse();
     }
   }
 
   Future<void> dismiss() async {
     dismissed = true;
+    if (widget.onReverse != null) {
+      widget.onReverse!();
+    }
     await controller.reverse();
   }
 

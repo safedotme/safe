@@ -89,18 +89,51 @@ mixin _$SignupStore on _SignupStore, Store {
     });
   }
 
-  late final _$onTapAtom = Atom(name: '_SignupStore.onTap', context: context);
+  late final _$onBannerTapAtom =
+      Atom(name: '_SignupStore.onBannerTap', context: context);
 
   @override
-  void Function() get onTap {
-    _$onTapAtom.reportRead();
-    return super.onTap;
+  void Function() get onBannerTap {
+    _$onBannerTapAtom.reportRead();
+    return super.onBannerTap;
   }
 
   @override
-  set onTap(void Function() value) {
-    _$onTapAtom.reportWrite(value, super.onTap, () {
-      super.onTap = value;
+  set onBannerTap(void Function() value) {
+    _$onBannerTapAtom.reportWrite(value, super.onBannerTap, () {
+      super.onBannerTap = value;
+    });
+  }
+
+  late final _$onBannerForwardAtom =
+      Atom(name: '_SignupStore.onBannerForward', context: context);
+
+  @override
+  void Function() get onBannerForward {
+    _$onBannerForwardAtom.reportRead();
+    return super.onBannerForward;
+  }
+
+  @override
+  set onBannerForward(void Function() value) {
+    _$onBannerForwardAtom.reportWrite(value, super.onBannerForward, () {
+      super.onBannerForward = value;
+    });
+  }
+
+  late final _$onBannerReverseAtom =
+      Atom(name: '_SignupStore.onBannerReverse', context: context);
+
+  @override
+  void Function() get onBannerReverse {
+    _$onBannerReverseAtom.reportRead();
+    return super.onBannerReverse;
+  }
+
+  @override
+  set onBannerReverse(void Function() value) {
+    _$onBannerReverseAtom.reportWrite(value, super.onBannerReverse, () {
+      super.onBannerReverse = value;
     });
   }
 
@@ -156,11 +189,33 @@ mixin _$SignupStore on _SignupStore, Store {
   }
 
   @override
-  void setOnTap(void Function() function) {
+  void setOnBannerTap(void Function() function) {
     final _$actionInfo = _$_SignupStoreActionController.startAction(
-        name: '_SignupStore.setOnTap');
+        name: '_SignupStore.setOnBannerTap');
     try {
-      return super.setOnTap(function);
+      return super.setOnBannerTap(function);
+    } finally {
+      _$_SignupStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void setOnBannerForward(void Function() function) {
+    final _$actionInfo = _$_SignupStoreActionController.startAction(
+        name: '_SignupStore.setOnBannerForward');
+    try {
+      return super.setOnBannerForward(function);
+    } finally {
+      _$_SignupStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void setOnBannerReverse(void Function() function) {
+    final _$actionInfo = _$_SignupStoreActionController.startAction(
+        name: '_SignupStore.setOnBannerReverse');
+    try {
+      return super.setOnBannerReverse(function);
     } finally {
       _$_SignupStoreActionController.endAction(_$actionInfo);
     }
@@ -185,7 +240,9 @@ bannerController: ${bannerController},
 bannerState: ${bannerState},
 bannerTitle: ${bannerTitle},
 bannerMessage: ${bannerMessage},
-onTap: ${onTap},
+onBannerTap: ${onBannerTap},
+onBannerForward: ${onBannerForward},
+onBannerReverse: ${onBannerReverse},
 delay: ${delay}
     ''';
   }
