@@ -28,8 +28,16 @@ class _SignupMessageBannerState extends State<SignupMessageBanner> {
         title: core.state.signup.bannerTitle,
         description: core.state.signup.bannerMessage,
         onTap: core.state.signup.onBannerTap,
-        onForward: core.state.signup.onBannerForward,
-        onReverse: core.state.signup.onBannerReverse,
+        onForward: () {
+          for (Function f in core.state.signup.onBannerForward) {
+            f();
+          }
+        },
+        onReverse: () {
+          for (Function f in core.state.signup.onBannerReverse) {
+            f();
+          }
+        },
         duration: core.state.signup.delay,
       ),
     );

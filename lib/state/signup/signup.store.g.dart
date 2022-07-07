@@ -93,13 +93,13 @@ mixin _$SignupStore on _SignupStore, Store {
       Atom(name: '_SignupStore.onBannerForward', context: context);
 
   @override
-  void Function() get onBannerForward {
+  List<void Function()> get onBannerForward {
     _$onBannerForwardAtom.reportRead();
     return super.onBannerForward;
   }
 
   @override
-  set onBannerForward(void Function() value) {
+  set onBannerForward(List<void Function()> value) {
     _$onBannerForwardAtom.reportWrite(value, super.onBannerForward, () {
       super.onBannerForward = value;
     });
@@ -109,13 +109,13 @@ mixin _$SignupStore on _SignupStore, Store {
       Atom(name: '_SignupStore.onBannerReverse', context: context);
 
   @override
-  void Function() get onBannerReverse {
+  List<void Function()> get onBannerReverse {
     _$onBannerReverseAtom.reportRead();
     return super.onBannerReverse;
   }
 
   @override
-  set onBannerReverse(void Function() value) {
+  set onBannerReverse(List<void Function()> value) {
     _$onBannerReverseAtom.reportWrite(value, super.onBannerReverse, () {
       super.onBannerReverse = value;
     });
@@ -180,6 +180,23 @@ mixin _$SignupStore on _SignupStore, Store {
   set nameError(bool value) {
     _$nameErrorAtom.reportWrite(value, super.nameError, () {
       super.nameError = value;
+    });
+  }
+
+  late final _$permissionsControllerAtom =
+      Atom(name: '_SignupStore.permissionsController', context: context);
+
+  @override
+  PanelController get permissionsController {
+    _$permissionsControllerAtom.reportRead();
+    return super.permissionsController;
+  }
+
+  @override
+  set permissionsController(PanelController value) {
+    _$permissionsControllerAtom.reportWrite(value, super.permissionsController,
+        () {
+      super.permissionsController = value;
     });
   }
 
@@ -298,7 +315,8 @@ onBannerReverse: ${onBannerReverse},
 delay: ${delay},
 name: ${name},
 nameInputController: ${nameInputController},
-nameError: ${nameError}
+nameError: ${nameError},
+permissionsController: ${permissionsController}
     ''';
   }
 }

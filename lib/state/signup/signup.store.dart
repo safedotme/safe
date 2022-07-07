@@ -37,18 +37,18 @@ abstract class _SignupStore with Store {
   void setOnBannerTap(void Function() function) => onBannerTap = function;
 
   @observable
-  void Function() onBannerForward = () {};
+  List<void Function()> onBannerForward = [];
 
   @action
   void setOnBannerForward(void Function() function) =>
-      onBannerForward = function;
+      onBannerForward.add(function);
 
   @observable
-  void Function() onBannerReverse = () {};
+  List<void Function()> onBannerReverse = [];
 
   @action
   void setOnBannerReverse(void Function() function) =>
-      onBannerReverse = function;
+      onBannerReverse.add(function);
 
   @observable
   Duration delay = Duration(seconds: 3);

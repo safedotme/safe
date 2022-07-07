@@ -52,12 +52,12 @@ class _PermissionsScreenState extends State<PermissionsScreen>
     initializeAnimation();
 
     // Sync forward & reverse functionality with banner
-    // core.state.signup.setOnBannerForward(() {
-    //   controller.forward();
-    // });
-    // core.state.signup.setOnBannerReverse(() {
-    //   controller.reverse();
-    // });
+    core.state.signup.setOnBannerForward(() {
+      controller.forward();
+    });
+    core.state.signup.setOnBannerReverse(() {
+      controller.reverse();
+    });
   }
 
   @override
