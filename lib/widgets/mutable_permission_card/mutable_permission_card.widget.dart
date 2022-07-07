@@ -60,7 +60,7 @@ class MutablePermissionCard extends StatelessWidget {
                 ),
               ],
             ),
-            StatusCircle(isAllowed)
+            StatusCircle(!isAllowed)
           ],
         ),
       ),

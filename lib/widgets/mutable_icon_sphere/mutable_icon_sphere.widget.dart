@@ -22,7 +22,7 @@ class MutableIconSphere extends StatelessWidget {
         child: MutableIcon(
           icon,
           size: Size(30, 30),
-          color: kColorMap[MutableColor.neutral1]!.withOpacity(0.75),
+          color: kIconColorInGradientFill,
         ),
       ),
       decoration: BoxDecoration(

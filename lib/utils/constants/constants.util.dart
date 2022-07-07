@@ -153,6 +153,8 @@ final List<Color> kPrimaryGradientColors = [
 
 final Alignment kPrimaryGradientAlignmentBegin = Alignment(-0.1, -2.5);
 final Alignment kPrimaryGradientAlignmentEnd = Alignment(0.1, 3);
+final Color kIconColorInGradientFill =
+    kColorMap[MutableColor.neutral1]!.withOpacity(0.75);
 
 // OPACITY
 

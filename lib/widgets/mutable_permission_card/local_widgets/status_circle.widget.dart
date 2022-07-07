@@ -3,6 +3,8 @@ import 'package:flutter_inset_box_shadow/flutter_inset_box_shadow.dart';
 import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
 import 'package:safe/utils/constants/constants.util.dart';
+import 'package:safe/utils/icon/icon.util.dart';
+import 'package:safe/widgets/mutable_icon/mutable_icon.widget.dart';
 
 class StatusCircle extends StatefulWidget {
   final bool isAllowed;
@@ -40,6 +42,12 @@ class _StatusCircleState extends State<StatusCircle> {
             : null,
         shape: BoxShape.circle,
       ),
+      child: Center(
+          child: MutableIcon(
+        MutableIcons.checkmark,
+        size: Size(12, 12),
+        color: kIconColorInGradientFill,
+      )),
     );
   }
 }
