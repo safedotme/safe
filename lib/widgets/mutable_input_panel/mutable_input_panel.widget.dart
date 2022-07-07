@@ -41,7 +41,8 @@ class _MutableInputPanelState extends State<MutableInputPanel> {
   GlobalKey key = GlobalKey();
   double spacerSize = 0;
 
-  void getSize() {
+  // Creates a render box to define size of the spacer
+  void fetchSpacerSize() {
     if (key.currentContext != null) {
       RenderBox box = key.currentContext!.findRenderObject() as RenderBox;
 
@@ -49,12 +50,29 @@ class _MutableInputPanelState extends State<MutableInputPanel> {
     }
   }
 
+  // Runs mathematical ratios to animate bottom insets when keyboard is focused
+  double animate(double value) {
+    double centerToScreenBottom =
+        spacerSize + kLargeButtonHeight + kBottomScreenMargin;
+
+    // Finds difference space needed to reach keyboard height
+    double difference = (kKeyboardHeight - centerToScreenBottom);
+
+    // Adds a margin between keyboard and body
+    double increment = kObjectKeyboardMargin + difference;
+
+    // Using ratios to provide a parralel animation
+    double push = (increment / kKeyboardHeight) * value;
+
+    return spacerSize + push;
+  }
+
   @override
   Widget build(BuildContext context) {
     queryData = MediaQuery.of(context);
     // Listens to bottom insets (keyboard) to update layout
     notifier = ValueNotifier(queryData.viewInsets.bottom);
-    getSize();
+    fetchSpacerSize();
 
     return Container(
       padding: EdgeInsets.fromLTRB(
@@ -92,19 +110,7 @@ class _MutableInputPanelState extends State<MutableInputPanel> {
               if (value == 0) {
                 return Spacer(key: key);
               } else {
-                const double objectKeyboardMargin = 20;
-                const double keyboardHeight = 336; // GET THIS
-                const double kLargeButtonHeight = 50; // EXTRACT THIS
-
-                double increment = objectKeyboardMargin +
-                    (keyboardHeight -
-                        (spacerSize +
-                            kLargeButtonHeight +
-                            kBottomScreenMargin)); // REFACTOR THIS
-
-                double push = (increment / keyboardHeight) * value;
-
-                return SizedBox(height: spacerSize + push);
+                return SizedBox(height: animate(value));
               }
             },
           ),
