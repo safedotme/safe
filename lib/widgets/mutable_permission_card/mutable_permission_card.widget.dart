@@ -1,5 +1,8 @@
 import 'package:figma_squircle/figma_squircle.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:provider/provider.dart';
+import 'package:safe/core.dart';
 import 'package:safe/utils/constants/constants.util.dart';
 import 'package:safe/widgets/mutable_button/mutable_button.widget.dart';
 import 'package:safe/widgets/mutable_permission_card/local_widgets/status_circle.widget.dart';
@@ -11,7 +14,7 @@ enum PermissionType {
   location,
 }
 
-class MutablePermissionCard extends StatelessWidget {
+class MutablePermissionCard extends StatefulWidget {
   final PermissionType type;
   final void Function()? onTap;
   final bool isAllowed;
@@ -23,47 +26,67 @@ class MutablePermissionCard extends StatelessWidget {
   });
 
   @override
+  State<MutablePermissionCard> createState() => _MutablePermissionCardState();
+}
+
+class _MutablePermissionCardState extends State<MutablePermissionCard> {
+  late Core core;
+
+  @override
+  void initState() {
+    super.initState();
+
+    core = Provider.of<Core>(context, listen: false);
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return MutableButton(
-      child: Container(
-        padding: EdgeInsets.all(15),
-        decoration: ShapeDecoration(
-          color: kColorMap[MutableColor.neutral8],
-          shape: SmoothRectangleBorder(
-            borderRadius: SmoothBorderRadius(
-              cornerSmoothing: kCornerSmoothing,
-              cornerRadius: 12,
-            ),
-            side: BorderSide(
-              width: kBorderWidth,
-              color: kColorMap[MutableColor.neutral7]!,
+    return Observer(builder: (context) {
+      return MutableButton(
+        child: Container(
+          padding: EdgeInsets.all(15),
+          decoration: ShapeDecoration(
+            color: kColorMap[MutableColor.neutral8],
+            shape: SmoothRectangleBorder(
+              borderRadius: SmoothBorderRadius(
+                cornerSmoothing: kCornerSmoothing,
+                cornerRadius: 12,
+              ),
+              side: BorderSide(
+                width: kBorderWidth,
+                color: kColorMap[MutableColor.neutral7]!,
+              ),
             ),
           ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  MutableText(
+                    core.utils.language
+                            .langMap[core.state.preferences.language]!["auth"]
+                        ["permissions"]["cards"][widget.type]["header"],
+                    size: 15,
+                    weight: TypeWeight.bold,
+                  ),
+                  SizedBox(height: 5),
+                  MutableText(
+                    core.utils.language
+                            .langMap[core.state.preferences.language]!["auth"]
+                        ["permissions"]["cards"][widget.type]["desc"],
+                    color: MutableColor.neutral2,
+                    size: 13,
+                  ),
+                ],
+              ),
+              StatusCircle(!widget.isAllowed)
+            ],
+          ),
         ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                MutableText(
-                  "Microphone",
-                  size: 15,
-                  weight: TypeWeight.bold,
-                ),
-                SizedBox(height: 5),
-                MutableText(
-                  "To record and stream your incidents",
-                  color: MutableColor.neutral2,
-                  size: 13,
-                ),
-              ],
-            ),
-            StatusCircle(!isAllowed)
-          ],
-        ),
-      ),
-    );
+      );
+    });
   }
 }

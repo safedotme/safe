@@ -42,12 +42,14 @@ class _StatusCircleState extends State<StatusCircle> {
             : null,
         shape: BoxShape.circle,
       ),
-      child: Center(
-          child: MutableIcon(
-        MutableIcons.checkmark,
-        size: Size(12, 12),
-        color: kIconColorInGradientFill,
-      )),
+      child: widget.isAllowed
+          ? Center(
+              child: MutableIcon(
+              MutableIcons.checkmark,
+              size: Size(12, 12),
+              color: kIconColorInGradientFill,
+            ))
+          : null,
     );
   }
 }

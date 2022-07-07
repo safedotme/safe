@@ -101,12 +101,17 @@ class _PermissionsScreenState extends State<PermissionsScreen>
               ),
             ],
           ),
-          title: "Enable Permissions",
-          description:
-              "We'll need you to allow a few permissions\nto get started",
+          title: core.utils.language
+                  .langMap[core.state.preferences.language]!["auth"]
+              ["permissions"]["title"],
+          description: core.utils.language
+                  .langMap[core.state.preferences.language]!["auth"]
+              ["permissions"]["desc"],
           icon: MutableIcons.key,
           onTap: submit,
-          buttonText: "Next",
+          buttonText: core.utils.language
+                  .langMap[core.state.preferences.language]!["auth"]
+              ["permissions"]["buttonText"],
         ),
       ),
     );

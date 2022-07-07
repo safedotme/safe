@@ -1,3 +1,5 @@
+import 'package:safe/widgets/mutable_permission_card/mutable_permission_card.widget.dart';
+
 enum Languages {
   english,
 }
@@ -35,7 +37,26 @@ class LanguageUtil {
         "desc":
             "Please provide your full real name. It's\nimportant for others to identify you.",
         "buttonText": "Next"
-      }
+      },
+      "permissions": {
+        "title": "Enable Permissions",
+        "desc": "We'll need you to allow a few permissions\nto get started",
+        "buttonText": "Next",
+        "cards": {
+          PermissionType.camera: {
+            "header": "Camera",
+            "desc": "To record and stream your incidents",
+          },
+          PermissionType.microphone: {
+            "header": "Microphone",
+            "desc": "To record and stream your incidents",
+          },
+          PermissionType.location: {
+            "header": "Location",
+            "desc": "To keep track of your location in incidents",
+          },
+        }
+      },
     },
   };
 }
