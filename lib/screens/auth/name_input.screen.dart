@@ -105,6 +105,8 @@ class _NameInputScreenState extends State<NameInputScreen>
 
     if (!error) {
       // Navigate
+      core.state.signup.permissionsController.open();
+      core.state.signup.nameInputController.close();
     }
   }
 

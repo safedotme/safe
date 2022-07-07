@@ -72,4 +72,8 @@ abstract class _SignupStore with Store {
 
   @action
   void setNameError(bool v) => nameError = v;
+
+  // PERMISSIONS
+  @observable
+  PanelController permissionsController = PanelController();
 }
