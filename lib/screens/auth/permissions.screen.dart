@@ -86,8 +86,9 @@ class _PermissionsScreenState extends State<PermissionsScreen>
         builder: (_) => MutableInputPanel(
           body: Container(),
           title: "Enable Permissions",
-          description: "",
-          icon: MutableIcons.profile,
+          description:
+              "We'll need you to allow a few permissions\nto get started",
+          icon: MutableIcons.key,
           onTap: submit,
           buttonText: "Next",
         ),
