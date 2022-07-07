@@ -35,6 +35,7 @@ dependencies:
   dotted_border: ^2.0.0+2
   animated_text_kit: ^4.2.2
   card_swiper: ^2.0.4
+  permission_handler: ^10.0.0
   location: ^4.4.0
   flip_card: ^0.6.0
   flutter_dotenv: ^5.0.2
