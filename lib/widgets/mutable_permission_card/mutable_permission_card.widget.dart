@@ -33,6 +33,7 @@ class MutablePermissionCard extends StatefulWidget {
 
 class _MutablePermissionCardState extends State<MutablePermissionCard> {
   late Core core;
+  bool isAllowed = false;
 
   @override
   void initState() {
@@ -41,10 +42,26 @@ class _MutablePermissionCardState extends State<MutablePermissionCard> {
     core = Provider.of<Core>(context, listen: false);
   }
 
+  Future<void> handleTap() async {
+    switch (widget.type) {
+      case PermissionType.camera:
+        break;
+      case PermissionType.location:
+        break;
+      case PermissionType.microphone:
+        Map response = await core.utils.permissions.requestMicrophone(core);
+        print(response);
+        break;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Observer(builder: (context) {
-      return MutableButton(
+    return Observer(
+      builder: (_) => MutableButton(
+        onTap: () {
+          handleTap();
+        },
         child: Container(
           padding: EdgeInsets.all(15),
           decoration: ShapeDecoration(
@@ -84,11 +101,11 @@ class _MutablePermissionCardState extends State<MutablePermissionCard> {
                   ),
                 ],
               ),
-              StatusCircle(true)
+              StatusCircle(isAllowed)
             ],
           ),
         ),
-      );
-    });
+      ),
+    );
   }
 }

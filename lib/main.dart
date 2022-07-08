@@ -27,6 +27,7 @@ class Safe extends StatelessWidget {
       child: MaterialApp(
         title: "Safe",
         debugShowCheckedModeBanner: false,
+        themeMode: ThemeMode.dark,
         routes: {
           WelcomeScreen.id: (_) => WelcomeScreen(),
           TestingScreen.id: (_) => TestingScreen(),

@@ -18,29 +18,29 @@ class PermissionsUtil {
         return {
           "status": false,
           "error": core.utils.language
-                  .langMap[core.state.preferences.language]!["permissions"]
-              ["errors"]["location"]["limited"]
+                  .langMap[core.state.preferences.language]!["auth"]
+              ["permissions"]["errors"]["location"]["limited"]
         };
       case PermissionStatus.denied:
         return {
           "status": false,
           "error": core.utils.language
-                  .langMap[core.state.preferences.language]!["permissions"]
-              ["errors"]["location"]["denied"]
+                  .langMap[core.state.preferences.language]!["auth"]
+              ["permissions"]["errors"]["location"]["denied"]
         };
       case PermissionStatus.permanentlyDenied:
         return {
           "status": false,
           "error": core.utils.language
-                  .langMap[core.state.preferences.language]!["permissions"]
-              ["errors"]["location"]["default"]
+                  .langMap[core.state.preferences.language]!["auth"]
+              ["permissions"]["errors"]["location"]["default"]
         };
       case PermissionStatus.restricted:
         return {
           "status": false,
           "error": core.utils.language
-                  .langMap[core.state.preferences.language]!["permissions"]
-              ["errors"]["location"]["default"],
+                  .langMap[core.state.preferences.language]!["auth"]
+              ["permissions"]["errors"]["location"]["default"],
         };
     }
   }
@@ -61,15 +61,15 @@ class PermissionsUtil {
         return {
           "status": false,
           "error": core.utils.language
-                  .langMap[core.state.preferences.language]!["permissions"]
-              ["errors"]["location"]["denied"]
+                  .langMap[core.state.preferences.language]!["auth"]
+              ["permissions"]["errors"]["location"]["denied"]
         };
       default:
         return {
           "status": false,
           "error": core.utils.language
-                  .langMap[core.state.preferences.language]!["permissions"]
-              ["errors"]["location"]["default"]
+                  .langMap[core.state.preferences.language]!["auth"]
+              ["permissions"]["errors"]["location"]["default"]
         };
     }
   }
@@ -90,15 +90,15 @@ class PermissionsUtil {
         return {
           "status": false,
           "error": core.utils.language
-                  .langMap[core.state.preferences.language]!["permissions"]
-              ["errors"]["location"]["denied"],
+                  .langMap[core.state.preferences.language]!["auth"]
+              ["permissions"]["errors"]["location"]["denied"],
         };
       default:
         return {
           "status": false,
           "error": core.utils.language
-                  .langMap[core.state.preferences.language]!["permissions"]
-              ["errors"]["location"]["default"],
+                  .langMap[core.state.preferences.language]!["auth"]
+              ["permissions"]["errors"]["location"]["default"],
         };
     }
   }

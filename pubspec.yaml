@@ -36,6 +36,7 @@ dependencies:
   animated_text_kit: ^4.2.2
   card_swiper: ^2.0.4
   permission_handler: ^10.0.0
+  rive: ^0.9.0
   location: ^4.4.0
   flip_card: ^0.6.0
   flutter_dotenv: ^5.0.2
@@ -67,6 +68,7 @@ flutter:
   assets:
     - .env
     - assets/svgs/logo.svg
+    - assets/animations/bubbles.riv
     - assets/svgs/button.svg
 
   fonts:

@@ -15,7 +15,7 @@ class _BubbleState extends State<Bubble> with TickerProviderStateMixin {
   late AnimationController controller;
   late Animation animation;
   late MediaQueryData queryData;
-  double scale = 0;
+  double scale = 1;
 
   Future<void> animate() async {
     // Time it takes for each bubble to enter

@@ -5,6 +5,7 @@ class MutableScaffold extends StatelessWidget {
   final bool resizeToAvoidBottomInsets;
   final EdgeInsets? margin;
   final Widget body;
+  final List<Widget>? underlays;
   final List<Widget>? overlays;
 
   MutableScaffold({
@@ -12,13 +13,28 @@ class MutableScaffold extends StatelessWidget {
     this.resizeToAvoidBottomInsets = false,
     this.margin,
     this.overlays,
+    this.underlays,
   });
 
   @override
   Widget build(BuildContext context) {
+    List<Widget> populateStack() {
+      List<Widget> widgets = [body];
+
+      if (overlays != null) {
+        widgets = widgets + overlays!;
+      }
+
+      if (underlays != null) {
+        widgets = underlays! + widgets;
+      }
+
+      return widgets;
+    }
+
     return Scaffold(
       resizeToAvoidBottomInset: resizeToAvoidBottomInsets,
-      body: overlays != null ? Stack(children: [body, ...overlays!]) : body,
+      body: Stack(children: populateStack()),
       backgroundColor: kColorMap[MutableColor.neutral10],
     );
   }

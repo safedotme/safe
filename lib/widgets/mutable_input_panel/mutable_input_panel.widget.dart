@@ -8,6 +8,7 @@ import 'package:safe/widgets/mutable_text/mutable_text.widget.dart';
 
 class MutableInputPanel extends StatefulWidget {
   final Widget body;
+  final bool resizeToAvoidBottomInsets;
   final void Function()? onTap;
   final bool isActive;
   final String buttonText;
@@ -23,6 +24,7 @@ class MutableInputPanel extends StatefulWidget {
     this.onTap,
     required this.icon,
     this.shimmer = false,
+    this.resizeToAvoidBottomInsets = false,
     this.title = "Title",
     this.description = "Description",
     this.isActive = true,
@@ -111,16 +113,18 @@ class _MutableInputPanelState extends State<MutableInputPanel> {
           ),
           Spacer(),
           widget.body,
-          ValueListenableBuilder<double>(
-            valueListenable: notifier,
-            builder: (context, value, _) {
-              if (value == 0) {
-                return Spacer(key: key);
-              } else {
-                return SizedBox(height: animate(value));
-              }
-            },
-          ),
+          widget.resizeToAvoidBottomInsets
+              ? ValueListenableBuilder<double>(
+                  valueListenable: notifier,
+                  builder: (context, value, _) {
+                    if (value == 0) {
+                      return Spacer(key: key);
+                    } else {
+                      return SizedBox(height: animate(value));
+                    }
+                  },
+                )
+              : Spacer(),
           MutableLargeButton(
             onTap: widget.onTap,
             text: widget.buttonText,

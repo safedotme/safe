@@ -146,6 +146,7 @@ class _NameInputScreenState extends State<NameInputScreen>
             },
             hintText: generateRandomName(),
           ),
+          resizeToAvoidBottomInsets: true,
           title: core.utils.language
                   .langMap[core.state.preferences.language]!["auth"]
               ["name_input"]["title"],
