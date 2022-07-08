@@ -67,7 +67,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
           Expanded(
             flex: 10,
             child: Opacity(
-              opacity: 0.75,
+              opacity: 0.78,
               child: RiveAnimation.asset(
                 "assets/animations/bubbles.riv",
                 alignment: Alignment.bottomCenter,
