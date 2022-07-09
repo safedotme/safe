@@ -6,6 +6,7 @@ import 'package:safe/utils/constants/constants.util.dart';
 import 'package:safe/utils/icon/icon.util.dart';
 import 'package:safe/widgets/mutable_input_panel/mutable_input_panel.widget.dart';
 import 'package:safe/widgets/mutable_popup/mutable_popup.widget.dart';
+import 'package:safe/widgets/mutable_text_field/mutable_text_field.widget.dart';
 
 class PhoneVerificationScreen extends StatefulWidget {
   @override
@@ -19,6 +20,7 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen>
   late MediaQueryData queryData;
   late AnimationController controller;
   bool error = false;
+  FocusNode node = FocusNode();
 
   // Animation stuff
   double topMargin = kTopMargin;
@@ -63,6 +65,7 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen>
   void dispose() {
     super.dispose();
 
+    node.dispose();
     controller.dispose();
   }
 
@@ -76,21 +79,32 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen>
       maxHeight: queryData.size.height - topMargin,
       controller: core.state.signup.phoneVerificationController,
       onClosed: () {
+        node.unfocus();
         core.state.signup.bannerController.dismiss();
         core.state.signup.permissionsController.open();
       },
-      body: Observer(
-        builder: (_) => MutableInputPanel(
-          // Permission Cards
-          body: Container(),
-          // Display stuff
-          title: "Enter Phone Number",
-          description: "We'll send you a magic link to verify your\n account",
-          icon: MutableIcons.key,
-          onTap: submit,
-          isActive: true,
-          buttonText: "Send Link", // "Next"
+      body: MutableInputPanel(
+        // Permission Cards
+        body: MutableTextField(
+          type: TextInputType.name,
+          focusNode: node,
+          onChange: (name) {
+            core.state.signup.setName(name ?? "");
+          },
+          onSubmit: (_) {
+            submit();
+          },
+          hintText: "9999-9999",
         ),
+        resizeToAvoidBottomInsets: true,
+        // Display stuff
+        title: "Enter Phone Number",
+        description: "We'll send you a magic link to verify your\n account",
+        icon: MutableIcons.phone,
+        iconSize: Size(26, 26),
+        onTap: submit,
+        isActive: true,
+        buttonText: "Send Link", // "Next"
       ),
     );
   }

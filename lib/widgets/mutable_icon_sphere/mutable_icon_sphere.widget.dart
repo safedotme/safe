@@ -8,7 +8,8 @@ import 'package:safe/widgets/mutable_icon/mutable_icon.widget.dart';
 
 class MutableIconSphere extends StatelessWidget {
   final MutableIcons icon;
-  MutableIconSphere(this.icon);
+  final Size? size;
+  MutableIconSphere(this.icon, {this.size});
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +22,7 @@ class MutableIconSphere extends StatelessWidget {
       child: Center(
         child: MutableIcon(
           icon,
-          size: Size(30, 30),
+          size: size ?? Size(30, 30),
           color: kIconColorInGradientFill,
         ),
       ),

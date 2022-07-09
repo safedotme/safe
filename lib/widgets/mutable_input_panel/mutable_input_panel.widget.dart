@@ -10,6 +10,7 @@ class MutableInputPanel extends StatefulWidget {
   final Widget body;
   final bool resizeToAvoidBottomInsets;
   final void Function()? onTap;
+  final Size? iconSize;
   final bool isActive;
   final String buttonText;
   final String title;
@@ -24,6 +25,7 @@ class MutableInputPanel extends StatefulWidget {
     this.onTap,
     required this.icon,
     this.shimmer = false,
+    this.iconSize,
     this.resizeToAvoidBottomInsets = false,
     this.title = "Title",
     this.description = "Description",
@@ -96,7 +98,10 @@ class _MutableInputPanelState extends State<MutableInputPanel> {
           Center(child: MutableHandle()),
           SizedBox(height: 38),
           Center(
-            child: MutableIconSphere(widget.icon),
+            child: MutableIconSphere(
+              widget.icon,
+              size: widget.iconSize,
+            ),
           ),
           SizedBox(height: 32),
           MutableText(
