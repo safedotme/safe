@@ -22,41 +22,38 @@ class MutableTextField extends StatelessWidget {
   Widget build(BuildContext context) {
     Core core = Provider.of(context, listen: false);
 
-    return TextField(
-      cursorColor: core.utils.color.translucify(
-        MutableColor.neutral5,
-        Transparency.v64,
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 16),
+      decoration: BoxDecoration(
+        color: kColorMap[MutableColor.neutral8]!,
+        border: Border.all(
+          color: kColorMap[MutableColor.neutral7]!,
+          width: kBorderWidth,
+        ),
+        borderRadius: BorderRadius.circular(25),
       ),
-      onChanged: onChange,
+      child: TextField(
+        cursorColor: core.utils.color.translucify(
+          MutableColor.neutral5,
+          Transparency.v64,
+        ),
+        onChanged: onChange,
 
-      // Height is based on fontSize (16)
-      cursorHeight: 18,
-      keyboardAppearance: Brightness.dark,
-      focusNode: focusNode,
-      onSubmitted: onSubmit,
-      style: kTextInputStyle,
-      keyboardType: type,
-      decoration: InputDecoration(
-        hintText: hintText,
-        hintStyle: kTextInputStyle.copyWith(
-          color: kColorMap[MutableColor.neutral4],
-        ),
-        fillColor: kColorMap[MutableColor.neutral8]!,
-        filled: true,
-        contentPadding: EdgeInsets.symmetric(horizontal: 16),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(25),
-          borderSide: BorderSide(
-            color: kColorMap[MutableColor.neutral7]!,
-            width: kBorderWidth,
+        // Height is based on fontSize (16)
+        cursorHeight: 18,
+        keyboardAppearance: Brightness.dark,
+        focusNode: focusNode,
+        onSubmitted: onSubmit,
+        style: kTextInputStyle,
+        keyboardType: type,
+        decoration: InputDecoration(
+          hintText: hintText,
+          hintStyle: kTextInputStyle.copyWith(
+            color: kColorMap[MutableColor.neutral4],
           ),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(25),
-          borderSide: BorderSide(
-            color: kColorMap[MutableColor.neutral7]!,
-            width: kBorderWidth,
-          ),
+          contentPadding: EdgeInsets.zero,
+          enabledBorder: InputBorder.none,
+          focusedBorder: InputBorder.none,
         ),
       ),
     );

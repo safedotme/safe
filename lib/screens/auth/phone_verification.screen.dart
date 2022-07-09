@@ -86,7 +86,7 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen>
       body: MutableInputPanel(
         // Permission Cards
         body: MutableTextField(
-          type: TextInputType.name,
+          type: TextInputType.phone,
           focusNode: node,
           onChange: (name) {
             core.state.signup.setName(name ?? "");
