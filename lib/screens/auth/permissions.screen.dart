@@ -19,6 +19,7 @@ class _PermissionsScreenState extends State<PermissionsScreen>
   late MediaQueryData queryData;
   late AnimationController controller;
   bool error = false;
+  bool navigateTo = false;
   List<PermissionType> permissions = MutablePermissionCard.permissionList;
 
   // Animation stuff
@@ -71,6 +72,7 @@ class _PermissionsScreenState extends State<PermissionsScreen>
     if (core.state.signup.permissionsErrors.isEmpty) {
       // Navigate
       core.utils.popupNavigation.navigate(
+        core.state.signup.nameInputController,
         core.state.signup.permissionsController,
         core.state.signup.phoneVerificationController,
         controller,

@@ -3,10 +3,18 @@ import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class PopupNavigationUtil {
   Future<void> navigate(
-      PanelController a, PanelController b, AnimationController cA) async {
+    PanelController? preA,
+    PanelController a,
+    PanelController b,
+    AnimationController cA,
+  ) async {
     cA.forward();
     await b.open();
     await cA.reverse();
-    a.close();
+    await a.close();
+
+    if (preA != null) {
+      preA.close();
+    }
   }
 }

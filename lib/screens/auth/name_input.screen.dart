@@ -109,6 +109,7 @@ class _NameInputScreenState extends State<NameInputScreen>
       // Navigate
 
       core.utils.popupNavigation.navigate(
+        null,
         core.state.signup.nameInputController,
         core.state.signup.permissionsController,
         controller,
