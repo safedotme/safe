@@ -68,7 +68,11 @@ class _MutableCountryCodeSelectorState
                   ),
                   Align(
                     alignment: Alignment.topCenter,
-                    child: CountryCodeSearchBar(),
+                    child: CountryCodeSearchBar(
+                      onChange: (query) {
+                        print(query);
+                      },
+                    ),
                   ),
                 ],
               ),

@@ -215,6 +215,7 @@ const double kLargeButtonBorderRadius = kLargeButtonHeight / 2;
 const double kObjectKeyboardMargin = 20;
 const double kKeyboardHeight = 336;
 const double kWidgetSpacing = 5;
+const Brightness kKeyboardAppearance = Brightness.dark;
 
 // BANNER
 const double kMutableBannerHeight = 115;
