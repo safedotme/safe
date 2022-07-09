@@ -6,6 +6,7 @@ import 'package:safe/utils/constants/constants.util.dart';
 class MutableTextField extends StatelessWidget {
   final FocusNode? focusNode;
   final TextInputType type;
+  final Widget leadingLeft;
   final String hintText;
   final void Function(String? value)? onChange;
   final void Function(String? value)? onSubmit;
@@ -13,6 +14,7 @@ class MutableTextField extends StatelessWidget {
   MutableTextField({
     required this.onChange,
     this.onSubmit,
+    this.leadingLeft = const SizedBox(),
     this.type = TextInputType.name,
     this.focusNode,
     this.hintText = "",
@@ -32,29 +34,36 @@ class MutableTextField extends StatelessWidget {
         ),
         borderRadius: BorderRadius.circular(25),
       ),
-      child: TextField(
-        cursorColor: core.utils.color.translucify(
-          MutableColor.neutral5,
-          Transparency.v64,
-        ),
-        onChanged: onChange,
+      child: Row(
+        children: [
+          leadingLeft,
+          Expanded(
+            child: TextField(
+              cursorColor: core.utils.color.translucify(
+                MutableColor.neutral5,
+                Transparency.v64,
+              ),
+              onChanged: onChange,
 
-        // Height is based on fontSize (16)
-        cursorHeight: 18,
-        keyboardAppearance: Brightness.dark,
-        focusNode: focusNode,
-        onSubmitted: onSubmit,
-        style: kTextInputStyle,
-        keyboardType: type,
-        decoration: InputDecoration(
-          hintText: hintText,
-          hintStyle: kTextInputStyle.copyWith(
-            color: kColorMap[MutableColor.neutral4],
+              // Height is based on fontSize (16)
+              cursorHeight: 18,
+              keyboardAppearance: Brightness.dark,
+              focusNode: focusNode,
+              onSubmitted: onSubmit,
+              style: kTextInputStyle,
+              keyboardType: type,
+              decoration: InputDecoration(
+                hintText: hintText,
+                hintStyle: kTextInputStyle.copyWith(
+                  color: kColorMap[MutableColor.neutral4],
+                ),
+                contentPadding: EdgeInsets.zero,
+                enabledBorder: InputBorder.none,
+                focusedBorder: InputBorder.none,
+              ),
+            ),
           ),
-          contentPadding: EdgeInsets.zero,
-          enabledBorder: InputBorder.none,
-          focusedBorder: InputBorder.none,
-        ),
+        ],
       ),
     );
   }
