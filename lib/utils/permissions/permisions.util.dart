@@ -5,7 +5,7 @@ import 'package:safe/widgets/mutable_permission_card/mutable_permission_card.wid
 
 class PermissionsUtil {
   Future<bool> checkPermissions() async {
-// IMPLEMENT
+    // IMPLEMENT
 
     return false;
   }

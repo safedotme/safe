@@ -90,4 +90,8 @@ abstract class _SignupStore with Store {
   @action
   void removePermissionsError(PermissionType type) =>
       permissionsErrors.remove(type);
+
+  // PHONE VERIFICATION
+  @observable
+  PanelController phoneVerificationController = PanelController();
 }

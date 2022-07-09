@@ -216,6 +216,23 @@ mixin _$SignupStore on _SignupStore, Store {
     });
   }
 
+  late final _$phoneVerificationControllerAtom =
+      Atom(name: '_SignupStore.phoneVerificationController', context: context);
+
+  @override
+  PanelController get phoneVerificationController {
+    _$phoneVerificationControllerAtom.reportRead();
+    return super.phoneVerificationController;
+  }
+
+  @override
+  set phoneVerificationController(PanelController value) {
+    _$phoneVerificationControllerAtom
+        .reportWrite(value, super.phoneVerificationController, () {
+      super.phoneVerificationController = value;
+    });
+  }
+
   late final _$_SignupStoreActionController =
       ActionController(name: '_SignupStore', context: context);
 
@@ -356,7 +373,8 @@ name: ${name},
 nameInputController: ${nameInputController},
 nameError: ${nameError},
 permissionsController: ${permissionsController},
-permissionsErrors: ${permissionsErrors}
+permissionsErrors: ${permissionsErrors},
+phoneVerificationController: ${phoneVerificationController}
     ''';
   }
 }

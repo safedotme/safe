@@ -5,21 +5,20 @@ import 'package:safe/core.dart';
 import 'package:safe/utils/constants/constants.util.dart';
 import 'package:safe/utils/icon/icon.util.dart';
 import 'package:safe/widgets/mutable_input_panel/mutable_input_panel.widget.dart';
-import 'package:safe/widgets/mutable_permission_card/mutable_permission_card.widget.dart';
 import 'package:safe/widgets/mutable_popup/mutable_popup.widget.dart';
 
-class PermissionsScreen extends StatefulWidget {
+class PhoneVerificationScreen extends StatefulWidget {
   @override
-  State<PermissionsScreen> createState() => _PermissionsScreenState();
+  State<PhoneVerificationScreen> createState() =>
+      _PhoneVerificationScreenState();
 }
 
-class _PermissionsScreenState extends State<PermissionsScreen>
+class _PhoneVerificationScreenState extends State<PhoneVerificationScreen>
     with TickerProviderStateMixin {
   late Core core;
   late MediaQueryData queryData;
   late AnimationController controller;
   bool error = false;
-  List<PermissionType> permissions = MutablePermissionCard.permissionList;
 
   // Animation stuff
   double topMargin = kTopMargin;
@@ -67,18 +66,7 @@ class _PermissionsScreenState extends State<PermissionsScreen>
     controller.dispose();
   }
 
-  void submit() {
-    if (core.state.signup.permissionsErrors.isEmpty) {
-      // Navigate
-      core.utils.popupNavigation.navigate(
-        core.state.signup.permissionsController,
-        core.state.signup.phoneVerificationController,
-        controller,
-      );
-    } else {
-      core.utils.permissions.errorBanner(core);
-    }
-  }
+  void submit() {}
 
   @override
   Widget build(BuildContext context) {
@@ -86,43 +74,22 @@ class _PermissionsScreenState extends State<PermissionsScreen>
     return MutablePopup(
       minHeight: 0,
       maxHeight: queryData.size.height - topMargin,
-      controller: core.state.signup.permissionsController,
+      controller: core.state.signup.phoneVerificationController,
       onClosed: () {
         core.state.signup.bannerController.dismiss();
-        core.state.signup.nameInputController.open();
+        core.state.signup.permissionsController.open();
       },
       body: Observer(
         builder: (_) => MutableInputPanel(
           // Permission Cards
-          body: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            // Lays out the permission cards
-            children: List.generate(
-              permissions.length,
-              (i) => Padding(
-                padding: EdgeInsets.only(
-                  bottom: i + 1 == permissions.length ? 0 : 12,
-                ),
-                child: MutablePermissionCard(
-                  type: MutablePermissionCard.permissionList[i],
-                ),
-              ),
-            ),
-          ),
+          body: Container(),
           // Display stuff
-          title: core.utils.language
-                  .langMap[core.state.preferences.language]!["auth"]
-              ["permissions"]["title"], // "Enable Permissions"
-          description: core.utils.language
-                      .langMap[core.state.preferences.language]!["auth"]
-                  ["permissions"]
-              ["desc"], // "Before getting started, we'll need..."
+          title: "Enter Phone Number",
+          description: "We'll send you a magic link to verify your\n account",
           icon: MutableIcons.key,
           onTap: submit,
-          isActive: core.state.signup.permissionsErrors.isEmpty,
-          buttonText: core.utils.language
-                  .langMap[core.state.preferences.language]!["auth"]
-              ["permissions"]["buttonText"], // "Next"
+          isActive: true,
+          buttonText: "Send Link", // "Next"
         ),
       ),
     );
