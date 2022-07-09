@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:safe/utils/constants/constants.util.dart';
+import 'package:safe/widgets/mutable_country_code_selector/local_widgets/country_code.widget.dart';
+import 'package:safe/widgets/mutable_country_code_selector/local_widgets/country_code_search_bar.widget.dart';
+import 'package:safe/widgets/mutable_divider/mutable_divider.widget.dart';
 import 'package:safe/widgets/mutable_handle/mutable_handle.dart';
 import 'package:safe/widgets/mutable_popup/mutable_popup.widget.dart';
 import 'package:safe/widgets/mutable_text/mutable_text.widget.dart';
@@ -50,44 +53,22 @@ class _MutableCountryCodeSelectorState
                     child: Scrollbar(
                       child: ListView.separated(
                         padding: EdgeInsets.symmetric(
-                            vertical: 50, horizontal: kSideScreenMargin),
+                          vertical: 50,
+                          horizontal: kSideScreenMargin,
+                        ),
                         itemCount: 10,
                         separatorBuilder: (_, i) => Padding(
                           // Divider
                           padding: EdgeInsets.symmetric(vertical: 18),
-                          child: Container(
-                            height: 1,
-                            width: double.infinity,
-                            color: Colors.red,
-                          ),
+                          child: MutableDivider(),
                         ),
-                        itemBuilder: (_, i) => Row(
-                          children: [
-                            MutableText(
-                              "United States",
-                              style: TypeStyle.body,
-                            ),
-                            SizedBox(width: 2),
-                            MutableText(
-                              "(+1)",
-                              style: TypeStyle.body,
-                              color: MutableColor.neutral2,
-                            ),
-                          ],
-                        ),
+                        itemBuilder: (_, i) => CountryCode(),
                       ),
                     ),
                   ),
                   Align(
                     alignment: Alignment.topCenter,
-                    child: Container(
-                      margin: EdgeInsets.symmetric(
-                        horizontal: kSideScreenMargin,
-                      ),
-                      height: 35,
-                      width: double.infinity,
-                      color: Colors.blue.withOpacity(0.8),
-                    ),
+                    child: CountryCodeSearchBar(),
                   ),
                 ],
               ),
