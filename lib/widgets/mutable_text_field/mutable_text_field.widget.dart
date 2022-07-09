@@ -31,6 +31,7 @@ class MutableTextField extends StatelessWidget {
 
       // Height is based on fontSize (16)
       cursorHeight: 18,
+      keyboardAppearance: Brightness.dark,
       focusNode: focusNode,
       onSubmitted: onSubmit,
       style: kTextInputStyle,

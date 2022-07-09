@@ -32,6 +32,7 @@ class _PermissionsScreenState extends State<PermissionsScreen>
     // Initialize tween
     Animation tween =
         Tween<double>(begin: kTopMargin, end: kMutableBannerHeight + 20)
+            // 20 is the margin between the banner and the popup
             .animate(
       CurvedAnimation(parent: controller, curve: Curves.ease),
     );
@@ -67,7 +68,11 @@ class _PermissionsScreenState extends State<PermissionsScreen>
   }
 
   void submit() {
-    bool error = false;
+    if (core.state.signup.permissionsErrors.isEmpty) {
+      // Navigate
+    } else {
+      core.utils.permissions.errorBanner(core);
+    }
   }
 
   @override
@@ -86,6 +91,7 @@ class _PermissionsScreenState extends State<PermissionsScreen>
           // Permission Cards
           body: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
+            // Lays out the permission cards
             children: List.generate(
               permissions.length,
               (i) => Padding(
@@ -98,7 +104,6 @@ class _PermissionsScreenState extends State<PermissionsScreen>
               ),
             ),
           ),
-
           // Display stuff
           title: core.utils.language
                   .langMap[core.state.preferences.language]!["auth"]
@@ -109,6 +114,7 @@ class _PermissionsScreenState extends State<PermissionsScreen>
               ["desc"], // "Before getting started, we'll need..."
           icon: MutableIcons.key,
           onTap: submit,
+          isActive: core.state.signup.permissionsErrors.isEmpty,
           buttonText: core.utils.language
                   .langMap[core.state.preferences.language]!["auth"]
               ["permissions"]["buttonText"], // "Next"

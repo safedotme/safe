@@ -113,6 +113,8 @@ class _NameInputScreenState extends State<NameInputScreen>
         core.state.signup.permissionsController,
         controller,
       );
+    } else {
+      node.nextFocus();
     }
   }
 

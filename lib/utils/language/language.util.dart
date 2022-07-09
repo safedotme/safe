@@ -57,7 +57,7 @@ class LanguageUtil {
           },
         },
         "errors": {
-          "location": {
+          PermissionType.location: {
             "limited": {
               "header": "Warning: you granted low accuracy location",
               "desc":
@@ -66,42 +66,36 @@ class LanguageUtil {
             },
             "denied": {
               "header": "Hold up! You denied location access to Safe",
-              "desc":
-                  "Tap here to learn more about why Safe needs location access",
+              "desc": "Learn more about why Safe needs location access",
               "fatal": true,
             },
             "default": {
               "header": "Hold up! You denied location access to Safe",
-              "desc":
-                  "Change this through settings. Tap here to learn how to do so",
+              "desc": "Change this through settings. Tap here to change",
               "fatal": true,
             }
           },
-          "microphone": {
+          PermissionType.microphone: {
             "denied": {
               "header": "Hold up! You denied microphone access to Safe",
-              "desc":
-                  "Tap here to learn more about why Safe needs microphone access",
+              "desc": "Learn more about why Safe needs microphone access",
               "fatal": true,
             },
             "default": {
               "header": "Hold up! You denied microphone access to Safe",
-              "desc":
-                  "Change this through settings. Tap here to learn how to do so",
+              "desc": "Change this through settings. Tap here to change",
               "fatal": true,
             },
           },
-          "camera": {
+          PermissionType.camera: {
             "denied": {
               "header": "Hold up! You denied camera access to Safe",
-              "desc":
-                  "Tap here to learn more about why Safe needs camera access",
+              "desc": "Learn more about why Safe needs camera access",
               "fatal": true,
             },
             "default": {
               "header": "Hold up! You denied camera access to Safe",
-              "desc":
-                  "Change this through settings. Tap here to learn how to do so",
+              "desc": "Change this through settings. Tap here to change",
               "fatal": true,
             }
           }

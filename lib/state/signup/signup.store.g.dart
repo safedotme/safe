@@ -200,6 +200,22 @@ mixin _$SignupStore on _SignupStore, Store {
     });
   }
 
+  late final _$permissionsErrorsAtom =
+      Atom(name: '_SignupStore.permissionsErrors', context: context);
+
+  @override
+  Map<PermissionType, Map<dynamic, dynamic>> get permissionsErrors {
+    _$permissionsErrorsAtom.reportRead();
+    return super.permissionsErrors;
+  }
+
+  @override
+  set permissionsErrors(Map<PermissionType, Map<dynamic, dynamic>> value) {
+    _$permissionsErrorsAtom.reportWrite(value, super.permissionsErrors, () {
+      super.permissionsErrors = value;
+    });
+  }
+
   late final _$_SignupStoreActionController =
       ActionController(name: '_SignupStore', context: context);
 
@@ -303,6 +319,29 @@ mixin _$SignupStore on _SignupStore, Store {
   }
 
   @override
+  void addPermissionsError(
+      PermissionType type, Map<dynamic, dynamic> response) {
+    final _$actionInfo = _$_SignupStoreActionController.startAction(
+        name: '_SignupStore.addPermissionsError');
+    try {
+      return super.addPermissionsError(type, response);
+    } finally {
+      _$_SignupStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void removePermissionsError(PermissionType type) {
+    final _$actionInfo = _$_SignupStoreActionController.startAction(
+        name: '_SignupStore.removePermissionsError');
+    try {
+      return super.removePermissionsError(type);
+    } finally {
+      _$_SignupStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 bannerController: ${bannerController},
@@ -316,7 +355,8 @@ delay: ${delay},
 name: ${name},
 nameInputController: ${nameInputController},
 nameError: ${nameError},
-permissionsController: ${permissionsController}
+permissionsController: ${permissionsController},
+permissionsErrors: ${permissionsErrors}
     ''';
   }
 }

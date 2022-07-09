@@ -116,6 +116,7 @@ enum MutableColor {
   primaryMagenta,
   secondaryGreen,
   secondaryRed,
+  secondaryYellow,
 }
 
 const Map<MutableColor, Color> kColorMap = {
@@ -141,6 +142,7 @@ const Map<MutableColor, Color> kColorMap = {
   // SECONDARY
   MutableColor.secondaryGreen: Color(0xff50C166),
   MutableColor.secondaryRed: Color(0xffFC645D),
+  MutableColor.secondaryYellow: Color(0xffFCD95D),
 };
 
 final List<Color> kPrimaryGradientColors = [

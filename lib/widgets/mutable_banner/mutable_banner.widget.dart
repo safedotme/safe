@@ -9,6 +9,7 @@ import 'package:safe/widgets/mutable_text/mutable_text.widget.dart';
 enum MessageType {
   error,
   success,
+  warning,
 }
 
 class MutableBanner extends StatefulWidget {
@@ -93,7 +94,7 @@ class _MutableBannerState extends State<MutableBanner>
     }
     await controller.forward();
 
-    await Future.delayed(widget.duration ?? Duration(seconds: 3));
+    await Future.delayed(widget.duration ?? Duration(seconds: 5));
     if (!dismissed) {
       if (widget.onReverse != null) {
         widget.onReverse!();
@@ -157,7 +158,9 @@ class _MutableBannerState extends State<MutableBanner>
                   color: core.utils.color.translucify(
                     widget.type == MessageType.success
                         ? MutableColor.secondaryGreen
-                        : MutableColor.secondaryRed,
+                        : (widget.type == MessageType.error)
+                            ? MutableColor.secondaryRed
+                            : MutableColor.secondaryYellow,
                     Transparency.v20,
                   ),
                   shape: SmoothRectangleBorder(
@@ -168,7 +171,9 @@ class _MutableBannerState extends State<MutableBanner>
                     side: BorderSide(
                       color: kColorMap[widget.type == MessageType.success
                           ? MutableColor.secondaryGreen
-                          : MutableColor.secondaryRed]!,
+                          : (widget.type == MessageType.error)
+                              ? MutableColor.secondaryRed
+                              : MutableColor.secondaryYellow]!,
                       width: kBorderWidth,
                     ),
                   ),

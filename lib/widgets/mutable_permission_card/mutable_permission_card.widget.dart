@@ -1,8 +1,6 @@
 import 'package:figma_squircle/figma_squircle.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:location/location.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
 import 'package:safe/utils/constants/constants.util.dart';
@@ -45,19 +43,36 @@ class _MutablePermissionCardState extends State<MutablePermissionCard> {
   }
 
   Future<void> handleTap() async {
+    late Map response;
+
     switch (widget.type) {
       case PermissionType.camera:
-        Map response = await core.utils.permissions.requestCamera(core);
-        print(response);
+        response = await core.utils.permissions.requestCamera(core);
         break;
       case PermissionType.location:
-        Map response = await core.utils.permissions.requestLocation(core);
-        print(response);
+        response = await core.utils.permissions.requestLocation(core);
         break;
       case PermissionType.microphone:
-        Map response = await core.utils.permissions.requestLocation(core);
-        print(response);
+        response = await core.utils.permissions.requestMicrophone(core);
         break;
+    }
+
+    if (response["status"]) {
+      setState(() {
+        isAllowed = true;
+        core.state.signup.removePermissionsError(widget.type);
+      });
+    } else {
+      isAllowed = false;
+
+      // Add error handling
+      core.state.signup.addPermissionsError(
+        widget.type,
+        response,
+      );
+
+      // Display error banner
+      core.utils.permissions.errorBanner(core);
     }
   }
 
@@ -107,7 +122,7 @@ class _MutablePermissionCardState extends State<MutablePermissionCard> {
                   ),
                 ],
               ),
-              StatusCircle(isAllowed)
+              StatusCircle(isAllowed),
             ],
           ),
         ),

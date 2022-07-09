@@ -1,5 +1,6 @@
 import 'package:mobx/mobx.dart';
 import 'package:safe/widgets/mutable_banner/mutable_banner.widget.dart';
+import 'package:safe/widgets/mutable_permission_card/mutable_permission_card.widget.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 part 'signup.store.g.dart';
@@ -76,4 +77,17 @@ abstract class _SignupStore with Store {
   // PERMISSIONS
   @observable
   PanelController permissionsController = PanelController();
+
+  @observable
+  Map<PermissionType, Map> permissionsErrors = {};
+
+  @action
+  void addPermissionsError(PermissionType type, Map response) =>
+      !permissionsErrors.containsKey(type)
+          ? permissionsErrors[type] = response
+          : null;
+
+  @action
+  void removePermissionsError(PermissionType type) =>
+      permissionsErrors.remove(type);
 }
