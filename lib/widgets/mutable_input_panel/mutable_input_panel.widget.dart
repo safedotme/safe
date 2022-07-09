@@ -88,7 +88,7 @@ class _MutableInputPanelState extends State<MutableInputPanel> {
     return Container(
       padding: EdgeInsets.fromLTRB(
         kSideScreenMargin,
-        6,
+        kHandleTopMargin,
         kSideScreenMargin,
         kBottomScreenMargin,
       ),

@@ -80,11 +80,11 @@ const Map<TypeStyle, dynamic> kTypeStyleMap = {
     "spacing": LetterSpacingType.heading,
   },
   TypeStyle.body: {
-    "weight": TypeWeight.regular,
+    "weight": TypeWeight.medium,
     "spacing": LetterSpacingType.regular,
   },
   TypeStyle.footnote: {
-    "weight": TypeWeight.regular,
+    "weight": TypeWeight.medium,
     "spacing": LetterSpacingType.regular,
   },
 };
@@ -197,6 +197,8 @@ const double kCornerSmoothing = 0.6;
 const double kSideMarginPreviewPopup = 11;
 const double kBottomMarginPreviewPopup = 34;
 const double kTopMargin = 42;
+const double kHandleTopMargin = 6;
+const double kPanelHandleToHeader = 7;
 
 // MARGINS
 const double kSideScreenMargin = 15;
