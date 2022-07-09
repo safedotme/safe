@@ -212,6 +212,7 @@ const double kLargeButtonBorderRadius = kLargeButtonHeight / 2;
 // TEXT FIELDS
 const double kObjectKeyboardMargin = 20;
 const double kKeyboardHeight = 336;
+const double kWidgetSpacing = 5;
 
 // BANNER
 const double kMutableBannerHeight = 115;

@@ -94,4 +94,7 @@ abstract class _SignupStore with Store {
   // PHONE VERIFICATION
   @observable
   PanelController phoneVerificationController = PanelController();
+
+  @observable
+  PanelController countryCodeController = PanelController();
 }

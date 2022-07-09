@@ -8,12 +8,14 @@ class MutableTextField extends StatelessWidget {
   final TextInputType type;
   final Widget leadingLeft;
   final String hintText;
+  final TextEditingController? controller;
   final void Function(String? value)? onChange;
   final void Function(String? value)? onSubmit;
 
   MutableTextField({
     required this.onChange,
     this.onSubmit,
+    this.controller,
     this.leadingLeft = const SizedBox(),
     this.type = TextInputType.name,
     this.focusNode,
@@ -39,6 +41,7 @@ class MutableTextField extends StatelessWidget {
           leadingLeft,
           Expanded(
             child: TextField(
+              controller: controller,
               cursorColor: core.utils.color.translucify(
                 MutableColor.neutral5,
                 Transparency.v64,

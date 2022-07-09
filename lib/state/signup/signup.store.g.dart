@@ -233,6 +233,23 @@ mixin _$SignupStore on _SignupStore, Store {
     });
   }
 
+  late final _$countryCodeControllerAtom =
+      Atom(name: '_SignupStore.countryCodeController', context: context);
+
+  @override
+  PanelController get countryCodeController {
+    _$countryCodeControllerAtom.reportRead();
+    return super.countryCodeController;
+  }
+
+  @override
+  set countryCodeController(PanelController value) {
+    _$countryCodeControllerAtom.reportWrite(value, super.countryCodeController,
+        () {
+      super.countryCodeController = value;
+    });
+  }
+
   late final _$_SignupStoreActionController =
       ActionController(name: '_SignupStore', context: context);
 
@@ -374,7 +391,8 @@ nameInputController: ${nameInputController},
 nameError: ${nameError},
 permissionsController: ${permissionsController},
 permissionsErrors: ${permissionsErrors},
-phoneVerificationController: ${phoneVerificationController}
+phoneVerificationController: ${phoneVerificationController},
+countryCodeController: ${countryCodeController}
     ''';
   }
 }
