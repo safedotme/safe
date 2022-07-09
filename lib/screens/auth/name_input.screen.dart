@@ -21,6 +21,7 @@ class _NameInputScreenState extends State<NameInputScreen>
   late MediaQueryData queryData;
   late AnimationController controller;
   FocusNode node = FocusNode();
+  late String hintName;
   bool error = false;
 
   // Animation stuff
@@ -50,6 +51,7 @@ class _NameInputScreenState extends State<NameInputScreen>
 
     core = Provider.of<Core>(context, listen: false);
     initializeAnimation();
+    hintName = generateRandomName();
 
     // Sync forward & reverse functionality with banner
     core.state.signup.setOnBannerForward(() {
@@ -144,7 +146,7 @@ class _NameInputScreenState extends State<NameInputScreen>
             onSubmit: (_) {
               submit();
             },
-            hintText: generateRandomName(),
+            hintText: hintName,
           ),
           resizeToAvoidBottomInsets: true,
           title: core.utils.language

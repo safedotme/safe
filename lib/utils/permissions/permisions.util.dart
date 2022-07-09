@@ -40,7 +40,7 @@ class PermissionsUtil {
           "status": false,
           "error": core.utils.language
                   .langMap[core.state.preferences.language]!["auth"]
-              ["permissions"]["errors"]["location"]["default"],
+              ["permissions"]["errors"]["location"]["default"]
         };
     }
   }
