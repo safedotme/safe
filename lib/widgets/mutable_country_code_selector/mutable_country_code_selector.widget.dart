@@ -25,15 +25,16 @@ class _MutableCountryCodeSelectorState extends State<MutableCountryCodeSelector>
   late Core core;
   late ValueNotifier<double> notifier;
   late MediaQueryData queryData;
-
   FocusNode node = FocusNode();
   GlobalKey key = GlobalKey();
+  late List<Map<String, String>> result;
 
   @override
   void initState() {
     super.initState();
 
     core = Provider.of<Core>(context, listen: false);
+    result = core.utils.countryCode.display();
   }
 
   // Gets height of ListView so it stays the same when keyboard is displayed (so keyboard doesn't overlay results)
@@ -45,6 +46,28 @@ class _MutableCountryCodeSelectorState extends State<MutableCountryCodeSelector>
     }
 
     return null;
+  }
+
+  void handleSearch(String query) {
+    if (query.isEmpty) {
+      setState(() {
+        result = core.utils.countryCode.display();
+      });
+
+      return;
+    }
+
+    List<Map<String, String>> resp = core.utils.countryCode.search(query);
+
+    if (resp.isEmpty) {
+      // Show empty state
+
+      return;
+    }
+
+    setState(() {
+      result = resp;
+    });
   }
 
   @override
@@ -96,13 +119,13 @@ class _MutableCountryCodeSelectorState extends State<MutableCountryCodeSelector>
                             vertical: 50,
                             horizontal: kSideScreenMargin,
                           ),
-                          itemCount: 10,
+                          itemCount: result.length,
                           separatorBuilder: (_, i) => Padding(
                             // Divider
                             padding: EdgeInsets.symmetric(vertical: 18),
                             child: MutableDivider(),
                           ),
-                          itemBuilder: (_, i) => CountryCode(),
+                          itemBuilder: (_, i) => CountryCode(result[i]),
                         ),
                       ),
                     ),
@@ -111,7 +134,7 @@ class _MutableCountryCodeSelectorState extends State<MutableCountryCodeSelector>
                       child: CountryCodeSearchBar(
                         node: node,
                         onChange: (query) {
-                          print(query);
+                          handleSearch(query);
                         },
                       ),
                     ),

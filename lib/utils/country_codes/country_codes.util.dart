@@ -176,15 +176,29 @@ class CountryCodeUtil {
     "Zimbabwe": "263",
   };
 
-  List search(String query) {
+  List<Map<String, String>> display() {
     List<Map<String, String>> result = [];
 
     for (String country in countryCodes.keys.toList()) {
-      String lowecase = country.toLowerCase();
+      result.add({
+        "name": country,
+        "code": countryCodes[country]!,
+      });
+    }
+
+    return result;
+  }
+
+  List<Map<String, String>> search(String query) {
+    List<Map<String, String>> result = [];
+
+    for (String country in countryCodes.keys.toList()) {
+      String lowecase = country.toLowerCase().substring(0, query.length);
 
       if (lowecase.contains(query.toLowerCase())) {
         result.add({
-          country: countryCodes[country]!,
+          "name": country,
+          "code": countryCodes[country]!,
         });
       }
     }
