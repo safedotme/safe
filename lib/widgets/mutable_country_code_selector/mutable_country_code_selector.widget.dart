@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:safe/core.dart';
 import 'package:safe/utils/constants/constants.util.dart';
 import 'package:safe/widgets/mutable_country_code_selector/local_widgets/country_code.widget.dart';
 import 'package:safe/widgets/mutable_country_code_selector/local_widgets/country_code_search_bar.widget.dart';
@@ -20,10 +22,19 @@ class MutableCountryCodeSelector extends StatefulWidget {
 
 class _MutableCountryCodeSelectorState extends State<MutableCountryCodeSelector>
     with TickerProviderStateMixin {
-  FocusNode node = FocusNode();
-  GlobalKey key = GlobalKey();
+  late Core core;
   late ValueNotifier<double> notifier;
   late MediaQueryData queryData;
+
+  FocusNode node = FocusNode();
+  GlobalKey key = GlobalKey();
+
+  @override
+  void initState() {
+    super.initState();
+
+    core = Provider.of<Core>(context, listen: false);
+  }
 
   // Gets height of ListView so it stays the same when keyboard is displayed (so keyboard doesn't overlay results)
   double? fetchListViewHeight() {

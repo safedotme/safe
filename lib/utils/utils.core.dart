@@ -1,10 +1,12 @@
 import 'package:logger/logger.dart';
 import 'package:safe/utils/color/color.util.dart';
+import 'package:safe/utils/country_codes/country_codes.util.dart';
 import 'package:safe/utils/flows/flows.dart';
 import 'package:safe/utils/icon/icon.util.dart';
 import 'package:safe/utils/language/language.util.dart';
 import 'package:safe/utils/permissions/permisions.util.dart';
 import 'package:safe/utils/popup_navigation/popup_navigation.util.dart';
+import 'package:safe/widgets/mutable_country_code_selector/local_widgets/country_code.widget.dart';
 
 class Utils {
   ColorUtils color = ColorUtils();
@@ -21,4 +23,5 @@ class Utils {
   IconUtil icons = IconUtil()..init();
   PopupNavigationUtil popupNavigation = PopupNavigationUtil();
   PermissionsUtil permissions = PermissionsUtil();
+  CountryCodeUtil countryCode = CountryCodeUtil();
 }
