@@ -25,6 +25,9 @@ class _SignupCountryCodeSelectorState extends State<SignupCountryCodeSelector> {
   Widget build(BuildContext context) {
     return Observer(
       builder: (_) => MutableCountryCodeSelector(
+        onPick: (country) {
+          core.state.signup.setCountryCode(country["code"]!);
+        },
         controller: core.state.signup.countryCodeController,
       ),
     );

@@ -12,8 +12,12 @@ import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class MutableCountryCodeSelector extends StatefulWidget {
   final PanelController controller;
+  final void Function(Map<String, String> pick) onPick;
 
-  MutableCountryCodeSelector({required this.controller});
+  MutableCountryCodeSelector({
+    required this.controller,
+    required this.onPick,
+  });
 
   @override
   State<MutableCountryCodeSelector> createState() =>
@@ -23,6 +27,7 @@ class MutableCountryCodeSelector extends StatefulWidget {
 class _MutableCountryCodeSelectorState extends State<MutableCountryCodeSelector>
     with TickerProviderStateMixin {
   late Core core;
+  late PanelController controller;
   late ValueNotifier<double> notifier;
   late MediaQueryData queryData;
   FocusNode node = FocusNode();
@@ -35,6 +40,7 @@ class _MutableCountryCodeSelectorState extends State<MutableCountryCodeSelector>
 
     core = Provider.of<Core>(context, listen: false);
     result = core.utils.countryCode.display();
+    controller = widget.controller;
   }
 
   // Gets height of ListView so it stays the same when keyboard is displayed (so keyboard doesn't overlay results)
@@ -46,6 +52,12 @@ class _MutableCountryCodeSelectorState extends State<MutableCountryCodeSelector>
     }
 
     return null;
+  }
+
+  void handlePick(Map<String, String> pick) {
+    node.unfocus();
+    controller.close();
+    widget.onPick(pick);
   }
 
   void handleSearch(String query) {
@@ -60,7 +72,7 @@ class _MutableCountryCodeSelectorState extends State<MutableCountryCodeSelector>
     List<Map<String, String>> resp = core.utils.countryCode.search(query);
 
     if (resp.isEmpty) {
-      // Show empty state
+      // IMPLEMENT EMPTY STATE
 
       return;
     }
@@ -78,7 +90,7 @@ class _MutableCountryCodeSelectorState extends State<MutableCountryCodeSelector>
     return ValueListenableBuilder<double>(
       valueListenable: notifier,
       builder: (context, value, _) => MutablePopup(
-        controller: widget.controller,
+        controller: controller,
         defaultState: PanelState.CLOSED,
         minHeight: 0,
         onClosed: () {
@@ -116,16 +128,17 @@ class _MutableCountryCodeSelectorState extends State<MutableCountryCodeSelector>
                       child: Scrollbar(
                         child: ListView.separated(
                           padding: EdgeInsets.symmetric(
-                            vertical: 50,
+                            vertical: 32,
                             horizontal: kSideScreenMargin,
                           ),
                           itemCount: result.length,
-                          separatorBuilder: (_, i) => Padding(
-                            // Divider
-                            padding: EdgeInsets.symmetric(vertical: 18),
-                            child: MutableDivider(),
+                          separatorBuilder: (_, i) => MutableDivider(),
+                          itemBuilder: (_, i) => CountryCode(
+                            result[i],
+                            onTap: () {
+                              handlePick(result[i]);
+                            },
                           ),
-                          itemBuilder: (_, i) => CountryCode(result[i]),
                         ),
                       ),
                     ),

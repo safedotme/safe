@@ -101,11 +101,14 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen>
             submit();
           },
           hintText: "9999-9999",
-          leadingLeft: PhoneExtentionDisplay(
-            onTap: () {
-              node.unfocus();
-              core.state.signup.countryCodeController.open();
-            },
+          leadingLeft: Observer(
+            builder: (_) => PhoneExtentionDisplay(
+              core.state.signup.countryCode,
+              onTap: () {
+                node.unfocus();
+                core.state.signup.countryCodeController.open();
+              },
+            ),
           ),
         ),
         resizeToAvoidBottomInsets: true,

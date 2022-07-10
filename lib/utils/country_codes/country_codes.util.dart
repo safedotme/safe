@@ -193,7 +193,10 @@ class CountryCodeUtil {
     List<Map<String, String>> result = [];
 
     for (String country in countryCodes.keys.toList()) {
-      String lowecase = country.toLowerCase().substring(0, query.length);
+      String lowecase = country.toLowerCase().substring(
+            0,
+            country.length < query.length ? country.length : query.length,
+          );
 
       if (lowecase.contains(query.toLowerCase())) {
         result.add({

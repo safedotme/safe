@@ -97,4 +97,16 @@ abstract class _SignupStore with Store {
 
   @observable
   PanelController countryCodeController = PanelController();
+
+  @observable
+  String phoneNumber = "";
+
+  @observable
+  String countryCode = "1";
+
+  @action
+  void setPhoneNumber(String v) => phoneNumber = v;
+
+  @action
+  void setCountryCode(String v) => countryCode = v;
 }

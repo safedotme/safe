@@ -250,6 +250,38 @@ mixin _$SignupStore on _SignupStore, Store {
     });
   }
 
+  late final _$phoneNumberAtom =
+      Atom(name: '_SignupStore.phoneNumber', context: context);
+
+  @override
+  String get phoneNumber {
+    _$phoneNumberAtom.reportRead();
+    return super.phoneNumber;
+  }
+
+  @override
+  set phoneNumber(String value) {
+    _$phoneNumberAtom.reportWrite(value, super.phoneNumber, () {
+      super.phoneNumber = value;
+    });
+  }
+
+  late final _$countryCodeAtom =
+      Atom(name: '_SignupStore.countryCode', context: context);
+
+  @override
+  String get countryCode {
+    _$countryCodeAtom.reportRead();
+    return super.countryCode;
+  }
+
+  @override
+  set countryCode(String value) {
+    _$countryCodeAtom.reportWrite(value, super.countryCode, () {
+      super.countryCode = value;
+    });
+  }
+
   late final _$_SignupStoreActionController =
       ActionController(name: '_SignupStore', context: context);
 
@@ -376,6 +408,28 @@ mixin _$SignupStore on _SignupStore, Store {
   }
 
   @override
+  void setPhoneNumber(String v) {
+    final _$actionInfo = _$_SignupStoreActionController.startAction(
+        name: '_SignupStore.setPhoneNumber');
+    try {
+      return super.setPhoneNumber(v);
+    } finally {
+      _$_SignupStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void setCountryCode(String v) {
+    final _$actionInfo = _$_SignupStoreActionController.startAction(
+        name: '_SignupStore.setCountryCode');
+    try {
+      return super.setCountryCode(v);
+    } finally {
+      _$_SignupStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 bannerController: ${bannerController},
@@ -392,7 +446,9 @@ nameError: ${nameError},
 permissionsController: ${permissionsController},
 permissionsErrors: ${permissionsErrors},
 phoneVerificationController: ${phoneVerificationController},
-countryCodeController: ${countryCodeController}
+countryCodeController: ${countryCodeController},
+phoneNumber: ${phoneNumber},
+countryCode: ${countryCode}
     ''';
   }
 }

@@ -4,8 +4,9 @@ import 'package:safe/widgets/mutable_button/mutable_button.widget.dart';
 
 class PhoneExtentionDisplay extends StatelessWidget {
   final void Function() onTap;
+  final String code;
 
-  PhoneExtentionDisplay({required this.onTap});
+  PhoneExtentionDisplay(this.code, {required this.onTap});
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -13,7 +14,7 @@ class PhoneExtentionDisplay extends StatelessWidget {
       child: MutableButton(
         onTap: onTap,
         child: Text(
-          "(+506)",
+          "+($code)",
           style: kTextInputStyle.copyWith(
             color: kColorMap[MutableColor.neutral2],
           ),
