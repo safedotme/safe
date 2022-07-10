@@ -18,66 +18,97 @@ class MutableCountryCodeSelector extends StatefulWidget {
       _MutableCountryCodeSelectorState();
 }
 
-class _MutableCountryCodeSelectorState
-    extends State<MutableCountryCodeSelector> {
+class _MutableCountryCodeSelectorState extends State<MutableCountryCodeSelector>
+    with TickerProviderStateMixin {
+  FocusNode node = FocusNode();
+  GlobalKey key = GlobalKey();
+  late ValueNotifier<double> notifier;
+  late MediaQueryData queryData;
+
+  // Gets height of ListView so it stays the same when keyboard is displayed (so keyboard doesn't overlay results)
+  double? fetchListViewHeight() {
+    if (key.currentContext != null) {
+      final RenderBox box = key.currentContext!.findRenderObject() as RenderBox;
+
+      return box.size.height;
+    }
+
+    return null;
+  }
+
   @override
   Widget build(BuildContext context) {
-    return MutablePopup(
-      controller: widget.controller,
-      defaultState: PanelState.CLOSED,
-      minHeight: 0,
-      maxHeight: 380,
-      body: Padding(
-        padding: EdgeInsets.fromLTRB(
-          0,
-          kHandleTopMargin,
-          0,
-          0,
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Center(child: MutableHandle()),
-            SizedBox(height: kPanelHandleToHeader),
-            MutableText(
-              "Country Codes",
-              align: TextAlign.center,
-              style: TypeStyle.h4,
-              weight: TypeWeight.heavy,
-            ),
-            SizedBox(height: 16),
-            Expanded(
-              child: Stack(
-                children: [
-                  SizedBox.expand(
-                    child: Scrollbar(
-                      child: ListView.separated(
-                        padding: EdgeInsets.symmetric(
-                          vertical: 50,
-                          horizontal: kSideScreenMargin,
+    queryData = MediaQuery.of(context);
+    notifier = ValueNotifier(queryData.viewInsets.bottom);
+
+    return ValueListenableBuilder<double>(
+      valueListenable: notifier,
+      builder: (context, value, _) => MutablePopup(
+        controller: widget.controller,
+        defaultState: PanelState.CLOSED,
+        minHeight: 0,
+        onClosed: () {
+          node.unfocus();
+        },
+        maxHeight: value == 0
+            ? kCountryCodeSelectorHeight
+            : (kCountryCodeSelectorHeight + value),
+        body: Padding(
+          padding: EdgeInsets.fromLTRB(
+            0,
+            kHandleTopMargin,
+            0,
+            0,
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Center(child: MutableHandle()),
+              SizedBox(height: kPanelHandleToHeader),
+              MutableText(
+                "Country Codes",
+                align: TextAlign.center,
+                style: TypeStyle.h4,
+                weight: TypeWeight.heavy,
+              ),
+              SizedBox(height: 16),
+              Expanded(
+                child: Stack(
+                  children: [
+                    SizedBox(
+                      height:
+                          value != 0 ? fetchListViewHeight() : double.infinity,
+                      key: key,
+                      child: Scrollbar(
+                        child: ListView.separated(
+                          padding: EdgeInsets.symmetric(
+                            vertical: 50,
+                            horizontal: kSideScreenMargin,
+                          ),
+                          itemCount: 10,
+                          separatorBuilder: (_, i) => Padding(
+                            // Divider
+                            padding: EdgeInsets.symmetric(vertical: 18),
+                            child: MutableDivider(),
+                          ),
+                          itemBuilder: (_, i) => CountryCode(),
                         ),
-                        itemCount: 10,
-                        separatorBuilder: (_, i) => Padding(
-                          // Divider
-                          padding: EdgeInsets.symmetric(vertical: 18),
-                          child: MutableDivider(),
-                        ),
-                        itemBuilder: (_, i) => CountryCode(),
                       ),
                     ),
-                  ),
-                  Align(
-                    alignment: Alignment.topCenter,
-                    child: CountryCodeSearchBar(
-                      onChange: (query) {
-                        print(query);
-                      },
+                    Align(
+                      alignment: Alignment.topCenter,
+                      child: CountryCodeSearchBar(
+                        node: node,
+                        onChange: (query) {
+                          print(query);
+                        },
+                      ),
                     ),
-                  ),
-                ],
-              ),
-            )
-          ],
+                  ],
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );

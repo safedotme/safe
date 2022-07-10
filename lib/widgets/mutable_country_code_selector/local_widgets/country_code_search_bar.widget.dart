@@ -49,12 +49,12 @@ class CountryCodeSearchBar extends StatelessWidget {
               Transparency.v64,
             ),
             onChanged: onChange,
-            // Height is based on fontSize (16)
             keyboardAppearance: kKeyboardAppearance,
             style: kTextInputStyle,
             keyboardType: TextInputType.text,
             decoration: InputDecoration(
-              hintText: "Search",
+              hintText: core.utils.language.langMap[core.state.preferences
+                  .language]!["country_code_selector"]["search_hint"],
               hintStyle: kTextInputStyle.copyWith(
                 color: kColorMap[MutableColor.neutral4],
               ),

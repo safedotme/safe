@@ -102,5 +102,8 @@ class LanguageUtil {
         }
       },
     },
+    "country_code_selector": {
+      "search_hint": "Search",
+    }
   };
 }
