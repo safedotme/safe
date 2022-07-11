@@ -105,7 +105,11 @@ class LanguageUtil {
     "country_code_selector": {
       "search_hint": "Search",
       "header": "Country Codes",
-      "load_error": "Unable to load"
+      "load_error": "Unable to load",
+      "country_not_found": {
+        "header": "Country Not Found",
+        "desc": ["No worries! Request a country ", "here", " 🙂"]
+      }
     }
   };
 }

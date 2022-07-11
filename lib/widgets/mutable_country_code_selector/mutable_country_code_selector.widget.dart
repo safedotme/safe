@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
 import 'package:safe/utils/constants/constants.util.dart';
+import 'package:safe/widgets/mutable_button/mutable_button.widget.dart';
 import 'package:safe/widgets/mutable_country_code_selector/local_widgets/country_code.widget.dart';
 import 'package:safe/widgets/mutable_country_code_selector/local_widgets/country_code_search_bar.widget.dart';
+import 'package:safe/widgets/mutable_country_code_selector/local_widgets/country_not_found.widget.dart';
 import 'package:safe/widgets/mutable_divider/mutable_divider.widget.dart';
 import 'package:safe/widgets/mutable_handle/mutable_handle.dart';
 import 'package:safe/widgets/mutable_popup/mutable_popup.widget.dart';
@@ -73,8 +75,9 @@ class _MutableCountryCodeSelectorState extends State<MutableCountryCodeSelector>
     List<Map<String, String>> resp = core.utils.countryCode.search(query);
 
     if (resp.isEmpty) {
-      // TODO: IMPLEMENT EMPTY STATE
-
+      setState(() {
+        result = [];
+      });
       return;
     }
 
@@ -127,22 +130,24 @@ class _MutableCountryCodeSelectorState extends State<MutableCountryCodeSelector>
                       height:
                           value != 0 ? fetchListViewHeight() : double.infinity,
                       key: key,
-                      child: MutableScrollBar(
-                        child: ListView.separated(
-                          padding: EdgeInsets.symmetric(
-                            vertical: 32,
-                            horizontal: kSideScreenMargin,
-                          ),
-                          itemCount: result.length,
-                          separatorBuilder: (_, i) => MutableDivider(),
-                          itemBuilder: (_, i) => CountryCode(
-                            result[i],
-                            onTap: () {
-                              handlePick(result[i]);
-                            },
-                          ),
-                        ),
-                      ),
+                      child: result.isNotEmpty
+                          ? MutableScrollBar(
+                              child: ListView.separated(
+                                padding: EdgeInsets.symmetric(
+                                  vertical: 32,
+                                  horizontal: kSideScreenMargin,
+                                ),
+                                itemCount: result.length,
+                                separatorBuilder: (_, i) => MutableDivider(),
+                                itemBuilder: (_, i) => CountryCode(
+                                  result[i],
+                                  onTap: () {
+                                    handlePick(result[i]);
+                                  },
+                                ),
+                              ),
+                            )
+                          : CountryNotFound(),
                     ),
                     Align(
                       alignment: Alignment.topCenter,
