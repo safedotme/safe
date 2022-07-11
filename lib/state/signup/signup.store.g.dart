@@ -266,6 +266,22 @@ mixin _$SignupStore on _SignupStore, Store {
     });
   }
 
+  late final _$countryDialCodeAtom =
+      Atom(name: '_SignupStore.countryDialCode', context: context);
+
+  @override
+  String get countryDialCode {
+    _$countryDialCodeAtom.reportRead();
+    return super.countryDialCode;
+  }
+
+  @override
+  set countryDialCode(String value) {
+    _$countryDialCodeAtom.reportWrite(value, super.countryDialCode, () {
+      super.countryDialCode = value;
+    });
+  }
+
   late final _$countryCodeAtom =
       Atom(name: '_SignupStore.countryCode', context: context);
 
@@ -408,6 +424,17 @@ mixin _$SignupStore on _SignupStore, Store {
   }
 
   @override
+  void setCountryDialCode(String v) {
+    final _$actionInfo = _$_SignupStoreActionController.startAction(
+        name: '_SignupStore.setCountryDialCode');
+    try {
+      return super.setCountryDialCode(v);
+    } finally {
+      _$_SignupStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   void setPhoneNumber(String v) {
     final _$actionInfo = _$_SignupStoreActionController.startAction(
         name: '_SignupStore.setPhoneNumber');
@@ -448,6 +475,7 @@ permissionsErrors: ${permissionsErrors},
 phoneVerificationController: ${phoneVerificationController},
 countryCodeController: ${countryCodeController},
 phoneNumber: ${phoneNumber},
+countryDialCode: ${countryDialCode},
 countryCode: ${countryCode}
     ''';
   }

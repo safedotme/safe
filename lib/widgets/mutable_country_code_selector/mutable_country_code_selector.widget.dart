@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
 import 'package:safe/utils/constants/constants.util.dart';
-import 'package:safe/utils/country_codes/codes.util.dart';
+import 'package:safe/utils/phone/codes.util.dart';
 import 'package:safe/widgets/mutable_country_code_selector/local_widgets/country_code.widget.dart';
 import 'package:safe/widgets/mutable_country_code_selector/local_widgets/country_code_search_bar.widget.dart';
 import 'package:safe/widgets/mutable_country_code_selector/local_widgets/country_not_found.widget.dart';
@@ -72,7 +72,7 @@ class _MutableCountryCodeSelectorState extends State<MutableCountryCodeSelector>
       return;
     }
 
-    List<Map<String, String>> resp = core.utils.countryCode.search(query);
+    List<Map<String, String>> resp = core.utils.phone.searchCountry(query);
 
     if (resp.isEmpty) {
       setState(() {

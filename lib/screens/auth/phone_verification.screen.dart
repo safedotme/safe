@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:phone_number/phone_number.dart';
 import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
 import 'package:safe/utils/constants/constants.util.dart';
 import 'package:safe/utils/icon/icon.util.dart';
-import 'package:safe/widgets/mutable_button/mutable_button.widget.dart';
 import 'package:safe/widgets/mutable_input_panel/mutable_input_panel.widget.dart';
 import 'package:safe/widgets/mutable_popup/mutable_popup.widget.dart';
-import 'package:safe/widgets/mutable_text/mutable_text.widget.dart';
 import 'package:safe/widgets/mutable_text_field/local_widgets/phone_extention_display.widget.dart';
 import 'package:safe/widgets/mutable_text_field/mutable_text_field.widget.dart';
 
@@ -22,6 +21,7 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen>
   late Core core;
   late MediaQueryData queryData;
   late AnimationController controller;
+  late TextEditingController fieldController;
   bool error = false;
   FocusNode node = FocusNode();
 
@@ -62,6 +62,9 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen>
     core.state.signup.setOnBannerReverse(() {
       controller.reverse();
     });
+
+    // Initialize text editing controller for auto phone format
+    fieldController = TextEditingController();
   }
 
   @override
@@ -72,10 +75,36 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen>
     controller.dispose();
   }
 
-  void submit() {
+  // Generates different hint text based on country
+  String handleHint(String code) {
+    return code == "US" ? "(999) 999-9999" : "9999 9999";
+  }
+
+  void submit() async {
     // POSSIBLY CHANGE BASED ON ERR
     core.state.signup.countryCodeController.close();
     node.unfocus();
+  }
+
+  void format(String? phone) async {
+    if (phone != null) {
+      // Removes all symbols from fieldController value
+      String pure = phone.replaceAll(RegExp(r'[^\w\s]+'), '');
+
+      fieldController.text = await core.utils.phone.format(
+        pure,
+        core.state.signup.countryCode,
+      );
+
+      // Sets cursor position to end
+      fieldController.selection = TextSelection.fromPosition(
+        TextPosition(
+          offset: fieldController.text.length,
+        ),
+      );
+
+      core.state.signup.setPhoneNumber(pure);
+    }
   }
 
   @override
@@ -93,26 +122,26 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen>
       },
       body: MutableInputPanel(
         // Permission Cards
-        body: MutableTextField(
-          type: TextInputType.phone,
-          focusNode: node,
-          onChange: (phone) {},
-          onSubmit: (_) {
-            submit();
-          },
-          hintText: "9999-9999",
-          leadingLeft: Observer(
-            builder: (_) => PhoneExtentionDisplay(
-              core.state.signup.countryCode,
-              onTap: () {
-                node.unfocus();
-                core.state.signup.countryCodeController.open();
-              },
+        body: Observer(
+          builder: (_) => MutableTextField(
+            controller: fieldController,
+            type: TextInputType.phone,
+            focusNode: node,
+            onChange: format,
+            hintText: handleHint(core.state.signup.countryCode),
+            leadingLeft: Observer(
+              builder: (_) => PhoneExtentionDisplay(
+                core.state.signup.countryDialCode,
+                onTap: () {
+                  node.unfocus();
+                  core.state.signup.countryCodeController.open();
+                },
+              ),
             ),
           ),
         ),
         resizeToAvoidBottomInsets: true,
-        // Display stuff
+        // Display related properties
         title: "Enter Phone Number",
         description: "We'll send you a magic link to verify your\n account",
         icon: MutableIcons.phone,

@@ -102,7 +102,13 @@ abstract class _SignupStore with Store {
   String phoneNumber = "";
 
   @observable
-  String countryCode = "1";
+  String countryDialCode = "+1";
+
+  @observable
+  String countryCode = "US";
+
+  @action
+  void setCountryDialCode(String v) => countryDialCode = v;
 
   @action
   void setPhoneNumber(String v) => phoneNumber = v;
