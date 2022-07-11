@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:mobx/mobx.dart';
+import 'package:provider/provider.dart';
+import 'package:safe/core.dart';
 import 'package:safe/utils/constants/constants.util.dart';
 import 'package:safe/widgets/mutable_button/mutable_button.widget.dart';
 import 'package:safe/widgets/mutable_text/mutable_text.widget.dart';
@@ -10,6 +14,8 @@ class CountryCode extends StatelessWidget {
   CountryCode(this.country, {this.onTap});
   @override
   Widget build(BuildContext context) {
+    Core core = Provider.of<Core>(context, listen: false);
+
     return MutableButton(
       onTap: onTap,
       child: Container(
@@ -18,7 +24,9 @@ class CountryCode extends StatelessWidget {
         child: Row(
           children: [
             MutableText(
-              country["name"] ?? "Unable to load",
+              country["name"] ??
+                  core.utils.language.langMap[core.state.preferences.language]![
+                      "country_code_selector"]["load_error"],
               style: TypeStyle.body,
             ),
             SizedBox(width: 4),

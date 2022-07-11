@@ -7,6 +7,7 @@ import 'package:safe/widgets/mutable_country_code_selector/local_widgets/country
 import 'package:safe/widgets/mutable_divider/mutable_divider.widget.dart';
 import 'package:safe/widgets/mutable_handle/mutable_handle.dart';
 import 'package:safe/widgets/mutable_popup/mutable_popup.widget.dart';
+import 'package:safe/widgets/mutable_scrollbar/mutable_scrollbar.widget.dart';
 import 'package:safe/widgets/mutable_text/mutable_text.widget.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
@@ -72,7 +73,7 @@ class _MutableCountryCodeSelectorState extends State<MutableCountryCodeSelector>
     List<Map<String, String>> resp = core.utils.countryCode.search(query);
 
     if (resp.isEmpty) {
-      // IMPLEMENT EMPTY STATE
+      // TODO: IMPLEMENT EMPTY STATE
 
       return;
     }
@@ -112,12 +113,13 @@ class _MutableCountryCodeSelectorState extends State<MutableCountryCodeSelector>
               Center(child: MutableHandle()),
               SizedBox(height: kPanelHandleToHeader),
               MutableText(
-                "Country Codes",
+                core.utils.language.langMap[core.state.preferences.language]![
+                    "country_code_selector"]["header"],
                 align: TextAlign.center,
-                style: TypeStyle.h4,
-                weight: TypeWeight.heavy,
+                style: kCountryCodeHeaderStyle,
+                weight: kCountryCodeHeaderWeight,
               ),
-              SizedBox(height: 16),
+              SizedBox(height: kCountryCodeHeaderToBody),
               Expanded(
                 child: Stack(
                   children: [
@@ -125,7 +127,7 @@ class _MutableCountryCodeSelectorState extends State<MutableCountryCodeSelector>
                       height:
                           value != 0 ? fetchListViewHeight() : double.infinity,
                       key: key,
-                      child: Scrollbar(
+                      child: MutableScrollBar(
                         child: ListView.separated(
                           padding: EdgeInsets.symmetric(
                             vertical: 32,
@@ -146,9 +148,7 @@ class _MutableCountryCodeSelectorState extends State<MutableCountryCodeSelector>
                       alignment: Alignment.topCenter,
                       child: CountryCodeSearchBar(
                         node: node,
-                        onChange: (query) {
-                          handleSearch(query);
-                        },
+                        onChange: handleSearch,
                       ),
                     ),
                   ],

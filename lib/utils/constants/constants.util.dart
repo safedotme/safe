@@ -221,5 +221,8 @@ const Brightness kKeyboardAppearance = Brightness.dark;
 const double kMutableBannerHeight = 115;
 final Duration kMutableBannerDuration = Duration(milliseconds: 200);
 
-// Country Code Selector
+// COUNTRY CODE SELECTOR
+const TypeStyle kCountryCodeHeaderStyle = TypeStyle.h4;
+const TypeWeight kCountryCodeHeaderWeight = TypeWeight.heavy;
 const double kCountryCodeSelectorHeight = 380;
+const double kCountryCodeHeaderToBody = 16;

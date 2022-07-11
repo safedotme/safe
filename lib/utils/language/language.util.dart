@@ -104,6 +104,8 @@ class LanguageUtil {
     },
     "country_code_selector": {
       "search_hint": "Search",
+      "header": "Country Codes",
+      "load_error": "Unable to load"
     }
   };
 }
