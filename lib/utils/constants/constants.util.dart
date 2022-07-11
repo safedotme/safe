@@ -226,3 +226,4 @@ const TypeStyle kCountryCodeHeaderStyle = TypeStyle.h4;
 const TypeWeight kCountryCodeHeaderWeight = TypeWeight.heavy;
 const double kCountryCodeSelectorHeight = 380;
 const double kCountryCodeHeaderToBody = 16;
+const double kCountryNameCodeSpacing = 4;
