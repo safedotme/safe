@@ -26,7 +26,7 @@ class _SignupCountryCodeSelectorState extends State<SignupCountryCodeSelector> {
     return Observer(
       builder: (_) => MutableCountryCodeSelector(
         onPick: (country) {
-          core.state.signup.setCountryCode(country["code"]!);
+          core.state.signup.setCountryCode(country["dial_code"]!);
         },
         controller: core.state.signup.countryCodeController,
       ),

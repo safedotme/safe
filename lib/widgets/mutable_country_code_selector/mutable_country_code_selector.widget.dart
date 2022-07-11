@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
 import 'package:safe/utils/constants/constants.util.dart';
-import 'package:safe/widgets/mutable_button/mutable_button.widget.dart';
+import 'package:safe/utils/country_codes/codes.util.dart';
 import 'package:safe/widgets/mutable_country_code_selector/local_widgets/country_code.widget.dart';
 import 'package:safe/widgets/mutable_country_code_selector/local_widgets/country_code_search_bar.widget.dart';
 import 'package:safe/widgets/mutable_country_code_selector/local_widgets/country_not_found.widget.dart';
@@ -42,7 +42,7 @@ class _MutableCountryCodeSelectorState extends State<MutableCountryCodeSelector>
     super.initState();
 
     core = Provider.of<Core>(context, listen: false);
-    result = core.utils.countryCode.display();
+    result = kCountryCodes;
     controller = widget.controller;
   }
 
@@ -66,7 +66,7 @@ class _MutableCountryCodeSelectorState extends State<MutableCountryCodeSelector>
   void handleSearch(String query) {
     if (query.isEmpty) {
       setState(() {
-        result = core.utils.countryCode.display();
+        result = kCountryCodes;
       });
 
       return;

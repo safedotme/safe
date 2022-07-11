@@ -31,7 +31,7 @@ class CountryCode extends StatelessWidget {
             ),
             SizedBox(width: 4),
             MutableText(
-              country["code"] ?? "",
+              country["dial_code"] ?? "",
               style: TypeStyle.body,
               color: MutableColor.neutral2,
             ),

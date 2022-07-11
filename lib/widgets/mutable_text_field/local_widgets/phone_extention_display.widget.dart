@@ -14,7 +14,7 @@ class PhoneExtentionDisplay extends StatelessWidget {
       child: MutableButton(
         onTap: onTap,
         child: Text(
-          "+($code)",
+          "($code)",
           style: kTextInputStyle.copyWith(
             color: kColorMap[MutableColor.neutral2],
           ),
