@@ -6,6 +6,7 @@ import 'package:safe/utils/language/language.util.dart';
 import 'package:safe/utils/permissions/permisions.util.dart';
 import 'package:safe/utils/phone/phone.util.dart';
 import 'package:safe/utils/popup_navigation/popup_navigation.util.dart';
+import 'package:safe/utils/text/text.util.dart';
 
 class Utils {
   ColorUtils color = ColorUtils();
@@ -23,4 +24,5 @@ class Utils {
   PopupNavigationUtil popupNavigation = PopupNavigationUtil();
   PermissionsUtil permissions = PermissionsUtil();
   PhoneUtil phone = PhoneUtil();
+  TextUtil text = TextUtil();
 }

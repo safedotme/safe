@@ -87,9 +87,10 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen>
   }
 
   void format(String? phone) async {
+    // REFORMAT WHEN COUNTRY CODE CHANGES
     if (phone != null) {
       // Removes all symbols from fieldController value
-      String pure = phone.replaceAll(RegExp(r'[^\w\s]+'), '');
+      String pure = core.utils.text.removeSymbols(phone);
 
       fieldController.text = await core.utils.phone.format(
         pure,
