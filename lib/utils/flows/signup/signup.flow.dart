@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:magic_sdk/magic_sdk.dart';
 import 'package:safe/screens/auth/local_widgets/signup_country_code_selector.widget.dart';
 import 'package:safe/screens/auth/local_widgets/signup_message_banner.widget.dart';
 import 'package:safe/screens/auth/name_input.screen.dart';
 import 'package:safe/screens/auth/permissions.screen.dart';
 import 'package:safe/screens/auth/phone_verification.screen.dart';
-import 'package:safe/widgets/mutable_country_code_selector/mutable_country_code_selector.widget.dart';
 
 class SignupFlow {
   final List<Widget> widgets = [
