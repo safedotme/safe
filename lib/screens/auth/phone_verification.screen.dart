@@ -89,9 +89,9 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen>
   }
 
   void submit() async {
-    // POSSIBLY CHANGE BASED ON ERR
     core.state.signup.countryCodeController.close();
     node.unfocus();
+    // LOG
   }
 
   void format(String? phone) async {

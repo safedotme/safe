@@ -1,7 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:magic_sdk/magic_sdk.dart';
 import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
 import 'package:safe/screens/testing/testing.screen.dart';
@@ -14,9 +13,6 @@ Future<void> main() async {
   await Firebase.initializeApp(
     options: FirebaseUtil().currentPlatform,
   );
-
-  // Initialize Magic singleton instance
-  Magic.instance = Magic(dotenv.get("MAGIC_PK"));
 
   runApp(Safe());
 }
