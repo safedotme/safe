@@ -17,12 +17,15 @@ class MutableInputPanel extends StatefulWidget {
   final bool shimmer;
   final bool accomodateBottomInsets;
   final MutableIcons icon;
+  final void Function()? onInteraction;
+
   final String description;
 
   MutableInputPanel({
     this.accomodateBottomInsets = false,
     required this.body,
     this.onTap,
+    this.onInteraction,
     required this.icon,
     this.shimmer = false,
     this.iconSize,
@@ -85,58 +88,71 @@ class _MutableInputPanelState extends State<MutableInputPanel> {
     notifier = ValueNotifier(queryData.viewInsets.bottom);
     fetchSpacerSize();
 
-    return Container(
-      padding: EdgeInsets.fromLTRB(
-        kSideScreenMargin,
-        kHandleTopMargin,
-        kSideScreenMargin,
-        kBottomScreenMargin,
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Center(child: MutableHandle()),
-          SizedBox(height: 38),
-          Center(
-            child: MutableIconSphere(
-              widget.icon,
-              size: widget.iconSize,
+    return GestureDetector(
+      onVerticalDragStart: widget.onInteraction != null
+          ? (_) {
+              widget.onInteraction!();
+            }
+          : null,
+      onTap: widget.onInteraction != null
+          ? () {
+              widget.onInteraction!();
+            }
+          : null,
+      child: Container(
+        color: Colors.transparent,
+        padding: EdgeInsets.fromLTRB(
+          kSideScreenMargin,
+          kHandleTopMargin,
+          kSideScreenMargin,
+          kBottomScreenMargin,
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Center(child: MutableHandle()),
+            SizedBox(height: 38),
+            Center(
+              child: MutableIconSphere(
+                widget.icon,
+                size: widget.iconSize,
+              ),
             ),
-          ),
-          SizedBox(height: 32),
-          MutableText(
-            widget.title,
-            style: TypeStyle.h3,
-            align: TextAlign.center,
-          ),
-          SizedBox(height: 10),
-          MutableText(
-            widget.description,
-            style: TypeStyle.h5,
-            color: MutableColor.neutral2,
-            align: TextAlign.center,
-          ),
-          Spacer(),
-          widget.body,
-          widget.resizeToAvoidBottomInsets
-              ? ValueListenableBuilder<double>(
-                  valueListenable: notifier,
-                  builder: (context, value, _) {
-                    if (value == 0) {
-                      return Spacer(key: key);
-                    } else {
-                      return SizedBox(height: animate(value));
-                    }
-                  },
-                )
-              : Spacer(),
-          MutableLargeButton(
-            onTap: widget.onTap,
-            text: widget.buttonText,
-            isActive: widget.isActive,
-            shimmer: widget.shimmer,
-          ),
-        ],
+            SizedBox(height: 32),
+            MutableText(
+              widget.title,
+              style: TypeStyle.h3,
+              align: TextAlign.center,
+            ),
+            SizedBox(height: 10),
+            MutableText(
+              widget.description,
+              style: TypeStyle.h5,
+              color: MutableColor.neutral2,
+              align: TextAlign.center,
+            ),
+            Spacer(),
+            widget.body,
+            widget.resizeToAvoidBottomInsets
+                ? ValueListenableBuilder<double>(
+                    valueListenable: notifier,
+                    builder: (context, value, _) {
+                      if (value == 0) {
+                        return Spacer(key: key);
+                      } else {
+                        return SizedBox(height: animate(value));
+                      }
+                    },
+                  )
+                : Spacer(),
+            MutableLargeButton(
+              onTap: widget.onTap,
+              text: widget.buttonText,
+              isActive: widget.isActive,
+              shimmer: widget.shimmer,
+            ),
+          ],
+        ),
       ),
     );
   }

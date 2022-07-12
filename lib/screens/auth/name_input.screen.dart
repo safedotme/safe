@@ -24,6 +24,7 @@ class _NameInputScreenState extends State<NameInputScreen>
   FocusNode node = FocusNode();
   late String hintName;
   bool error = false;
+  bool dismissDetector = false;
 
   // Animation stuff
   double topMargin = kTopMargin;
@@ -64,6 +65,13 @@ class _NameInputScreenState extends State<NameInputScreen>
 
     // Initialize controller to remove special characters or numbers from name
     fieldController = TextEditingController();
+
+    // Enables user to drag or tap to dismiss keyboard when enabled
+    node.addListener(() {
+      setState(() {
+        dismissDetector = node.hasFocus;
+      });
+    });
   }
 
   @override
@@ -77,7 +85,7 @@ class _NameInputScreenState extends State<NameInputScreen>
   void submit() async {
     bool error = false;
 
-    // Check for name
+    // Check if there is a name
     if (core.state.signup.name.isEmpty) {
       error = true;
 
@@ -93,6 +101,7 @@ class _NameInputScreenState extends State<NameInputScreen>
       core.state.signup.bannerController.show();
     }
 
+    // Checks if there is a last name
     if (!core.state.signup.name.contains(" ") && !error) {
       error = true;
       core.state.signup.setBannerState(MessageType.error);
@@ -140,7 +149,10 @@ class _NameInputScreenState extends State<NameInputScreen>
       ),
     );
 
-    core.state.signup.setName(noNum);
+    // Called after fieldController functions to not show user capitalized format
+    String capitalized = core.utils.text.toTitle(noNum);
+
+    core.state.signup.setName(capitalized);
   }
 
   String generateRandomName() {
@@ -164,6 +176,11 @@ class _NameInputScreenState extends State<NameInputScreen>
       },
       body: Observer(
         builder: (_) => MutableInputPanel(
+          onInteraction: dismissDetector
+              ? () {
+                  node.unfocus();
+                }
+              : null,
           body: MutableTextField(
             controller: fieldController,
             type: TextInputType.name,

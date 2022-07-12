@@ -23,6 +23,7 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen>
   late TextEditingController fieldController;
   bool error = false;
   FocusNode node = FocusNode();
+  bool dismissDetector = false;
 
   // Animation stuff
   double topMargin = kTopMargin;
@@ -65,6 +66,13 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen>
     // Initialize text editing controller for auto phone format
     fieldController = TextEditingController();
     core.state.signup.setOnPick(format);
+
+    // Enables user to drag or tap to dismiss keyboard when enabled
+    node.addListener(() {
+      setState(() {
+        dismissDetector = node.hasFocus;
+      });
+    });
   }
 
   @override
@@ -123,6 +131,11 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen>
         core.state.signup.permissionsController.open();
       },
       body: MutableInputPanel(
+        onInteraction: dismissDetector
+            ? () {
+                node.unfocus();
+              }
+            : null,
         // Phone Input Text Field
         body: Observer(
           builder: (_) => MutableTextField(
