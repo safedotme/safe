@@ -105,6 +105,9 @@ abstract class _SignupStore with Store {
   String phoneNumber = "";
 
   @observable
+  String formattedPhone = "";
+
+  @observable
   String countryDialCode = "+1";
 
   @observable
@@ -115,6 +118,9 @@ abstract class _SignupStore with Store {
 
   @action
   void setPhoneNumber(String v) => phoneNumber = v;
+
+  @action
+  void setFormattedPhone(String v) => formattedPhone = v;
 
   @action
   void setCountryCode(String v) => countryCode = v;

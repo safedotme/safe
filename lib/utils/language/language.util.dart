@@ -115,6 +115,13 @@ class LanguageUtil {
         "header": "Country Not Found",
         "desc": ["No worries! Request a country ", "here", " 🙂"]
       }
+    },
+    "otp_input_panel": {
+      "header": "Enter OTP",
+      "desc": "Please enter the code sent to\n {phone}",
+      "secured_by_stamp": "Secured by Google",
+      "next_code": "Next code available in {time}s",
+      "new_code": "Send a new code",
     }
   };
 }

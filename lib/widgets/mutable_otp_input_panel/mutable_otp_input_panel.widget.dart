@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
 import 'package:safe/utils/constants/constants.util.dart';
@@ -12,9 +13,15 @@ import 'package:sliding_up_panel/sliding_up_panel.dart';
 class MutableOtpInputPanel extends StatefulWidget {
   final PanelController controller;
   final void Function(String otp) onSubmit;
+  final String phone;
+  final String countryDialCode;
+  final String countryCode;
 
   MutableOtpInputPanel({
     required this.controller,
+    required this.phone,
+    required this.countryDialCode,
+    required this.countryCode,
     required this.onSubmit,
   });
 
@@ -28,9 +35,12 @@ class _MutableOtpInputPanelState extends State<MutableOtpInputPanel>
   late PanelController controller;
   late ValueNotifier<double> notifier;
   late MediaQueryData queryData;
-  bool dismissDetector = false;
   FocusNode node = FocusNode();
   GlobalKey key = GlobalKey();
+
+  // State values
+  bool dismissDetector = false;
+  String time = "0";
 
   @override
   void initState() {
@@ -107,31 +117,50 @@ class _MutableOtpInputPanelState extends State<MutableOtpInputPanel>
                   Center(child: MutableHandle()),
                   SizedBox(height: kPanelHandleToHeader),
                   MutableText(
-                    "Enter OTP", // Extract to LNG
+                    core.utils.language.langMap[core.state.preferences
+                        .language]!["otp_input_panel"]["header"],
                     align: TextAlign.center,
                     style: kPanelPopupHeaderStyle,
                     weight: kPanelPopupHeaderWeight,
                   ),
                   SizedBox(height: 6),
-                  MutableText(
-                    "Please enter the code sent to \n+506 7109 9519", // Extract
-                    align: TextAlign.center,
-                    style: kPanelPopupSubheaderStyle,
-                    weight: kPanelPopupSubheaderWeight,
-                    color: kPanelPopupSubheaderColor,
+                  Observer(
+                    builder: (context) => MutableText(
+                      core
+                          .utils
+                          .language
+                          .langMap[core.state.preferences.language]![
+                              "otp_input_panel"]["desc"]
+                          .toString()
+                          .replaceAll(
+                            "{phone}",
+                            "${widget.countryDialCode} ${core.state.signup.formattedPhone}",
+                          ),
+                      align: TextAlign.center,
+                      style: kPanelPopupSubheaderStyle,
+                      weight: kPanelPopupSubheaderWeight,
+                      color: kPanelPopupSubheaderColor,
+                    ),
                   ),
                   Spacer(flex: 2),
                   Center(
                     child: MutablePinCodeTextField(
                       focusNode: node,
-                      onChanged: (_) {
-                        print(_);
+                      onChanged: (_) {},
+                      onComplete: (phone) {
+                        widget.onSubmit(phone);
                       },
                     ),
                   ),
                   MutableButton(
                     child: MutableText(
-                      "Next code available in 3s", // Extract
+                      core
+                          .utils
+                          .language
+                          .langMap[core.state.preferences.language]![
+                              "otp_input_panel"]["next_code"]
+                          .toString()
+                          .replaceAll("{time}", time),
                       align: TextAlign.center,
                       color: MutableColor.neutral4,
                       style: TypeStyle.body,
@@ -139,7 +168,8 @@ class _MutableOtpInputPanelState extends State<MutableOtpInputPanel>
                   ),
                   Spacer(flex: 3),
                   MutableText(
-                    "Secured by Google", // Extract
+                    core.utils.language.langMap[core.state.preferences
+                        .language]!["otp_input_panel"]["secured_by_stamp"],
                     align: TextAlign.center,
                     style: TypeStyle.h5,
                     weight: TypeWeight.regular,

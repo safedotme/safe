@@ -283,6 +283,22 @@ mixin _$SignupStore on _SignupStore, Store {
     });
   }
 
+  late final _$formattedPhoneAtom =
+      Atom(name: '_SignupStore.formattedPhone', context: context);
+
+  @override
+  String get formattedPhone {
+    _$formattedPhoneAtom.reportRead();
+    return super.formattedPhone;
+  }
+
+  @override
+  set formattedPhone(String value) {
+    _$formattedPhoneAtom.reportWrite(value, super.formattedPhone, () {
+      super.formattedPhone = value;
+    });
+  }
+
   late final _$countryDialCodeAtom =
       Atom(name: '_SignupStore.countryDialCode', context: context);
 
@@ -478,6 +494,17 @@ mixin _$SignupStore on _SignupStore, Store {
   }
 
   @override
+  void setFormattedPhone(String v) {
+    final _$actionInfo = _$_SignupStoreActionController.startAction(
+        name: '_SignupStore.setFormattedPhone');
+    try {
+      return super.setFormattedPhone(v);
+    } finally {
+      _$_SignupStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   void setCountryCode(String v) {
     final _$actionInfo = _$_SignupStoreActionController.startAction(
         name: '_SignupStore.setCountryCode');
@@ -519,6 +546,7 @@ phoneVerificationController: ${phoneVerificationController},
 countryCodeController: ${countryCodeController},
 otpInputPanelController: ${otpInputPanelController},
 phoneNumber: ${phoneNumber},
+formattedPhone: ${formattedPhone},
 countryDialCode: ${countryDialCode},
 countryCode: ${countryCode},
 onPick: ${onPick}

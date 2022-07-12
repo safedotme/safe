@@ -116,6 +116,7 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen>
     );
 
     core.state.signup.setPhoneNumber(pure);
+    core.state.signup.setFormattedPhone(fieldController.text);
   }
 
   @override
