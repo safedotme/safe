@@ -75,26 +75,21 @@ class AuthUtil {
   Map<String, String> handleError(Core core, FirebaseAuthException error) {
     switch (error.code) {
       case "invalid-phone-number":
-        return {
-          "header": "Hold up! You're phone number is invalid",
-          "desc": "Check your phone number before continuing"
-        };
+        return core.utils.language
+                .langMap[core.state.preferences.language]!["auth"]
+            ["firebase_errors"][error.code];
       case "invalid-verification-code":
-        return {
-          "header": "Hold up! The verification code you entered is invalid",
-          "desc":
-              "Check your messages for the latest code and try entering it again"
-        };
+        return core.utils.language
+                .langMap[core.state.preferences.language]!["auth"]
+            ["firebase_errors"][error.code];
       case "user-disabled":
-        return {
-          "header": "Your account has been desabled",
-          "desc": "Tap here to reach out to Safe's support team"
-        };
+        return core.utils.language
+                .langMap[core.state.preferences.language]!["auth"]
+            ["firebase_errors"][error.code];
       default:
-        return {
-          "header": "Oops, we've run into a problem signing you in",
-          "desc": "Try signing {action} again later"
-        };
+        return core.utils.language
+                .langMap[core.state.preferences.language]!["auth"]
+            ["firebase_errors"]["default"];
     }
   }
 }

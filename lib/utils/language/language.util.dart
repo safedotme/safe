@@ -16,6 +16,25 @@ class LanguageUtil {
       "loginButton": "I already have one",
     },
     "auth": {
+      "firebase_errors": {
+        "invalid-phone-number": {
+          "header": "Hold up! You're phone number is invalid",
+          "desc": "Check your phone number before continuing",
+        },
+        "invalid-verification-code": {
+          "header": "Hold up! The verification code you entered is invalid",
+          "desc":
+              "Check your messages for the latest code and try entering it again"
+        },
+        "user_disabled": {
+          "header": "Your account has been desabled",
+          "desc": "Tap here to reach out to Safe's support team"
+        },
+        "default": {
+          "header": "Oops, we've run into a problem signing you in",
+          "desc": "Try signing {action} again later"
+        },
+      },
       "name_input": {
         "error-emptyField/title": "Hold up! You forgot to add your name",
         "error-emptyField/desc": "Please provide your full real name",
@@ -122,6 +141,6 @@ class LanguageUtil {
       "secured_by_stamp": "Secured by Google",
       "next_code": "Next code available in {time}s",
       "new_code": "Send a new code",
-    }
+    },
   };
 }
