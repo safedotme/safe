@@ -76,7 +76,7 @@ class _MutableOtpInputPanelState extends State<MutableOtpInputPanel>
         defaultState: PanelState.CLOSED,
         draggable: true,
         minHeight: 0,
-        onInteraction: dismissDetector
+        onFreezeInteraction: dismissDetector
             ? () {
                 node.unfocus();
               }

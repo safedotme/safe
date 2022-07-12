@@ -125,7 +125,7 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen>
       minHeight: 0,
       maxHeight: queryData.size.height - topMargin,
       controller: core.state.signup.phoneVerificationController,
-      onInteraction: dismissDetector
+      onFreezeInteraction: dismissDetector
           ? () {
               node.unfocus();
             }
