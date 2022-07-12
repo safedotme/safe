@@ -222,8 +222,16 @@ const double kMutableBannerHeight = 115;
 final Duration kMutableBannerDuration = Duration(milliseconds: 200);
 
 // COUNTRY CODE SELECTOR
-const TypeStyle kCountryCodeHeaderStyle = TypeStyle.h4;
-const TypeWeight kCountryCodeHeaderWeight = TypeWeight.heavy;
 const double kCountryCodeSelectorHeight = 380;
 const double kCountryCodeHeaderToBody = 16;
 const double kCountryNameCodeSpacing = 4;
+
+// OTP INPUT POPUP
+const double kOTPInputPopupHeight = 300;
+
+// PANEL POPUP
+const TypeStyle kPanelPopupHeaderStyle = TypeStyle.h4;
+const TypeWeight kPanelPopupHeaderWeight = TypeWeight.heavy;
+const TypeStyle kPanelPopupSubheaderStyle = TypeStyle.h5;
+const TypeWeight kPanelPopupSubheaderWeight = TypeWeight.medium;
+const MutableColor kPanelPopupSubheaderColor = MutableColor.neutral2;

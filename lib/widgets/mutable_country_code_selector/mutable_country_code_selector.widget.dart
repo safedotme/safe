@@ -131,8 +131,8 @@ class _MutableCountryCodeSelectorState extends State<MutableCountryCodeSelector>
                 core.utils.language.langMap[core.state.preferences.language]![
                     "country_code_selector"]["header"],
                 align: TextAlign.center,
-                style: kCountryCodeHeaderStyle,
-                weight: kCountryCodeHeaderWeight,
+                style: kPanelPopupHeaderStyle,
+                weight: kPanelPopupHeaderWeight,
               ),
               SizedBox(height: kCountryCodeHeaderToBody),
               Expanded(

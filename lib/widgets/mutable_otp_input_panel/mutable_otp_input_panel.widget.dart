@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
 import 'package:safe/utils/constants/constants.util.dart';
 import 'package:safe/widgets/mutable_button/mutable_button.widget.dart';
 import 'package:safe/widgets/mutable_handle/mutable_handle.dart';
+import 'package:safe/widgets/mutable_pin_code_textfield/mutable_pin_code_textfield.widget.dart';
 import 'package:safe/widgets/mutable_popup/mutable_popup.widget.dart';
 import 'package:safe/widgets/mutable_text/mutable_text.widget.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
@@ -87,9 +87,8 @@ class _MutableOtpInputPanelState extends State<MutableOtpInputPanel>
         onOpened: () {
           node.requestFocus();
         },
-        maxHeight: value == 0
-            ? kCountryCodeSelectorHeight // Refactor to new height
-            : (kCountryCodeSelectorHeight + value),
+        maxHeight:
+            value == 0 ? kOTPInputPopupHeight : (kOTPInputPopupHeight + value),
         body: Align(
           alignment: Alignment.topCenter,
           child: SizedBox(
@@ -108,60 +107,31 @@ class _MutableOtpInputPanelState extends State<MutableOtpInputPanel>
                   Center(child: MutableHandle()),
                   SizedBox(height: kPanelHandleToHeader),
                   MutableText(
-                    "Enter OTP",
+                    "Enter OTP", // Extract to LNG
                     align: TextAlign.center,
-                    style:
-                        kCountryCodeHeaderStyle, // Change name (used here and in emergency contacts)
-                    weight:
-                        kCountryCodeHeaderWeight, // Change name (used here and in emergency contacts)
+                    style: kPanelPopupHeaderStyle,
+                    weight: kPanelPopupHeaderWeight,
                   ),
                   SizedBox(height: 6),
                   MutableText(
-                    "Please enter the code sent to \n+506 7109 9519",
+                    "Please enter the code sent to \n+506 7109 9519", // Extract
                     align: TextAlign.center,
-                    style: TypeStyle.h5,
-                    weight: TypeWeight.medium,
-                    color: MutableColor.neutral2,
+                    style: kPanelPopupSubheaderStyle,
+                    weight: kPanelPopupSubheaderWeight,
+                    color: kPanelPopupSubheaderColor,
                   ),
                   Spacer(flex: 2),
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 30),
-                    child: PinCodeTextField(
-                      // Extract to mutable widget
-                      keyboardType: TextInputType.number,
-                      animationType: AnimationType.none,
-                      keyboardAppearance: kKeyboardAppearance,
-                      textStyle: TextStyle(
-                        color: kColorMap[MutableColor.neutral1],
-                        fontFamily: kFontFamilyGen(weight: TypeWeight.heavy),
-                        fontSize: 20,
-                      ),
-                      pinTheme: PinTheme(
-                        fieldWidth: (345 / 6) - ((6 / 2) * 4), // CHANGE
-                        // ACTIVE
-                        activeColor: kColorMap[MutableColor.neutral7],
-                        activeFillColor: kColorMap[MutableColor.neutral8],
-                        // SELECTED
-                        selectedColor: kColorMap[MutableColor.neutral6],
-                        selectedFillColor: kColorMap[MutableColor.neutral7],
-                        //INACTIVE
-                        inactiveColor: kColorMap[MutableColor.neutral7],
-                        inactiveFillColor: kColorMap[MutableColor.neutral8],
-                        borderWidth: kBorderWidth,
-                        borderRadius: BorderRadius.circular(12),
-                        shape: PinCodeFieldShape.box,
-                      ),
-                      enableActiveFill: true,
-                      showCursor: false,
+                  Center(
+                    child: MutablePinCodeTextField(
                       focusNode: node,
-                      appContext: context,
-                      length: 6,
-                      onChanged: (_) {},
+                      onChanged: (_) {
+                        print(_);
+                      },
                     ),
                   ),
                   MutableButton(
                     child: MutableText(
-                      "Next code available in 3s",
+                      "Next code available in 3s", // Extract
                       align: TextAlign.center,
                       color: MutableColor.neutral4,
                       style: TypeStyle.body,
@@ -169,11 +139,11 @@ class _MutableOtpInputPanelState extends State<MutableOtpInputPanel>
                   ),
                   Spacer(flex: 3),
                   MutableText(
-                    "Secured by Google",
+                    "Secured by Google", // Extract
                     align: TextAlign.center,
                     style: TypeStyle.h5,
                     weight: TypeWeight.regular,
-                    color: MutableColor.neutral4,
+                    color: MutableColor.neutral5,
                   ),
                 ],
               ),

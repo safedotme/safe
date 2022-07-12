@@ -170,7 +170,7 @@ class _NameInputScreenState extends State<NameInputScreen>
       minHeight: 0,
       maxHeight: queryData.size.height - topMargin,
       controller: core.state.signup.nameInputController,
-      onInteraction: dismissDetector
+      onFreezeInteraction: dismissDetector
           ? () {
               node.unfocus();
             }
