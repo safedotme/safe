@@ -20,6 +20,7 @@ class _NameInputScreenState extends State<NameInputScreen>
   late Core core;
   late MediaQueryData queryData;
   late AnimationController controller;
+  late TextEditingController fieldController;
   FocusNode node = FocusNode();
   late String hintName;
   bool error = false;
@@ -60,6 +61,9 @@ class _NameInputScreenState extends State<NameInputScreen>
     core.state.signup.setOnBannerReverse(() {
       controller.reverse();
     });
+
+    // Initialize controller to remove special characters or numbers from name
+    fieldController = TextEditingController();
   }
 
   @override
@@ -119,6 +123,26 @@ class _NameInputScreenState extends State<NameInputScreen>
     }
   }
 
+  void handleInput(String? name) {
+    if (name == null) {
+      return;
+    }
+
+    // Purify name
+    String noSym = core.utils.text.removeSymbols(name);
+    String noNum = core.utils.text.removeNumbers(noSym);
+
+    fieldController.text = noNum;
+    // Sets cursor position to end
+    fieldController.selection = TextSelection.fromPosition(
+      TextPosition(
+        offset: fieldController.text.length,
+      ),
+    );
+
+    core.state.signup.setName(noNum);
+  }
+
   String generateRandomName() {
     List<String> names =
         core.utils.language.langMap[core.state.preferences.language]!["auth"]
@@ -141,11 +165,10 @@ class _NameInputScreenState extends State<NameInputScreen>
       body: Observer(
         builder: (_) => MutableInputPanel(
           body: MutableTextField(
+            controller: fieldController,
             type: TextInputType.name,
             focusNode: node,
-            onChange: (name) {
-              core.state.signup.setName(name ?? "");
-            },
+            onChange: handleInput,
             onSubmit: (_) {
               submit();
             },

@@ -87,25 +87,26 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen>
   }
 
   void format(String? phone) async {
-    // REFORMAT WHEN COUNTRY CODE CHANGES
-    if (phone != null) {
-      // Removes all symbols from fieldController value
-      String pure = core.utils.text.removeSymbols(phone);
-
-      fieldController.text = await core.utils.phone.format(
-        pure,
-        core.state.signup.countryCode,
-      );
-
-      // Sets cursor position to end
-      fieldController.selection = TextSelection.fromPosition(
-        TextPosition(
-          offset: fieldController.text.length,
-        ),
-      );
-
-      core.state.signup.setPhoneNumber(pure);
+    if (phone == null) {
+      return;
     }
+
+    // Removes all symbols from fieldController value
+    String pure = core.utils.text.removeSymbols(phone);
+
+    fieldController.text = await core.utils.phone.format(
+      pure,
+      core.state.signup.countryCode,
+    );
+
+    // Sets cursor position to end
+    fieldController.selection = TextSelection.fromPosition(
+      TextPosition(
+        offset: fieldController.text.length,
+      ),
+    );
+
+    core.state.signup.setPhoneNumber(pure);
   }
 
   @override
