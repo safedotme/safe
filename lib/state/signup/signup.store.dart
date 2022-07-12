@@ -115,4 +115,10 @@ abstract class _SignupStore with Store {
 
   @action
   void setCountryCode(String v) => countryCode = v;
+
+  @observable
+  Function? onPick;
+
+  @action
+  void setOnPick(Function fn) => onPick = fn;
 }

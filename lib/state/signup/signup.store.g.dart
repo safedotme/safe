@@ -298,6 +298,21 @@ mixin _$SignupStore on _SignupStore, Store {
     });
   }
 
+  late final _$onPickAtom = Atom(name: '_SignupStore.onPick', context: context);
+
+  @override
+  Function? get onPick {
+    _$onPickAtom.reportRead();
+    return super.onPick;
+  }
+
+  @override
+  set onPick(Function? value) {
+    _$onPickAtom.reportWrite(value, super.onPick, () {
+      super.onPick = value;
+    });
+  }
+
   late final _$_SignupStoreActionController =
       ActionController(name: '_SignupStore', context: context);
 
@@ -457,6 +472,17 @@ mixin _$SignupStore on _SignupStore, Store {
   }
 
   @override
+  void setOnPick(Function fn) {
+    final _$actionInfo = _$_SignupStoreActionController.startAction(
+        name: '_SignupStore.setOnPick');
+    try {
+      return super.setOnPick(fn);
+    } finally {
+      _$_SignupStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 bannerController: ${bannerController},
@@ -476,7 +502,8 @@ phoneVerificationController: ${phoneVerificationController},
 countryCodeController: ${countryCodeController},
 phoneNumber: ${phoneNumber},
 countryDialCode: ${countryDialCode},
-countryCode: ${countryCode}
+countryCode: ${countryCode},
+onPick: ${onPick}
     ''';
   }
 }

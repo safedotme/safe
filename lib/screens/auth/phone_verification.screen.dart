@@ -65,6 +65,7 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen>
 
     // Initialize text editing controller for auto phone format
     fieldController = TextEditingController();
+    core.state.signup.setOnPick(format);
   }
 
   @override

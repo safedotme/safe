@@ -28,6 +28,12 @@ class _SignupCountryCodeSelectorState extends State<SignupCountryCodeSelector> {
         onPick: (country) {
           core.state.signup.setCountryDialCode(country["dial_code"]!);
           core.state.signup.setCountryCode(country["code"]!);
+          if (core.state.signup.onPick != null) {
+            // Formats text
+            core.state.signup.onPick!(
+              core.state.signup.phoneNumber,
+            );
+          }
         },
         controller: core.state.signup.countryCodeController,
       ),
