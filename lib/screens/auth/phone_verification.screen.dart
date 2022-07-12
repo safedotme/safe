@@ -91,6 +91,7 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen>
   void submit() async {
     core.state.signup.countryCodeController.close();
     node.unfocus();
+    core.state.signup.otpInputPanelController.open();
     // LOG
   }
 

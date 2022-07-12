@@ -250,6 +250,23 @@ mixin _$SignupStore on _SignupStore, Store {
     });
   }
 
+  late final _$otpInputPanelControllerAtom =
+      Atom(name: '_SignupStore.otpInputPanelController', context: context);
+
+  @override
+  PanelController get otpInputPanelController {
+    _$otpInputPanelControllerAtom.reportRead();
+    return super.otpInputPanelController;
+  }
+
+  @override
+  set otpInputPanelController(PanelController value) {
+    _$otpInputPanelControllerAtom
+        .reportWrite(value, super.otpInputPanelController, () {
+      super.otpInputPanelController = value;
+    });
+  }
+
   late final _$phoneNumberAtom =
       Atom(name: '_SignupStore.phoneNumber', context: context);
 
@@ -500,6 +517,7 @@ permissionsController: ${permissionsController},
 permissionsErrors: ${permissionsErrors},
 phoneVerificationController: ${phoneVerificationController},
 countryCodeController: ${countryCodeController},
+otpInputPanelController: ${otpInputPanelController},
 phoneNumber: ${phoneNumber},
 countryDialCode: ${countryDialCode},
 countryCode: ${countryCode},

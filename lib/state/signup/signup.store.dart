@@ -99,6 +99,9 @@ abstract class _SignupStore with Store {
   PanelController countryCodeController = PanelController();
 
   @observable
+  PanelController otpInputPanelController = PanelController();
+
+  @observable
   String phoneNumber = "";
 
   @observable
