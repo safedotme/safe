@@ -8,8 +8,13 @@ import 'package:safe/utils/constants/constants.util.dart';
 class CountryCodeSearchBar extends StatelessWidget {
   final void Function(String query) onChange;
   final FocusNode? node;
+  final TextEditingController? controller;
 
-  CountryCodeSearchBar({required this.onChange, this.node});
+  CountryCodeSearchBar({
+    required this.onChange,
+    this.node,
+    this.controller,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -44,6 +49,7 @@ class CountryCodeSearchBar extends StatelessWidget {
           ),
           child: TextField(
             focusNode: node,
+            controller: controller,
             cursorColor: core.utils.color.translucify(
               MutableColor.neutral5,
               Transparency.v64,

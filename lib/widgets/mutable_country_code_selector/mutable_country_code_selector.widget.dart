@@ -31,6 +31,7 @@ class _MutableCountryCodeSelectorState extends State<MutableCountryCodeSelector>
     with TickerProviderStateMixin {
   late Core core;
   late PanelController controller;
+  late TextEditingController searchController;
   late ValueNotifier<double> notifier;
   late MediaQueryData queryData;
   FocusNode node = FocusNode();
@@ -44,6 +45,7 @@ class _MutableCountryCodeSelectorState extends State<MutableCountryCodeSelector>
     core = Provider.of<Core>(context, listen: false);
     result = kCountryCodes;
     controller = widget.controller;
+    searchController = TextEditingController();
   }
 
   // Gets height of ListView so it stays the same when keyboard is displayed (so keyboard doesn't overlay results)
@@ -99,6 +101,10 @@ class _MutableCountryCodeSelectorState extends State<MutableCountryCodeSelector>
         minHeight: 0,
         onClosed: () {
           node.unfocus();
+
+          // Resets search for next session
+          searchController.text = "";
+          handleSearch("");
         },
         maxHeight: value == 0
             ? kCountryCodeSelectorHeight
@@ -152,6 +158,7 @@ class _MutableCountryCodeSelectorState extends State<MutableCountryCodeSelector>
                     Align(
                       alignment: Alignment.topCenter,
                       child: CountryCodeSearchBar(
+                        controller: searchController,
                         node: node,
                         onChange: handleSearch,
                       ),
