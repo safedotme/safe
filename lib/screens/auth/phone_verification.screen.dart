@@ -151,7 +151,7 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen>
             ["phone_verification"]["desc"], // "We'll send you..."
         icon: MutableIcons.phone,
         // Size is custom due to SVG specifications
-        iconSize: Size(26, 26), // Extract
+        iconSize: Size(26, 26),
         onTap: submit,
         isActive: true,
         buttonText: core.utils.language
