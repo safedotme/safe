@@ -28,6 +28,7 @@ class _MutableOtpInputPanelState extends State<MutableOtpInputPanel>
   late PanelController controller;
   late ValueNotifier<double> notifier;
   late MediaQueryData queryData;
+  bool dismissDetector = false;
   FocusNode node = FocusNode();
   GlobalKey key = GlobalKey();
 
@@ -37,6 +38,13 @@ class _MutableOtpInputPanelState extends State<MutableOtpInputPanel>
 
     core = Provider.of<Core>(context, listen: false);
     controller = widget.controller;
+
+    // Enables user to drag or tap to dismiss keyboard when enabled
+    node.addListener(() {
+      setState(() {
+        dismissDetector = node.hasFocus;
+      });
+    });
   }
 
   // Gets height of ListView so it stays the same when keyboard is displayed (so keyboard doesn't overlay results)
@@ -68,6 +76,11 @@ class _MutableOtpInputPanelState extends State<MutableOtpInputPanel>
         defaultState: PanelState.CLOSED,
         draggable: true,
         minHeight: 0,
+        onInteraction: dismissDetector
+            ? () {
+                node.unfocus();
+              }
+            : null,
         onClosed: () {
           node.unfocus();
         },
@@ -129,8 +142,8 @@ class _MutableOtpInputPanelState extends State<MutableOtpInputPanel>
                         activeColor: kColorMap[MutableColor.neutral7],
                         activeFillColor: kColorMap[MutableColor.neutral8],
                         // SELECTED
-                        selectedColor: kColorMap[MutableColor.neutral5],
-                        selectedFillColor: kColorMap[MutableColor.neutral6],
+                        selectedColor: kColorMap[MutableColor.neutral6],
+                        selectedFillColor: kColorMap[MutableColor.neutral7],
                         //INACTIVE
                         inactiveColor: kColorMap[MutableColor.neutral7],
                         inactiveFillColor: kColorMap[MutableColor.neutral8],

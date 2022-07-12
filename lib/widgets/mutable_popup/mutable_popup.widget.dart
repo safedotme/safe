@@ -16,6 +16,7 @@ class MutablePopup extends StatefulWidget {
   final void Function()? onOpened;
   final void Function()? onClosed;
   final void Function(double state)? onSlide;
+  final void Function()? onInteraction;
   final PanelController? controller;
   final PanelState defaultState;
   final bool backdropTapClose;
@@ -37,6 +38,7 @@ class MutablePopup extends StatefulWidget {
     this.onOpened,
     this.minHeight = 500,
     this.maxHeight = 770,
+    this.onInteraction,
     this.width,
     this.onClosed,
     this.height,
@@ -85,20 +87,32 @@ class _MutablePopupState extends State<MutablePopup> {
 
     return SlidingUpPanel(
       // Adds custom border for panel popups
-      panel: CustomPaint(
-        // Will paint special border for Pannel popup
-        painter: widget.type == PopupType.pannel
-            ? PanelPopupPainter(
-                borderColor: style.borderColor,
-              )
+      panel: GestureDetector(
+        onVerticalDragStart: widget.onInteraction != null
+            ? (_) {
+                widget.onInteraction!();
+              }
             : null,
-        child: widget.type == PopupType.pannel
-            ? widget.body
-            : NonPannelBody(
-                size: size,
-                style: style,
-                body: widget.body,
-              ),
+        onTap: widget.onInteraction != null
+            ? () {
+                widget.onInteraction!();
+              }
+            : null,
+        child: CustomPaint(
+          // Will paint special border for Pannel popup
+          painter: widget.type == PopupType.pannel
+              ? PanelPopupPainter(
+                  borderColor: style.borderColor,
+                )
+              : null,
+          child: widget.type == PopupType.pannel
+              ? widget.body
+              : NonPannelBody(
+                  size: size,
+                  style: style,
+                  body: widget.body,
+                ),
+        ),
       ),
       onPanelOpened: widget.onOpened,
       onPanelClosed: widget.onClosed,

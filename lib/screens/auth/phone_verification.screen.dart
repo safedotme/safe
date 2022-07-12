@@ -125,6 +125,11 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen>
       minHeight: 0,
       maxHeight: queryData.size.height - topMargin,
       controller: core.state.signup.phoneVerificationController,
+      onInteraction: dismissDetector
+          ? () {
+              node.unfocus();
+            }
+          : null,
       onClosed: () {
         core.state.signup.countryCodeController.close();
         node.unfocus();
@@ -132,11 +137,6 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen>
         core.state.signup.permissionsController.open();
       },
       body: MutableInputPanel(
-        onInteraction: dismissDetector
-            ? () {
-                node.unfocus();
-              }
-            : null,
         // Phone Input Text Field
         body: Observer(
           builder: (_) => MutableTextField(
