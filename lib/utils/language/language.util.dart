@@ -101,6 +101,11 @@ class LanguageUtil {
           }
         }
       },
+      "phone_verification": {
+        "title": "Enter Phone Number",
+        "desc": "We'll send you a magic link to verify your\n account",
+        "buttonText": "Send Link",
+      }
     },
     "country_code_selector": {
       "search_hint": "Search",

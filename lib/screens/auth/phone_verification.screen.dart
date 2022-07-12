@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:phone_number/phone_number.dart';
 import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
 import 'package:safe/utils/constants/constants.util.dart';
@@ -123,7 +122,7 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen>
         core.state.signup.permissionsController.open();
       },
       body: MutableInputPanel(
-        // Permission Cards
+        // Phone Input Text Field
         body: Observer(
           builder: (_) => MutableTextField(
             controller: fieldController,
@@ -144,13 +143,20 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen>
         ),
         resizeToAvoidBottomInsets: true,
         // Display related properties
-        title: "Enter Phone Number",
-        description: "We'll send you a magic link to verify your\n account",
+        title: core.utils.language
+                .langMap[core.state.preferences.language]!["auth"]
+            ["phone_verification"]["title"], // "Enter Phone Number"
+        description: core.utils.language
+                .langMap[core.state.preferences.language]!["auth"]
+            ["phone_verification"]["desc"], // "We'll send you..."
         icon: MutableIcons.phone,
-        iconSize: Size(26, 26),
+        // Size is custom due to SVG specifications
+        iconSize: Size(26, 26), // Extract
         onTap: submit,
         isActive: true,
-        buttonText: "Send Link", // "Next"
+        buttonText: core.utils.language
+                .langMap[core.state.preferences.language]!["auth"]
+            ["phone_verification"]["buttonText"], // "Send Link"
       ),
     );
   }
