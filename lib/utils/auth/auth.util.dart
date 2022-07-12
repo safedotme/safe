@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:safe/core.dart';
 import 'package:safe/utils/constants/constants.util.dart';
 
 class AuthUtil {
@@ -69,5 +70,31 @@ class AuthUtil {
     return {
       "status": true,
     };
+  }
+
+  Map<String, String> handleError(Core core, FirebaseAuthException error) {
+    switch (error.code) {
+      case "invalid-phone-number":
+        return {
+          "header": "Hold up! You're phone number is invalid",
+          "desc": "Check your phone number before continuing"
+        };
+      case "invalid-verification-code":
+        return {
+          "header": "Hold up! The verification code you entered is invalid",
+          "desc":
+              "Check your messages for the latest code and try entering it again"
+        };
+      case "user-disabled":
+        return {
+          "header": "Your account has been desabled",
+          "desc": "Tap here to reach out to Safe's support team"
+        };
+      default:
+        return {
+          "header": "Oops, we've run into a problem signing you in",
+          "desc": "Try signing {action} again later"
+        };
+    }
   }
 }
