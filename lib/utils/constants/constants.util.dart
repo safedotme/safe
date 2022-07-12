@@ -235,3 +235,6 @@ const TypeWeight kPanelPopupHeaderWeight = TypeWeight.heavy;
 const TypeStyle kPanelPopupSubheaderStyle = TypeStyle.h5;
 const TypeWeight kPanelPopupSubheaderWeight = TypeWeight.medium;
 const MutableColor kPanelPopupSubheaderColor = MutableColor.neutral2;
+
+// AUTH
+const Duration kSMSTimeout = Duration(seconds: 30);
