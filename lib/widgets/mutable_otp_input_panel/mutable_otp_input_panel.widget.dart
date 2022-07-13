@@ -4,6 +4,7 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
 import 'package:safe/utils/constants/constants.util.dart';
+import 'package:safe/widgets/mutable_banner/mutable_banner.widget.dart';
 import 'package:safe/widgets/mutable_button/mutable_button.widget.dart';
 import 'package:safe/widgets/mutable_handle/mutable_handle.dart';
 import 'package:safe/widgets/mutable_pin_code_textfield/mutable_pin_code_textfield.widget.dart';
@@ -95,10 +96,12 @@ class _MutableOtpInputPanelState extends State<MutableOtpInputPanel>
   }
 
   Future<void> handleAttempt() async {
+    // Resets timer to 30 seconds
     resetTimer();
     timer = Timer.periodic(
       Duration(seconds: 1),
       (timer) {
+        // Checks if time has run out
         if (time == 0) {
           setState(() {
             canResend = true;
@@ -107,13 +110,12 @@ class _MutableOtpInputPanelState extends State<MutableOtpInputPanel>
           return;
         }
 
+        // If not, takes from timer
         setState(() {
           time--;
         });
       },
     );
-
-    // Call handle attempt on timeout
   }
 
   Widget applyMask(Widget child) => canResend
@@ -131,7 +133,6 @@ class _MutableOtpInputPanelState extends State<MutableOtpInputPanel>
   Widget build(BuildContext context) {
     queryData = MediaQuery.of(context);
     notifier = ValueNotifier(queryData.viewInsets.bottom);
-
     return ValueListenableBuilder<double>(
       valueListenable: notifier,
       builder: (context, value, _) => MutablePopup(
@@ -223,7 +224,7 @@ class _MutableOtpInputPanelState extends State<MutableOtpInputPanel>
                     child: applyMask(
                       MutableText(
                         canResend
-                            ? "Tap to send new code"
+                            ? "Tap to resend code"
                             : core
                                 .utils
                                 .language
