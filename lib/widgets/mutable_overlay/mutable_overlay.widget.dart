@@ -36,8 +36,7 @@ class _MutableOverlayState extends State<MutableOverlay>
       duration: Duration(milliseconds: 300),
     );
 
-    Animation animation =
-        Tween<double>(begin: 0, end: kBackgroundOpacity).animate(
+    Animation animation = Tween<double>(begin: 0, end: 1).animate(
       CurvedAnimation(
         parent: controller,
         curve: Curves.ease,
@@ -65,7 +64,8 @@ class _MutableOverlayState extends State<MutableOverlay>
         ? Opacity(
             opacity: opacity,
             child: Container(
-              color: kColorMap[MutableColor.neutral10],
+              color:
+                  kColorMap[MutableColor.neutral10]!.withOpacity(opacity * 0.8),
               child: widget.child,
             ),
           )

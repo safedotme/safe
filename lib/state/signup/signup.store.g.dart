@@ -378,6 +378,22 @@ mixin _$SignupStore on _SignupStore, Store {
     });
   }
 
+  late final _$overlayControllerAtom =
+      Atom(name: '_SignupStore.overlayController', context: context);
+
+  @override
+  OverlayController get overlayController {
+    _$overlayControllerAtom.reportRead();
+    return super.overlayController;
+  }
+
+  @override
+  set overlayController(OverlayController value) {
+    _$overlayControllerAtom.reportWrite(value, super.overlayController, () {
+      super.overlayController = value;
+    });
+  }
+
   late final _$_SignupStoreActionController =
       ActionController(name: '_SignupStore', context: context);
 
@@ -605,7 +621,8 @@ countryDialCode: ${countryDialCode},
 countryCode: ${countryCode},
 onPick: ${onPick},
 verificationId: ${verificationId},
-resendToken: ${resendToken}
+resendToken: ${resendToken},
+overlayController: ${overlayController}
     ''';
   }
 }

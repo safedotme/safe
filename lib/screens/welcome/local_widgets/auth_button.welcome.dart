@@ -48,6 +48,7 @@ class _AuthButtonState extends State<AuthButton> {
         if (widget.type == AuthButtonType.signup) {
           core.state.signup.nameInputController.open();
         } else {
+          core.state.signup.overlayController.show();
           // Add open functionality for login
         }
       },

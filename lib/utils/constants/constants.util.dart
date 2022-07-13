@@ -117,6 +117,7 @@ enum MutableColor {
   secondaryGreen,
   secondaryRed,
   secondaryYellow,
+  iosGrey,
 }
 
 const Map<MutableColor, Color> kColorMap = {
@@ -131,6 +132,9 @@ const Map<MutableColor, Color> kColorMap = {
   MutableColor.neutral8: Color(0xff151317),
   MutableColor.neutral9: Color(0xff0F0D10),
   MutableColor.neutral10: Color(0xff070508),
+
+  // OS SPECIFIC
+  MutableColor.iosGrey: Color(0xff1E1920),
 
   //PRIMARY
   MutableColor.primaryYellow: Color(0xffF8D849),

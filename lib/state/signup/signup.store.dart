@@ -1,5 +1,6 @@
 import 'package:mobx/mobx.dart';
 import 'package:safe/widgets/mutable_banner/mutable_banner.widget.dart';
+import 'package:safe/widgets/mutable_overlay/mutable_overlay.widget.dart';
 import 'package:safe/widgets/mutable_permission_card/mutable_permission_card.widget.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
@@ -144,4 +145,8 @@ abstract class _SignupStore with Store {
 
   @action
   void setResendToken(int? token) => resendToken = token;
+
+  // OVERLAY
+  @observable
+  OverlayController overlayController = OverlayController();
 }
