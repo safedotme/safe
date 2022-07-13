@@ -17,6 +17,10 @@ class LanguageUtil {
     },
     "auth": {
       "firebase_errors": {
+        "no-phone-number": {
+          "header": "Hold up! You forgot to add your phone number",
+          "desc": "This will be used to verify your account later on",
+        },
         "invalid-phone-number": {
           "header": "Hold up! You're phone number is invalid",
           "desc": "Check your phone number before continuing",

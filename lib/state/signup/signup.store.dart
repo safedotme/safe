@@ -75,6 +75,7 @@ abstract class _SignupStore with Store {
   void setNameError(bool v) => nameError = v;
 
   // PERMISSIONS
+
   @observable
   PanelController permissionsController = PanelController();
 
@@ -92,6 +93,7 @@ abstract class _SignupStore with Store {
       permissionsErrors.remove(type);
 
   // PHONE VERIFICATION
+
   @observable
   PanelController phoneVerificationController = PanelController();
 
@@ -130,4 +132,16 @@ abstract class _SignupStore with Store {
 
   @action
   void setOnPick(Function fn) => onPick = fn;
+
+  @observable
+  String verificationId = "";
+
+  @observable
+  int? resendToken;
+
+  @action
+  void setVerificationId(String id) => verificationId = id;
+
+  @action
+  void setResendToken(int? token) => resendToken = token;
 }

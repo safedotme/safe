@@ -346,6 +346,38 @@ mixin _$SignupStore on _SignupStore, Store {
     });
   }
 
+  late final _$verificationIdAtom =
+      Atom(name: '_SignupStore.verificationId', context: context);
+
+  @override
+  String get verificationId {
+    _$verificationIdAtom.reportRead();
+    return super.verificationId;
+  }
+
+  @override
+  set verificationId(String value) {
+    _$verificationIdAtom.reportWrite(value, super.verificationId, () {
+      super.verificationId = value;
+    });
+  }
+
+  late final _$resendTokenAtom =
+      Atom(name: '_SignupStore.resendToken', context: context);
+
+  @override
+  int? get resendToken {
+    _$resendTokenAtom.reportRead();
+    return super.resendToken;
+  }
+
+  @override
+  set resendToken(int? value) {
+    _$resendTokenAtom.reportWrite(value, super.resendToken, () {
+      super.resendToken = value;
+    });
+  }
+
   late final _$_SignupStoreActionController =
       ActionController(name: '_SignupStore', context: context);
 
@@ -527,6 +559,28 @@ mixin _$SignupStore on _SignupStore, Store {
   }
 
   @override
+  void setVerificationId(String id) {
+    final _$actionInfo = _$_SignupStoreActionController.startAction(
+        name: '_SignupStore.setVerificationId');
+    try {
+      return super.setVerificationId(id);
+    } finally {
+      _$_SignupStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void setResendToken(int? token) {
+    final _$actionInfo = _$_SignupStoreActionController.startAction(
+        name: '_SignupStore.setResendToken');
+    try {
+      return super.setResendToken(token);
+    } finally {
+      _$_SignupStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 bannerController: ${bannerController},
@@ -549,7 +603,9 @@ phoneNumber: ${phoneNumber},
 formattedPhone: ${formattedPhone},
 countryDialCode: ${countryDialCode},
 countryCode: ${countryCode},
-onPick: ${onPick}
+onPick: ${onPick},
+verificationId: ${verificationId},
+resendToken: ${resendToken}
     ''';
   }
 }

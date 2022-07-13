@@ -5,12 +5,12 @@ import 'package:safe/utils/constants/constants.util.dart';
 class AuthUtil {
   FirebaseAuth auth = FirebaseAuth.instance;
 
-  Future<Map<String, dynamic>> sendOTP(
-    String phone,
-    String dialCode,
+  Future<Map<String, dynamic>> sendOTP({
+    required String phone,
+    required String dialCode,
     int? resedToken,
-    Function(String verificationId, int? resentToken) onCodeSend,
-  ) async {
+    required Function(String verificationId, int? resentToken) onCodeSend,
+  }) async {
     FirebaseAuthException? exception;
     bool accountCreated = false;
 
@@ -72,20 +72,24 @@ class AuthUtil {
     };
   }
 
-  Map<String, String> handleError(Core core, FirebaseAuthException error) {
-    switch (error.code) {
+  Map<String, String> handleError(Core core, String error) {
+    switch (error) {
+      case "no-phone-number":
+        return core.utils.language
+                .langMap[core.state.preferences.language]!["auth"]
+            ["firebase_errors"][error];
       case "invalid-phone-number":
         return core.utils.language
                 .langMap[core.state.preferences.language]!["auth"]
-            ["firebase_errors"][error.code];
+            ["firebase_errors"][error];
       case "invalid-verification-code":
         return core.utils.language
                 .langMap[core.state.preferences.language]!["auth"]
-            ["firebase_errors"][error.code];
+            ["firebase_errors"][error];
       case "user-disabled":
         return core.utils.language
                 .langMap[core.state.preferences.language]!["auth"]
-            ["firebase_errors"][error.code];
+            ["firebase_errors"][error];
       default:
         return core.utils.language
                 .langMap[core.state.preferences.language]!["auth"]

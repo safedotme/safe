@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
 import 'package:safe/utils/constants/constants.util.dart';
 import 'package:safe/utils/icon/icon.util.dart';
+import 'package:safe/widgets/mutable_banner/mutable_banner.widget.dart';
 import 'package:safe/widgets/mutable_input_panel/mutable_input_panel.widget.dart';
 import 'package:safe/widgets/mutable_popup/mutable_popup.widget.dart';
 import 'package:safe/widgets/mutable_text_field/local_widgets/phone_extention_display.widget.dart';
@@ -21,11 +23,11 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen>
   late MediaQueryData queryData;
   late AnimationController controller;
   late TextEditingController fieldController;
-  bool error = false;
+  bool validated = false;
   FocusNode node = FocusNode();
   bool dismissDetector = false;
 
-  // Animation stuff
+  // Animates popup down with banner when banners are displayed
   double topMargin = kTopMargin;
   void initializeAnimation() {
     controller = AnimationController(
@@ -91,10 +93,55 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen>
   void submit() async {
     core.state.signup.countryCodeController.close();
     node.unfocus();
-    core.state.signup.otpInputPanelController.open();
-    // LOG
+
+    validated = await core.utils.phone.validate(
+      core.state.signup.phoneNumber,
+      core.state.signup.countryCode,
+    );
+
+    // Sends OTP and opens OTP popup
+    if (validated) {
+      Map response = await core.utils.auth.sendOTP(
+        phone: core.state.signup.phoneNumber,
+        dialCode: core.state.signup.countryDialCode,
+        onCodeSend: (verificationId, resentToken) {
+          core.utils.log.log(
+            Level.info,
+            "OPT code has been sent to ${core.state.signup.formattedPhone}. Verification ID: $verificationId",
+          );
+
+          core.state.signup.setVerificationId(verificationId);
+          core.state.signup.setResendToken(resentToken);
+        },
+      );
+
+      if (!response["status"]) {
+        handleError(response["error"]);
+        return;
+      }
+
+      core.state.signup.otpInputPanelController.open();
+      return;
+    }
+
+    handleError(
+      fieldController.text.isEmpty ? "no-phone-number" : "invalid-phone-number",
+    );
   }
 
+  // Displays invalid phone number
+  void handleError(String exception) {
+    // Initialize error message values
+    Map error = core.utils.auth.handleError(core, exception);
+    core.state.signup.setBannerState(MessageType.error);
+    core.state.signup.setBannerMessage(error["desc"]);
+    core.state.signup.setBannerTitle(error["header"]);
+
+    // Display error message
+    core.state.signup.bannerController.show();
+  }
+
+  // Formats a phone while is being typed
   void format(String? phone) async {
     if (phone == null) {
       return;
@@ -141,6 +188,9 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen>
         // Phone Input Text Field
         body: Observer(
           builder: (_) => MutableTextField(
+            onSubmit: (_) {
+              submit();
+            },
             controller: fieldController,
             type: TextInputType.phone,
             focusNode: node,
