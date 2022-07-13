@@ -61,13 +61,15 @@ class _MutableOverlayState extends State<MutableOverlay>
 
   @override
   Widget build(BuildContext context) {
-    return Opacity(
-      opacity: opacity,
-      child: Container(
-        color: kColorMap[MutableColor.neutral10],
-        child: widget.child,
-      ),
-    );
+    return opacity != 0
+        ? Opacity(
+            opacity: opacity,
+            child: Container(
+              color: kColorMap[MutableColor.neutral10],
+              child: widget.child,
+            ),
+          )
+        : SizedBox();
   }
 }
 
