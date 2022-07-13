@@ -207,35 +207,38 @@ class _MutableOtpInputPanelState extends State<MutableOtpInputPanel>
                     ),
                   ),
                   MutableButton(
-                      onTap: () {
-                        if (canResend) {
-                          if (attempts != 0) {
-                            handleAttempt();
-                            widget.onTimeout();
-                            attempts--;
-                            return;
-                          }
-
-                          // TODO: Handle "Run out of attempts"
+                    onTap: () {
+                      if (canResend) {
+                        if (attempts != 0) {
+                          handleAttempt();
+                          widget.onTimeout();
+                          attempts--;
                           return;
                         }
-                      },
-                      child: applyMask(
-                        MutableText(
-                          canResend
-                              ? "Send new code"
-                              : core
-                                  .utils
-                                  .language
-                                  .langMap[core.state.preferences.language]![
-                                      "otp_input_panel"]["next_code"]
-                                  .toString()
-                                  .replaceAll("{time}", time.toString()),
-                          align: TextAlign.center,
-                          style: TypeStyle.body,
-                          color: canResend ? null : MutableColor.neutral4,
-                        ),
-                      )),
+
+                        // TODO: Handle "Run out of attempts"
+                        return;
+                      }
+                    },
+                    child: applyMask(
+                      MutableText(
+                        canResend
+                            ? "Tap to send new code"
+                            : core
+                                .utils
+                                .language
+                                .langMap[core.state.preferences.language]![
+                                    "otp_input_panel"]["next_code"]
+                                .toString()
+                                .replaceAll("{time}", time.toString()),
+                        align: TextAlign.center,
+                        style: TypeStyle.body,
+                        color: canResend
+                            ? MutableColor.neutral1
+                            : MutableColor.neutral4,
+                      ),
+                    ),
+                  ),
                   Spacer(flex: 3),
                   MutableText(
                     core.utils.language.langMap[core.state.preferences
