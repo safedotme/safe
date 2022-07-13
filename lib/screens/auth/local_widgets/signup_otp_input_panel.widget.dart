@@ -24,7 +24,7 @@ class _SignupOtpInputPanelState extends State<SignupOtpInputPanel> {
     String verificationId,
     String otp,
   ) async {
-    // Add loader
+    core.state.signup.overlayController.show();
     node.unfocus();
     Map<String, dynamic> response = await core.utils.auth.verifyOTP(
       otp,
@@ -32,6 +32,7 @@ class _SignupOtpInputPanelState extends State<SignupOtpInputPanel> {
     );
 
     if (response["status"]) {
+      core.state.signup.overlayController.hide();
       return;
     }
 
@@ -46,6 +47,7 @@ class _SignupOtpInputPanelState extends State<SignupOtpInputPanel> {
         countryDialCode: core.state.signup.countryDialCode,
         phone: core.state.signup.phoneNumber,
         node: node,
+        onTimeout: () {},
         countryCode: core.state.signup.countryCode,
         onSubmit: (otp) {
           handleSubmit(

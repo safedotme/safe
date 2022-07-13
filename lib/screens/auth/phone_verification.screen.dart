@@ -105,8 +105,7 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen>
         phone: core.state.signup.phoneNumber,
         dialCode: core.state.signup.countryDialCode,
         onCodeSend: (verificationId, resentToken) {
-          core.utils.log.log(
-            Level.info,
+          print(
             "OPT code has been sent to ${core.state.signup.formattedPhone}. Verification ID: $verificationId",
           );
 

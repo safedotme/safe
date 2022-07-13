@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
@@ -17,12 +18,14 @@ class MutableOtpInputPanel extends StatefulWidget {
   final FocusNode? node;
   final String countryDialCode;
   final String countryCode;
+  final void Function() onTimeout;
 
   MutableOtpInputPanel({
     required this.controller,
     this.node,
     required this.phone,
     required this.countryDialCode,
+    required this.onTimeout,
     required this.countryCode,
     required this.onSubmit,
   });
@@ -38,11 +41,14 @@ class _MutableOtpInputPanelState extends State<MutableOtpInputPanel>
   late ValueNotifier<double> notifier;
   late MediaQueryData queryData;
   late FocusNode node;
+  Timer? timer;
   GlobalKey key = GlobalKey();
+  int attempts = 5;
+  bool canResend = false;
 
   // State values
   bool dismissDetector = false;
-  String time = kSMSTimeout.inSeconds.toString();
+  int time = kSMSTimeout.inSeconds;
 
   @override
   void initState() {
@@ -77,7 +83,49 @@ class _MutableOtpInputPanelState extends State<MutableOtpInputPanel>
     super.dispose();
   }
 
-  Future<void> handleTimer() async {}
+  void resetTimer() {
+    setState(() {
+      canResend = false;
+      time = kSMSTimeout.inSeconds;
+    });
+
+    if (timer != null) {
+      timer!.cancel();
+    }
+  }
+
+  Future<void> handleAttempt() async {
+    resetTimer();
+    timer = Timer.periodic(
+      Duration(seconds: 1),
+      (timer) {
+        if (time == 0) {
+          setState(() {
+            canResend = true;
+          });
+          timer.cancel();
+          return;
+        }
+
+        setState(() {
+          time--;
+        });
+      },
+    );
+
+    // Call handle attempt on timeout
+  }
+
+  Widget applyMask(Widget child) => canResend
+      ? ShaderMask(
+          shaderCallback: (bounds) => LinearGradient(
+            colors: kPrimaryGradientColors,
+            begin: Alignment(-2, -2),
+            end: Alignment(2, 2),
+          ).createShader(bounds),
+          child: child,
+        )
+      : SizedBox(child: child);
 
   @override
   Widget build(BuildContext context) {
@@ -97,10 +145,12 @@ class _MutableOtpInputPanelState extends State<MutableOtpInputPanel>
               }
             : null,
         onClosed: () {
+          resetTimer();
           node.unfocus();
         },
         onOpened: () {
           node.requestFocus();
+          handleAttempt();
         },
         maxHeight:
             value == 0 ? kOTPInputPopupHeight : (kOTPInputPopupHeight + value),
@@ -117,7 +167,6 @@ class _MutableOtpInputPanelState extends State<MutableOtpInputPanel>
                 kBottomScreenMargin,
               ),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   Center(child: MutableHandle()),
                   SizedBox(height: kPanelHandleToHeader),
@@ -158,19 +207,35 @@ class _MutableOtpInputPanelState extends State<MutableOtpInputPanel>
                     ),
                   ),
                   MutableButton(
-                    child: MutableText(
-                      core
-                          .utils
-                          .language
-                          .langMap[core.state.preferences.language]![
-                              "otp_input_panel"]["next_code"]
-                          .toString()
-                          .replaceAll("{time}", time),
-                      align: TextAlign.center,
-                      color: MutableColor.neutral4,
-                      style: TypeStyle.body,
-                    ),
-                  ),
+                      onTap: () {
+                        if (canResend) {
+                          if (attempts != 0) {
+                            handleAttempt();
+                            widget.onTimeout();
+                            attempts--;
+                            return;
+                          }
+
+                          // TODO: Handle "Run out of attempts"
+                          return;
+                        }
+                      },
+                      child: applyMask(
+                        MutableText(
+                          canResend
+                              ? "Send new code"
+                              : core
+                                  .utils
+                                  .language
+                                  .langMap[core.state.preferences.language]![
+                                      "otp_input_panel"]["next_code"]
+                                  .toString()
+                                  .replaceAll("{time}", time.toString()),
+                          align: TextAlign.center,
+                          style: TypeStyle.body,
+                          color: canResend ? null : MutableColor.neutral4,
+                        ),
+                      )),
                   Spacer(flex: 3),
                   MutableText(
                     core.utils.language.langMap[core.state.preferences
