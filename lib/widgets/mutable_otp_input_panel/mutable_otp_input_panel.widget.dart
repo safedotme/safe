@@ -14,11 +14,13 @@ class MutableOtpInputPanel extends StatefulWidget {
   final PanelController controller;
   final void Function(String otp) onSubmit;
   final String phone;
+  final FocusNode? node;
   final String countryDialCode;
   final String countryCode;
 
   MutableOtpInputPanel({
     required this.controller,
+    this.node,
     required this.phone,
     required this.countryDialCode,
     required this.countryCode,
@@ -35,12 +37,12 @@ class _MutableOtpInputPanelState extends State<MutableOtpInputPanel>
   late PanelController controller;
   late ValueNotifier<double> notifier;
   late MediaQueryData queryData;
-  FocusNode node = FocusNode();
+  late FocusNode node;
   GlobalKey key = GlobalKey();
 
   // State values
   bool dismissDetector = false;
-  String time = "0";
+  String time = kSMSTimeout.inSeconds.toString();
 
   @override
   void initState() {
@@ -48,6 +50,7 @@ class _MutableOtpInputPanelState extends State<MutableOtpInputPanel>
 
     core = Provider.of<Core>(context, listen: false);
     controller = widget.controller;
+    node = widget.node ?? FocusNode();
 
     // Enables user to drag or tap to dismiss keyboard when enabled
     node.addListener(() {
@@ -73,6 +76,8 @@ class _MutableOtpInputPanelState extends State<MutableOtpInputPanel>
     node.dispose();
     super.dispose();
   }
+
+  Future<void> handleTimer() async {}
 
   @override
   Widget build(BuildContext context) {
@@ -147,8 +152,8 @@ class _MutableOtpInputPanelState extends State<MutableOtpInputPanel>
                     child: MutablePinCodeTextField(
                       focusNode: node,
                       onChanged: (_) {},
-                      onComplete: (phone) {
-                        widget.onSubmit(phone);
+                      onComplete: (otp) {
+                        widget.onSubmit(otp);
                       },
                     ),
                   ),

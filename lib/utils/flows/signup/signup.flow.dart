@@ -18,3 +18,17 @@ class SignupFlow {
     SignupMessageBanner(),
   ];
 }
+
+class MutableOverlay extends StatefulWidget {
+  @override
+  State<MutableOverlay> createState() => _MutableOverlayState();
+}
+
+class _MutableOverlayState extends State<MutableOverlay> {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      color: Colors.red,
+    );
+  }
+}
