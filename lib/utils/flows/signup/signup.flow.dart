@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:safe/screens/auth/local_widgets/signup_country_code_selector.widget.dart';
+import 'package:safe/screens/auth/local_widgets/signup_loader.widget.dart';
 import 'package:safe/screens/auth/local_widgets/signup_message_banner.widget.dart';
 import 'package:safe/screens/auth/local_widgets/signup_otp_input_panel.widget.dart';
 import 'package:safe/screens/auth/name_input.screen.dart';
@@ -16,19 +17,6 @@ class SignupFlow {
     SignupCountryCodeSelector(),
     SignupOtpInputPanel(),
     SignupMessageBanner(),
+    SignupLoader(),
   ];
-}
-
-class MutableOverlay extends StatefulWidget {
-  @override
-  State<MutableOverlay> createState() => _MutableOverlayState();
-}
-
-class _MutableOverlayState extends State<MutableOverlay> {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      color: Colors.red,
-    );
-  }
 }
