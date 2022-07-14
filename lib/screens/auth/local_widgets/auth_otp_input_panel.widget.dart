@@ -64,8 +64,11 @@ class _AuthOtpInputPanelState extends State<AuthOtpInputPanel> {
       verificationId,
     );
 
-    if (response["status"]) {
+    if (core.utils.auth.auth.currentUser != null) {
       core.state.auth.overlayController.hide();
+      core.utils.auth.auth.currentUser!.updateDisplayName(
+        core.state.auth.name,
+      );
       return;
     }
 

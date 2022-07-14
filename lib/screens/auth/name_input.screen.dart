@@ -158,6 +158,10 @@ class _NameInputScreenState extends State<NameInputScreen>
     // Called after fieldController functions to not show user capitalized format
     String capitalized = core.utils.text.toTitle(noNum);
 
+    if (capitalized.isNotEmpty && capitalized.contains(" ")) {
+      core.state.auth.setNameError(false);
+    }
+
     core.state.auth.setName(capitalized);
   }
 
