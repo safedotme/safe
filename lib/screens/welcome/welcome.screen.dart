@@ -57,9 +57,9 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                 SizedBox(
                   height: 38,
                 ),
-                AuthButton(AuthButtonType.signup),
+                AuthButton(AuthType.signup),
                 SizedBox(height: 16),
-                AuthButton(AuthButtonType.login),
+                AuthButton(AuthType.login),
               ],
             ),
           ),

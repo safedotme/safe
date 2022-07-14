@@ -7,13 +7,8 @@ import 'package:safe/widgets/mutable_button/mutable_button.widget.dart';
 import 'package:safe/widgets/mutable_gradient_border/mutable_gradient_border.widget.dart';
 import 'package:safe/widgets/mutable_text/mutable_text.widget.dart';
 
-enum AuthButtonType {
-  signup,
-  login,
-}
-
 class AuthButton extends StatefulWidget {
-  final AuthButtonType type;
+  final AuthType type;
 
   AuthButton(this.type);
 
@@ -31,7 +26,7 @@ class _AuthButtonState extends State<AuthButton> {
     core = Provider.of<Core>(context, listen: false);
   }
 
-  Widget displayBorder(Widget body) => widget.type == AuthButtonType.signup
+  Widget displayBorder(Widget body) => widget.type == AuthType.signup
       ? MutableGradientBorder(
           borderRadius: 30,
           width: 3,
@@ -45,7 +40,7 @@ class _AuthButtonState extends State<AuthButton> {
   Widget build(BuildContext context) {
     return MutableButton(
       onTap: () {
-        if (widget.type == AuthButtonType.signup) {
+        if (widget.type == AuthType.signup) {
           core.state.auth.nameInputController.open();
         } else {
           // Add open functionality for login
@@ -56,7 +51,7 @@ class _AuthButtonState extends State<AuthButton> {
           height: 60,
           width: 228,
           decoration: BoxDecoration(
-            gradient: widget.type == AuthButtonType.signup
+            gradient: widget.type == AuthType.signup
                 ? LinearGradient(
                     colors: kPrimaryGradientColors
                         .map((e) =>
@@ -67,7 +62,7 @@ class _AuthButtonState extends State<AuthButton> {
                   )
                 : null,
             borderRadius: BorderRadius.circular(30),
-            color: widget.type == AuthButtonType.login
+            color: widget.type == AuthType.login
                 ? core.utils.color.translucify(
                     MutableColor.neutral4,
                     Transparency.v16,
@@ -77,7 +72,7 @@ class _AuthButtonState extends State<AuthButton> {
           child: Center(
             child: Observer(
               builder: (_) => MutableText(
-                widget.type == AuthButtonType.signup
+                widget.type == AuthType.signup
                     ? core.utils.language.langMap[
                             core.state.preferences.language]!["welcome"]
                         ["signupButton"] // "Create an account"
@@ -86,7 +81,7 @@ class _AuthButtonState extends State<AuthButton> {
                         ["loginButton"], // "I already have one"
                 style: TypeStyle.h3,
                 weight: TypeWeight.bold,
-                color: widget.type == AuthButtonType.login
+                color: widget.type == AuthType.login
                     ? MutableColor.neutral2
                     : MutableColor.neutral1,
               ),

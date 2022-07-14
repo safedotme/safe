@@ -9,6 +9,9 @@ import 'package:safe/widgets/mutable_permission_card/mutable_permission_card.wid
 import 'package:safe/widgets/mutable_popup/mutable_popup.widget.dart';
 
 class PermissionsScreen extends StatefulWidget {
+  final AuthType type;
+
+  PermissionsScreen(this.type);
   @override
   State<PermissionsScreen> createState() => _PermissionsScreenState();
 }
@@ -68,15 +71,30 @@ class _PermissionsScreenState extends State<PermissionsScreen>
     controller.dispose();
   }
 
-  void submit() {
-    if (core.state.auth.permissionsErrors.isEmpty) {
-      // Navigate
+  void navigate() {
+    if (widget.type == AuthType.signup) {
       core.utils.popupNavigation.navigate(
         core.state.auth.nameInputController,
         core.state.auth.permissionsController,
         core.state.auth.phoneVerificationController,
         controller,
       );
+
+      return;
+    }
+
+    core.utils.popupNavigation.navigate(
+      null,
+      core.state.auth.permissionsController,
+      core.state.auth.phoneVerificationController,
+      controller,
+    );
+  }
+
+  void submit() {
+    if (core.state.auth.permissionsErrors.isEmpty) {
+      // Navigate
+      navigate();
     } else {
       core.utils.permissions.errorBanner(core);
     }

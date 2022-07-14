@@ -40,9 +40,21 @@ class _MutablePermissionCardState extends State<MutablePermissionCard> {
     super.initState();
 
     core = Provider.of<Core>(context, listen: false);
+
+    setDefault();
   }
 
-  Future<void> handleTap() async {
+  Future<void> setDefault() async {
+    Map response = await fetchPermissions();
+
+    if (response["status"]) {
+      setState(() {
+        isAllowed = true;
+      });
+    }
+  }
+
+  Future<Map> fetchPermissions() async {
     late Map response;
 
     switch (widget.type) {
@@ -56,6 +68,12 @@ class _MutablePermissionCardState extends State<MutablePermissionCard> {
         response = await core.utils.permissions.requestMicrophone(core);
         break;
     }
+
+    return response;
+  }
+
+  Future<void> handleTap() async {
+    Map response = await fetchPermissions();
 
     if (response["status"]) {
       setState(() {
