@@ -57,16 +57,16 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen>
     initializeAnimation();
 
     // Sync forward & reverse functionality with banner
-    core.state.signup.setOnBannerForward(() {
+    core.state.auth.setOnBannerForward(() {
       controller.forward();
     });
-    core.state.signup.setOnBannerReverse(() {
+    core.state.auth.setOnBannerReverse(() {
       controller.reverse();
     });
 
     // Initialize text editing controller for auto phone format
     fieldController = TextEditingController();
-    core.state.signup.setOnPick(format);
+    core.state.auth.setOnPick(format);
 
     // Enables user to drag or tap to dismiss keyboard when enabled
     node.addListener(() {
@@ -90,26 +90,26 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen>
   }
 
   void submit() async {
-    core.state.signup.countryCodeController.close();
+    core.state.auth.countryCodeController.close();
     node.unfocus();
 
     validated = await core.utils.phone.validate(
-      core.state.signup.phoneNumber,
-      core.state.signup.countryCode,
+      core.state.auth.phoneNumber,
+      core.state.auth.countryCode,
     );
 
     // Sends OTP and opens OTP popup
     if (validated) {
       Map response = await core.utils.auth.sendOTP(
-        phone: core.state.signup.phoneNumber,
-        dialCode: core.state.signup.countryDialCode,
+        phone: core.state.auth.phoneNumber,
+        dialCode: core.state.auth.countryDialCode,
         onCodeSend: (verificationId, resentToken) {
           print(
-            "OPT code has been sent to ${core.state.signup.formattedPhone}. Verification ID: $verificationId",
+            "OPT code has been sent to ${core.state.auth.formattedPhone}. Verification ID: $verificationId",
           );
 
-          core.state.signup.setVerificationId(verificationId);
-          core.state.signup.setResendToken(resentToken);
+          core.state.auth.setVerificationId(verificationId);
+          core.state.auth.setResendToken(resentToken);
         },
       );
 
@@ -118,7 +118,7 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen>
         return;
       }
 
-      core.state.signup.otpInputPanelController.open();
+      core.state.auth.otpInputPanelController.open();
       return;
     }
 
@@ -131,12 +131,12 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen>
   void handleError(String exception) {
     // Initialize error message values
     Map error = core.utils.auth.handleError(core, exception);
-    core.state.signup.setBannerState(MessageType.error);
-    core.state.signup.setBannerMessage(error["desc"]);
-    core.state.signup.setBannerTitle(error["header"]);
+    core.state.auth.setBannerState(MessageType.error);
+    core.state.auth.setBannerMessage(error["desc"]);
+    core.state.auth.setBannerTitle(error["header"]);
 
     // Display error message
-    core.state.signup.bannerController.show();
+    core.state.auth.bannerController.show();
   }
 
   // Formats a phone while is being typed
@@ -150,7 +150,7 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen>
 
     fieldController.text = await core.utils.phone.format(
       pure,
-      core.state.signup.countryCode,
+      core.state.auth.countryCode,
     );
 
     // Sets cursor position to end
@@ -160,8 +160,8 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen>
       ),
     );
 
-    core.state.signup.setPhoneNumber(pure);
-    core.state.signup.setFormattedPhone(fieldController.text);
+    core.state.auth.setPhoneNumber(pure);
+    core.state.auth.setFormattedPhone(fieldController.text);
   }
 
   @override
@@ -170,17 +170,17 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen>
     return MutablePopup(
       minHeight: 0,
       maxHeight: queryData.size.height - topMargin,
-      controller: core.state.signup.phoneVerificationController,
+      controller: core.state.auth.phoneVerificationController,
       onFreezeInteraction: dismissDetector
           ? () {
               node.unfocus();
             }
           : null,
       onClosed: () {
-        core.state.signup.countryCodeController.close();
+        core.state.auth.countryCodeController.close();
         node.unfocus();
-        core.state.signup.bannerController.dismiss();
-        core.state.signup.permissionsController.open();
+        core.state.auth.bannerController.dismiss();
+        core.state.auth.permissionsController.open();
       },
       body: MutableInputPanel(
         // Phone Input Text Field
@@ -193,13 +193,13 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen>
             type: TextInputType.phone,
             focusNode: node,
             onChange: format,
-            hintText: handleHint(core.state.signup.countryCode),
+            hintText: handleHint(core.state.auth.countryCode),
             leadingLeft: Observer(
               builder: (_) => PhoneExtentionDisplay(
-                core.state.signup.countryDialCode,
+                core.state.auth.countryDialCode,
                 onTap: () {
                   node.unfocus();
-                  core.state.signup.countryCodeController.open();
+                  core.state.auth.countryCodeController.open();
                 },
               ),
             ),

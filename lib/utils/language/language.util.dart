@@ -126,8 +126,8 @@ class LanguageUtil {
       },
       "phone_verification": {
         "title": "Enter Phone Number",
-        "desc": "We'll send you a magic link to verify your\n account",
-        "buttonText": "Send Link",
+        "desc": "We'll send you a SMS code to verify your\n account",
+        "buttonText": "Send SMS",
       }
     },
     "country_code_selector": {
@@ -140,7 +140,7 @@ class LanguageUtil {
       }
     },
     "otp_input_panel": {
-      "header": "Enter OTP",
+      "header": "Enter Code",
       "desc": "Please enter the code sent to\n {phone}",
       "secured_by_stamp": "Secured by Google",
       "next_code": "Next code available in {time}s",

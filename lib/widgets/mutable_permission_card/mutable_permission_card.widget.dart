@@ -60,13 +60,13 @@ class _MutablePermissionCardState extends State<MutablePermissionCard> {
     if (response["status"]) {
       setState(() {
         isAllowed = true;
-        core.state.signup.removePermissionsError(widget.type);
+        core.state.auth.removePermissionsError(widget.type);
       });
     } else {
       isAllowed = false;
 
       // Add error handling
-      core.state.signup.addPermissionsError(
+      core.state.auth.addPermissionsError(
         widget.type,
         response,
       );

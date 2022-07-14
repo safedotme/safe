@@ -25,16 +25,16 @@ class _AuthCountryCodeSelectorState extends State<AuthCountryCodeSelector> {
     return Observer(
       builder: (_) => MutableCountryCodeSelector(
         onPick: (country) {
-          core.state.signup.setCountryDialCode(country["dial_code"]!);
-          core.state.signup.setCountryCode(country["code"]!);
-          if (core.state.signup.onPick != null) {
+          core.state.auth.setCountryDialCode(country["dial_code"]!);
+          core.state.auth.setCountryCode(country["code"]!);
+          if (core.state.auth.onPick != null) {
             // Formats text
-            core.state.signup.onPick!(
-              core.state.signup.phoneNumber,
+            core.state.auth.onPick!(
+              core.state.auth.phoneNumber,
             );
           }
         },
-        controller: core.state.signup.countryCodeController,
+        controller: core.state.auth.countryCodeController,
       ),
     );
   }

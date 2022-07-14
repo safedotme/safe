@@ -23,16 +23,16 @@ class _AuthOtpInputPanelState extends State<AuthOtpInputPanel> {
 
   Future<void> resendCode() async {
     Map response = await core.utils.auth.sendOTP(
-      resedToken: core.state.signup.resendToken,
-      phone: core.state.signup.phoneNumber,
-      dialCode: core.state.signup.countryDialCode,
+      resedToken: core.state.auth.resendToken,
+      phone: core.state.auth.phoneNumber,
+      dialCode: core.state.auth.countryDialCode,
       onCodeSend: (verificationId, resentToken) {
         print(
-          "OPT code has been sent to ${core.state.signup.formattedPhone}. Verification ID: $verificationId",
+          "OPT code has been sent to ${core.state.auth.formattedPhone}. Verification ID: $verificationId",
         );
 
-        core.state.signup.setVerificationId(verificationId);
-        core.state.signup.setResendToken(resentToken);
+        core.state.auth.setVerificationId(verificationId);
+        core.state.auth.setResendToken(resentToken);
       },
     );
 
@@ -45,19 +45,19 @@ class _AuthOtpInputPanelState extends State<AuthOtpInputPanel> {
   void handleError(String exception) {
     // Initialize error message values
     Map error = core.utils.auth.handleError(core, exception);
-    core.state.signup.setBannerState(MessageType.error);
-    core.state.signup.setBannerMessage(error["desc"]);
-    core.state.signup.setBannerTitle(error["header"]);
+    core.state.auth.setBannerState(MessageType.error);
+    core.state.auth.setBannerMessage(error["desc"]);
+    core.state.auth.setBannerTitle(error["header"]);
 
     // Display error message
-    core.state.signup.bannerController.show();
+    core.state.auth.bannerController.show();
   }
 
   Future<void> handleSubmit(
     String verificationId,
     String otp,
   ) async {
-    core.state.signup.overlayController.show();
+    core.state.auth.overlayController.show();
     node.unfocus();
     Map<String, dynamic> response = await core.utils.auth.verifyOTP(
       otp,
@@ -65,7 +65,7 @@ class _AuthOtpInputPanelState extends State<AuthOtpInputPanel> {
     );
 
     if (response["status"]) {
-      core.state.signup.overlayController.hide();
+      core.state.auth.overlayController.hide();
       return;
     }
 
@@ -76,17 +76,17 @@ class _AuthOtpInputPanelState extends State<AuthOtpInputPanel> {
   Widget build(BuildContext context) {
     return Observer(
       builder: (_) => MutableOtpInputPanel(
-        controller: core.state.signup.otpInputPanelController,
-        countryDialCode: core.state.signup.countryDialCode,
-        phone: core.state.signup.phoneNumber,
+        controller: core.state.auth.otpInputPanelController,
+        countryDialCode: core.state.auth.countryDialCode,
+        phone: core.state.auth.phoneNumber,
         node: node,
         onTimeout: () {
           resendCode();
         },
-        countryCode: core.state.signup.countryCode,
+        countryCode: core.state.auth.countryCode,
         onSubmit: (otp) {
           handleSubmit(
-            core.state.signup.verificationId,
+            core.state.auth.verificationId,
             otp,
           );
         },

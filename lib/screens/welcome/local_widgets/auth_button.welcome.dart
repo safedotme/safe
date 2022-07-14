@@ -46,7 +46,7 @@ class _AuthButtonState extends State<AuthButton> {
     return MutableButton(
       onTap: () {
         if (widget.type == AuthButtonType.signup) {
-          core.state.signup.nameInputController.open();
+          core.state.auth.nameInputController.open();
         } else {
           // Add open functionality for login
         }

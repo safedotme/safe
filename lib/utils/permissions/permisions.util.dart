@@ -12,22 +12,22 @@ class PermissionsUtil {
 
   void errorBanner(Core core) {
     // Finds error
-    PermissionType key = core.state.signup.permissionsErrors.keys.toList()[0];
+    PermissionType key = core.state.auth.permissionsErrors.keys.toList()[0];
 
     //Maps error to specific message
-    Map response = core.state.signup.permissionsErrors[key]!;
-    core.state.signup.setBannerState(
+    Map response = core.state.auth.permissionsErrors[key]!;
+    core.state.auth.setBannerState(
       response["error"]["fatal"] ? MessageType.error : MessageType.warning,
     );
 
     // Sets properties for banner
-    core.state.signup.setBannerTitle(response["error"]["header"]);
-    core.state.signup.setBannerMessage(response["error"]["desc"]);
-    core.state.signup.setOnBannerTap(() {
+    core.state.auth.setBannerTitle(response["error"]["header"]);
+    core.state.auth.setBannerMessage(response["error"]["desc"]);
+    core.state.auth.setOnBannerTap(() {
       // Opens app settings when clicked
       openAppSettings();
     });
-    core.state.signup.bannerController.show();
+    core.state.auth.bannerController.show();
   }
 
   Future<Map<String, dynamic>> requestLocation(Core core) async {

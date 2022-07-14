@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'signup.store.dart';
+part of 'auth.store.dart';
 
 // **************************************************************************
 // StoreGenerator
@@ -8,9 +8,9 @@ part of 'signup.store.dart';
 
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
-mixin _$SignupStore on _SignupStore, Store {
+mixin _$AuthStore on _AuthStore, Store {
   late final _$bannerControllerAtom =
-      Atom(name: '_SignupStore.bannerController', context: context);
+      Atom(name: '_AuthStore.bannerController', context: context);
 
   @override
   BannerController get bannerController {
@@ -26,7 +26,7 @@ mixin _$SignupStore on _SignupStore, Store {
   }
 
   late final _$bannerStateAtom =
-      Atom(name: '_SignupStore.bannerState', context: context);
+      Atom(name: '_AuthStore.bannerState', context: context);
 
   @override
   MessageType get bannerState {
@@ -42,7 +42,7 @@ mixin _$SignupStore on _SignupStore, Store {
   }
 
   late final _$bannerTitleAtom =
-      Atom(name: '_SignupStore.bannerTitle', context: context);
+      Atom(name: '_AuthStore.bannerTitle', context: context);
 
   @override
   String get bannerTitle {
@@ -58,7 +58,7 @@ mixin _$SignupStore on _SignupStore, Store {
   }
 
   late final _$bannerMessageAtom =
-      Atom(name: '_SignupStore.bannerMessage', context: context);
+      Atom(name: '_AuthStore.bannerMessage', context: context);
 
   @override
   String get bannerMessage {
@@ -74,7 +74,7 @@ mixin _$SignupStore on _SignupStore, Store {
   }
 
   late final _$onBannerTapAtom =
-      Atom(name: '_SignupStore.onBannerTap', context: context);
+      Atom(name: '_AuthStore.onBannerTap', context: context);
 
   @override
   void Function() get onBannerTap {
@@ -90,7 +90,7 @@ mixin _$SignupStore on _SignupStore, Store {
   }
 
   late final _$onBannerForwardAtom =
-      Atom(name: '_SignupStore.onBannerForward', context: context);
+      Atom(name: '_AuthStore.onBannerForward', context: context);
 
   @override
   List<void Function()> get onBannerForward {
@@ -106,7 +106,7 @@ mixin _$SignupStore on _SignupStore, Store {
   }
 
   late final _$onBannerReverseAtom =
-      Atom(name: '_SignupStore.onBannerReverse', context: context);
+      Atom(name: '_AuthStore.onBannerReverse', context: context);
 
   @override
   List<void Function()> get onBannerReverse {
@@ -121,7 +121,7 @@ mixin _$SignupStore on _SignupStore, Store {
     });
   }
 
-  late final _$delayAtom = Atom(name: '_SignupStore.delay', context: context);
+  late final _$delayAtom = Atom(name: '_AuthStore.delay', context: context);
 
   @override
   Duration get delay {
@@ -136,7 +136,7 @@ mixin _$SignupStore on _SignupStore, Store {
     });
   }
 
-  late final _$nameAtom = Atom(name: '_SignupStore.name', context: context);
+  late final _$nameAtom = Atom(name: '_AuthStore.name', context: context);
 
   @override
   String get name {
@@ -152,7 +152,7 @@ mixin _$SignupStore on _SignupStore, Store {
   }
 
   late final _$nameInputControllerAtom =
-      Atom(name: '_SignupStore.nameInputController', context: context);
+      Atom(name: '_AuthStore.nameInputController', context: context);
 
   @override
   PanelController get nameInputController {
@@ -168,7 +168,7 @@ mixin _$SignupStore on _SignupStore, Store {
   }
 
   late final _$nameErrorAtom =
-      Atom(name: '_SignupStore.nameError', context: context);
+      Atom(name: '_AuthStore.nameError', context: context);
 
   @override
   bool get nameError {
@@ -184,7 +184,7 @@ mixin _$SignupStore on _SignupStore, Store {
   }
 
   late final _$permissionsControllerAtom =
-      Atom(name: '_SignupStore.permissionsController', context: context);
+      Atom(name: '_AuthStore.permissionsController', context: context);
 
   @override
   PanelController get permissionsController {
@@ -201,7 +201,7 @@ mixin _$SignupStore on _SignupStore, Store {
   }
 
   late final _$permissionsErrorsAtom =
-      Atom(name: '_SignupStore.permissionsErrors', context: context);
+      Atom(name: '_AuthStore.permissionsErrors', context: context);
 
   @override
   Map<PermissionType, Map<dynamic, dynamic>> get permissionsErrors {
@@ -217,7 +217,7 @@ mixin _$SignupStore on _SignupStore, Store {
   }
 
   late final _$phoneVerificationControllerAtom =
-      Atom(name: '_SignupStore.phoneVerificationController', context: context);
+      Atom(name: '_AuthStore.phoneVerificationController', context: context);
 
   @override
   PanelController get phoneVerificationController {
@@ -234,7 +234,7 @@ mixin _$SignupStore on _SignupStore, Store {
   }
 
   late final _$countryCodeControllerAtom =
-      Atom(name: '_SignupStore.countryCodeController', context: context);
+      Atom(name: '_AuthStore.countryCodeController', context: context);
 
   @override
   PanelController get countryCodeController {
@@ -251,7 +251,7 @@ mixin _$SignupStore on _SignupStore, Store {
   }
 
   late final _$otpInputPanelControllerAtom =
-      Atom(name: '_SignupStore.otpInputPanelController', context: context);
+      Atom(name: '_AuthStore.otpInputPanelController', context: context);
 
   @override
   PanelController get otpInputPanelController {
@@ -268,7 +268,7 @@ mixin _$SignupStore on _SignupStore, Store {
   }
 
   late final _$phoneNumberAtom =
-      Atom(name: '_SignupStore.phoneNumber', context: context);
+      Atom(name: '_AuthStore.phoneNumber', context: context);
 
   @override
   String get phoneNumber {
@@ -284,7 +284,7 @@ mixin _$SignupStore on _SignupStore, Store {
   }
 
   late final _$formattedPhoneAtom =
-      Atom(name: '_SignupStore.formattedPhone', context: context);
+      Atom(name: '_AuthStore.formattedPhone', context: context);
 
   @override
   String get formattedPhone {
@@ -300,7 +300,7 @@ mixin _$SignupStore on _SignupStore, Store {
   }
 
   late final _$countryDialCodeAtom =
-      Atom(name: '_SignupStore.countryDialCode', context: context);
+      Atom(name: '_AuthStore.countryDialCode', context: context);
 
   @override
   String get countryDialCode {
@@ -316,7 +316,7 @@ mixin _$SignupStore on _SignupStore, Store {
   }
 
   late final _$countryCodeAtom =
-      Atom(name: '_SignupStore.countryCode', context: context);
+      Atom(name: '_AuthStore.countryCode', context: context);
 
   @override
   String get countryCode {
@@ -331,7 +331,7 @@ mixin _$SignupStore on _SignupStore, Store {
     });
   }
 
-  late final _$onPickAtom = Atom(name: '_SignupStore.onPick', context: context);
+  late final _$onPickAtom = Atom(name: '_AuthStore.onPick', context: context);
 
   @override
   Function? get onPick {
@@ -347,7 +347,7 @@ mixin _$SignupStore on _SignupStore, Store {
   }
 
   late final _$verificationIdAtom =
-      Atom(name: '_SignupStore.verificationId', context: context);
+      Atom(name: '_AuthStore.verificationId', context: context);
 
   @override
   String get verificationId {
@@ -363,7 +363,7 @@ mixin _$SignupStore on _SignupStore, Store {
   }
 
   late final _$resendTokenAtom =
-      Atom(name: '_SignupStore.resendToken', context: context);
+      Atom(name: '_AuthStore.resendToken', context: context);
 
   @override
   int? get resendToken {
@@ -379,7 +379,7 @@ mixin _$SignupStore on _SignupStore, Store {
   }
 
   late final _$overlayControllerAtom =
-      Atom(name: '_SignupStore.overlayController', context: context);
+      Atom(name: '_AuthStore.overlayController', context: context);
 
   @override
   OverlayController get overlayController {
@@ -394,205 +394,205 @@ mixin _$SignupStore on _SignupStore, Store {
     });
   }
 
-  late final _$_SignupStoreActionController =
-      ActionController(name: '_SignupStore', context: context);
+  late final _$_AuthStoreActionController =
+      ActionController(name: '_AuthStore', context: context);
 
   @override
   void setBannerState(MessageType t) {
-    final _$actionInfo = _$_SignupStoreActionController.startAction(
-        name: '_SignupStore.setBannerState');
+    final _$actionInfo = _$_AuthStoreActionController.startAction(
+        name: '_AuthStore.setBannerState');
     try {
       return super.setBannerState(t);
     } finally {
-      _$_SignupStoreActionController.endAction(_$actionInfo);
+      _$_AuthStoreActionController.endAction(_$actionInfo);
     }
   }
 
   @override
   void setBannerTitle(String t) {
-    final _$actionInfo = _$_SignupStoreActionController.startAction(
-        name: '_SignupStore.setBannerTitle');
+    final _$actionInfo = _$_AuthStoreActionController.startAction(
+        name: '_AuthStore.setBannerTitle');
     try {
       return super.setBannerTitle(t);
     } finally {
-      _$_SignupStoreActionController.endAction(_$actionInfo);
+      _$_AuthStoreActionController.endAction(_$actionInfo);
     }
   }
 
   @override
   void setBannerMessage(String m) {
-    final _$actionInfo = _$_SignupStoreActionController.startAction(
-        name: '_SignupStore.setBannerMessage');
+    final _$actionInfo = _$_AuthStoreActionController.startAction(
+        name: '_AuthStore.setBannerMessage');
     try {
       return super.setBannerMessage(m);
     } finally {
-      _$_SignupStoreActionController.endAction(_$actionInfo);
+      _$_AuthStoreActionController.endAction(_$actionInfo);
     }
   }
 
   @override
   void setOnBannerTap(void Function() function) {
-    final _$actionInfo = _$_SignupStoreActionController.startAction(
-        name: '_SignupStore.setOnBannerTap');
+    final _$actionInfo = _$_AuthStoreActionController.startAction(
+        name: '_AuthStore.setOnBannerTap');
     try {
       return super.setOnBannerTap(function);
     } finally {
-      _$_SignupStoreActionController.endAction(_$actionInfo);
+      _$_AuthStoreActionController.endAction(_$actionInfo);
     }
   }
 
   @override
   void setOnBannerForward(void Function() function) {
-    final _$actionInfo = _$_SignupStoreActionController.startAction(
-        name: '_SignupStore.setOnBannerForward');
+    final _$actionInfo = _$_AuthStoreActionController.startAction(
+        name: '_AuthStore.setOnBannerForward');
     try {
       return super.setOnBannerForward(function);
     } finally {
-      _$_SignupStoreActionController.endAction(_$actionInfo);
+      _$_AuthStoreActionController.endAction(_$actionInfo);
     }
   }
 
   @override
   void setOnBannerReverse(void Function() function) {
-    final _$actionInfo = _$_SignupStoreActionController.startAction(
-        name: '_SignupStore.setOnBannerReverse');
+    final _$actionInfo = _$_AuthStoreActionController.startAction(
+        name: '_AuthStore.setOnBannerReverse');
     try {
       return super.setOnBannerReverse(function);
     } finally {
-      _$_SignupStoreActionController.endAction(_$actionInfo);
+      _$_AuthStoreActionController.endAction(_$actionInfo);
     }
   }
 
   @override
   void setDelay(Duration d) {
-    final _$actionInfo = _$_SignupStoreActionController.startAction(
-        name: '_SignupStore.setDelay');
+    final _$actionInfo =
+        _$_AuthStoreActionController.startAction(name: '_AuthStore.setDelay');
     try {
       return super.setDelay(d);
     } finally {
-      _$_SignupStoreActionController.endAction(_$actionInfo);
+      _$_AuthStoreActionController.endAction(_$actionInfo);
     }
   }
 
   @override
   void setName(String _) {
-    final _$actionInfo = _$_SignupStoreActionController.startAction(
-        name: '_SignupStore.setName');
+    final _$actionInfo =
+        _$_AuthStoreActionController.startAction(name: '_AuthStore.setName');
     try {
       return super.setName(_);
     } finally {
-      _$_SignupStoreActionController.endAction(_$actionInfo);
+      _$_AuthStoreActionController.endAction(_$actionInfo);
     }
   }
 
   @override
   void setNameError(bool v) {
-    final _$actionInfo = _$_SignupStoreActionController.startAction(
-        name: '_SignupStore.setNameError');
+    final _$actionInfo = _$_AuthStoreActionController.startAction(
+        name: '_AuthStore.setNameError');
     try {
       return super.setNameError(v);
     } finally {
-      _$_SignupStoreActionController.endAction(_$actionInfo);
+      _$_AuthStoreActionController.endAction(_$actionInfo);
     }
   }
 
   @override
   void addPermissionsError(
       PermissionType type, Map<dynamic, dynamic> response) {
-    final _$actionInfo = _$_SignupStoreActionController.startAction(
-        name: '_SignupStore.addPermissionsError');
+    final _$actionInfo = _$_AuthStoreActionController.startAction(
+        name: '_AuthStore.addPermissionsError');
     try {
       return super.addPermissionsError(type, response);
     } finally {
-      _$_SignupStoreActionController.endAction(_$actionInfo);
+      _$_AuthStoreActionController.endAction(_$actionInfo);
     }
   }
 
   @override
   void removePermissionsError(PermissionType type) {
-    final _$actionInfo = _$_SignupStoreActionController.startAction(
-        name: '_SignupStore.removePermissionsError');
+    final _$actionInfo = _$_AuthStoreActionController.startAction(
+        name: '_AuthStore.removePermissionsError');
     try {
       return super.removePermissionsError(type);
     } finally {
-      _$_SignupStoreActionController.endAction(_$actionInfo);
+      _$_AuthStoreActionController.endAction(_$actionInfo);
     }
   }
 
   @override
   void setCountryDialCode(String v) {
-    final _$actionInfo = _$_SignupStoreActionController.startAction(
-        name: '_SignupStore.setCountryDialCode');
+    final _$actionInfo = _$_AuthStoreActionController.startAction(
+        name: '_AuthStore.setCountryDialCode');
     try {
       return super.setCountryDialCode(v);
     } finally {
-      _$_SignupStoreActionController.endAction(_$actionInfo);
+      _$_AuthStoreActionController.endAction(_$actionInfo);
     }
   }
 
   @override
   void setPhoneNumber(String v) {
-    final _$actionInfo = _$_SignupStoreActionController.startAction(
-        name: '_SignupStore.setPhoneNumber');
+    final _$actionInfo = _$_AuthStoreActionController.startAction(
+        name: '_AuthStore.setPhoneNumber');
     try {
       return super.setPhoneNumber(v);
     } finally {
-      _$_SignupStoreActionController.endAction(_$actionInfo);
+      _$_AuthStoreActionController.endAction(_$actionInfo);
     }
   }
 
   @override
   void setFormattedPhone(String v) {
-    final _$actionInfo = _$_SignupStoreActionController.startAction(
-        name: '_SignupStore.setFormattedPhone');
+    final _$actionInfo = _$_AuthStoreActionController.startAction(
+        name: '_AuthStore.setFormattedPhone');
     try {
       return super.setFormattedPhone(v);
     } finally {
-      _$_SignupStoreActionController.endAction(_$actionInfo);
+      _$_AuthStoreActionController.endAction(_$actionInfo);
     }
   }
 
   @override
   void setCountryCode(String v) {
-    final _$actionInfo = _$_SignupStoreActionController.startAction(
-        name: '_SignupStore.setCountryCode');
+    final _$actionInfo = _$_AuthStoreActionController.startAction(
+        name: '_AuthStore.setCountryCode');
     try {
       return super.setCountryCode(v);
     } finally {
-      _$_SignupStoreActionController.endAction(_$actionInfo);
+      _$_AuthStoreActionController.endAction(_$actionInfo);
     }
   }
 
   @override
   void setOnPick(Function fn) {
-    final _$actionInfo = _$_SignupStoreActionController.startAction(
-        name: '_SignupStore.setOnPick');
+    final _$actionInfo =
+        _$_AuthStoreActionController.startAction(name: '_AuthStore.setOnPick');
     try {
       return super.setOnPick(fn);
     } finally {
-      _$_SignupStoreActionController.endAction(_$actionInfo);
+      _$_AuthStoreActionController.endAction(_$actionInfo);
     }
   }
 
   @override
   void setVerificationId(String id) {
-    final _$actionInfo = _$_SignupStoreActionController.startAction(
-        name: '_SignupStore.setVerificationId');
+    final _$actionInfo = _$_AuthStoreActionController.startAction(
+        name: '_AuthStore.setVerificationId');
     try {
       return super.setVerificationId(id);
     } finally {
-      _$_SignupStoreActionController.endAction(_$actionInfo);
+      _$_AuthStoreActionController.endAction(_$actionInfo);
     }
   }
 
   @override
   void setResendToken(int? token) {
-    final _$actionInfo = _$_SignupStoreActionController.startAction(
-        name: '_SignupStore.setResendToken');
+    final _$actionInfo = _$_AuthStoreActionController.startAction(
+        name: '_AuthStore.setResendToken');
     try {
       return super.setResendToken(token);
     } finally {
-      _$_SignupStoreActionController.endAction(_$actionInfo);
+      _$_AuthStoreActionController.endAction(_$actionInfo);
     }
   }
 

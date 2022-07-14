@@ -53,10 +53,10 @@ class _PermissionsScreenState extends State<PermissionsScreen>
     initializeAnimation();
 
     // Sync forward & reverse functionality with banner
-    core.state.signup.setOnBannerForward(() {
+    core.state.auth.setOnBannerForward(() {
       controller.forward();
     });
-    core.state.signup.setOnBannerReverse(() {
+    core.state.auth.setOnBannerReverse(() {
       controller.reverse();
     });
   }
@@ -69,12 +69,12 @@ class _PermissionsScreenState extends State<PermissionsScreen>
   }
 
   void submit() {
-    if (core.state.signup.permissionsErrors.isEmpty) {
+    if (core.state.auth.permissionsErrors.isEmpty) {
       // Navigate
       core.utils.popupNavigation.navigate(
-        core.state.signup.nameInputController,
-        core.state.signup.permissionsController,
-        core.state.signup.phoneVerificationController,
+        core.state.auth.nameInputController,
+        core.state.auth.permissionsController,
+        core.state.auth.phoneVerificationController,
         controller,
       );
     } else {
@@ -88,10 +88,10 @@ class _PermissionsScreenState extends State<PermissionsScreen>
     return MutablePopup(
       minHeight: 0,
       maxHeight: queryData.size.height - topMargin,
-      controller: core.state.signup.permissionsController,
+      controller: core.state.auth.permissionsController,
       onClosed: () {
-        core.state.signup.bannerController.dismiss();
-        core.state.signup.nameInputController.open();
+        core.state.auth.bannerController.dismiss();
+        core.state.auth.nameInputController.open();
       },
       body: Observer(
         builder: (_) => MutableInputPanel(
@@ -121,7 +121,7 @@ class _PermissionsScreenState extends State<PermissionsScreen>
               ["desc"], // "Before getting started, we'll need..."
           icon: MutableIcons.key,
           onTap: submit,
-          isActive: core.state.signup.permissionsErrors.isEmpty,
+          isActive: core.state.auth.permissionsErrors.isEmpty,
           buttonText: core.utils.language
                   .langMap[core.state.preferences.language]!["auth"]
               ["permissions"]["buttonText"], // "Next"

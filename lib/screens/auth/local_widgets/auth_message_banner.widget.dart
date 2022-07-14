@@ -23,22 +23,22 @@ class _AuthMessageBannerState extends State<AuthMessageBanner> {
   Widget build(BuildContext context) {
     return Observer(
       builder: (_) => MutableBanner(
-        controller: core.state.signup.bannerController,
-        type: core.state.signup.bannerState,
-        title: core.state.signup.bannerTitle,
-        description: core.state.signup.bannerMessage,
-        onTap: core.state.signup.onBannerTap,
+        controller: core.state.auth.bannerController,
+        type: core.state.auth.bannerState,
+        title: core.state.auth.bannerTitle,
+        description: core.state.auth.bannerMessage,
+        onTap: core.state.auth.onBannerTap,
         onForward: () {
-          for (Function f in core.state.signup.onBannerForward) {
+          for (Function f in core.state.auth.onBannerForward) {
             f();
           }
         },
         onReverse: () {
-          for (Function f in core.state.signup.onBannerReverse) {
+          for (Function f in core.state.auth.onBannerReverse) {
             f();
           }
         },
-        duration: core.state.signup.delay,
+        duration: core.state.auth.delay,
       ),
     );
   }

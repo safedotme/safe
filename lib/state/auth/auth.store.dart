@@ -4,11 +4,11 @@ import 'package:safe/widgets/mutable_overlay/mutable_overlay.widget.dart';
 import 'package:safe/widgets/mutable_permission_card/mutable_permission_card.widget.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
-part 'signup.store.g.dart';
+part 'auth.store.g.dart';
 
-class SignupStore extends _SignupStore with _$SignupStore {}
+class AuthStore extends _AuthStore with _$AuthStore {}
 
-abstract class _SignupStore with Store {
+abstract class _AuthStore with Store {
   // BANNER RELATED
 
   @observable

@@ -23,7 +23,7 @@ class _AuthLoaderState extends State<AuthLoader> {
   @override
   Widget build(BuildContext context) {
     return MutableOverlay(
-      controller: core.state.signup.overlayController,
+      controller: core.state.auth.overlayController,
       child: Center(
         child: MutableLoader(
           text: "Creating account",

@@ -188,7 +188,7 @@ class _MutableOtpInputPanelState extends State<MutableOtpInputPanel>
                           .toString()
                           .replaceAll(
                             "{phone}",
-                            "${widget.countryDialCode} ${core.state.signup.formattedPhone}",
+                            "${widget.countryDialCode} ${core.state.auth.formattedPhone}",
                           ),
                       align: TextAlign.center,
                       style: kPanelPopupSubheaderStyle,

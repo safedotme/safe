@@ -56,10 +56,10 @@ class _NameInputScreenState extends State<NameInputScreen>
     hintName = generateRandomName();
 
     // Sync forward & reverse functionality with banner
-    core.state.signup.setOnBannerForward(() {
+    core.state.auth.setOnBannerForward(() {
       controller.forward();
     });
-    core.state.signup.setOnBannerReverse(() {
+    core.state.auth.setOnBannerReverse(() {
       controller.reverse();
     });
 
@@ -86,45 +86,45 @@ class _NameInputScreenState extends State<NameInputScreen>
     bool error = false;
 
     // Check if there is a name
-    if (core.state.signup.name.isEmpty) {
+    if (core.state.auth.name.isEmpty) {
       error = true;
 
-      core.state.signup.setBannerState(MessageType.error);
-      core.state.signup.setBannerTitle(
+      core.state.auth.setBannerState(MessageType.error);
+      core.state.auth.setBannerTitle(
         core.utils.language.langMap[core.state.preferences.language]!["auth"]
             ["name_input"]["error-emptyField/title"],
       );
-      core.state.signup.setBannerMessage(
+      core.state.auth.setBannerMessage(
         core.utils.language.langMap[core.state.preferences.language]!["auth"]
             ["name_input"]["error-emptyField/desc"],
       );
-      core.state.signup.bannerController.show();
+      core.state.auth.bannerController.show();
     }
 
     // Checks if there is a last name
-    if (!core.state.signup.name.contains(" ") && !error) {
+    if (!core.state.auth.name.contains(" ") && !error) {
       error = true;
-      core.state.signup.setBannerState(MessageType.error);
-      core.state.signup.setBannerTitle(
+      core.state.auth.setBannerState(MessageType.error);
+      core.state.auth.setBannerTitle(
         core.utils.language.langMap[core.state.preferences.language]!["auth"]
             ["name_input"]["error-lastName/title"],
       );
-      core.state.signup.setBannerMessage(
+      core.state.auth.setBannerMessage(
         core.utils.language.langMap[core.state.preferences.language]!["auth"]
             ["name_input"]["error-lastName/desc"],
       );
-      core.state.signup.bannerController.show();
+      core.state.auth.bannerController.show();
     }
 
-    core.state.signup.setNameError(error);
+    core.state.auth.setNameError(error);
 
     if (!error) {
       // Navigate
 
       core.utils.popupNavigation.navigate(
         null,
-        core.state.signup.nameInputController,
-        core.state.signup.permissionsController,
+        core.state.auth.nameInputController,
+        core.state.auth.permissionsController,
         controller,
       );
     } else {
@@ -152,7 +152,7 @@ class _NameInputScreenState extends State<NameInputScreen>
     // Called after fieldController functions to not show user capitalized format
     String capitalized = core.utils.text.toTitle(noNum);
 
-    core.state.signup.setName(capitalized);
+    core.state.auth.setName(capitalized);
   }
 
   String generateRandomName() {
@@ -169,7 +169,7 @@ class _NameInputScreenState extends State<NameInputScreen>
     return MutablePopup(
       minHeight: 0,
       maxHeight: queryData.size.height - topMargin,
-      controller: core.state.signup.nameInputController,
+      controller: core.state.auth.nameInputController,
       onFreezeInteraction: dismissDetector
           ? () {
               node.unfocus();
@@ -177,7 +177,7 @@ class _NameInputScreenState extends State<NameInputScreen>
           : null,
       onClosed: () {
         node.unfocus();
-        core.state.signup.bannerController.dismiss();
+        core.state.auth.bannerController.dismiss();
       },
       body: Observer(
         builder: (_) => MutableInputPanel(
@@ -199,7 +199,7 @@ class _NameInputScreenState extends State<NameInputScreen>
                   .langMap[core.state.preferences.language]!["auth"]
               ["name_input"]["desc"],
           icon: MutableIcons.profile,
-          isActive: !core.state.signup.nameError,
+          isActive: !core.state.auth.nameError,
           onTap: submit,
           buttonText: core.utils.language
                   .langMap[core.state.preferences.language]!["auth"]
