@@ -112,7 +112,10 @@ class _PermissionsScreenState extends State<PermissionsScreen>
       controller: core.state.auth.permissionsController,
       onClosed: () {
         core.state.auth.bannerController.dismiss();
-        core.state.auth.nameInputController.open();
+
+        if (widget.type == AuthType.signup) {
+          core.state.auth.nameInputController.open();
+        }
       },
       body: Observer(
         builder: (_) {

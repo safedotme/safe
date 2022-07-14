@@ -10,9 +10,10 @@ import 'package:safe/utils/constants/constants.util.dart';
 
 class SignupFlow {
   final List<Widget> widgets = [
+    // Refactor for login
     NameInputScreen(),
     PermissionsScreen(AuthType.signup),
-    PhoneVerificationScreen(),
+    PhoneVerificationScreen(AuthType.signup),
 
     // Positioned at the bottom of the list to always overlay screens
     AuthCountryCodeSelector(),

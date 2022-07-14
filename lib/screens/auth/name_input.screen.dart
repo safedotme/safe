@@ -120,11 +120,17 @@ class _NameInputScreenState extends State<NameInputScreen>
 
     if (!error) {
       // Navigate
+      bool hasPermissions = core.utils.permissions.checkPermissions(
+        core,
+        sendError: false,
+      );
 
       core.utils.popupNavigation.navigate(
         null,
         core.state.auth.nameInputController,
-        core.state.auth.permissionsController,
+        hasPermissions
+            ? core.state.auth.phoneVerificationController
+            : core.state.auth.permissionsController,
         controller,
       );
     } else {

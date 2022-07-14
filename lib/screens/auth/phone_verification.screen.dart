@@ -11,6 +11,8 @@ import 'package:safe/widgets/mutable_text_field/local_widgets/phone_extention_di
 import 'package:safe/widgets/mutable_text_field/mutable_text_field.widget.dart';
 
 class PhoneVerificationScreen extends StatefulWidget {
+  final AuthType type;
+  PhoneVerificationScreen(this.type);
   @override
   State<PhoneVerificationScreen> createState() =>
       _PhoneVerificationScreenState();
@@ -180,7 +182,9 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen>
         core.state.auth.countryCodeController.close();
         node.unfocus();
         core.state.auth.bannerController.dismiss();
-        core.state.auth.permissionsController.open();
+        if (widget.type == AuthType.signup) {
+          core.state.auth.nameInputController.open();
+        }
       },
       body: MutableInputPanel(
         // Phone Input Text Field
