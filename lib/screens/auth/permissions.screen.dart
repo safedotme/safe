@@ -9,9 +9,6 @@ import 'package:safe/widgets/mutable_permission_card/mutable_permission_card.wid
 import 'package:safe/widgets/mutable_popup/mutable_popup.widget.dart';
 
 class PermissionsScreen extends StatefulWidget {
-  final AuthType type;
-
-  PermissionsScreen(this.type);
   @override
   State<PermissionsScreen> createState() => _PermissionsScreenState();
 }
@@ -71,7 +68,7 @@ class _PermissionsScreenState extends State<PermissionsScreen>
   }
 
   void navigate() {
-    if (widget.type == AuthType.signup) {
+    if (core.state.auth.authType == AuthType.signup) {
       core.utils.popupNavigation.navigate(
         core.state.auth.nameInputController,
         core.state.auth.permissionsController,
@@ -113,7 +110,7 @@ class _PermissionsScreenState extends State<PermissionsScreen>
       onClosed: () {
         core.state.auth.bannerController.dismiss();
 
-        if (widget.type == AuthType.signup) {
+        if (core.state.auth.authType == AuthType.signup) {
           core.state.auth.nameInputController.open();
         }
       },

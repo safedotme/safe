@@ -30,7 +30,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
   Widget build(BuildContext context) {
     queryData = MediaQuery.of(context);
     return MutableScaffold(
-      overlays: core.utils.flows.signup.widgets,
+      overlays: core.utils.flows.auth.widgets,
       body: Column(
         children: [
           Spacer(flex: 3),

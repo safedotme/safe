@@ -1,4 +1,5 @@
 import 'package:mobx/mobx.dart';
+import 'package:safe/utils/constants/constants.util.dart';
 import 'package:safe/widgets/mutable_banner/mutable_banner.widget.dart';
 import 'package:safe/widgets/mutable_overlay/mutable_overlay.widget.dart';
 import 'package:safe/widgets/mutable_permission_card/mutable_permission_card.widget.dart';
@@ -9,6 +10,13 @@ part 'auth.store.g.dart';
 class AuthStore extends _AuthStore with _$AuthStore {}
 
 abstract class _AuthStore with Store {
+  // GENERAL
+  @observable
+  AuthType authType = AuthType.signup;
+
+  @action
+  void setAuthType(AuthType t) => authType = t;
+
   // BANNER RELATED
 
   @observable

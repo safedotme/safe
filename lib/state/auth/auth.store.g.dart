@@ -9,6 +9,22 @@ part of 'auth.store.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
 mixin _$AuthStore on _AuthStore, Store {
+  late final _$authTypeAtom =
+      Atom(name: '_AuthStore.authType', context: context);
+
+  @override
+  AuthType get authType {
+    _$authTypeAtom.reportRead();
+    return super.authType;
+  }
+
+  @override
+  set authType(AuthType value) {
+    _$authTypeAtom.reportWrite(value, super.authType, () {
+      super.authType = value;
+    });
+  }
+
   late final _$bannerControllerAtom =
       Atom(name: '_AuthStore.bannerController', context: context);
 
@@ -398,6 +414,17 @@ mixin _$AuthStore on _AuthStore, Store {
       ActionController(name: '_AuthStore', context: context);
 
   @override
+  void setAuthType(AuthType t) {
+    final _$actionInfo = _$_AuthStoreActionController.startAction(
+        name: '_AuthStore.setAuthType');
+    try {
+      return super.setAuthType(t);
+    } finally {
+      _$_AuthStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   void setBannerState(MessageType t) {
     final _$actionInfo = _$_AuthStoreActionController.startAction(
         name: '_AuthStore.setBannerState');
@@ -587,6 +614,7 @@ mixin _$AuthStore on _AuthStore, Store {
   @override
   String toString() {
     return '''
+authType: ${authType},
 bannerController: ${bannerController},
 bannerState: ${bannerState},
 bannerTitle: ${bannerTitle},

@@ -41,10 +41,24 @@ class _AuthButtonState extends State<AuthButton> {
     return MutableButton(
       onTap: () {
         if (widget.type == AuthType.signup) {
+          core.state.auth.setAuthType(widget.type);
           core.state.auth.nameInputController.open();
-        } else {
-          // Add open functionality for login
+          return;
         }
+        core.state.auth.setAuthType(widget.type);
+
+        // Checks if should open permission popup
+        bool hasPermissions = core.utils.permissions.checkPermissions(
+          core,
+          sendError: false,
+        );
+
+        if (!hasPermissions) {
+          core.state.auth.permissionsController.open();
+          return;
+        }
+
+        core.state.auth.phoneVerificationController.open();
       },
       child: displayBorder(
         Container(
