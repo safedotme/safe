@@ -21,9 +21,8 @@ class _PermissionsScreenState extends State<PermissionsScreen>
   late Core core;
   late MediaQueryData queryData;
   late AnimationController controller;
-  bool error = false;
-  bool navigateTo = false;
   List<PermissionType> permissions = MutablePermissionCard.permissionList;
+  bool areEnabled = true;
 
   // Animation stuff
   double topMargin = kTopMargin;
@@ -92,11 +91,15 @@ class _PermissionsScreenState extends State<PermissionsScreen>
   }
 
   void submit() {
-    if (core.state.auth.permissionsErrors.isEmpty) {
-      // Navigate
+    setState(() {
+      areEnabled = core.utils.permissions.checkPermissions(
+        core,
+        sendError: true,
+      );
+    });
+
+    if (areEnabled) {
       navigate();
-    } else {
-      core.utils.permissions.errorBanner(core);
     }
   }
 
@@ -112,38 +115,41 @@ class _PermissionsScreenState extends State<PermissionsScreen>
         core.state.auth.nameInputController.open();
       },
       body: Observer(
-        builder: (_) => MutableInputPanel(
-          // Permission Cards
-          body: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            // Lays out the permission cards
-            children: List.generate(
-              permissions.length,
-              (i) => Padding(
-                padding: EdgeInsets.only(
-                  bottom: i + 1 == permissions.length ? 0 : 12,
-                ),
-                child: MutablePermissionCard(
-                  type: MutablePermissionCard.permissionList[i],
+        builder: (_) {
+          // checkPermissions(Duration.zero);
+          return MutableInputPanel(
+            // Permission Cards
+            body: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              // Lays out the permission cards
+              children: List.generate(
+                permissions.length,
+                (i) => Padding(
+                  padding: EdgeInsets.only(
+                    bottom: i + 1 == permissions.length ? 0 : 12,
+                  ),
+                  child: MutablePermissionCard(
+                    type: MutablePermissionCard.permissionList[i],
+                  ),
                 ),
               ),
             ),
-          ),
-          // Display stuff
-          title: core.utils.language
-                  .langMap[core.state.preferences.language]!["auth"]
-              ["permissions"]["title"], // "Enable Permissions"
-          description: core.utils.language
-                      .langMap[core.state.preferences.language]!["auth"]
-                  ["permissions"]
-              ["desc"], // "Before getting started, we'll need..."
-          icon: MutableIcons.key,
-          onTap: submit,
-          isActive: core.state.auth.permissionsErrors.isEmpty,
-          buttonText: core.utils.language
-                  .langMap[core.state.preferences.language]!["auth"]
-              ["permissions"]["buttonText"], // "Next"
-        ),
+            // Display stuff
+            title: core.utils.language
+                    .langMap[core.state.preferences.language]!["auth"]
+                ["permissions"]["title"], // "Enable Permissions"
+            description: core.utils.language
+                        .langMap[core.state.preferences.language]!["auth"]
+                    ["permissions"]
+                ["desc"], // "Before getting started, we'll need..."
+            icon: MutableIcons.key,
+            onTap: submit,
+            isActive: areEnabled, // Refactor
+            buttonText: core.utils.language
+                    .langMap[core.state.preferences.language]!["auth"]
+                ["permissions"]["buttonText"], // "Next"
+          );
+        },
       ),
     );
   }

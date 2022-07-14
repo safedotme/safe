@@ -200,19 +200,19 @@ mixin _$AuthStore on _AuthStore, Store {
     });
   }
 
-  late final _$permissionsErrorsAtom =
-      Atom(name: '_AuthStore.permissionsErrors', context: context);
+  late final _$permissionMapAtom =
+      Atom(name: '_AuthStore.permissionMap', context: context);
 
   @override
-  Map<PermissionType, Map<dynamic, dynamic>> get permissionsErrors {
-    _$permissionsErrorsAtom.reportRead();
-    return super.permissionsErrors;
+  Map<PermissionType, PermissionData> get permissionMap {
+    _$permissionMapAtom.reportRead();
+    return super.permissionMap;
   }
 
   @override
-  set permissionsErrors(Map<PermissionType, Map<dynamic, dynamic>> value) {
-    _$permissionsErrorsAtom.reportWrite(value, super.permissionsErrors, () {
-      super.permissionsErrors = value;
+  set permissionMap(Map<PermissionType, PermissionData> value) {
+    _$permissionMapAtom.reportWrite(value, super.permissionMap, () {
+      super.permissionMap = value;
     });
   }
 
@@ -497,23 +497,11 @@ mixin _$AuthStore on _AuthStore, Store {
   }
 
   @override
-  void addPermissionsError(
-      PermissionType type, Map<dynamic, dynamic> response) {
+  void setPermission(PermissionType type, PermissionData data) {
     final _$actionInfo = _$_AuthStoreActionController.startAction(
-        name: '_AuthStore.addPermissionsError');
+        name: '_AuthStore.setPermission');
     try {
-      return super.addPermissionsError(type, response);
-    } finally {
-      _$_AuthStoreActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
-  void removePermissionsError(PermissionType type) {
-    final _$actionInfo = _$_AuthStoreActionController.startAction(
-        name: '_AuthStore.removePermissionsError');
-    try {
-      return super.removePermissionsError(type);
+      return super.setPermission(type, data);
     } finally {
       _$_AuthStoreActionController.endAction(_$actionInfo);
     }
@@ -611,7 +599,7 @@ name: ${name},
 nameInputController: ${nameInputController},
 nameError: ${nameError},
 permissionsController: ${permissionsController},
-permissionsErrors: ${permissionsErrors},
+permissionMap: ${permissionMap},
 phoneVerificationController: ${phoneVerificationController},
 countryCodeController: ${countryCodeController},
 otpInputPanelController: ${otpInputPanelController},

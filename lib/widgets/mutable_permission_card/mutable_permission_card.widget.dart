@@ -14,6 +14,18 @@ enum PermissionType {
   location,
 }
 
+class PermissionData {
+  final bool isEnabled;
+  final PermissionType type;
+  final Map? error;
+
+  PermissionData({
+    required this.isEnabled,
+    this.error,
+    required this.type,
+  });
+}
+
 class MutablePermissionCard extends StatefulWidget {
   final PermissionType type;
 
@@ -41,56 +53,46 @@ class _MutablePermissionCardState extends State<MutablePermissionCard> {
 
     core = Provider.of<Core>(context, listen: false);
 
-    setDefault();
+    fetchPermissions(false);
   }
 
-  Future<void> setDefault() async {
-    Map response = await fetchPermissions();
-
-    if (response["status"]) {
-      setState(() {
-        isAllowed = true;
-      });
-    }
-  }
-
-  Future<Map> fetchPermissions() async {
+  Future<PermissionData> fetchPermissions(bool request) async {
     late Map response;
 
     switch (widget.type) {
       case PermissionType.camera:
-        response = await core.utils.permissions.requestCamera(core);
+        response = await core.utils.permissions.requestCamera(core, request);
         break;
       case PermissionType.location:
-        response = await core.utils.permissions.requestLocation(core);
+        response = await core.utils.permissions.requestLocation(core, request);
         break;
       case PermissionType.microphone:
-        response = await core.utils.permissions.requestMicrophone(core);
+        response =
+            await core.utils.permissions.requestMicrophone(core, request);
         break;
     }
 
-    return response;
+    PermissionData data = PermissionData(
+      isEnabled: response["status"],
+      type: widget.type,
+      error: response["error"], // Error is here
+    );
+
+    core.state.auth.setPermission(widget.type, data);
+
+    setState(() {
+      isAllowed = data.isEnabled;
+    });
+
+    return data;
   }
 
   Future<void> handleTap() async {
-    Map response = await fetchPermissions();
+    PermissionData data = await fetchPermissions(true);
 
-    if (response["status"]) {
-      setState(() {
-        isAllowed = true;
-        core.state.auth.removePermissionsError(widget.type);
-      });
-    } else {
-      isAllowed = false;
-
-      // Add error handling
-      core.state.auth.addPermissionsError(
-        widget.type,
-        response,
-      );
-
-      // Display error banner
-      core.utils.permissions.errorBanner(core);
+    // HANDLE ERROR
+    if (!data.isEnabled) {
+      core.utils.permissions.errorBanner(core, widget.type);
     }
   }
 

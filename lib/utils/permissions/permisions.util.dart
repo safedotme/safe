@@ -4,25 +4,46 @@ import 'package:safe/widgets/mutable_banner/mutable_banner.widget.dart';
 import 'package:safe/widgets/mutable_permission_card/mutable_permission_card.widget.dart';
 
 class PermissionsUtil {
-  Future<bool> checkPermissions() async {
-    // IMPLEMENT
+  bool checkPermissions(Core core, {required bool sendError}) {
+    List<PermissionType> errors = [];
+    Map<PermissionType, PermissionData> permissions =
+        core.state.auth.permissionMap;
 
-    return false;
+    // Checks that all permission cards have been initialized
+    if (permissions.keys.length !=
+        MutablePermissionCard.permissionList.length) {
+      return false;
+    }
+
+    // Itterate through and check for errors
+    for (PermissionType type in permissions.keys) {
+      if (permissions[type]!.error != null) {
+        errors.add(type);
+      }
+    }
+
+    // Sends an error if necessary
+    if (errors.isNotEmpty && sendError) {
+      errorBanner(core, errors[0]);
+    }
+
+    return errors.isEmpty;
   }
 
-  void errorBanner(Core core) {
-    // Finds error
-    PermissionType key = core.state.auth.permissionsErrors.keys.toList()[0];
+  void errorBanner(Core core, PermissionType permission) {
+    if (core.state.auth.permissionMap[permission]!.error == null) {
+      return;
+    }
 
     //Maps error to specific message
-    Map response = core.state.auth.permissionsErrors[key]!;
+    Map response = core.state.auth.permissionMap[permission]!.error!;
     core.state.auth.setBannerState(
-      response["error"]["fatal"] ? MessageType.error : MessageType.warning,
+      response["fatal"] ? MessageType.error : MessageType.warning,
     );
 
     // Sets properties for banner
-    core.state.auth.setBannerTitle(response["error"]["header"]);
-    core.state.auth.setBannerMessage(response["error"]["desc"]);
+    core.state.auth.setBannerTitle(response["header"]);
+    core.state.auth.setBannerMessage(response["desc"]);
     core.state.auth.setOnBannerTap(() {
       // Opens app settings when clicked
       openAppSettings();
@@ -30,11 +51,11 @@ class PermissionsUtil {
     core.state.auth.bannerController.show();
   }
 
-  Future<Map<String, dynamic>> requestLocation(Core core) async {
+  Future<Map<String, dynamic>> requestLocation(Core core, bool request) async {
     PermissionStatus status = await Permission.locationWhenInUse.status;
 
     // Permission status defaults to denied
-    if (status == PermissionStatus.denied) {
+    if (request && status == PermissionStatus.denied) {
       status = await Permission.locationWhenInUse.request();
     }
 
@@ -74,10 +95,11 @@ class PermissionsUtil {
     }
   }
 
-  Future<Map<String, dynamic>> requestMicrophone(Core core) async {
+  Future<Map<String, dynamic>> requestMicrophone(
+      Core core, bool request) async {
     PermissionStatus status = await Permission.microphone.status;
 
-    if (status == PermissionStatus.denied) {
+    if (request && status == PermissionStatus.denied) {
       // Permission status defaults to denied
       status = await Permission.microphone.request();
     }
@@ -104,10 +126,10 @@ class PermissionsUtil {
     }
   }
 
-  Future<Map<String, dynamic>> requestCamera(Core core) async {
+  Future<Map<String, dynamic>> requestCamera(Core core, bool request) async {
     PermissionStatus status = await Permission.camera.status;
 
-    if (status == PermissionStatus.denied) {
+    if (request && status == PermissionStatus.denied) {
       // Permission status defaults to denied
       status = await Permission.camera.request();
     }

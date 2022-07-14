@@ -81,17 +81,11 @@ abstract class _AuthStore with Store {
   PanelController permissionsController = PanelController();
 
   @observable
-  Map<PermissionType, Map> permissionsErrors = {};
+  Map<PermissionType, PermissionData> permissionMap = {};
 
   @action
-  void addPermissionsError(PermissionType type, Map response) =>
-      !permissionsErrors.containsKey(type)
-          ? permissionsErrors[type] = response
-          : null;
-
-  @action
-  void removePermissionsError(PermissionType type) =>
-      permissionsErrors.remove(type);
+  void setPermission(PermissionType type, PermissionData data) =>
+      permissionMap[type] = data;
 
   // PHONE VERIFICATION
 
