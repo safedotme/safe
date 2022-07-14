@@ -130,6 +130,7 @@ class _PermissionsScreenState extends State<PermissionsScreen>
                   ),
                   child: MutablePermissionCard(
                     type: MutablePermissionCard.permissionList[i],
+                    navigate: navigate,
                   ),
                 ),
               ),

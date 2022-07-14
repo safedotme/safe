@@ -28,6 +28,7 @@ class PermissionData {
 
 class MutablePermissionCard extends StatefulWidget {
   final PermissionType type;
+  final void Function()? navigate;
 
   static const List<PermissionType> permissionList = [
     PermissionType.microphone,
@@ -37,6 +38,7 @@ class MutablePermissionCard extends StatefulWidget {
 
   MutablePermissionCard({
     required this.type,
+    this.navigate,
   });
 
   @override
@@ -46,6 +48,7 @@ class MutablePermissionCard extends StatefulWidget {
 class _MutablePermissionCardState extends State<MutablePermissionCard> {
   late Core core;
   bool isAllowed = false;
+  bool processing = false;
 
   @override
   void initState() {
@@ -88,11 +91,28 @@ class _MutablePermissionCardState extends State<MutablePermissionCard> {
   }
 
   Future<void> handleTap() async {
+    if (processing) {
+      return;
+    }
+
+    processing = true;
     PermissionData data = await fetchPermissions(true);
+    processing = false;
 
     // HANDLE ERROR
     if (!data.isEnabled) {
       core.utils.permissions.errorBanner(core, widget.type);
+      return;
+    }
+
+    // Check permissions
+    bool hasPermissions = core.utils.permissions.checkPermissions(
+      core,
+      sendError: false,
+    );
+
+    if ((widget.navigate != null) && hasPermissions) {
+      widget.navigate!();
     }
   }
 
