@@ -42,6 +42,7 @@ class _MutableOtpInputPanelState extends State<MutableOtpInputPanel>
   late MediaQueryData queryData;
   late FocusNode node;
   Timer? timer;
+  TextEditingController fieldController = TextEditingController();
   GlobalKey key = GlobalKey();
   int attempts = kSMSRetryAttempts;
   bool canResend = false;
@@ -85,6 +86,7 @@ class _MutableOtpInputPanelState extends State<MutableOtpInputPanel>
 
   void resetTimer() {
     setState(() {
+      fieldController.text = "";
       canResend = false;
       time = kSMSTimeout.inSeconds;
     });
@@ -199,6 +201,7 @@ class _MutableOtpInputPanelState extends State<MutableOtpInputPanel>
                   Spacer(flex: 2),
                   Center(
                     child: MutablePinCodeTextField(
+                      controller: fieldController,
                       focusNode: node,
                       onChanged: (_) {},
                       onComplete: (otp) {

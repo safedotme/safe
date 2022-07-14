@@ -4,6 +4,7 @@ import 'package:safe/utils/constants/constants.util.dart';
 
 class MutablePinCodeTextField extends StatelessWidget {
   final FocusNode? focusNode;
+  final TextEditingController? controller;
   final int length;
   final void Function(String code) onChanged;
   final void Function(String code)? onComplete;
@@ -11,6 +12,7 @@ class MutablePinCodeTextField extends StatelessWidget {
   MutablePinCodeTextField({
     this.focusNode,
     this.length = 6,
+    this.controller,
     required this.onChanged,
     this.onComplete,
   });
@@ -20,6 +22,7 @@ class MutablePinCodeTextField extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 25),
       child: PinCodeTextField(
+        controller: controller,
         keyboardType: TextInputType.number,
         animationType: AnimationType.none,
         keyboardAppearance: kKeyboardAppearance,
