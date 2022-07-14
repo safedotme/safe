@@ -4,12 +4,12 @@ import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
 import 'package:safe/widgets/mutable_banner/mutable_banner.widget.dart';
 
-class SignupMessageBanner extends StatefulWidget {
+class AuthMessageBanner extends StatefulWidget {
   @override
-  State<SignupMessageBanner> createState() => _SignupMessageBannerState();
+  State<AuthMessageBanner> createState() => _AuthMessageBannerState();
 }
 
-class _SignupMessageBannerState extends State<SignupMessageBanner> {
+class _AuthMessageBannerState extends State<AuthMessageBanner> {
   late Core core;
 
   @override

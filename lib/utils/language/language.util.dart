@@ -144,7 +144,7 @@ class LanguageUtil {
       "desc": "Please enter the code sent to\n {phone}",
       "secured_by_stamp": "Secured by Google",
       "next_code": "Next code available in {time}s",
-      "new_code": "Send a new code",
+      "resend_code": "Tap to resend code",
     },
   };
 }

@@ -5,12 +5,12 @@ import 'package:safe/core.dart';
 import 'package:safe/widgets/mutable_banner/mutable_banner.widget.dart';
 import 'package:safe/widgets/mutable_otp_input_panel/mutable_otp_input_panel.widget.dart';
 
-class SignupOtpInputPanel extends StatefulWidget {
+class AuthOtpInputPanel extends StatefulWidget {
   @override
-  State<SignupOtpInputPanel> createState() => _SignupOtpInputPanelState();
+  State<AuthOtpInputPanel> createState() => _AuthOtpInputPanelState();
 }
 
-class _SignupOtpInputPanelState extends State<SignupOtpInputPanel> {
+class _AuthOtpInputPanelState extends State<AuthOtpInputPanel> {
   late Core core;
   FocusNode node = FocusNode();
 

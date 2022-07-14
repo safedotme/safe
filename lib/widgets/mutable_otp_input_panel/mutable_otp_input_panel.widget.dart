@@ -4,7 +4,6 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
 import 'package:safe/utils/constants/constants.util.dart';
-import 'package:safe/widgets/mutable_banner/mutable_banner.widget.dart';
 import 'package:safe/widgets/mutable_button/mutable_button.widget.dart';
 import 'package:safe/widgets/mutable_handle/mutable_handle.dart';
 import 'package:safe/widgets/mutable_pin_code_textfield/mutable_pin_code_textfield.widget.dart';
@@ -44,7 +43,7 @@ class _MutableOtpInputPanelState extends State<MutableOtpInputPanel>
   late FocusNode node;
   Timer? timer;
   GlobalKey key = GlobalKey();
-  int attempts = 5;
+  int attempts = kSMSRetryAttempts;
   bool canResend = false;
 
   // State values
@@ -224,7 +223,8 @@ class _MutableOtpInputPanelState extends State<MutableOtpInputPanel>
                     child: applyMask(
                       MutableText(
                         canResend
-                            ? "Tap to resend code"
+                            ? core.utils.language.langMap[core.state.preferences
+                                .language]!["otp_input_panel"]["resend_code"]
                             : core
                                 .utils
                                 .language

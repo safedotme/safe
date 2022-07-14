@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:mobx/mobx.dart';
 import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
 import 'package:safe/widgets/mutable_country_code_selector/mutable_country_code_selector.widget.dart';
 
-class SignupCountryCodeSelector extends StatefulWidget {
+class AuthCountryCodeSelector extends StatefulWidget {
   @override
-  State<SignupCountryCodeSelector> createState() =>
-      _SignupCountryCodeSelectorState();
+  State<AuthCountryCodeSelector> createState() =>
+      _AuthCountryCodeSelectorState();
 }
 
-class _SignupCountryCodeSelectorState extends State<SignupCountryCodeSelector> {
+class _AuthCountryCodeSelectorState extends State<AuthCountryCodeSelector> {
   late Core core;
 
   @override

@@ -1,4 +1,3 @@
-import 'package:figma_squircle/figma_squircle.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -6,12 +5,12 @@ import 'package:safe/core.dart';
 import 'package:safe/widgets/mutable_loader/mutable_loader.widget.dart';
 import 'package:safe/widgets/mutable_overlay/mutable_overlay.widget.dart';
 
-class SignupLoader extends StatefulWidget {
+class AuthLoader extends StatefulWidget {
   @override
-  State<SignupLoader> createState() => _SignupLoaderState();
+  State<AuthLoader> createState() => _AuthLoaderState();
 }
 
-class _SignupLoaderState extends State<SignupLoader> {
+class _AuthLoaderState extends State<AuthLoader> {
   late Core core;
 
   @override
