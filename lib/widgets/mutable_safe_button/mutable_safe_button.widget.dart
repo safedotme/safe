@@ -5,6 +5,10 @@ import 'package:safe/core.dart';
 import 'package:safe/utils/constants/constants.util.dart';
 
 class MutableSafeButton extends StatefulWidget {
+  final void Function() onTap;
+
+  MutableSafeButton({required this.onTap});
+
   @override
   State<MutableSafeButton> createState() => _MutableSafeButtonState();
 }
@@ -18,17 +22,15 @@ class _MutableSafeButtonState extends State<MutableSafeButton>
   late Animation scaleTapAnimation;
   late Core core;
 
-  double kButtonShadowOpacityIncrease = 0.1;
-  double kButtonShadowBlurIncrease = 20;
-
   void initAnimations() {
     // Pulsation animation
     controller = AnimationController(
       vsync: this,
-      duration: Duration(milliseconds: 1300),
+      duration: kSafeButtonPulsateDuration,
     );
 
-    scaleAnimation = Tween<double>(begin: 1, end: 1.05).animate(
+    scaleAnimation =
+        Tween<double>(begin: 1, end: kSafeButtonPuslateScale).animate(
       CurvedAnimation(
         parent: controller,
         curve: Curves.easeInOut,
@@ -54,7 +56,7 @@ class _MutableSafeButtonState extends State<MutableSafeButton>
       duration: Duration(milliseconds: 200),
     );
 
-    scaleTapAnimation = Tween(begin: 0, end: 0.04).animate(
+    scaleTapAnimation = Tween(begin: 0, end: kSafeButtonTapScale).animate(
       CurvedAnimation(parent: tapController, curve: Curves.decelerate),
     );
 
@@ -64,6 +66,7 @@ class _MutableSafeButtonState extends State<MutableSafeButton>
   }
 
   Future<void> animateTap() async {
+    widget.onTap();
     await tapController.forward();
     await tapController.reverse();
   }
@@ -79,14 +82,15 @@ class _MutableSafeButtonState extends State<MutableSafeButton>
   @override
   void dispose() {
     controller.dispose();
+    tapController.dispose();
     super.dispose();
   }
 
   double genOpacity() =>
-      0.1 + (effectAnimation.value * kButtonShadowOpacityIncrease);
+      0.1 + (effectAnimation.value * kSafeButtonShadowOpacityScale);
 
   double genBlur() =>
-      30.0 + (effectAnimation.value * kButtonShadowBlurIncrease);
+      30.0 + (effectAnimation.value * kSafeButtonShadowBlurScale);
 
   @override
   Widget build(BuildContext context) {
@@ -155,7 +159,7 @@ class _MutableSafeButtonState extends State<MutableSafeButton>
           child: Center(
             child: Image.asset(
               "assets/images/safe_logo_button.png",
-              height: 110,
+              height: kSafeButtonSize * 0.65,
             ),
           ),
         ),

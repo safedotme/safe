@@ -13,7 +13,11 @@ class HomeScreen extends StatelessWidget {
     return MutableScaffold(
       overlays: [],
       body: Center(
-        child: MutableSafeButton(),
+        child: MutableSafeButton(
+          onTap: () {
+            print("here");
+          },
+        ),
       ),
     );
   }
