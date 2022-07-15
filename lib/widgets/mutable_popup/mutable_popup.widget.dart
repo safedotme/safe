@@ -22,6 +22,7 @@ class MutablePopup extends StatefulWidget {
   final bool backdropTapClose;
   final bool draggable;
   final double minHeight;
+  final bool enableBorder;
   final double maxHeight;
 
   final MutablePopupStyle? style;
@@ -35,6 +36,7 @@ class MutablePopup extends StatefulWidget {
 
   MutablePopup({
     this.type = PopupType.pannel,
+    this.enableBorder = true,
     this.onOpened,
     this.minHeight = 500,
     this.maxHeight = 770,
@@ -100,10 +102,12 @@ class _MutablePopupState extends State<MutablePopup> {
             : null,
         child: CustomPaint(
           // Will paint special border for Pannel popup
-          painter: widget.type == PopupType.pannel
-              ? PanelPopupPainter(
-                  borderColor: style.borderColor,
-                )
+          painter: widget.enableBorder
+              ? widget.type == PopupType.pannel
+                  ? PanelPopupPainter(
+                      borderColor: style.borderColor,
+                    )
+                  : null
               : null,
           child: widget.type == PopupType.pannel
               ? widget.body

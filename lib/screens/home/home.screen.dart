@@ -31,9 +31,7 @@ class HomeScreen extends StatelessWidget {
           padding: EdgeInsets.only(bottom: kIncidentLogMinPopupHeight - 40),
           child: Center(
             child: MutableSafeButton(
-              onTap: () {
-                print("here");
-              },
+              onTap: () {},
             ),
           ),
         ),
