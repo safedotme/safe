@@ -1,4 +1,5 @@
 import 'package:logger/logger.dart';
+import 'package:safe/utils/animation/animation.util.dart';
 import 'package:safe/utils/auth/auth.util.dart';
 import 'package:safe/utils/color/color.util.dart';
 import 'package:safe/utils/flows/flows.dart';
@@ -27,4 +28,5 @@ class Utils {
   PhoneUtil phone = PhoneUtil();
   TextUtil text = TextUtil();
   AuthUtil auth = AuthUtil();
+  AnimationUtil animation = AnimationUtil();
 }

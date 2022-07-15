@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart' hide BoxShadow, BoxDecoration;
+import 'package:flutter/services.dart';
 import 'package:flutter_inset_box_shadow/flutter_inset_box_shadow.dart';
 import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
@@ -66,6 +67,7 @@ class _MutableSafeButtonState extends State<MutableSafeButton>
   }
 
   Future<void> animateTap() async {
+    HapticFeedback.heavyImpact();
     widget.onTap();
     await tapController.forward();
     await tapController.reverse();
