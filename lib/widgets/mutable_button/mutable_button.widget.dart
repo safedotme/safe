@@ -50,12 +50,6 @@ class _MutableButtonState extends State<MutableButton>
   }
 
   @override
-  void dispose() {
-    controller.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {

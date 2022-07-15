@@ -76,14 +76,6 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen>
     });
   }
 
-  @override
-  void dispose() {
-    super.dispose();
-
-    node.dispose();
-    controller.dispose();
-  }
-
   // Generates different hint text based on country
   String handleHint(String code) {
     return code == "US" ? "(999) 999-9999" : "9999 9999";

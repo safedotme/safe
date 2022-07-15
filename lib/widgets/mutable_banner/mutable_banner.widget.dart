@@ -112,12 +112,6 @@ class _MutableBannerState extends State<MutableBanner>
   }
 
   @override
-  void dispose() {
-    controller.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     queryData = MediaQuery.of(context);
     return Positioned(

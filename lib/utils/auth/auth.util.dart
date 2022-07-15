@@ -3,7 +3,15 @@ import 'package:safe/core.dart';
 import 'package:safe/utils/constants/constants.util.dart';
 
 class AuthUtil {
-  FirebaseAuth auth = FirebaseAuth.instance;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+
+  Stream<User?> get userChanges => _auth.userChanges();
+
+  User? get currentUser => _auth.currentUser;
+
+  Future<void> signOut() async {
+    await _auth.signOut();
+  }
 
   Future<Map<String, dynamic>> sendOTP({
     required String phone,
@@ -14,7 +22,7 @@ class AuthUtil {
     FirebaseAuthException? exception;
     bool accountCreated = false;
 
-    await auth.verifyPhoneNumber(
+    await _auth.verifyPhoneNumber(
       phoneNumber: "$dialCode $phone",
       forceResendingToken: resedToken,
       timeout: kSMSTimeout,
@@ -62,7 +70,7 @@ class AuthUtil {
     AuthCredential creds,
   ) async {
     try {
-      await auth.signInWithCredential(creds);
+      await _auth.signInWithCredential(creds);
     } on FirebaseAuthException catch (e) {
       return {"status": false, "error": e};
     }

@@ -60,13 +60,6 @@ class _PermissionsScreenState extends State<PermissionsScreen>
     });
   }
 
-  @override
-  void dispose() {
-    super.dispose();
-
-    controller.dispose();
-  }
-
   void navigate() {
     if (core.state.auth.authType == AuthType.signup) {
       core.utils.popupNavigation.navigate(

@@ -89,12 +89,6 @@ class _MutableCountryCodeSelectorState extends State<MutableCountryCodeSelector>
   }
 
   @override
-  void dispose() {
-    node.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     queryData = MediaQuery.of(context);
     notifier = ValueNotifier(queryData.viewInsets.bottom);

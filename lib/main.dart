@@ -2,8 +2,10 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
+import 'package:safe/screens/home/home.screen.dart';
 import 'package:safe/screens/testing/testing.screen.dart';
 import 'package:safe/screens/welcome/welcome.screen.dart';
+import 'package:safe/widgets/mutable_auth_wrapper/mutable_auth_wrapper.widget.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -26,9 +28,13 @@ class Safe extends StatelessWidget {
         themeMode: ThemeMode.dark,
         routes: {
           WelcomeScreen.id: (_) => WelcomeScreen(),
+          HomeScreen.id: (_) => HomeScreen(),
           TestingScreen.id: (_) => TestingScreen(),
         },
-        initialRoute: WelcomeScreen.id,
+        home: MutableAuthWrapper(
+          initial: WelcomeScreen(),
+          home: HomeScreen(),
+        ),
       ),
     );
   }

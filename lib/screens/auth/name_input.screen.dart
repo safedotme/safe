@@ -74,14 +74,6 @@ class _NameInputScreenState extends State<NameInputScreen>
     });
   }
 
-  @override
-  void dispose() {
-    super.dispose();
-
-    controller.dispose();
-    node.dispose();
-  }
-
   void submit() async {
     bool error = false;
 

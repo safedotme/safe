@@ -26,7 +26,7 @@ class _AuthLoaderState extends State<AuthLoader> {
       controller: core.state.auth.overlayController,
       child: Center(
         child: MutableLoader(
-          text: "Creating account",
+          text: "Creating account", // Change this
         ),
       ),
     );

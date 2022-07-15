@@ -83,9 +83,11 @@ class _MutablePermissionCardState extends State<MutablePermissionCard> {
 
     core.state.auth.setPermission(widget.type, data);
 
-    setState(() {
-      isAllowed = data.isEnabled;
-    });
+    if (mounted) {
+      setState(() {
+        isAllowed = data.isEnabled;
+      });
+    }
 
     return data;
   }

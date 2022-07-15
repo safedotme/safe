@@ -34,8 +34,7 @@ class MutableOtpInputPanel extends StatefulWidget {
   State<MutableOtpInputPanel> createState() => _MutableOtpInputPanelState();
 }
 
-class _MutableOtpInputPanelState extends State<MutableOtpInputPanel>
-    with TickerProviderStateMixin {
+class _MutableOtpInputPanelState extends State<MutableOtpInputPanel> {
   late Core core;
   late PanelController controller;
   late ValueNotifier<double> notifier;
@@ -61,9 +60,11 @@ class _MutableOtpInputPanelState extends State<MutableOtpInputPanel>
 
     // Enables user to drag or tap to dismiss keyboard when enabled
     node.addListener(() {
-      setState(() {
-        dismissDetector = node.hasFocus;
-      });
+      if (mounted) {
+        setState(() {
+          dismissDetector = node.hasFocus;
+        });
+      }
     });
   }
 
@@ -76,12 +77,6 @@ class _MutableOtpInputPanelState extends State<MutableOtpInputPanel>
     }
 
     return null;
-  }
-
-  @override
-  void dispose() {
-    node.dispose();
-    super.dispose();
   }
 
   void resetTimer() {
@@ -104,17 +99,21 @@ class _MutableOtpInputPanelState extends State<MutableOtpInputPanel>
       (timer) {
         // Checks if time has run out
         if (time == 0) {
-          setState(() {
-            canResend = true;
-          });
+          if (mounted) {
+            setState(() {
+              canResend = true;
+            });
+          }
           timer.cancel();
           return;
         }
 
         // If not, takes from timer
-        setState(() {
-          time--;
-        });
+        if (mounted) {
+          setState(() {
+            time--;
+          });
+        }
       },
     );
   }
@@ -151,7 +150,6 @@ class _MutableOtpInputPanelState extends State<MutableOtpInputPanel>
           node.unfocus();
         },
         onOpened: () {
-          node.requestFocus();
           handleAttempt();
         },
         maxHeight:

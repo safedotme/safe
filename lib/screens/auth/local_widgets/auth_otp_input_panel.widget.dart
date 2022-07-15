@@ -58,17 +58,20 @@ class _AuthOtpInputPanelState extends State<AuthOtpInputPanel> {
     String otp,
   ) async {
     core.state.auth.overlayController.show();
-    node.unfocus();
     Map<String, dynamic> response = await core.utils.auth.verifyOTP(
       otp,
       verificationId,
     );
 
-    if (core.utils.auth.auth.currentUser != null) {
-      core.state.auth.overlayController.hide();
-      core.utils.auth.auth.currentUser!.updateDisplayName(
-        core.state.auth.name,
-      );
+    if (core.utils.auth.currentUser != null) {
+      // Update in cloud firestore
+
+      //Update in auth
+      if (core.state.auth.name.isNotEmpty) {
+        core.utils.auth.currentUser!.updateDisplayName(
+          core.state.auth.name,
+        );
+      }
       return;
     }
 
