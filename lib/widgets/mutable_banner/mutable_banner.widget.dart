@@ -9,6 +9,7 @@ import 'package:safe/widgets/mutable_text/mutable_text.widget.dart';
 enum MessageType {
   error,
   success,
+  warning,
 }
 
 class MutableBanner extends StatefulWidget {
@@ -18,6 +19,8 @@ class MutableBanner extends StatefulWidget {
   final Duration? duration;
   final String description;
   final void Function()? onTap;
+  final void Function()? onForward;
+  final void Function()? onReverse;
 
   MutableBanner({
     this.type = MessageType.success,
@@ -26,6 +29,8 @@ class MutableBanner extends StatefulWidget {
     this.title = "",
     this.description = "",
     this.onTap,
+    this.onForward,
+    this.onReverse,
   });
 
   @override
@@ -42,7 +47,7 @@ class _MutableBannerState extends State<MutableBanner>
   late Animation positionAnimation;
   late Animation opacityAnimation;
   late Animation scaleAnimation;
-  double topPosition = -116;
+  double topPosition = -(kMutableBannerHeight + 1);
   double opacity = 0;
   bool dismissed = false;
 
@@ -60,11 +65,12 @@ class _MutableBannerState extends State<MutableBanner>
     // Initialize controller
     controller = AnimationController(
       vsync: this,
-      duration: Duration(milliseconds: 200),
+      duration: kMutableBannerDuration,
     );
 
     // Initialize animations
-    positionAnimation = Tween<double>(begin: -116.0, end: 0.0).animate(
+    positionAnimation =
+        Tween<double>(begin: -(kMutableBannerHeight + 1), end: 0.0).animate(
       CurvedAnimation(parent: controller, curve: Curves.decelerate),
     );
 
@@ -83,22 +89,26 @@ class _MutableBannerState extends State<MutableBanner>
 
   Future<void> show() async {
     dismissed = false;
+    if (widget.onForward != null) {
+      widget.onForward!();
+    }
     await controller.forward();
-    await Future.delayed(widget.duration ?? Duration(seconds: 3));
+
+    await Future.delayed(widget.duration ?? Duration(seconds: 5));
     if (!dismissed) {
+      if (widget.onReverse != null) {
+        widget.onReverse!();
+      }
       await controller.reverse();
     }
   }
 
   Future<void> dismiss() async {
     dismissed = true;
+    if (widget.onReverse != null) {
+      widget.onReverse!();
+    }
     await controller.reverse();
-  }
-
-  @override
-  void dispose() {
-    controller.dispose();
-    super.dispose();
   }
 
   @override
@@ -110,7 +120,7 @@ class _MutableBannerState extends State<MutableBanner>
         opacity: opacity,
         child: Container(
           width: queryData.size.width,
-          height: 115,
+          height: kMutableBannerHeight,
           decoration: BoxDecoration(
             gradient: LinearGradient(
               begin: Alignment.topCenter,
@@ -142,8 +152,10 @@ class _MutableBannerState extends State<MutableBanner>
                   color: core.utils.color.translucify(
                     widget.type == MessageType.success
                         ? MutableColor.secondaryGreen
-                        : MutableColor.secondaryRed,
-                    Transparency.v16,
+                        : (widget.type == MessageType.error)
+                            ? MutableColor.secondaryRed
+                            : MutableColor.secondaryYellow,
+                    Transparency.v20,
                   ),
                   shape: SmoothRectangleBorder(
                     borderRadius: SmoothBorderRadius(
@@ -153,7 +165,9 @@ class _MutableBannerState extends State<MutableBanner>
                     side: BorderSide(
                       color: kColorMap[widget.type == MessageType.success
                           ? MutableColor.secondaryGreen
-                          : MutableColor.secondaryRed]!,
+                          : (widget.type == MessageType.error)
+                              ? MutableColor.secondaryRed
+                              : MutableColor.secondaryYellow]!,
                       width: kBorderWidth,
                     ),
                   ),

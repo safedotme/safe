@@ -45,8 +45,7 @@ class MutablePopupStyle {
       backgroundColor:
           style.backgroundColor ?? kColorMap[MutableColor.neutral9]!,
       backdropEnabled: style.backdropEnabled,
-      backdropOpacity:
-          style.backdropOpacity ?? kTransparencyMap[Transparency.v80],
+      backdropOpacity: style.backdropOpacity ?? kBackgroundOpacity,
       border: style.border ?? customBorder,
       borderColor: style.borderColor,
       borderRadius: style.borderRadius ??

@@ -20,7 +20,8 @@ class _MutableButtonState extends State<MutableButton>
   double currentState = 1;
   late AnimationController controller;
 
-  void animate() async {
+  @override
+  void initState() {
     controller = AnimationController(
       vsync: this,
       // Duration to reach the midpoint
@@ -40,14 +41,12 @@ class _MutableButtonState extends State<MutableButton>
       });
     });
 
-    await controller.forward();
-    await controller.reverse();
+    super.initState();
   }
 
-  @override
-  void dispose() {
-    controller.dispose();
-    super.dispose();
+  void animate() async {
+    await controller.forward();
+    await controller.reverse();
   }
 
   @override

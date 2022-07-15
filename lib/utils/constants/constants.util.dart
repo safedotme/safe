@@ -68,7 +68,7 @@ const Map<TypeStyle, dynamic> kTypeStyleMap = {
     "spacing": LetterSpacingType.heading,
   },
   TypeStyle.h3: {
-    "weight": TypeWeight.medium,
+    "weight": TypeWeight.bold,
     "spacing": LetterSpacingType.heading,
   },
   TypeStyle.h4: {
@@ -80,14 +80,21 @@ const Map<TypeStyle, dynamic> kTypeStyleMap = {
     "spacing": LetterSpacingType.heading,
   },
   TypeStyle.body: {
-    "weight": TypeWeight.regular,
+    "weight": TypeWeight.medium,
     "spacing": LetterSpacingType.regular,
   },
   TypeStyle.footnote: {
-    "weight": TypeWeight.regular,
+    "weight": TypeWeight.medium,
     "spacing": LetterSpacingType.regular,
   },
 };
+
+// TYPOGRAPHY SPECIFIC
+final TextStyle kTextInputStyle = TextStyle(
+  color: kColorMap[MutableColor.neutral1],
+  fontFamily: kFontFamilyGen(weight: TypeWeight.medium),
+  fontSize: 16,
+);
 
 // COLORS
 
@@ -109,6 +116,8 @@ enum MutableColor {
   primaryMagenta,
   secondaryGreen,
   secondaryRed,
+  secondaryYellow,
+  iosGrey,
 }
 
 const Map<MutableColor, Color> kColorMap = {
@@ -124,6 +133,9 @@ const Map<MutableColor, Color> kColorMap = {
   MutableColor.neutral9: Color(0xff0F0D10),
   MutableColor.neutral10: Color(0xff070508),
 
+  // OS SPECIFIC
+  MutableColor.iosGrey: Color(0xff1E1920),
+
   //PRIMARY
   MutableColor.primaryYellow: Color(0xffF8D849),
   MutableColor.primaryOrange: Color(0xffEE8131),
@@ -134,7 +146,21 @@ const Map<MutableColor, Color> kColorMap = {
   // SECONDARY
   MutableColor.secondaryGreen: Color(0xff50C166),
   MutableColor.secondaryRed: Color(0xffFC645D),
+  MutableColor.secondaryYellow: Color(0xffFCD95D),
 };
+
+final List<Color> kPrimaryGradientColors = [
+  kColorMap[MutableColor.primaryYellow]!,
+  kColorMap[MutableColor.primaryOrange]!,
+  kColorMap[MutableColor.primaryRed]!,
+  kColorMap[MutableColor.primaryMagenta]!,
+  kColorMap[MutableColor.primaryPurple]!,
+];
+
+final Alignment kPrimaryGradientAlignmentBegin = Alignment(-0.1, -2.5);
+final Alignment kPrimaryGradientAlignmentEnd = Alignment(0.1, 3);
+final Color kIconColorInGradientFill =
+    kColorMap[MutableColor.neutral1]!.withOpacity(0.75);
 
 // OPACITY
 
@@ -145,6 +171,7 @@ enum Transparency {
   v56,
   v40,
   v24,
+  v20,
   v16,
   v8,
   v4,
@@ -157,13 +184,15 @@ const Map<Transparency, double> kTransparencyMap = {
   Transparency.v56: 0.56,
   Transparency.v40: 0.4,
   Transparency.v24: 0.24,
+  Transparency.v20: 0.2,
   Transparency.v16: 0.16,
   Transparency.v8: 0.08,
   Transparency.v4: 0.04,
 };
 
-// BORDER RADIUS
+final double kBackgroundOpacity = kTransparencyMap[Transparency.v80]!;
 
+// BORDER RADIUS
 const double kPanelPopupBorderRadius = 35;
 const double kInputPopupBorderRadius = 20;
 const double kPreviewPopupBorderRadius = 18;
@@ -173,6 +202,9 @@ const double kCornerSmoothing = 0.6;
 // POPUPS
 const double kSideMarginPreviewPopup = 11;
 const double kBottomMarginPreviewPopup = 34;
+const double kTopMargin = 42;
+const double kHandleTopMargin = 6;
+const double kPanelHandleToHeader = 7;
 
 // MARGINS
 const double kSideScreenMargin = 15;
@@ -180,3 +212,41 @@ const double kBottomScreenMargin = 40;
 
 // BORDERS
 const double kBorderWidth = 1.5;
+
+// LARGE BUTTON
+const double kLargeButtonHeight = 50;
+const double kLargeButtonBorderRadius = kLargeButtonHeight / 2;
+
+// TEXT FIELDS
+const double kObjectKeyboardMargin = 20;
+const double kKeyboardHeight = 336;
+const double kWidgetSpacing = 5;
+const Brightness kKeyboardAppearance = Brightness.dark;
+
+// BANNER
+const double kMutableBannerHeight = 115;
+final Duration kMutableBannerDuration = Duration(milliseconds: 200);
+
+// COUNTRY CODE SELECTOR
+const double kCountryCodeSelectorHeight = 380;
+const double kCountryCodeHeaderToBody = 16;
+const double kCountryNameCodeSpacing = 4;
+
+// OTP INPUT POPUP
+const double kOTPInputPopupHeight = 300;
+
+// PANEL POPUP
+const TypeStyle kPanelPopupHeaderStyle = TypeStyle.h4;
+const TypeWeight kPanelPopupHeaderWeight = TypeWeight.heavy;
+const TypeStyle kPanelPopupSubheaderStyle = TypeStyle.h5;
+const TypeWeight kPanelPopupSubheaderWeight = TypeWeight.medium;
+const MutableColor kPanelPopupSubheaderColor = MutableColor.neutral2;
+
+// AUTH
+const Duration kSMSTimeout = Duration(seconds: 30);
+const int kSMSRetryAttempts = 5;
+
+enum AuthType {
+  signup,
+  login,
+}

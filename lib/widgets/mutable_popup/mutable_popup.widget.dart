@@ -16,12 +16,14 @@ class MutablePopup extends StatefulWidget {
   final void Function()? onOpened;
   final void Function()? onClosed;
   final void Function(double state)? onSlide;
+  final void Function()? onFreezeInteraction;
   final PanelController? controller;
   final PanelState defaultState;
   final bool backdropTapClose;
   final bool draggable;
   final double minHeight;
   final double maxHeight;
+
   final MutablePopupStyle? style;
   final Widget body;
 
@@ -36,6 +38,7 @@ class MutablePopup extends StatefulWidget {
     this.onOpened,
     this.minHeight = 500,
     this.maxHeight = 770,
+    this.onFreezeInteraction,
     this.width,
     this.onClosed,
     this.height,
@@ -84,20 +87,32 @@ class _MutablePopupState extends State<MutablePopup> {
 
     return SlidingUpPanel(
       // Adds custom border for panel popups
-      panel: CustomPaint(
-        // Will paint special border for Pannel popup
-        painter: widget.type == PopupType.pannel
-            ? PanelPopupPainter(
-                borderColor: style.borderColor,
-              )
+      panel: GestureDetector(
+        onVerticalDragStart: widget.onFreezeInteraction != null
+            ? (_) {
+                widget.onFreezeInteraction!();
+              }
             : null,
-        child: widget.type == PopupType.pannel
-            ? widget.body
-            : NonPannelBody(
-                size: size,
-                style: style,
-                body: widget.body,
-              ),
+        onTap: widget.onFreezeInteraction != null
+            ? () {
+                widget.onFreezeInteraction!();
+              }
+            : null,
+        child: CustomPaint(
+          // Will paint special border for Pannel popup
+          painter: widget.type == PopupType.pannel
+              ? PanelPopupPainter(
+                  borderColor: style.borderColor,
+                )
+              : null,
+          child: widget.type == PopupType.pannel
+              ? widget.body
+              : NonPannelBody(
+                  size: size,
+                  style: style,
+                  body: widget.body,
+                ),
+        ),
       ),
       onPanelOpened: widget.onOpened,
       onPanelClosed: widget.onClosed,
@@ -112,7 +127,7 @@ class _MutablePopupState extends State<MutablePopup> {
 
       // Generates heigt to center non-panel popups
       maxHeight: widget.type == PopupType.pannel
-          ? widget.minHeight
+          ? widget.maxHeight
           : widget.type == PopupType.input
               ? (queryData.size.height / 2) + (size.height / 2)
               : size.height + kBottomMarginPreviewPopup,

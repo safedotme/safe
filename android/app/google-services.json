@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "791756568006",
+    "project_id": "safe-f73bf",
+    "storage_bucket": "safe-f73bf.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:791756568006:android:1b865a8c64cebedd95eec7",
+        "android_client_info": {
+          "package_name": "com.example.safe"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "791756568006-uujs50ubu4eeu5ak8i345gap2o98q39j.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCLjJeDInWiEFX23baAd_q1WxM1irMAp7k"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "791756568006-uujs50ubu4eeu5ak8i345gap2o98q39j.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "791756568006-74d3p4l25bma35p0oiuen5os4isjgr30.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.safe"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,18 +1,16 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
+import 'package:safe/screens/home/home.screen.dart';
 import 'package:safe/screens/testing/testing.screen.dart';
 import 'package:safe/screens/welcome/welcome.screen.dart';
-import 'package:safe/utils/firebase/firebase.util.dart';
+import 'package:safe/widgets/mutable_auth_wrapper/mutable_auth_wrapper.widget.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await dotenv.load(fileName: ".env");
-  await Firebase.initializeApp(
-    options: FirebaseUtil().currentPlatform,
-  );
+  // await dotenv.load(fileName: ".env");
+  await Firebase.initializeApp();
 
   runApp(Safe());
 }
@@ -27,11 +25,16 @@ class Safe extends StatelessWidget {
       child: MaterialApp(
         title: "Safe",
         debugShowCheckedModeBanner: false,
+        themeMode: ThemeMode.dark,
         routes: {
           WelcomeScreen.id: (_) => WelcomeScreen(),
+          HomeScreen.id: (_) => HomeScreen(),
           TestingScreen.id: (_) => TestingScreen(),
         },
-        initialRoute: WelcomeScreen.id,
+        home: MutableAuthWrapper(
+          initial: WelcomeScreen(),
+          home: HomeScreen(),
+        ),
       ),
     );
   }
