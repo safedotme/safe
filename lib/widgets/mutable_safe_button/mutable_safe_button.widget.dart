@@ -3,6 +3,7 @@ import 'package:flutter_inset_box_shadow/flutter_inset_box_shadow.dart';
 import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
 import 'package:safe/utils/constants/constants.util.dart';
+import 'package:safe/widgets/mutable_button/mutable_button.widget.dart';
 
 class MutableSafeButton extends StatefulWidget {
   @override
@@ -71,6 +72,12 @@ class _MutableSafeButtonState extends State<MutableSafeButton> {
             inset: true,
           ),
         ],
+      ),
+      child: Center(
+        child: Image.asset(
+          "assets/images/safe_logo_button.png",
+          height: 110,
+        ),
       ),
     );
   }
