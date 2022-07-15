@@ -250,3 +250,11 @@ enum AuthType {
   signup,
   login,
 }
+
+// HOME
+const double kSafeButtonSize = 165;
+const double kSafeButtonShadowOpacityScale = 0.1;
+const double kSafeButtonShadowBlurScale = 20;
+const double kSafeButtonTapScale = 0.04;
+const Duration kSafeButtonPulsateDuration = Duration(milliseconds: 1300);
+const double kSafeButtonPuslateScale = 1.05;
