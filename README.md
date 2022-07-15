@@ -103,4 +103,4 @@ Have a question regarding any of these topics? Reach out to me at [mark@joinsafe
 
 |Contributor|Commits| Tags |
 |-----|-----|-----|
-|**[@markmusic27](https://twitter.com/markmusic27)**|29|Creator, Lead Maintainer|
+|**[@markmusic27](https://twitter.com/markmusic27)**|171|Creator, Lead Maintainer|
