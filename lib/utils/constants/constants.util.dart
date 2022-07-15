@@ -250,3 +250,6 @@ enum AuthType {
   signup,
   login,
 }
+
+// HOME
+const double kSafeButtonSize = 170;
