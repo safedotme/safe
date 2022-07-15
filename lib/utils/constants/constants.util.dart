@@ -264,3 +264,5 @@ const double kSafeButtonPuslateScale = 1.05;
 // -> LAYOUT
 const double kIncidentLogMinPopupHeight = 138;
 const double kHomeHeaderToButtonMargin = 60;
+const double kIncidentLogBorderRadius = 12;
+const double kIncidentLogActiveTopPading = 44;
