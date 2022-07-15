@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
+import 'package:safe/screens/incident_log/local_widgets/incident_log_navbar.widget.dart';
 import 'package:safe/utils/constants/constants.util.dart';
 import 'package:safe/widgets/mutable_handle/mutable_handle.dart';
 
@@ -19,30 +20,21 @@ class _IncidentLogBodyState extends State<IncidentLogBody> {
     core = Provider.of<Core>(context, listen: false);
   }
 
-  double genTopPadding(double state) {
-    double animation = core.utils.animation.percentBetweenPoints(
-      lowerBound: 0.8,
-      upperBound: 1,
-      state: state,
-    );
-
-    return animation * kIncidentLogActiveTopPading;
-  }
+  // 30 is the initial margin and 130 is the final margin where 100 is final - initial
+  double genTopPadding(double state) => 30 + (state * 100);
 
   @override
   Widget build(BuildContext context) {
     return Stack(
       children: [
         Padding(
-          padding: EdgeInsets.fromLTRB(
-            kSideScreenMargin,
-            0,
-            kSideScreenMargin,
-            0,
-          ),
+          padding: EdgeInsets.symmetric(horizontal: kSideScreenMargin),
           child: SingleChildScrollView(
-            controller: ScrollController(), // state
-            physics: NeverScrollableScrollPhysics(), // state
+            controller: core.state.incidentLog.scrollController,
+            physics: core.state.incidentLog.scrollPhysics,
+            padding: EdgeInsets.only(
+              top: genTopPadding(core.state.incidentLog.offset),
+            ),
             child: Column(
               children: [
                 ...List.generate(
@@ -57,23 +49,7 @@ class _IncidentLogBodyState extends State<IncidentLogBody> {
             ),
           ),
         ),
-        Container(
-          width: double.infinity,
-          color: Colors.red.withOpacity(0.1),
-          padding: EdgeInsets.fromLTRB(
-            kSideScreenMargin,
-            10 + genTopPadding(core.state.incidentLog.offset),
-            kSideScreenMargin,
-            0,
-          ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              MutableHandle(),
-            ],
-          ),
-        ),
+        IncidentLogNavBar()
       ],
     );
   }

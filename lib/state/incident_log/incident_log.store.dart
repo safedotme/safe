@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
@@ -14,4 +15,13 @@ abstract class _IncidentLogStore with Store {
 
   @action
   void setOffset(double o) => offset = o;
+
+  @observable
+  ScrollController scrollController = ScrollController();
+
+  @observable
+  ScrollPhysics scrollPhysics = NeverScrollableScrollPhysics();
+
+  @action
+  void setScrollPhysics(ScrollPhysics p) => scrollPhysics = p;
 }

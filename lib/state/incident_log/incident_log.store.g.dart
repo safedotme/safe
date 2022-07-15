@@ -41,6 +41,38 @@ mixin _$IncidentLogStore on _IncidentLogStore, Store {
     });
   }
 
+  late final _$scrollControllerAtom =
+      Atom(name: '_IncidentLogStore.scrollController', context: context);
+
+  @override
+  ScrollController get scrollController {
+    _$scrollControllerAtom.reportRead();
+    return super.scrollController;
+  }
+
+  @override
+  set scrollController(ScrollController value) {
+    _$scrollControllerAtom.reportWrite(value, super.scrollController, () {
+      super.scrollController = value;
+    });
+  }
+
+  late final _$scrollPhysicsAtom =
+      Atom(name: '_IncidentLogStore.scrollPhysics', context: context);
+
+  @override
+  ScrollPhysics get scrollPhysics {
+    _$scrollPhysicsAtom.reportRead();
+    return super.scrollPhysics;
+  }
+
+  @override
+  set scrollPhysics(ScrollPhysics value) {
+    _$scrollPhysicsAtom.reportWrite(value, super.scrollPhysics, () {
+      super.scrollPhysics = value;
+    });
+  }
+
   late final _$_IncidentLogStoreActionController =
       ActionController(name: '_IncidentLogStore', context: context);
 
@@ -56,10 +88,23 @@ mixin _$IncidentLogStore on _IncidentLogStore, Store {
   }
 
   @override
+  void setScrollPhysics(ScrollPhysics p) {
+    final _$actionInfo = _$_IncidentLogStoreActionController.startAction(
+        name: '_IncidentLogStore.setScrollPhysics');
+    try {
+      return super.setScrollPhysics(p);
+    } finally {
+      _$_IncidentLogStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 controller: ${controller},
-offset: ${offset}
+offset: ${offset},
+scrollController: ${scrollController},
+scrollPhysics: ${scrollPhysics}
     ''';
   }
 }
