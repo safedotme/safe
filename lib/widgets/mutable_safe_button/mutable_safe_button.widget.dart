@@ -12,13 +12,17 @@ class MutableSafeButton extends StatefulWidget {
 class _MutableSafeButtonState extends State<MutableSafeButton>
     with TickerProviderStateMixin {
   late AnimationController controller;
+  late AnimationController tapController;
   late Animation scaleAnimation;
   late Animation effectAnimation;
+  late Animation scaleTapAnimation;
   late Core core;
+
   double kButtonShadowOpacityIncrease = 0.1;
   double kButtonShadowBlurIncrease = 20;
 
-  void animate() {
+  void initAnimations() {
+    // Pulsation animation
     controller = AnimationController(
       vsync: this,
       duration: Duration(milliseconds: 1300),
@@ -43,12 +47,31 @@ class _MutableSafeButtonState extends State<MutableSafeButton>
     });
 
     controller.repeat(reverse: true);
+
+    // Tap Animation
+    tapController = AnimationController(
+      vsync: this,
+      duration: Duration(milliseconds: 200),
+    );
+
+    scaleTapAnimation = Tween(begin: 0, end: 0.04).animate(
+      CurvedAnimation(parent: tapController, curve: Curves.decelerate),
+    );
+
+    tapController.addListener(() {
+      setState(() {});
+    });
+  }
+
+  Future<void> animateTap() async {
+    await tapController.forward();
+    await tapController.reverse();
   }
 
   @override
   void initState() {
     super.initState();
-    animate();
+    initAnimations();
 
     core = Provider.of<Core>(context, listen: false);
   }
@@ -68,9 +91,13 @@ class _MutableSafeButtonState extends State<MutableSafeButton>
   @override
   Widget build(BuildContext context) {
     return Transform.scale(
-      scale: scaleAnimation.value,
+      scale: scaleAnimation.value + scaleTapAnimation.value,
       child: GestureDetector(
-        onTap: () {},
+        onTap: () async {
+          controller.stop();
+          await animateTap();
+          controller.repeat(reverse: true);
+        },
         child: Container(
           height: kSafeButtonSize,
           width: kSafeButtonSize,

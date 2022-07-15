@@ -252,4 +252,4 @@ enum AuthType {
 }
 
 // HOME
-const double kSafeButtonSize = 170;
+const double kSafeButtonSize = 165;
