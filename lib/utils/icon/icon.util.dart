@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:safe/widgets/mutable_icon/local_widgets/caret_right.icon.dart';
 import 'package:safe/widgets/mutable_icon/local_widgets/checkmark.icon.dart';
 import 'package:safe/widgets/mutable_icon/local_widgets/key.icon.dart';
 import 'package:safe/widgets/mutable_icon/local_widgets/phone.icon.dart';
@@ -8,6 +9,7 @@ enum MutableIcons {
   phone,
   profile,
   checkmark,
+  caretRight,
   key,
 }
 
@@ -20,6 +22,7 @@ class IconUtil {
       MutableIcons.checkmark: (c) => CheckmarkIcon(c),
       MutableIcons.key: (c) => KeyIcon(c),
       MutableIcons.phone: (c) => PhoneIcon(c),
+      MutableIcons.caretRight: (c) => CaretRightIcon(c),
     };
   }
 }

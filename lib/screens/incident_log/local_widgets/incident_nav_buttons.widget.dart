@@ -11,9 +11,19 @@ class _NavigationButtonsState extends State<NavigationButtons> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        IncidentNavigationButton(),
+        IncidentNavigationButton(
+          text: "Contacts",
+          onTap: () {
+            print("contacts");
+          },
+        ),
         SizedBox(height: 10),
-        IncidentNavigationButton(),
+        IncidentNavigationButton(
+          text: "Settings",
+          onTap: () {
+            print("settings");
+          },
+        ),
       ],
     );
   }
