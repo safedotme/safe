@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
 import 'package:safe/screens/incident_log/local_widgets/incident_log_header.widget.dart';
 import 'package:safe/screens/incident_log/local_widgets/incident_log_navbar.widget.dart';
+import 'package:safe/screens/incident_log/local_widgets/incident_log_subheader.widget.dart';
 import 'package:safe/screens/incident_log/local_widgets/incident_nav_buttons.widget.dart';
 import 'package:safe/utils/constants/constants.util.dart';
 import 'package:safe/widgets/mutable_incident_card/mutable_incident_card.widget.dart';
@@ -27,26 +28,6 @@ class _IncidentLogBodyState extends State<IncidentLogBody> {
 
   // 30 is the initial margin and 130 is the final margin where 100 is final - initial
   double genTopPadding(double state) => 30 + (state * 100);
-
-  double genIncidentTabTextSize(double state) {
-    double animation = core.utils.animation.percentBetweenPoints(
-      lowerBound: 0,
-      upperBound: 0.13,
-      state: state,
-    );
-
-    return animation * 20;
-  }
-
-  double genIncidentTabTextOpacity(double state) {
-    double animation = core.utils.animation.percentBetweenPoints(
-      lowerBound: 0.13,
-      upperBound: 0.32,
-      state: state,
-    );
-
-    return animation;
-  }
 
   double genNavBtnSize(double state) {
     double animation = core.utils.animation.percentBetweenPoints(
@@ -112,20 +93,7 @@ class _IncidentLogBodyState extends State<IncidentLogBody> {
                 SizedBox(
                   height: 35 * genNavBtnSpacer(core.state.incidentLog.offset),
                 ),
-                Opacity(
-                  // EXTRACT TEXT
-                  opacity: genIncidentTabTextOpacity(
-                    core.state.incidentLog.offset,
-                  ),
-                  child: MutableText(
-                    "All Incidents", // Extract
-                    align: TextAlign.left,
-                    size: genIncidentTabTextSize(
-                      core.state.incidentLog.offset,
-                    ),
-                    weight: TypeWeight.heavy,
-                  ),
-                ),
+                IncidentLogSubheader(),
                 SizedBox(height: 15),
                 MutableIncidentCard(),
                 //Incidents
