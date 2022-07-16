@@ -4,6 +4,7 @@ import 'package:safe/core.dart';
 import 'package:safe/screens/incident_log/local_widgets/incident_log_navbar.widget.dart';
 import 'package:safe/utils/constants/constants.util.dart';
 import 'package:safe/widgets/mutable_handle/mutable_handle.dart';
+import 'package:safe/widgets/mutable_text/mutable_text.widget.dart';
 
 class IncidentLogBody extends StatefulWidget {
   @override
@@ -23,6 +24,9 @@ class _IncidentLogBodyState extends State<IncidentLogBody> {
   // 30 is the initial margin and 130 is the final margin where 100 is final - initial
   double genTopPadding(double state) => 30 + (state * 100);
 
+  // 20 is the initial size and 30 is the final size where 14 is final - initial size
+  double genFontSize(double state) => 20 + (state * 10);
+
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -37,14 +41,24 @@ class _IncidentLogBodyState extends State<IncidentLogBody> {
             ),
             child: Column(
               children: [
-                ...List.generate(
-                  5,
-                  (index) => Container(
-                    color: Colors.red[(100 * (index + 1)).toInt()]!,
-                    height: 300,
-                    width: double.infinity,
-                  ),
-                )
+                Row(
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    MutableText(
+                      "Incident Log",
+                      size: genFontSize(core.state.incidentLog.offset),
+                      weight: TypeWeight.heavy,
+                    ),
+                    MutableText(
+                      "14 Incidents",
+                      style: TypeStyle.body,
+                      weight: TypeWeight.semiBold,
+                      color: MutableColor.neutral2,
+                    ),
+                  ],
+                ),
               ],
             ),
           ),

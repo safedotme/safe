@@ -43,7 +43,7 @@ class _IncidentLogNavBarState extends State<IncidentLogNavBar> {
 
   double genButtonOpacity(double state) {
     double animation = core.utils.animation.percentBetweenPoints(
-      lowerBound: 0.71,
+      lowerBound: 0.70,
       upperBound: 1,
       state: state,
     );
@@ -55,7 +55,6 @@ class _IncidentLogNavBarState extends State<IncidentLogNavBar> {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      color: Colors.red.withOpacity(0.1),
       padding: EdgeInsets.fromLTRB(
         kSideScreenMargin,
         genTopPadding(core.state.incidentLog.offset),
