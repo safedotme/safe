@@ -217,6 +217,9 @@ const double kBorderWidth = 1.5;
 const double kLargeButtonHeight = 50;
 const double kLargeButtonBorderRadius = kLargeButtonHeight / 2;
 
+// NAVIGATION BUTTON
+const double kNavButtonSize = 40;
+
 // TEXT FIELDS
 const double kObjectKeyboardMargin = 20;
 const double kKeyboardHeight = 336;

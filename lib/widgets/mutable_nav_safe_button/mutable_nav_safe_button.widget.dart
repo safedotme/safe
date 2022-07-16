@@ -16,8 +16,8 @@ class MutableNavSafeButton extends StatelessWidget {
     return MutableButton(
       onTap: onTap,
       child: Container(
-        height: 40,
-        width: 40,
+        height: kNavButtonSize,
+        width: kNavButtonSize,
         decoration: BoxDecoration(
           shape: BoxShape.circle,
           gradient: LinearGradient(
@@ -25,7 +25,7 @@ class MutableNavSafeButton extends StatelessWidget {
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
           ),
-          boxShadow: core.utils.color.applyGradientShadow(40),
+          boxShadow: core.utils.color.applyGradientShadow(kNavButtonSize),
         ),
         child: Center(
           child: Image.asset(

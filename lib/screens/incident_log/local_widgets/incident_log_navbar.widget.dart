@@ -90,9 +90,18 @@ class _IncidentLogNavBarState extends State<IncidentLogNavBar> {
                     ),
                   ),
                   Spacer(),
-                  MutableAvatar(),
+                  MutableAvatar(
+                    name: "Mark Music",
+                    onTap: () {
+                      print("edit profile");
+                    },
+                  ),
                   SizedBox(width: 15),
-                  MutableNavSafeButton(),
+                  MutableNavSafeButton(
+                    onTap: () {
+                      print("activate safe");
+                    },
+                  ),
                 ],
               ),
             ),
