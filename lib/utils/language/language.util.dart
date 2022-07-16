@@ -150,6 +150,8 @@ class LanguageUtil {
       "header": "Incident Log",
       "counter": "{count} Incidents",
       "subheader": "All Incidents",
+      "contacts_button": "Contacts",
+      "settings_button": "Settings"
     }
   };
 }

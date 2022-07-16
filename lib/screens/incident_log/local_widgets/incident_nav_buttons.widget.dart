@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:safe/core.dart';
 import 'package:safe/screens/incident_log/local_widgets/incident_navigation_button.widget.dart';
 
 class NavigationButtons extends StatefulWidget {
@@ -7,21 +9,34 @@ class NavigationButtons extends StatefulWidget {
 }
 
 class _NavigationButtonsState extends State<NavigationButtons> {
+  late Core core;
+
+  @override
+  void initState() {
+    super.initState();
+
+    core = Provider.of<Core>(context, listen: false);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         IncidentNavigationButton(
-          text: "Contacts",
+          text: core.utils.language
+                  .langMap[core.state.preferences.language]!["incident_log"]
+              ["contacts_button"],
           onTap: () {
-            print("contacts");
+            print("open contacts popup");
           },
         ),
         SizedBox(height: 10),
         IncidentNavigationButton(
-          text: "Settings",
+          text: core.utils.language
+                  .langMap[core.state.preferences.language]!["incident_log"]
+              ["settings_button"],
           onTap: () {
-            print("settings");
+            print("navigate to settings");
           },
         ),
       ],
