@@ -3,9 +3,11 @@ import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
 import 'package:safe/utils/constants/constants.util.dart';
 import 'package:safe/utils/icon/icon.util.dart';
+import 'package:safe/widgets/mutable_avatar/mutable_avatar.widget.dart';
 import 'package:safe/widgets/mutable_button/mutable_button.widget.dart';
 import 'package:safe/widgets/mutable_handle/mutable_handle.dart';
 import 'package:safe/widgets/mutable_icon/mutable_icon.widget.dart';
+import 'package:safe/widgets/mutable_nav_safe_button/mutable_nav_safe_button.widget.dart';
 
 class IncidentLogNavBar extends StatefulWidget {
   @override
@@ -97,36 +99,6 @@ class _IncidentLogNavBarState extends State<IncidentLogNavBar> {
           ),
         ],
       ),
-    );
-  }
-}
-
-class MutableAvatar extends StatelessWidget {
-  const MutableAvatar({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: 40,
-      width: 40,
-      color: Colors.red,
-    );
-  }
-}
-
-class MutableNavSafeButton extends StatelessWidget {
-  const MutableNavSafeButton({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: 40,
-      width: 40,
-      color: Colors.red,
     );
   }
 }
