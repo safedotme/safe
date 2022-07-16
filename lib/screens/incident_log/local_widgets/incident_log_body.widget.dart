@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
+import 'package:safe/screens/incident_log/local_widgets/incident_log_header.widget.dart';
 import 'package:safe/screens/incident_log/local_widgets/incident_log_navbar.widget.dart';
 import 'package:safe/screens/incident_log/local_widgets/incident_nav_buttons.widget.dart';
 import 'package:safe/utils/constants/constants.util.dart';
-import 'package:safe/widgets/mutable_handle/mutable_handle.dart';
 import 'package:safe/widgets/mutable_incident_card/mutable_incident_card.widget.dart';
 import 'package:safe/widgets/mutable_text/mutable_text.widget.dart';
 
@@ -27,19 +27,6 @@ class _IncidentLogBodyState extends State<IncidentLogBody> {
 
   // 30 is the initial margin and 130 is the final margin where 100 is final - initial
   double genTopPadding(double state) => 30 + (state * 100);
-
-  // 20 is the initial size and 30 is the final size where 14 is final - initial size
-  double genFontSize(double state) => 20 + (state * 10);
-
-  double genCntrOpacity(double state) {
-    double animation = core.utils.animation.percentBetweenPoints(
-      lowerBound: 0,
-      upperBound: 0.5,
-      state: state,
-    );
-
-    return (animation - 1) * -1;
-  }
 
   double genIncidentTabTextSize(double state) {
     double animation = core.utils.animation.percentBetweenPoints(
@@ -106,29 +93,7 @@ class _IncidentLogBodyState extends State<IncidentLogBody> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Row(
-                  // EXTRACT ROW
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    MutableText(
-                      "Incident Log", // Extract
-                      size: genFontSize(core.state.incidentLog.offset),
-                      weight: TypeWeight.heavy,
-                    ),
-                    Opacity(
-                      opacity: genCntrOpacity(
-                        core.state.incidentLog.offset,
-                      ),
-                      child: MutableText(
-                        "14 Incidents", // Connect to backend
-                        style: TypeStyle.body,
-                        weight: TypeWeight.semiBold,
-                        color: MutableColor.neutral2,
-                      ),
-                    ),
-                  ],
-                ),
+                IncidentLogHeader(),
                 SizedBox(
                   height: 20 * genNavBtnSpacer(core.state.incidentLog.offset),
                 ),
