@@ -7,7 +7,6 @@ import 'package:safe/screens/incident_log/local_widgets/incident_log_subheader.w
 import 'package:safe/screens/incident_log/local_widgets/incident_nav_buttons.widget.dart';
 import 'package:safe/utils/constants/constants.util.dart';
 import 'package:safe/widgets/mutable_incident_card/mutable_incident_card.widget.dart';
-import 'package:safe/widgets/mutable_text/mutable_text.widget.dart';
 
 class IncidentLogBody extends StatefulWidget {
   @override
@@ -23,8 +22,6 @@ class _IncidentLogBodyState extends State<IncidentLogBody> {
 
     core = Provider.of<Core>(context, listen: false);
   }
-
-  double kNavigationTabCutoff = 0.6; // CONSTANT
 
   // 30 is the initial margin and 130 is the final margin where 100 is final - initial
   double genTopPadding(double state) => 30 + (state * 100);
@@ -96,7 +93,6 @@ class _IncidentLogBodyState extends State<IncidentLogBody> {
                 IncidentLogSubheader(),
                 SizedBox(height: 15),
                 MutableIncidentCard(),
-                //Incidents
               ],
             ),
           ),

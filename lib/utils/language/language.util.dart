@@ -149,6 +149,7 @@ class LanguageUtil {
     "incident_log": {
       "header": "Incident Log",
       "counter": "{count} Incidents",
+      "subheader": "All Incidents",
     }
   };
 }

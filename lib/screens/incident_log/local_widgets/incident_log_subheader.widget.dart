@@ -42,13 +42,15 @@ class _IncidentLogSubheaderState extends State<IncidentLogSubheader> {
   @override
   Widget build(BuildContext context) {
     return Opacity(
-      opacity: genTextSize(
+      opacity: genOpacity(
         core.state.incidentLog.offset,
       ),
       child: MutableText(
-        "All Incidents", // Extract
+        core.utils.language
+                .langMap[core.state.preferences.language]!["incident_log"]
+            ["subheader"], // Extract
         align: TextAlign.left,
-        size: genOpacity(
+        size: genTextSize(
           core.state.incidentLog.offset,
         ),
         weight: TypeWeight.heavy,
