@@ -24,7 +24,7 @@ Safe is an open source mobile platorm to discretely capture incidents with ease,
 
 > NOTE: Safe is under active development, most of the listed features are still in testing and could be altered.
 
-With the press of a button, begin to record your front camera, upload the footage to the cloud real-time, track your exact location, notify your emergency contacts through SMS and Whatsapp, and alert 911 if necessary. Emergency contacts (*and 911*) will receive a video and location livestream of the incident while also getting access to key information such as realtime updates of your battery life.
+With the press of a button, begin to record your front camera, upload the footage to the cloud in real-time, track your exact location, notify your emergency contacts through SMS and Whatsapp, and alert 911 if necessary. Emergency contacts (*and 911*) will receive a video and location livestream of the incident while also getting access to key information such as realtime updates of your battery life.
 
 <p align="center">
   <img src="https://github.com/safedotme/.github/blob/main/profile/banner.png?raw=true" alt="Banner">
