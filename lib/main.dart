@@ -31,11 +31,10 @@ class Safe extends StatelessWidget {
           HomeScreen.id: (_) => HomeScreen(),
           TestingScreen.id: (_) => TestingScreen(),
         },
-        // home: MutableAuthWrapper(
-        //   initial: WelcomeScreen(),
-        //   home: HomeScreen(),
-        // ),
-        initialRoute: TestingScreen.id,
+        home: MutableAuthWrapper(
+          initial: WelcomeScreen(),
+          home: HomeScreen(),
+        ),
       ),
     );
   }

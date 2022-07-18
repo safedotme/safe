@@ -46,7 +46,7 @@ class _MutableCachedImageState extends State<MutableCachedImage> {
         imageUrl: widget.url,
         fit: widget.fit,
         placeholder: (_, s) => MutableShimmer(
-          animateToColor: Colors.white.withOpacity(0.3),
+          animateToColor: kShimmerAnimationColor,
           child: generateOval(
             Container(
               decoration: BoxDecoration(

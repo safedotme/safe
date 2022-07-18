@@ -161,6 +161,7 @@ final Alignment kPrimaryGradientAlignmentBegin = Alignment(-0.1, -2.5);
 final Alignment kPrimaryGradientAlignmentEnd = Alignment(0.1, 3);
 final Color kIconColorInGradientFill =
     kColorMap[MutableColor.neutral1]!.withOpacity(0.75);
+final Color kShimmerAnimationColor = Colors.white.withOpacity(0.3);
 
 // -> OPACITY
 
@@ -273,6 +274,8 @@ const double kNavigationTabCutoff = 0.6;
 
 // INCIDENT CARD
 const MutableColor kIncidentCardBgColor = MutableColor.neutral9;
+const double kIncidentCardBorderRadius = 6;
+const double kIncidentBodyVerticalSpacing = 5;
 
 // EMERGENCY CONTACTS
 
