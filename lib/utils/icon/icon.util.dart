@@ -7,6 +7,7 @@ import 'package:safe/widgets/mutable_icon/local_widgets/menu.icon.dart';
 import 'package:safe/widgets/mutable_icon/local_widgets/phone.icon.dart';
 import 'package:safe/widgets/mutable_icon/local_widgets/play_large.icon.dart';
 import 'package:safe/widgets/mutable_icon/local_widgets/profile.icon.dart';
+import 'package:safe/widgets/mutable_icon/local_widgets/safe.icon.dart';
 
 enum MutableIcons {
   phone,
@@ -17,6 +18,7 @@ enum MutableIcons {
   playLarge,
   menu,
   key,
+  safe,
 }
 
 class IconUtil {
@@ -26,6 +28,7 @@ class IconUtil {
     iconsMap = {
       MutableIcons.profile: (c) => ProfileIcon(c),
       MutableIcons.playLarge: (c) => PlayLargeIcon(c),
+      MutableIcons.safe: (c) => SafeIcon(c),
       MutableIcons.menu: (c) => MenuIcon(c),
       MutableIcons.checkmark: (c) => CheckmarkIcon(c),
       MutableIcons.key: (c) => KeyIcon(c),
