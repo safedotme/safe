@@ -8,40 +8,31 @@ import 'package:safe/widgets/mutable_incident_card/local_widgets/incident_card_i
 class MutableIncidentCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return CupertinoContextMenu(
-      actions: [Container(), Container()], // Add Actions later
-      child: MutableButton(
-        child: Container(
-          height: 270,
-          decoration: BoxDecoration(
-            color: kColorMap[kIncidentCardBgColor],
-            borderRadius: BorderRadius.circular(6), // Extract
-            border: Border.all(
-              width: kBorderWidth,
-              color: kColorMap[MutableColor.neutral7]!,
-            ),
+    return MutableButton(
+      child: Container(
+        decoration: BoxDecoration(
+          color: kColorMap[kIncidentCardBgColor],
+          borderRadius: BorderRadius.circular(6), // Extract
+          border: Border.all(
+            width: kBorderWidth,
+            color: kColorMap[MutableColor.neutral7]!,
           ),
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(6), // Extract
-            child: Column(
-              children: [
-                Expanded(
-                  flex: 11,
-                  child: IncidentCardImage(
-                    onPlayTap: () {
-                      print("play");
-                    },
-                    onMenuTap: () {
-                      print("menu");
-                    },
-                  ),
-                ),
-                Expanded(
-                  flex: 7,
-                  child: IncidentCardBody(),
-                ),
-              ],
-            ),
+        ),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(6), // Extract
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              IncidentCardImage(
+                onPlayTap: () {
+                  print("play");
+                },
+                onMenuTap: () {
+                  print("menu");
+                },
+              ),
+              IncidentCardBody(),
+            ],
           ),
         ),
       ),
