@@ -15,10 +15,10 @@ class NotifiedContact {
         messageSent: json["message_sent"],
         datetime: DateTime.parse(json["datetime"]),
       );
-  
+
   Map<String, dynamic> toMap() => {
-    "contact_id": contactId,
-    "message_sent": messageSent,
-    "datetime": datetime.toIso8601String();
-  };
+        "contact_id": contactId,
+        "message_sent": messageSent,
+        "datetime": datetime.toIso8601String(),
+      };
 }

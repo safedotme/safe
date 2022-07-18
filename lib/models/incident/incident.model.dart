@@ -41,12 +41,12 @@ class Incident {
   });
 
   factory Incident.fromJson(Map<String, dynamic> json) => Incident(
-        id: id,
-        userId: userId,
-        name: name,
+        id: json["id"],
+        userId: json['user_id'],
+        name: json["name"],
         type: type,
-        datetime: datetime,
-        location: location,
+        datetime: DateTime.parse(json["datetime"]),
+        location: json["location"].map(),
         notifiedContacts: notifiedContacts,
         battery: battery,
         shards: shards,
