@@ -40,7 +40,7 @@ class MutableShimmer extends StatelessWidget {
                     : kColorMap[MutableColor.neutral1]!.withOpacity(0.0),
                 highlightColor: animateToColor != null
                     ? animateToColor!
-                    : kColorMap[MutableColor.neutral1]!.withOpacity(0.25),
+                    : kShimmerAnimationColor,
                 child: child,
               )
             : SizedBox(),

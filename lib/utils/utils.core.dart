@@ -1,9 +1,11 @@
 import 'package:logger/logger.dart';
+import 'package:safe/utils/animation/animation.util.dart';
 import 'package:safe/utils/auth/auth.util.dart';
 import 'package:safe/utils/color/color.util.dart';
 import 'package:safe/utils/flows/flows.dart';
 import 'package:safe/utils/icon/icon.util.dart';
 import 'package:safe/utils/language/language.util.dart';
+import 'package:safe/utils/name/name.util.dart';
 import 'package:safe/utils/permissions/permisions.util.dart';
 import 'package:safe/utils/phone/phone.util.dart';
 import 'package:safe/utils/popup_navigation/popup_navigation.util.dart';
@@ -27,4 +29,6 @@ class Utils {
   PhoneUtil phone = PhoneUtil();
   TextUtil text = TextUtil();
   AuthUtil auth = AuthUtil();
+  AnimationUtil animation = AnimationUtil();
+  NameUtil name = NameUtil();
 }

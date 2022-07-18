@@ -89,7 +89,7 @@ const Map<TypeStyle, dynamic> kTypeStyleMap = {
   },
 };
 
-// TYPOGRAPHY SPECIFIC
+// -> TYPOGRAPHY SPECIFIC
 final TextStyle kTextInputStyle = TextStyle(
   color: kColorMap[MutableColor.neutral1],
   fontFamily: kFontFamilyGen(weight: TypeWeight.medium),
@@ -121,7 +121,7 @@ enum MutableColor {
 }
 
 const Map<MutableColor, Color> kColorMap = {
-  // NEUTRAL
+  // -> NEUTRAL
   MutableColor.neutral1: Colors.white,
   MutableColor.neutral2: Color(0xffB4B5B9),
   MutableColor.neutral3: Color(0xff656565),
@@ -133,17 +133,17 @@ const Map<MutableColor, Color> kColorMap = {
   MutableColor.neutral9: Color(0xff0F0D10),
   MutableColor.neutral10: Color(0xff070508),
 
-  // OS SPECIFIC
+  // -> OS SPECIFIC
   MutableColor.iosGrey: Color(0xff1E1920),
 
-  //PRIMARY
+  // -> PRIMARY
   MutableColor.primaryYellow: Color(0xffF8D849),
   MutableColor.primaryOrange: Color(0xffEE8131),
   MutableColor.primaryRed: Color(0xffEA336C),
   MutableColor.primaryMagenta: Color(0xffC127BF),
   MutableColor.primaryPurple: Color(0xff6E3CF1),
 
-  // SECONDARY
+  // -> SECONDARY
   MutableColor.secondaryGreen: Color(0xff50C166),
   MutableColor.secondaryRed: Color(0xffFC645D),
   MutableColor.secondaryYellow: Color(0xffFCD95D),
@@ -161,8 +161,9 @@ final Alignment kPrimaryGradientAlignmentBegin = Alignment(-0.1, -2.5);
 final Alignment kPrimaryGradientAlignmentEnd = Alignment(0.1, 3);
 final Color kIconColorInGradientFill =
     kColorMap[MutableColor.neutral1]!.withOpacity(0.75);
+final Color kShimmerAnimationColor = Colors.white.withOpacity(0.3);
 
-// OPACITY
+// -> OPACITY
 
 enum Transparency {
   opaque,
@@ -217,6 +218,9 @@ const double kBorderWidth = 1.5;
 const double kLargeButtonHeight = 50;
 const double kLargeButtonBorderRadius = kLargeButtonHeight / 2;
 
+// NAVIGATION BUTTON
+const double kNavButtonSize = 40;
+
 // TEXT FIELDS
 const double kObjectKeyboardMargin = 20;
 const double kKeyboardHeight = 336;
@@ -252,9 +256,29 @@ enum AuthType {
 }
 
 // HOME
+
+// -> SAFE BUTTON
 const double kSafeButtonSize = 165;
 const double kSafeButtonShadowOpacityScale = 0.1;
 const double kSafeButtonShadowBlurScale = 20;
 const double kSafeButtonTapScale = 0.04;
 const Duration kSafeButtonPulsateDuration = Duration(milliseconds: 1300);
 const double kSafeButtonPuslateScale = 1.05;
+
+// -> LAYOUT
+const double kIncidentLogMinPopupHeight = 138;
+const double kHomeHeaderToButtonMargin = 60;
+const double kIncidentLogBorderRadius = 12;
+const double kIncidentLogActiveTopPading = 44;
+const double kNavigationTabCutoff = 0.6;
+
+// INCIDENT CARD
+const MutableColor kIncidentCardBgColor = MutableColor.neutral9;
+const double kIncidentCardBorderRadius = 6;
+const double kIncidentBodyVerticalSpacing = 5;
+
+// EMERGENCY CONTACTS
+
+// -> AVATAR
+const double kEmergencyContactAvatarSize = 24;
+const double kEmergencyContactAvatarSpacing = 3;

@@ -11,6 +11,7 @@ class MutableText extends StatefulWidget {
   final MutableColor? color;
   final TypeWeight? weight;
   final TextAlign align;
+  final double? height;
   final int? maxLines;
   final TextDecoration? decoration;
 
@@ -28,6 +29,7 @@ class MutableText extends StatefulWidget {
     this.align = TextAlign.left,
     this.color = MutableColor.neutral1,
     this.size,
+    this.height,
     this.weight,
   });
 
@@ -41,6 +43,7 @@ class _MutableTextState extends State<MutableText> {
   @override
   Widget build(BuildContext context) {
     style = TextStyle(
+      height: widget.height,
       fontSize: widget.size ?? kTypeStyleSize[widget.style]!.toDouble(),
       color: kColorMap[widget.color],
       fontFamily: kFontFamilyGen(

@@ -146,5 +146,15 @@ class LanguageUtil {
       "next_code": "Next code available in {time}s",
       "resend_code": "Tap to resend code",
     },
+    "incident_log": {
+      "header": "Incident Log",
+      "counter": "{count} Incidents",
+      "subheader": "All Incidents",
+      "contacts_button": "Contacts",
+      "settings_button": "Settings",
+    },
+    "incident_card": {
+      "secured": "Secured",
+    }
   };
 }
