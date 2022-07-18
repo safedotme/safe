@@ -27,7 +27,14 @@ class MutableIncidentCard extends StatelessWidget {
               children: [
                 Expanded(
                   flex: 11,
-                  child: IncidentCardImage(),
+                  child: IncidentCardImage(
+                    onPlayTap: () {
+                      print("play");
+                    },
+                    onMenuTap: () {
+                      print("menu");
+                    },
+                  ),
                 ),
                 Expanded(
                   flex: 7,
