@@ -19,10 +19,9 @@ class MutableAvatar extends StatelessWidget {
     this.onTap,
   });
 
-  String genInitials() => "${name[0]}${name[name.indexOf(" ") + 1]}";
-
   @override
   Widget build(BuildContext context) {
+    Core core = Provider.of<Core>(context, listen: false);
     return MutableButton(
       onTap: onTap,
       child: MutableGradientBorder(
@@ -54,7 +53,7 @@ class MutableAvatar extends StatelessWidget {
                       end: Alignment(1.7, 0),
                     ).createShader(rect),
                     child: MutableText(
-                      genInitials(),
+                      core.utils.name.genInitials(name),
                       style: TypeStyle.h5,
                       weight: TypeWeight.black,
                     ),

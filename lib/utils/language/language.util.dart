@@ -151,7 +151,10 @@ class LanguageUtil {
       "counter": "{count} Incidents",
       "subheader": "All Incidents",
       "contacts_button": "Contacts",
-      "settings_button": "Settings"
+      "settings_button": "Settings",
+    },
+    "incident_card": {
+      "secured": "Secured",
     }
   };
 }

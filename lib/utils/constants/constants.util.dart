@@ -273,3 +273,9 @@ const double kNavigationTabCutoff = 0.6;
 
 // INCIDENT CARD
 const MutableColor kIncidentCardBgColor = MutableColor.neutral9;
+
+// EMERGENCY CONTACTS
+
+// -> AVATAR
+const double kEmergencyContactAvatarSize = 24;
+const double kEmergencyContactAvatarSpacing = 3;

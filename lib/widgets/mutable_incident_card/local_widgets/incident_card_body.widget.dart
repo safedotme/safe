@@ -1,10 +1,32 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:safe/core.dart';
 import 'package:safe/utils/constants/constants.util.dart';
 import 'package:safe/utils/icon/icon.util.dart';
+import 'package:safe/widgets/mutable_emergency_contact_avatar/mutable_emergency_contact_avatar.widget.dart';
 import 'package:safe/widgets/mutable_pill/mutable_pill.widget.dart';
 import 'package:safe/widgets/mutable_text/mutable_text.widget.dart';
 
-class IncidentCardBody extends StatelessWidget {
+class IncidentCardBody extends StatefulWidget {
+  final String name;
+  final String address;
+
+  IncidentCardBody({required this.name, required this.address});
+
+  @override
+  State<IncidentCardBody> createState() => _IncidentCardBodyState();
+}
+
+class _IncidentCardBodyState extends State<IncidentCardBody> {
+  late Core core;
+
+  @override
+  void initState() {
+    super.initState();
+
+    core = Provider.of<Core>(context, listen: false);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -15,28 +37,41 @@ class IncidentCardBody extends StatelessWidget {
           Expanded(
             child: Column(
               mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 MutableText(
-                  "Incident Name",
+                  widget.name,
                   style: TypeStyle.h5,
                   weight: TypeWeight.bold,
                 ),
                 SizedBox(height: 5),
                 MutableText(
-                  "One Apple Park Way, Cupertino, CA 95014, United States",
+                  widget.address,
                   style: TypeStyle.body,
                   color: MutableColor.neutral2,
                 ),
                 SizedBox(height: 5),
-                SizedBox(),
+                Row(
+                  children: [
+                    MutableEmergencyContactAvatar("Kelly Wakasa"),
+                    SizedBox(width: kEmergencyContactAvatarSpacing),
+                    MutableEmergencyContactAvatar("Filippo Fonseca"),
+                    SizedBox(width: kEmergencyContactAvatarSpacing),
+                    MutableEmergencyContactAvatar("Mark Music"),
+                    SizedBox(width: kEmergencyContactAvatarSpacing),
+                    MutableEmergencyContactAvatar("Ashley Alexander"),
+                    SizedBox(width: kEmergencyContactAvatarSpacing),
+                  ],
+                ),
               ],
             ),
           ),
           SizedBox(width: 10),
           MutablePill(
-            text: "Secured",
-            icon: MutableIcons.key,
+            text: core.utils.language
+                    .langMap[core.state.preferences.language]!["incident_card"]
+                ["secured"],
+            icon: MutableIcons.safe,
           )
         ],
       ),

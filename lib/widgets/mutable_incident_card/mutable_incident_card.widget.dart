@@ -31,7 +31,11 @@ class MutableIncidentCard extends StatelessWidget {
                   print("menu");
                 },
               ),
-              IncidentCardBody(),
+              IncidentCardBody(
+                name: "Incident Name",
+                address:
+                    "One Apple Park Way, Cupertino, CA 95014, United States",
+              ),
             ],
           ),
         ),
