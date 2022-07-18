@@ -29,7 +29,7 @@ class _MutableAuthWrapperState extends State<MutableAuthWrapper> {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<User?>(
-      stream: core.utils.auth.userChanges,
+      stream: core.services.auth.userChanges,
       builder: (_, snapshot) {
         if (snapshot.connectionState == ConnectionState.active) {
           if (snapshot.data != null) {
