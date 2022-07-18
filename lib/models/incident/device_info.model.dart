@@ -7,7 +7,7 @@ class DeviceInfo {
     required this.modelNumber,
   });
 
-  factory DeviceInfo.toJson(Map<String, dynamic> json) => DeviceInfo(
+  factory DeviceInfo.fromJson(Map<String, dynamic> json) => DeviceInfo(
         datetime: DateTime.parse(json["datetime"]),
         modelNumber: json["model_number"],
       );

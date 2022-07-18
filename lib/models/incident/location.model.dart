@@ -18,6 +18,7 @@ class Location {
         long: json["long"],
         alt: json["alt"],
         datetime: DateTime.parse(json["datetime"]),
+        address: json["address"],
       );
 
   Map<String, dynamic> toMap() => {
