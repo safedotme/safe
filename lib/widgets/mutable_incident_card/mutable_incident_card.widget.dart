@@ -14,7 +14,7 @@ class MutableIncidentCard extends StatelessWidget {
         child: Container(
           height: 270,
           decoration: BoxDecoration(
-            color: kColorMap[MutableColor.neutral9],
+            color: kColorMap[kIncidentCardBgColor],
             borderRadius: BorderRadius.circular(6), // Extract
             border: Border.all(
               width: kBorderWidth,

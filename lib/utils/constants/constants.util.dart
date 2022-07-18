@@ -270,3 +270,6 @@ const double kHomeHeaderToButtonMargin = 60;
 const double kIncidentLogBorderRadius = 12;
 const double kIncidentLogActiveTopPading = 44;
 const double kNavigationTabCutoff = 0.6;
+
+// INCIDENT CARD
+const MutableColor kIncidentCardBgColor = MutableColor.neutral9;

@@ -1,5 +1,6 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:safe/utils/constants/constants.util.dart';
+import 'package:safe/widgets/mutable_cached_image/mutable_cached_image.widget.dart';
 
 class IncidentCardImage extends StatelessWidget {
   @override
@@ -7,9 +8,9 @@ class IncidentCardImage extends StatelessWidget {
     return Stack(
       children: [
         SizedBox.expand(
-          child: CachedNetworkImage(
-            imageUrl:
-                "https://d279m997dpfwgl.cloudfront.net/wp/2020/06/GettyImages-1221138690.jpg",
+          child: MutableCachedImage(
+            "https://d279m997dpfwgl.cloudfront.net/wp/2020/06/GettyImages-1221138690.jpg",
+            backgroundColor: kColorMap[kIncidentCardBgColor],
             fit: BoxFit.cover,
           ),
         ),
