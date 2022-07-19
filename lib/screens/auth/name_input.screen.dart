@@ -112,7 +112,7 @@ class _NameInputScreenState extends State<NameInputScreen>
 
     if (!error) {
       // Navigate
-      bool hasPermissions = core.utils.permissions.checkPermissions(
+      bool hasPermissions = core.services.permissions.checkPermissions(
         core,
         sendError: false,
       );

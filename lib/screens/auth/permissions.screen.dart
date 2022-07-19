@@ -82,7 +82,7 @@ class _PermissionsScreenState extends State<PermissionsScreen>
 
   void submit() {
     setState(() {
-      areEnabled = core.utils.permissions.checkPermissions(
+      areEnabled = core.services.permissions.checkPermissions(
         core,
         sendError: true,
       );

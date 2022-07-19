@@ -22,7 +22,7 @@ class _AuthOtpInputPanelState extends State<AuthOtpInputPanel> {
   }
 
   Future<void> resendCode() async {
-    Map response = await core.utils.auth.sendOTP(
+    Map response = await core.services.auth.sendOTP(
       resedToken: core.state.auth.resendToken,
       phone: core.state.auth.phoneNumber,
       dialCode: core.state.auth.countryDialCode,
@@ -44,7 +44,7 @@ class _AuthOtpInputPanelState extends State<AuthOtpInputPanel> {
 
   void handleError(String exception) {
     // Initialize error message values
-    Map error = core.utils.auth.handleError(core, exception);
+    Map error = core.services.auth.handleError(core, exception);
     core.state.auth.setBannerState(MessageType.error);
     core.state.auth.setBannerMessage(error["desc"]);
     core.state.auth.setBannerTitle(error["header"]);
@@ -58,17 +58,17 @@ class _AuthOtpInputPanelState extends State<AuthOtpInputPanel> {
     String otp,
   ) async {
     core.state.auth.overlayController.show();
-    Map<String, dynamic> response = await core.utils.auth.verifyOTP(
+    Map<String, dynamic> response = await core.services.auth.verifyOTP(
       otp,
       verificationId,
     );
 
-    if (core.utils.auth.currentUser != null) {
+    if (core.services.auth.currentUser != null) {
       // Update in cloud firestore
 
       //Update in auth
       if (core.state.auth.name.isNotEmpty) {
-        core.utils.auth.currentUser!.updateDisplayName(
+        core.services.auth.currentUser!.updateDisplayName(
           core.state.auth.name,
         );
       }

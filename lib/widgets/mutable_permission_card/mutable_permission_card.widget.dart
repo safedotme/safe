@@ -64,14 +64,15 @@ class _MutablePermissionCardState extends State<MutablePermissionCard> {
 
     switch (widget.type) {
       case PermissionType.camera:
-        response = await core.utils.permissions.requestCamera(core, request);
+        response = await core.services.permissions.requestCamera(core, request);
         break;
       case PermissionType.location:
-        response = await core.utils.permissions.requestLocation(core, request);
+        response =
+            await core.services.permissions.requestLocation(core, request);
         break;
       case PermissionType.microphone:
         response =
-            await core.utils.permissions.requestMicrophone(core, request);
+            await core.services.permissions.requestMicrophone(core, request);
         break;
     }
 
@@ -103,12 +104,12 @@ class _MutablePermissionCardState extends State<MutablePermissionCard> {
 
     // HANDLE ERROR
     if (!data.isEnabled) {
-      core.utils.permissions.errorBanner(core, widget.type);
+      core.services.permissions.errorBanner(core, widget.type);
       return;
     }
 
     // Check permissions
-    bool hasPermissions = core.utils.permissions.checkPermissions(
+    bool hasPermissions = core.services.permissions.checkPermissions(
       core,
       sendError: false,
     );

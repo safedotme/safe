@@ -3,7 +3,7 @@ import 'package:safe/core.dart';
 import 'package:safe/widgets/mutable_banner/mutable_banner.widget.dart';
 import 'package:safe/widgets/mutable_permission_card/mutable_permission_card.widget.dart';
 
-class PermissionsUtil {
+class PermissionsService {
   bool checkPermissions(Core core, {required bool sendError}) {
     List<PermissionType> errors = [];
     Map<PermissionType, PermissionData> permissions =

@@ -92,7 +92,7 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen>
 
     // Sends OTP and opens OTP popup
     if (validated) {
-      Map response = await core.utils.auth.sendOTP(
+      Map response = await core.services.auth.sendOTP(
         phone: core.state.auth.phoneNumber,
         dialCode: core.state.auth.countryDialCode,
         onCodeSend: (verificationId, resentToken) {
@@ -122,7 +122,7 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen>
   // Displays invalid phone number
   void handleError(String exception) {
     // Initialize error message values
-    Map error = core.utils.auth.handleError(core, exception);
+    Map error = core.services.auth.handleError(core, exception);
     core.state.auth.setBannerState(MessageType.error);
     core.state.auth.setBannerMessage(error["desc"]);
     core.state.auth.setBannerTitle(error["header"]);
