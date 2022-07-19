@@ -1,7 +1,8 @@
 // ignore_for_file: no_leading_underscores_for_local_identifiers
 
+import 'package:safe/models/device_info.model.dart';
 import 'package:safe/models/incident/battery.model.dart';
-import 'package:safe/models/incident/device_info.model.dart';
+import 'package:safe/models/device_info.model.dart';
 import 'package:safe/models/incident/emergency_services.model.dart';
 import 'package:safe/models/incident/location.model.dart';
 import 'package:safe/models/incident/notified_contacts.model.dart';

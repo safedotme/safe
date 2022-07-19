@@ -6,7 +6,6 @@ class IncidentServer {
   static String path = "incidents";
 
   IncidentServer(this._db);
-  // INCIDENTS
 
   // -> READ
   Stream<List<Incident>> readFromUserId({required String userId}) {
