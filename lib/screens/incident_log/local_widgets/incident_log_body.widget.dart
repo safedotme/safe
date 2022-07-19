@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
+import 'package:safe/models/incident/incident.model.dart';
 import 'package:safe/screens/incident_log/local_widgets/incident_log_header.widget.dart';
 import 'package:safe/screens/incident_log/local_widgets/incident_log_navbar.widget.dart';
 import 'package:safe/screens/incident_log/local_widgets/incident_log_subheader.widget.dart';
@@ -56,6 +58,21 @@ class _IncidentLogBodyState extends State<IncidentLogBody> {
     return animation;
   }
 
+  List<Widget> handleResponse(List<Incident>? incidents) {
+    if (incidents == null) {
+      return [Container()]; //loader
+    }
+
+    if (incidents.isEmpty) {
+      return [Container()]; // Empty State
+    }
+
+    return List.generate(
+      incidents.length + (incidents.length - 1),
+      (i) => i.isEven ? MutableIncidentCard() : SizedBox(height: 25),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -68,32 +85,34 @@ class _IncidentLogBodyState extends State<IncidentLogBody> {
             padding: EdgeInsets.only(
               top: genTopPadding(core.state.incidentLog.offset),
             ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                IncidentLogHeader(),
-                SizedBox(
-                  height: 20 * genNavBtnSpacer(core.state.incidentLog.offset),
-                ),
-                core.state.incidentLog.offset > kNavigationTabCutoff
-                    ? Opacity(
-                        opacity: genNavBtnOpacity(
-                          core.state.incidentLog.offset,
+            child: Observer(
+              builder: (_) => Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  IncidentLogHeader(),
+                  SizedBox(
+                    height: 20 * genNavBtnSpacer(core.state.incidentLog.offset),
+                  ),
+                  core.state.incidentLog.offset > kNavigationTabCutoff
+                      ? Opacity(
+                          opacity: genNavBtnOpacity(
+                            core.state.incidentLog.offset,
+                          ),
+                          child: NavigationButtons(),
+                        )
+                      : SizedBox(
+                          height: genNavBtnSize(
+                            core.state.incidentLog.offset,
+                          ),
                         ),
-                        child: NavigationButtons(),
-                      )
-                    : SizedBox(
-                        height: genNavBtnSize(
-                          core.state.incidentLog.offset,
-                        ),
-                      ),
-                SizedBox(
-                  height: 35 * genNavBtnSpacer(core.state.incidentLog.offset),
-                ),
-                IncidentLogSubheader(),
-                SizedBox(height: 15),
-                MutableIncidentCard(),
-              ],
+                  SizedBox(
+                    height: 35 * genNavBtnSpacer(core.state.incidentLog.offset),
+                  ),
+                  IncidentLogSubheader(),
+                  SizedBox(height: 15),
+                  ...handleResponse(core.state.incidentLog.incidents)
+                ],
+              ),
             ),
           ),
         ),

@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
+import 'package:safe/models/incident/incident.model.dart';
 import 'package:safe/screens/incident_log/local_widgets/incident_log_body.widget.dart';
 import 'package:safe/utils/constants/constants.util.dart';
 import 'package:safe/widgets/mutable_popup/local_widgets/mutable_popup_style.widget.dart';
 import 'package:safe/widgets/mutable_popup/mutable_popup.widget.dart';
-import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class IncidentLog extends StatefulWidget {
   @override
@@ -22,6 +22,19 @@ class _IncidentLogState extends State<IncidentLog> {
     super.initState();
 
     core = Provider.of<Core>(context, listen: false);
+    subscribe();
+  }
+
+  void subscribe() {
+    String id = core.services.auth.currentUser!.uid;
+
+    var incidentStream = core.services.server.incidents.readFromUserId(
+      userId: id,
+    );
+
+    incidentStream.listen((incidents) {
+      core.state.incidentLog.setIncidents(incidents);
+    });
   }
 
   @override

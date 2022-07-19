@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
+import 'package:safe/models/incident/incident.model.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 part 'incident_log.store.g.dart';
@@ -24,4 +25,10 @@ abstract class _IncidentLogStore with Store {
 
   @action
   void setScrollPhysics(ScrollPhysics p) => scrollPhysics = p;
+
+  @observable
+  List<Incident>? incidents;
+
+  @action
+  setIncidents(List<Incident>? i) => incidents = i;
 }

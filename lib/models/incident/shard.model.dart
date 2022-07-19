@@ -19,7 +19,7 @@ class Shard {
 
   factory Shard.fromJson(Map<String, dynamic> json) => Shard(
         bucketId: json["bucket_id"],
-        bytes: json["bytes"],
+        bytes: json["bytes"].toDouble(),
         uploadDatetime: DateTime.parse(json["upload_datetime"]),
         shardId: json["shard_id"],
         position: json["position"],
@@ -34,6 +34,6 @@ class Shard {
         "shard_id": shardId,
         "position": position,
         "path": path,
-        "datetime": datetime,
+        "datetime": datetime.toIso8601String(),
       };
 }

@@ -73,6 +73,22 @@ mixin _$IncidentLogStore on _IncidentLogStore, Store {
     });
   }
 
+  late final _$incidentsAtom =
+      Atom(name: '_IncidentLogStore.incidents', context: context);
+
+  @override
+  List<Incident>? get incidents {
+    _$incidentsAtom.reportRead();
+    return super.incidents;
+  }
+
+  @override
+  set incidents(List<Incident>? value) {
+    _$incidentsAtom.reportWrite(value, super.incidents, () {
+      super.incidents = value;
+    });
+  }
+
   late final _$_IncidentLogStoreActionController =
       ActionController(name: '_IncidentLogStore', context: context);
 
@@ -99,12 +115,24 @@ mixin _$IncidentLogStore on _IncidentLogStore, Store {
   }
 
   @override
+  dynamic setIncidents(List<Incident>? i) {
+    final _$actionInfo = _$_IncidentLogStoreActionController.startAction(
+        name: '_IncidentLogStore.setIncidents');
+    try {
+      return super.setIncidents(i);
+    } finally {
+      _$_IncidentLogStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 controller: ${controller},
 offset: ${offset},
 scrollController: ${scrollController},
-scrollPhysics: ${scrollPhysics}
+scrollPhysics: ${scrollPhysics},
+incidents: ${incidents}
     ''';
   }
 }
