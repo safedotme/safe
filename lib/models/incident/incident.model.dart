@@ -12,7 +12,7 @@ class Incident {
   final String id;
   final String userId;
   final String name;
-  final IncidentType type;
+  final List<IncidentType> type;
   final DateTime datetime;
   final String thumbnail;
   final List<Location> location;
@@ -42,12 +42,13 @@ class Incident {
     List<Map<String, dynamic>> _contacts = json["notified_contacts"];
     List<Map<String, dynamic>> _battery = json["battery"];
     List<Map<String, dynamic>> _shards = json["shards"];
+    List<String> _type = json["type"];
 
     return Incident(
       id: json["id"],
       userId: json['user_id'],
       name: json["name"],
-      type: IncidentUtil.parseType(json["type"]),
+      type: _type.map((e) => IncidentUtil.parseType(e)).toList(),
       datetime: DateTime.parse(json["datetime"]),
       location: _location.map((e) => Location.fromJson(e)).toList(),
       notifiedContacts:
@@ -63,7 +64,7 @@ class Incident {
         "id": id,
         "user_id": userId,
         "name": name,
-        "type": type.toString(),
+        "type": type.map((e) => e.toString()).toList(),
         "datetime": datetime.toIso8601String(),
         "location": location.map((e) => e.toMap()).toList(),
         "notified_contacts": notifiedContacts.map((e) => e.toMap()).toList(),
