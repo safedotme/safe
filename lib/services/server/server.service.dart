@@ -1,3 +1,5 @@
+// ignore_for_file: no_leading_underscores_for_local_identifiers
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:safe/services/server/contact_server.service.dart';
 import 'package:safe/services/server/incident_server.service.dart';
@@ -9,7 +11,7 @@ class ServerService {
   late ContactServer contacts;
 
   void init() {
-    FirebaseFirestore _db = FirebaseFirestore.instance;
+    final FirebaseFirestore _db = FirebaseFirestore.instance;
 
     incidents = IncidentServer(_db);
     user = UserServer(_db);
