@@ -291,3 +291,6 @@ const double kIncidentLogCardSpacing = 25;
 // -> AVATAR
 const double kEmergencyContactAvatarSize = 24;
 const double kEmergencyContactAvatarSpacing = 3;
+
+// TRANSITIONS
+const double kScreenTransitionBound = 200;
