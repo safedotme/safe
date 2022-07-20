@@ -15,6 +15,7 @@ class MutablePopup extends StatefulWidget {
   final PopupType type;
   final void Function()? onOpened;
   final void Function()? onClosed;
+  final Widget Function(ScrollController controller)? scrollBuilder;
   final void Function(double state)? onSlide;
   final void Function()? onFreezeInteraction;
   final PanelController? controller;
@@ -26,7 +27,7 @@ class MutablePopup extends StatefulWidget {
   final double maxHeight;
 
   final MutablePopupStyle? style;
-  final Widget body;
+  final Widget? body;
 
   /// [width] will not be applied with panel popup types
   final double? width;
@@ -38,6 +39,7 @@ class MutablePopup extends StatefulWidget {
     this.type = PopupType.pannel,
     this.enableBorder = true,
     this.onOpened,
+    this.scrollBuilder,
     this.minHeight = 500,
     this.maxHeight = 770,
     this.onFreezeInteraction,
@@ -48,7 +50,7 @@ class MutablePopup extends StatefulWidget {
     this.controller,
     this.defaultState = PanelState.CLOSED,
     this.backdropTapClose = true,
-    required this.body,
+    this.body,
     this.style,
     this.draggable = true,
   });
@@ -144,7 +146,7 @@ class _MutablePopupState extends State<MutablePopup> {
       backdropColor: style.backdropColor!,
       backdropEnabled: style.backdropEnabled,
       backdropOpacity: style.backdropOpacity!,
-
+      panelBuilder: widget.scrollBuilder,
       // Removes popup border for non-panel popups
       borderRadius: widget.type == PopupType.pannel ? style.borderRadius : null,
       border: widget.type == PopupType.pannel ? style.border : null,

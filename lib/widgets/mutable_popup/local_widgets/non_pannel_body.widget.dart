@@ -4,12 +4,12 @@ import 'package:safe/widgets/mutable_popup/local_widgets/mutable_popup_style.wid
 class NonPannelBody extends StatelessWidget {
   final Size size;
   final MutablePopupStyle style;
-  final Widget body;
+  final Widget? body;
 
   NonPannelBody({
     required this.size,
     required this.style,
-    required this.body,
+    this.body,
   });
 
   @override

@@ -1,4 +1,5 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
@@ -10,6 +11,7 @@ import 'package:safe/widgets/mutable_auth_wrapper/mutable_auth_wrapper.widget.da
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   // await dotenv.load(fileName: ".env");
+  Paint.enableDithering = true;
   await Firebase.initializeApp();
 
   runApp(Safe());

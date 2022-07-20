@@ -271,12 +271,21 @@ const double kHomeHeaderToButtonMargin = 60;
 const double kIncidentLogBorderRadius = 12;
 const double kIncidentLogActiveTopPading = 44;
 const double kNavigationTabCutoff = 0.6;
+const ScrollPhysics? kIncidentLogScrollPhysics = null;
+const double kIncidentLogNavButtonCutoff = 0.7;
 
 // INCIDENT CARD
 const MutableColor kIncidentCardBgColor = MutableColor.neutral9;
 const double kIncidentCardBorderRadius = 6;
 const double kIncidentBodyVerticalSpacing = 5;
-
+const MutableColor kIncidentCardLoaderColor = MutableColor.neutral8;
+const MutableColor kIncidentCardBorderColor = MutableColor.neutral7;
+const double kIncidentCardImageHeight = 165;
+const double kIncidentCardBodyPadding = 10;
+final Color kIncidentLoaderShimmerColor =
+    kShimmerAnimationColor.withOpacity(0.05);
+const int kCachedImageLoadDuration = 300;
+const double kIncidentLogCardSpacing = 25;
 // EMERGENCY CONTACTS
 
 // -> AVATAR

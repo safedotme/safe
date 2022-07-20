@@ -1,8 +1,5 @@
 // ignore_for_file: no_leading_underscores_for_local_identifiers
-
-import 'package:safe/models/device_info.model.dart';
 import 'package:safe/models/incident/battery.model.dart';
-import 'package:safe/models/device_info.model.dart';
 import 'package:safe/models/incident/emergency_services.model.dart';
 import 'package:safe/models/incident/location.model.dart';
 import 'package:safe/models/incident/notified_contacts.model.dart';
@@ -21,7 +18,6 @@ class Incident {
   final List<Battery> battery;
   final List<Shard> shards;
   final List<EmergencyServices>? emergencyServices;
-  final DeviceInfo deviceInfo;
 
   Incident({
     required this.id,
@@ -33,17 +29,16 @@ class Incident {
     required this.notifiedContacts,
     required this.battery,
     required this.shards,
-    required this.deviceInfo,
     required this.thumbnail,
     this.emergencyServices,
   });
 
   factory Incident.fromJson(Map<String, dynamic> json) {
-    List<Map<String, dynamic>> _location = json["location"];
-    List<Map<String, dynamic>> _contacts = json["notified_contacts"];
-    List<Map<String, dynamic>> _battery = json["battery"];
-    List<Map<String, dynamic>> _shards = json["shards"];
-    List<String> _type = json["type"];
+    var _location = List<Map<String, dynamic>>.from(json["location"]);
+    var _contacts = List<Map<String, dynamic>>.from(json["notified_contacts"]);
+    var _battery = List<Map<String, dynamic>>.from(json["battery"]);
+    var _shards = List<Map<String, dynamic>>.from(json["shards"]);
+    var _type = List<String>.from(json["type"]);
 
     return Incident(
       id: json["id"],
@@ -57,7 +52,6 @@ class Incident {
       battery: _battery.map((e) => Battery.fromJson(e)).toList(),
       thumbnail: json["thumbnail"],
       shards: _shards.map((e) => Shard.fromJson(e)).toList(),
-      deviceInfo: DeviceInfo.fromJson(json["device_info"]),
     );
   }
 
@@ -72,6 +66,5 @@ class Incident {
         "battery": battery.map((e) => e.toMap()).toList(),
         "thumbnail": thumbnail,
         "shards": shards.map((e) => e.toMap()).toList(),
-        "device_info": deviceInfo.toMap(),
       };
 }

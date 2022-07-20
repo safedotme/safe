@@ -1,14 +1,13 @@
-import 'package:safe/models/device_info.model.dart';
+// ignore_for_file: no_leading_underscores_for_local_identifiers
 
 class User {
   final String id;
   final String name;
-  final String picturePath;
+  final String? picturePath;
   final List<String> contacts;
   final List<String> incidents;
   final String phone;
   final DateTime joined;
-  final List<DeviceInfo> devices;
 
   User({
     required this.id,
@@ -18,19 +17,22 @@ class User {
     required this.contacts,
     required this.incidents,
     required this.joined,
-    required this.devices,
   });
 
-  factory User.fromJson(Map<String, dynamic> json) => User(
-        id: json["id"],
-        name: json["name"],
-        picturePath: json["picture_path"],
-        contacts: json["contacts"],
-        incidents: json["incidents"],
-        phone: json["phone"],
-        joined: DateTime.parse(json["joined"]),
-        devices: json["devices"],
-      );
+  factory User.fromJson(Map<String, dynamic> json) {
+    var _incidents = List<String>.from(json["incidents"]);
+    var _contacts = List<String>.from(json["contacts"]);
+
+    return User(
+      id: json["id"],
+      name: json["name"],
+      picturePath: json["picture_path"],
+      contacts: _contacts,
+      incidents: _incidents,
+      phone: json["phone"],
+      joined: DateTime.parse(json["joined"]),
+    );
+  }
 
   Map<String, dynamic> toMap() => {
         "id": id,
@@ -40,6 +42,5 @@ class User {
         "incidents": incidents,
         "phone": phone,
         "joined": joined.toIso8601String(),
-        "devices": devices,
       };
 }

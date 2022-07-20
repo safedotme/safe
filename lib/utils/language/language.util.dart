@@ -146,12 +146,20 @@ class LanguageUtil {
       "next_code": "Next code available in {time}s",
       "resend_code": "Tap to resend code",
     },
+    "home": {
+      "header": "Tap to Safe",
+    },
     "incident_log": {
       "header": "Incident Log",
       "counter": "{count} Incidents",
       "subheader": "All Incidents",
       "contacts_button": "Contacts",
       "settings_button": "Settings",
+      "empty": {
+        "header": "No Incidents",
+        "desc":
+            "There are no inicdents tied to this account. Tap on the Safe button to document one.",
+      }
     },
     "incident_card": {
       "secured": "Secured",

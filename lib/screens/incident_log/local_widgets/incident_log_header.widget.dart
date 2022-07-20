@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
+import 'package:safe/models/incident/incident.model.dart';
 import 'package:safe/utils/constants/constants.util.dart';
 import 'package:safe/widgets/mutable_text/mutable_text.widget.dart';
 
@@ -32,6 +33,20 @@ class _IncidentLogHeaderState extends State<IncidentLogHeader> {
     return (animation - 1) * -1;
   }
 
+  String handleResponse(List<Incident>? incidents, String message) {
+    if (incidents == null) {
+      return message.replaceAll("{count}", "0");
+    }
+
+    var base = message.replaceAll("{count}", incidents.length.toString());
+
+    if (incidents.length == 1) {
+      return base.replaceAll("s", "");
+    }
+
+    return base;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -51,13 +66,12 @@ class _IncidentLogHeaderState extends State<IncidentLogHeader> {
             core.state.incidentLog.offset,
           ),
           child: MutableText(
-            core
-                .utils
-                .language
-                .langMap[core.state.preferences.language]!["incident_log"]
-                    ["counter"]!
-                .toString()
-                .replaceAll("{count}", "14"), // Connect to backend
+            handleResponse(
+              core.state.incidentLog.incidents,
+              core.utils.language
+                      .langMap[core.state.preferences.language]!["incident_log"]
+                  ["counter"]!,
+            ),
             style: TypeStyle.body,
             weight: TypeWeight.semiBold,
             color: MutableColor.neutral2,

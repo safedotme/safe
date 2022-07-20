@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
+import 'package:safe/models/incident/incident.model.dart';
+import 'package:safe/models/user/user.model.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 part 'incident_log.store.g.dart';
@@ -20,8 +22,26 @@ abstract class _IncidentLogStore with Store {
   ScrollController scrollController = ScrollController();
 
   @observable
-  ScrollPhysics scrollPhysics = NeverScrollableScrollPhysics();
+  ScrollPhysics? scrollPhysics = NeverScrollableScrollPhysics();
 
   @action
-  void setScrollPhysics(ScrollPhysics p) => scrollPhysics = p;
+  void setScrollPhysics(ScrollPhysics? p) => scrollPhysics = p;
+
+  @observable
+  List<Incident>? incidents;
+
+  @action
+  setIncidents(List<Incident>? i) => incidents = i;
+
+  @observable
+  double scrollOffset = 0;
+
+  @action
+  void setScrollOffset(double o) => scrollOffset = o;
+
+  @observable
+  User? user;
+
+  @action
+  void setUser(User u) => user = u;
 }

@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
+import 'package:safe/models/incident/incident.model.dart';
+import 'package:safe/screens/incident_log/local_widgets/empty_incident_log.widget.dart';
 import 'package:safe/screens/incident_log/local_widgets/incident_log_header.widget.dart';
 import 'package:safe/screens/incident_log/local_widgets/incident_log_navbar.widget.dart';
 import 'package:safe/screens/incident_log/local_widgets/incident_log_subheader.widget.dart';
 import 'package:safe/screens/incident_log/local_widgets/incident_nav_buttons.widget.dart';
 import 'package:safe/utils/constants/constants.util.dart';
+import 'package:safe/widgets/mutable_incident_card/local_widgets/incident_card_loader.widget.dart';
 import 'package:safe/widgets/mutable_incident_card/mutable_incident_card.widget.dart';
 
 class IncidentLogBody extends StatefulWidget {
@@ -15,6 +19,8 @@ class IncidentLogBody extends StatefulWidget {
 
 class _IncidentLogBodyState extends State<IncidentLogBody> {
   late Core core;
+  bool isEmpty = true;
+  late MediaQueryData queryData;
 
   @override
   void initState() {
@@ -56,44 +62,100 @@ class _IncidentLogBodyState extends State<IncidentLogBody> {
     return animation;
   }
 
+  List<Widget> handleResponse(List<Incident>? incidents) {
+    if (incidents == null) {
+      WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+        setState(() {
+          isEmpty = true;
+        });
+      });
+
+      return [IncidentCardLoader()];
+    }
+
+    if (incidents.isEmpty) {
+      WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+        setState(() {
+          isEmpty = true;
+        });
+      });
+
+      return [EmptyIncidentLog()]; // Empty State
+    }
+
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      setState(() {
+        isEmpty = false;
+      });
+    });
+
+    return List.generate(
+        incidents.length,
+        (i) => Padding(
+              padding: EdgeInsets.only(
+                bottom: i + 1 == incidents.length ? 0 : kIncidentLogCardSpacing,
+              ),
+              child: MutableIncidentCard(incidents[i]),
+            ) // Add spacing between incidents,
+        );
+  }
+
   @override
   Widget build(BuildContext context) {
+    queryData = MediaQuery.of(context);
     return Stack(
       children: [
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: kSideScreenMargin),
-          child: SingleChildScrollView(
-            controller: core.state.incidentLog.scrollController,
-            physics: core.state.incidentLog.scrollPhysics,
-            padding: EdgeInsets.only(
-              top: genTopPadding(core.state.incidentLog.offset),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                IncidentLogHeader(),
-                SizedBox(
-                  height: 20 * genNavBtnSpacer(core.state.incidentLog.offset),
+        Positioned.fill(
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: kSideScreenMargin),
+            child: Observer(
+              builder: (_) => SingleChildScrollView(
+                controller: core.state.incidentLog.scrollController,
+                physics: core.state.incidentLog.scrollPhysics,
+                padding: EdgeInsets.only(
+                  top: genTopPadding(core.state.incidentLog.offset),
+                  bottom: kBottomScreenMargin,
                 ),
-                core.state.incidentLog.offset > kNavigationTabCutoff
-                    ? Opacity(
-                        opacity: genNavBtnOpacity(
-                          core.state.incidentLog.offset,
+                child: Observer(
+                  builder: (_) => SizedBox(
+                    height: isEmpty
+                        ? queryData.size.height -
+                            genTopPadding(core.state.incidentLog.offset) -
+                            kBottomScreenMargin
+                        : null,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        IncidentLogHeader(),
+                        SizedBox(
+                          height: 20 *
+                              genNavBtnSpacer(core.state.incidentLog.offset),
                         ),
-                        child: NavigationButtons(),
-                      )
-                    : SizedBox(
-                        height: genNavBtnSize(
-                          core.state.incidentLog.offset,
+                        core.state.incidentLog.offset > kNavigationTabCutoff
+                            ? Opacity(
+                                opacity: genNavBtnOpacity(
+                                  core.state.incidentLog.offset,
+                                ),
+                                child: NavigationButtons(),
+                              )
+                            : SizedBox(
+                                height: genNavBtnSize(
+                                  core.state.incidentLog.offset,
+                                ),
+                              ),
+                        SizedBox(
+                          height: 35 *
+                              genNavBtnSpacer(core.state.incidentLog.offset),
                         ),
-                      ),
-                SizedBox(
-                  height: 35 * genNavBtnSpacer(core.state.incidentLog.offset),
+                        !isEmpty ? IncidentLogSubheader() : SizedBox(),
+                        SizedBox(height: 15),
+                        ...handleResponse(core.state.incidentLog.incidents),
+                      ],
+                    ),
+                  ),
                 ),
-                IncidentLogSubheader(),
-                SizedBox(height: 15),
-                MutableIncidentCard(),
-              ],
+              ),
             ),
           ),
         ),

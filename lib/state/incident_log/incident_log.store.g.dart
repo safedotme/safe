@@ -61,15 +61,63 @@ mixin _$IncidentLogStore on _IncidentLogStore, Store {
       Atom(name: '_IncidentLogStore.scrollPhysics', context: context);
 
   @override
-  ScrollPhysics get scrollPhysics {
+  ScrollPhysics? get scrollPhysics {
     _$scrollPhysicsAtom.reportRead();
     return super.scrollPhysics;
   }
 
   @override
-  set scrollPhysics(ScrollPhysics value) {
+  set scrollPhysics(ScrollPhysics? value) {
     _$scrollPhysicsAtom.reportWrite(value, super.scrollPhysics, () {
       super.scrollPhysics = value;
+    });
+  }
+
+  late final _$incidentsAtom =
+      Atom(name: '_IncidentLogStore.incidents', context: context);
+
+  @override
+  List<Incident>? get incidents {
+    _$incidentsAtom.reportRead();
+    return super.incidents;
+  }
+
+  @override
+  set incidents(List<Incident>? value) {
+    _$incidentsAtom.reportWrite(value, super.incidents, () {
+      super.incidents = value;
+    });
+  }
+
+  late final _$scrollOffsetAtom =
+      Atom(name: '_IncidentLogStore.scrollOffset', context: context);
+
+  @override
+  double get scrollOffset {
+    _$scrollOffsetAtom.reportRead();
+    return super.scrollOffset;
+  }
+
+  @override
+  set scrollOffset(double value) {
+    _$scrollOffsetAtom.reportWrite(value, super.scrollOffset, () {
+      super.scrollOffset = value;
+    });
+  }
+
+  late final _$userAtom =
+      Atom(name: '_IncidentLogStore.user', context: context);
+
+  @override
+  User? get user {
+    _$userAtom.reportRead();
+    return super.user;
+  }
+
+  @override
+  set user(User? value) {
+    _$userAtom.reportWrite(value, super.user, () {
+      super.user = value;
     });
   }
 
@@ -88,11 +136,44 @@ mixin _$IncidentLogStore on _IncidentLogStore, Store {
   }
 
   @override
-  void setScrollPhysics(ScrollPhysics p) {
+  void setScrollPhysics(ScrollPhysics? p) {
     final _$actionInfo = _$_IncidentLogStoreActionController.startAction(
         name: '_IncidentLogStore.setScrollPhysics');
     try {
       return super.setScrollPhysics(p);
+    } finally {
+      _$_IncidentLogStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  dynamic setIncidents(List<Incident>? i) {
+    final _$actionInfo = _$_IncidentLogStoreActionController.startAction(
+        name: '_IncidentLogStore.setIncidents');
+    try {
+      return super.setIncidents(i);
+    } finally {
+      _$_IncidentLogStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void setScrollOffset(double o) {
+    final _$actionInfo = _$_IncidentLogStoreActionController.startAction(
+        name: '_IncidentLogStore.setScrollOffset');
+    try {
+      return super.setScrollOffset(o);
+    } finally {
+      _$_IncidentLogStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void setUser(User u) {
+    final _$actionInfo = _$_IncidentLogStoreActionController.startAction(
+        name: '_IncidentLogStore.setUser');
+    try {
+      return super.setUser(u);
     } finally {
       _$_IncidentLogStoreActionController.endAction(_$actionInfo);
     }
@@ -104,7 +185,10 @@ mixin _$IncidentLogStore on _IncidentLogStore, Store {
 controller: ${controller},
 offset: ${offset},
 scrollController: ${scrollController},
-scrollPhysics: ${scrollPhysics}
+scrollPhysics: ${scrollPhysics},
+incidents: ${incidents},
+scrollOffset: ${scrollOffset},
+user: ${user}
     ''';
   }
 }
