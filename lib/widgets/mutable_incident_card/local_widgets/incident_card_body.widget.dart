@@ -54,16 +54,19 @@ class _IncidentCardBodyState extends State<IncidentCardBody> {
                 ),
                 SizedBox(height: kIncidentBodyVerticalSpacing),
                 Row(
-                  children: [
-                    MutableEmergencyContactAvatar("Kelly Wakasa"),
-                    SizedBox(width: kEmergencyContactAvatarSpacing),
-                    MutableEmergencyContactAvatar("Filippo Fonseca"),
-                    SizedBox(width: kEmergencyContactAvatarSpacing),
-                    MutableEmergencyContactAvatar("Mark Music"),
-                    SizedBox(width: kEmergencyContactAvatarSpacing),
-                    MutableEmergencyContactAvatar("Ashley Alexander"),
-                    SizedBox(width: kEmergencyContactAvatarSpacing),
-                  ],
+                  children: List.generate(
+                    widget.incident.notifiedContacts.length,
+                    (i) => Padding(
+                      padding: EdgeInsets.only(
+                        right: i + 1 == widget.incident.notifiedContacts.length
+                            ? 0
+                            : kEmergencyContactAvatarSpacing,
+                      ),
+                      child: MutableEmergencyContactAvatar(
+                        widget.incident.notifiedContacts[i],
+                      ),
+                    ),
+                  ),
                 ),
               ],
             ),

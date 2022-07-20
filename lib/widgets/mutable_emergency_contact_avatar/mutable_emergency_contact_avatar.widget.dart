@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
+import 'package:safe/models/incident/notified_contacts.model.dart';
 import 'package:safe/utils/constants/constants.util.dart';
 import 'package:safe/widgets/mutable_text/mutable_text.widget.dart';
 
 class MutableEmergencyContactAvatar extends StatelessWidget {
-  final String name;
+  NotifiedContact contact;
 
-  MutableEmergencyContactAvatar(this.name);
+  MutableEmergencyContactAvatar(this.contact);
   @override
   Widget build(BuildContext context) {
     Core core = Provider.of<Core>(context, listen: false);
@@ -24,7 +25,7 @@ class MutableEmergencyContactAvatar extends StatelessWidget {
       ),
       child: Center(
         child: MutableText(
-          core.utils.name.genInitials(name),
+          core.utils.name.genInitials(contact.name),
           weight: TypeWeight.black,
           height: 1,
           size: 9,

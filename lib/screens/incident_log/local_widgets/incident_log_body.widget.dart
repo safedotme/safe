@@ -102,12 +102,14 @@ class _IncidentLogBodyState extends State<IncidentLogBody> {
               physics: core.state.incidentLog.scrollPhysics,
               padding: EdgeInsets.only(
                 top: genTopPadding(core.state.incidentLog.offset),
+                bottom: kBottomScreenMargin,
               ),
               child: Observer(
                 builder: (_) => SizedBox(
                   height: isEmpty
                       ? queryData.size.height -
-                          genTopPadding(core.state.incidentLog.offset)
+                          genTopPadding(core.state.incidentLog.offset) -
+                          kBottomScreenMargin
                       : null,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
