@@ -152,6 +152,11 @@ class LanguageUtil {
       "subheader": "All Incidents",
       "contacts_button": "Contacts",
       "settings_button": "Settings",
+      "empty": {
+        "header": "No Incidents",
+        "desc":
+            "There are no inicdents tied to this account. Tap on the Safe button to document one.",
+      }
     },
     "incident_card": {
       "secured": "Secured",

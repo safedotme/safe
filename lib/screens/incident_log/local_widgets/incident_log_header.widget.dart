@@ -35,11 +35,7 @@ class _IncidentLogHeaderState extends State<IncidentLogHeader> {
 
   String handleResponse(List<Incident>? incidents, String message) {
     if (incidents == null) {
-      return "";
-    }
-
-    if (incidents.isEmpty) {
-      return "";
+      return message.replaceAll("{count}", "0");
     }
 
     var base = message.replaceAll("{count}", incidents.length.toString());

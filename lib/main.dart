@@ -10,6 +10,7 @@ import 'package:safe/widgets/mutable_auth_wrapper/mutable_auth_wrapper.widget.da
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   // await dotenv.load(fileName: ".env");
+  Paint.enableDithering = true;
   await Firebase.initializeApp();
 
   runApp(Safe());

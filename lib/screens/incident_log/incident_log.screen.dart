@@ -7,6 +7,7 @@ import 'package:safe/screens/incident_log/local_widgets/incident_log_body.widget
 import 'package:safe/utils/constants/constants.util.dart';
 import 'package:safe/widgets/mutable_popup/local_widgets/mutable_popup_style.widget.dart';
 import 'package:safe/widgets/mutable_popup/mutable_popup.widget.dart';
+import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class IncidentLog extends StatefulWidget {
   @override
@@ -63,6 +64,7 @@ class _IncidentLogState extends State<IncidentLog> {
             topRight: Radius.circular(kIncidentLogBorderRadius),
           ),
           child: Container(
+            height: queryData.size.height,
             color: kColorMap[MutableColor.neutral10]!.withOpacity(
               core.state.incidentLog.offset,
             ),

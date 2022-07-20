@@ -1,23 +1,31 @@
 class NotifiedContact {
-  final String contactId;
+  final String id;
+  final String name;
+  final String phone;
   final String messageSent;
   final DateTime datetime;
 
   NotifiedContact({
-    required this.contactId,
+    required this.id,
+    required this.name,
+    required this.phone,
     required this.messageSent,
     required this.datetime,
   });
 
   factory NotifiedContact.fromJson(Map<String, dynamic> json) =>
       NotifiedContact(
-        contactId: json["contact_id"],
+        id: json["id"],
+        name: json["name"],
+        phone: json["phone"],
         messageSent: json["message_sent"],
         datetime: DateTime.parse(json["datetime"]),
       );
 
   Map<String, dynamic> toMap() => {
-        "contact_id": contactId,
+        "id": id,
+        "name": name,
+        "phone": phone,
         "message_sent": messageSent,
         "datetime": datetime.toIso8601String(),
       };

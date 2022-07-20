@@ -8,12 +8,14 @@ import 'package:safe/widgets/mutable_shimmer/mutable_shimmer.widget.dart';
 class MutableCachedImage extends StatefulWidget {
   final String url;
   final BoxFit fit;
+  final Color? shimmerColor;
   final bool isOval;
   final Color? backgroundColor;
 
   MutableCachedImage(
     this.url, {
     this.backgroundColor,
+    this.shimmerColor,
     this.isOval = false,
     this.fit = BoxFit.cover,
   });
@@ -38,15 +40,16 @@ class _MutableCachedImageState extends State<MutableCachedImage> {
   Widget build(BuildContext context) {
     return generateOval(
       CachedNetworkImage(
-        fadeInDuration: Duration(milliseconds: 300),
+        fadeInDuration: Duration(milliseconds: kCachedImageLoadDuration),
         fadeInCurve: Curves.easeInQuad,
-        fadeOutDuration: Duration(milliseconds: 300),
-        placeholderFadeInDuration: Duration(milliseconds: 300),
+        fadeOutDuration: Duration(milliseconds: kCachedImageLoadDuration),
+        placeholderFadeInDuration:
+            Duration(milliseconds: kCachedImageLoadDuration),
         fadeOutCurve: Curves.easeInQuad,
         imageUrl: widget.url,
         fit: widget.fit,
         placeholder: (_, s) => MutableShimmer(
-          animateToColor: kShimmerAnimationColor,
+          animateToColor: widget.shimmerColor ?? kShimmerAnimationColor,
           child: generateOval(
             Container(
               decoration: BoxDecoration(
