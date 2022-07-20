@@ -15,6 +15,7 @@ class IncidentLog extends StatefulWidget {
 class _IncidentLogState extends State<IncidentLog> {
   late Core core;
   late MediaQueryData queryData;
+  bool preventAnimationSpoofing = false;
 
   @override
   void initState() {
@@ -36,6 +37,29 @@ class _IncidentLogState extends State<IncidentLog> {
     });
   }
 
+  Future<void> resetController() async {
+    if (core.state.incidentLog.scrollController.offset == 0) {
+      return;
+    }
+
+    if (preventAnimationSpoofing) {
+      return;
+    }
+
+    preventAnimationSpoofing = true;
+
+    double offset = core.state.incidentLog.scrollController.offset;
+    await core.state.incidentLog.scrollController.animateTo(
+      0,
+      duration: Duration(
+        milliseconds: ((offset / 335) * kAnimateToPosDuration).toInt(),
+      ),
+      curve: Curves.decelerate,
+    );
+
+    preventAnimationSpoofing = false;
+  }
+
   @override
   Widget build(BuildContext context) {
     queryData = MediaQuery.of(context);
@@ -53,6 +77,19 @@ class _IncidentLogState extends State<IncidentLog> {
         // Updates offset through state
         onSlide: (offset) {
           core.state.incidentLog.setOffset(offset);
+          resetController();
+        },
+        onOpened: () {
+          core.state.incidentLog.setScrollPhysics(
+            AlwaysScrollableScrollPhysics(),
+          );
+          resetController();
+        },
+        onClosed: () {
+          core.state.incidentLog.setScrollPhysics(
+            NeverScrollableScrollPhysics(),
+          );
+          resetController();
         },
         minHeight: kIncidentLogMinPopupHeight,
         maxHeight: queryData.size.height,

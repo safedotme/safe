@@ -66,6 +66,7 @@ class _IncidentLogNavBarState extends State<IncidentLogNavBar> {
         kSideScreenMargin,
         0,
       ),
+      color: Colors.transparent,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -99,6 +100,7 @@ class _IncidentLogNavBarState extends State<IncidentLogNavBar> {
                   SizedBox(width: 15),
                   MutableNavSafeButton(
                     onTap: () {
+                      print(core.state.incidentLog.scrollController.offset);
                       print("activate safe");
                     },
                   ),
