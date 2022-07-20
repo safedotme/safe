@@ -5,7 +5,6 @@ import 'package:safe/models/incident/incident.model.dart';
 import 'package:safe/utils/constants/constants.util.dart';
 import 'package:safe/utils/icon/icon.util.dart';
 import 'package:safe/widgets/mutable_emergency_contact_avatar/mutable_emergency_contact_avatar.widget.dart';
-import 'package:safe/widgets/mutable_incident_card/local_widgets/incident_body_loader.widget.dart';
 import 'package:safe/widgets/mutable_pill/mutable_pill.widget.dart';
 import 'package:safe/widgets/mutable_text/mutable_text.widget.dart';
 
@@ -47,7 +46,9 @@ class _IncidentCardBodyState extends State<IncidentCardBody> {
                 ),
                 SizedBox(height: kIncidentBodyVerticalSpacing),
                 MutableText(
-                  widget.incident.location[0].address ?? "",
+                  widget.incident.location.isEmpty
+                      ? ""
+                      : (widget.incident.location[0].address ?? ""),
                   style: TypeStyle.body,
                   color: MutableColor.neutral2,
                 ),

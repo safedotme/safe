@@ -146,6 +146,9 @@ class LanguageUtil {
       "next_code": "Next code available in {time}s",
       "resend_code": "Tap to resend code",
     },
+    "home": {
+      "header": "Tap to Safe",
+    },
     "incident_log": {
       "header": "Incident Log",
       "counter": "{count} Incidents",

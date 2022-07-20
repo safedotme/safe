@@ -20,7 +20,7 @@ class IncidentLogBody extends StatefulWidget {
 
 class _IncidentLogBodyState extends State<IncidentLogBody> {
   late Core core;
-  bool isEmpty = true;
+  bool isEmpty = false;
   late MediaQueryData queryData;
 
   @override
@@ -69,14 +69,23 @@ class _IncidentLogBodyState extends State<IncidentLogBody> {
     }
 
     if (incidents.isEmpty) {
-      isEmpty = true;
+      WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+        setState(() {
+          isEmpty = true;
+        });
+      });
+
       return [EmptyIncidentLog()]; // Empty State
     }
 
     return List.generate(
-        incidents.length + (incidents.length - 1),
-        (i) =>
-            MutableIncidentCard(incidents[i]) // Add spacing between incidents,
+        incidents.length,
+        (i) => Padding(
+              padding: EdgeInsets.only(
+                bottom: i + 1 == incidents.length ? 0 : kIncidentLogCardSpacing,
+              ),
+              child: MutableIncidentCard(incidents[i]),
+            ) // Add spacing between incidents,
         );
   }
 

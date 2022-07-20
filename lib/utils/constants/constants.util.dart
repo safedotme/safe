@@ -283,7 +283,7 @@ const double kIncidentCardBodyPadding = 10;
 final Color kIncidentLoaderShimmerColor =
     kShimmerAnimationColor.withOpacity(0.05);
 const int kCachedImageLoadDuration = 300;
-
+const double kIncidentLogCardSpacing = 25;
 // EMERGENCY CONTACTS
 
 // -> AVATAR
