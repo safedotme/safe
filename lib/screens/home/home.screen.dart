@@ -1,8 +1,8 @@
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
 import 'package:safe/models/user/user.model.dart';
+import 'package:safe/screens/capture/capture.screen.dart';
 import 'package:safe/screens/incident_log/incident_log.screen.dart';
 import 'package:safe/utils/constants/constants.util.dart';
 import 'package:safe/widgets/mutable_safe_button/mutable_safe_button.widget.dart';
@@ -43,6 +43,9 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     Core core = Provider.of<Core>(context, listen: false);
     return MutableScaffold(
+      overlays: [
+        Capture(),
+      ],
       underlays: [
         Padding(
           padding: EdgeInsets.only(

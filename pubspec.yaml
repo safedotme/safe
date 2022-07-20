@@ -17,6 +17,7 @@ dependencies:
   provider: ^6.0.3
   uuid: ^3.0.6
   sliding_up_panel: ^2.0.0+1
+  animations: ^2.0.3
   url_launcher: ^6.1.4
   http: ^0.13.4
   phone_number: ^0.12.0+2
