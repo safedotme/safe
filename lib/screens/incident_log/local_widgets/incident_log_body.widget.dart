@@ -11,7 +11,6 @@ import 'package:safe/screens/incident_log/local_widgets/incident_nav_buttons.wid
 import 'package:safe/utils/constants/constants.util.dart';
 import 'package:safe/widgets/mutable_incident_card/local_widgets/incident_card_loader.widget.dart';
 import 'package:safe/widgets/mutable_incident_card/mutable_incident_card.widget.dart';
-import 'package:safe/widgets/mutable_text/mutable_text.widget.dart';
 
 class IncidentLogBody extends StatefulWidget {
   @override
@@ -20,7 +19,7 @@ class IncidentLogBody extends StatefulWidget {
 
 class _IncidentLogBodyState extends State<IncidentLogBody> {
   late Core core;
-  bool isEmpty = false;
+  bool isEmpty = true;
   late MediaQueryData queryData;
 
   @override
@@ -65,7 +64,13 @@ class _IncidentLogBodyState extends State<IncidentLogBody> {
 
   List<Widget> handleResponse(List<Incident>? incidents) {
     if (incidents == null) {
-      return [IncidentCardLoader()]; //loader
+      WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+        setState(() {
+          isEmpty = true;
+        });
+      });
+
+      return [IncidentCardLoader()];
     }
 
     if (incidents.isEmpty) {
@@ -77,6 +82,12 @@ class _IncidentLogBodyState extends State<IncidentLogBody> {
 
       return [EmptyIncidentLog()]; // Empty State
     }
+
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      setState(() {
+        isEmpty = false;
+      });
+    });
 
     return List.generate(
         incidents.length,
@@ -97,49 +108,51 @@ class _IncidentLogBodyState extends State<IncidentLogBody> {
         Positioned.fill(
           child: Padding(
             padding: EdgeInsets.symmetric(horizontal: kSideScreenMargin),
-            child: SingleChildScrollView(
-              controller: core.state.incidentLog.scrollController,
-              physics: core.state.incidentLog.scrollPhysics,
-              padding: EdgeInsets.only(
-                top: genTopPadding(core.state.incidentLog.offset),
-                bottom: kBottomScreenMargin,
-              ),
-              child: Observer(
-                builder: (_) => SizedBox(
-                  height: isEmpty
-                      ? queryData.size.height -
-                          genTopPadding(core.state.incidentLog.offset) -
-                          kBottomScreenMargin
-                      : null,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    mainAxisSize: MainAxisSize.max,
-                    children: [
-                      IncidentLogHeader(),
-                      SizedBox(
-                        height:
-                            20 * genNavBtnSpacer(core.state.incidentLog.offset),
-                      ),
-                      core.state.incidentLog.offset > kNavigationTabCutoff
-                          ? Opacity(
-                              opacity: genNavBtnOpacity(
-                                core.state.incidentLog.offset,
+            child: Observer(
+              builder: (_) => SingleChildScrollView(
+                controller: core.state.incidentLog.scrollController,
+                physics: core.state.incidentLog.scrollPhysics,
+                padding: EdgeInsets.only(
+                  top: genTopPadding(core.state.incidentLog.offset),
+                  bottom: kBottomScreenMargin,
+                ),
+                child: Observer(
+                  builder: (_) => SizedBox(
+                    height: isEmpty
+                        ? queryData.size.height -
+                            genTopPadding(core.state.incidentLog.offset) -
+                            kBottomScreenMargin
+                        : null,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        IncidentLogHeader(),
+                        SizedBox(
+                          height: 20 *
+                              genNavBtnSpacer(core.state.incidentLog.offset),
+                        ),
+                        core.state.incidentLog.offset > kNavigationTabCutoff
+                            ? Opacity(
+                                opacity: genNavBtnOpacity(
+                                  core.state.incidentLog.offset,
+                                ),
+                                child: NavigationButtons(),
+                              )
+                            : SizedBox(
+                                height: genNavBtnSize(
+                                  core.state.incidentLog.offset,
+                                ),
                               ),
-                              child: NavigationButtons(),
-                            )
-                          : SizedBox(
-                              height: genNavBtnSize(
-                                core.state.incidentLog.offset,
-                              ),
-                            ),
-                      SizedBox(
-                        height:
-                            35 * genNavBtnSpacer(core.state.incidentLog.offset),
-                      ),
-                      !isEmpty ? IncidentLogSubheader() : SizedBox(),
-                      SizedBox(height: 15),
-                      ...handleResponse(core.state.incidentLog.incidents)
-                    ],
+                        SizedBox(
+                          height: 35 *
+                              genNavBtnSpacer(core.state.incidentLog.offset),
+                        ),
+                        !isEmpty ? IncidentLogSubheader() : SizedBox(),
+                        SizedBox(height: 15),
+                        ...handleResponse(core.state.incidentLog.incidents),
+                      ],
+                    ),
                   ),
                 ),
               ),

@@ -271,7 +271,7 @@ const double kHomeHeaderToButtonMargin = 60;
 const double kIncidentLogBorderRadius = 12;
 const double kIncidentLogActiveTopPading = 44;
 const double kNavigationTabCutoff = 0.6;
-const ScrollPhysics kIncidentLogScrollPhysics = AlwaysScrollableScrollPhysics();
+const ScrollPhysics? kIncidentLogScrollPhysics = null;
 const double kIncidentLogNavButtonCutoff = 0.7;
 
 // INCIDENT CARD

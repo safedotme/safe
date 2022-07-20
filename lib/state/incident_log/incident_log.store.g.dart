@@ -61,13 +61,13 @@ mixin _$IncidentLogStore on _IncidentLogStore, Store {
       Atom(name: '_IncidentLogStore.scrollPhysics', context: context);
 
   @override
-  ScrollPhysics get scrollPhysics {
+  ScrollPhysics? get scrollPhysics {
     _$scrollPhysicsAtom.reportRead();
     return super.scrollPhysics;
   }
 
   @override
-  set scrollPhysics(ScrollPhysics value) {
+  set scrollPhysics(ScrollPhysics? value) {
     _$scrollPhysicsAtom.reportWrite(value, super.scrollPhysics, () {
       super.scrollPhysics = value;
     });
@@ -105,6 +105,22 @@ mixin _$IncidentLogStore on _IncidentLogStore, Store {
     });
   }
 
+  late final _$userAtom =
+      Atom(name: '_IncidentLogStore.user', context: context);
+
+  @override
+  User? get user {
+    _$userAtom.reportRead();
+    return super.user;
+  }
+
+  @override
+  set user(User? value) {
+    _$userAtom.reportWrite(value, super.user, () {
+      super.user = value;
+    });
+  }
+
   late final _$_IncidentLogStoreActionController =
       ActionController(name: '_IncidentLogStore', context: context);
 
@@ -120,7 +136,7 @@ mixin _$IncidentLogStore on _IncidentLogStore, Store {
   }
 
   @override
-  void setScrollPhysics(ScrollPhysics p) {
+  void setScrollPhysics(ScrollPhysics? p) {
     final _$actionInfo = _$_IncidentLogStoreActionController.startAction(
         name: '_IncidentLogStore.setScrollPhysics');
     try {
@@ -153,6 +169,17 @@ mixin _$IncidentLogStore on _IncidentLogStore, Store {
   }
 
   @override
+  void setUser(User u) {
+    final _$actionInfo = _$_IncidentLogStoreActionController.startAction(
+        name: '_IncidentLogStore.setUser');
+    try {
+      return super.setUser(u);
+    } finally {
+      _$_IncidentLogStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 controller: ${controller},
@@ -160,7 +187,8 @@ offset: ${offset},
 scrollController: ${scrollController},
 scrollPhysics: ${scrollPhysics},
 incidents: ${incidents},
-scrollOffset: ${scrollOffset}
+scrollOffset: ${scrollOffset},
+user: ${user}
     ''';
   }
 }

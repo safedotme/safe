@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
+import 'package:safe/models/user/user.model.dart';
 import 'package:safe/utils/constants/constants.util.dart';
 import 'package:safe/utils/icon/icon.util.dart';
 import 'package:safe/widgets/mutable_avatar/mutable_avatar.widget.dart';
@@ -62,7 +63,7 @@ class _IncidentLogNavBarState extends State<IncidentLogNavBar> {
   double genHandleBarOpacity(double state) {
     double percentage = core.utils.animation.percentBetweenPoints(
       lowerBound: 65,
-      upperBound: 190,
+      upperBound: 160,
       state: state,
     );
 
@@ -165,11 +166,13 @@ class _IncidentLogNavBarState extends State<IncidentLogNavBar> {
                             ),
                           ),
                           Spacer(),
-                          MutableAvatar(
-                            name: "Mark Music",
-                            onTap: () {
-                              print("edit profile");
-                            },
+                          Observer(
+                            builder: (_) => MutableAvatar(
+                              core.state.incidentLog.user,
+                              onTap: () {
+                                print("Open profile");
+                              },
+                            ),
                           ),
                           SizedBox(width: 15),
                           MutableNavSafeButton(

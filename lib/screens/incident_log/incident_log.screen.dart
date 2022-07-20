@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
@@ -103,6 +104,7 @@ class _IncidentLogState extends State<IncidentLog> {
         },
         minHeight: kIncidentLogMinPopupHeight,
         maxHeight: queryData.size.height,
+
         body: ClipRRect(
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(kIncidentLogBorderRadius),

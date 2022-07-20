@@ -14,6 +14,12 @@ class UserServer {
         );
   }
 
+  Future<User?> readFromIdOnce({required String id}) async {
+    var map = await _db.collection(path).doc(id).get();
+
+    return map.exists ? User.fromJson(map.data()!) : null;
+  }
+
   // -> UPSERT
   Future<void> upsert(User user) {
     var options = SetOptions(merge: true);

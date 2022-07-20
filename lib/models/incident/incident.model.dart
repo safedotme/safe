@@ -1,6 +1,4 @@
 // ignore_for_file: no_leading_underscores_for_local_identifiers
-
-import 'package:safe/models/device_info.model.dart';
 import 'package:safe/models/incident/battery.model.dart';
 import 'package:safe/models/incident/emergency_services.model.dart';
 import 'package:safe/models/incident/location.model.dart';
@@ -20,7 +18,6 @@ class Incident {
   final List<Battery> battery;
   final List<Shard> shards;
   final List<EmergencyServices>? emergencyServices;
-  final DeviceInfo deviceInfo;
 
   Incident({
     required this.id,
@@ -32,7 +29,6 @@ class Incident {
     required this.notifiedContacts,
     required this.battery,
     required this.shards,
-    required this.deviceInfo,
     required this.thumbnail,
     this.emergencyServices,
   });
@@ -56,7 +52,6 @@ class Incident {
       battery: _battery.map((e) => Battery.fromJson(e)).toList(),
       thumbnail: json["thumbnail"],
       shards: _shards.map((e) => Shard.fromJson(e)).toList(),
-      deviceInfo: DeviceInfo.fromJson(json["device_info"]),
     );
   }
 
@@ -71,6 +66,5 @@ class Incident {
         "battery": battery.map((e) => e.toMap()).toList(),
         "thumbnail": thumbnail,
         "shards": shards.map((e) => e.toMap()).toList(),
-        "device_info": deviceInfo.toMap(),
       };
 }

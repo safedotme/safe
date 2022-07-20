@@ -6,7 +6,7 @@ import 'package:safe/utils/constants/constants.util.dart';
 import 'package:safe/widgets/mutable_text/mutable_text.widget.dart';
 
 class MutableEmergencyContactAvatar extends StatelessWidget {
-  NotifiedContact contact;
+  final NotifiedContact contact;
 
   MutableEmergencyContactAvatar(this.contact);
   @override
