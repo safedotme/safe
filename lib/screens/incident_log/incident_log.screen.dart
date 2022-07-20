@@ -23,6 +23,7 @@ class _IncidentLogState extends State<IncidentLog> {
 
     core = Provider.of<Core>(context, listen: false);
     subscribe();
+    listenScrollController();
   }
 
   void subscribe() {
@@ -37,6 +38,18 @@ class _IncidentLogState extends State<IncidentLog> {
     });
   }
 
+  void listenScrollController() {
+    core.state.incidentLog.scrollController.addListener(() {
+      if (!core.state.incidentLog.scrollController.hasClients) {
+        return;
+      }
+
+      core.state.incidentLog.setScrollOffset(
+        core.state.incidentLog.scrollController.offset,
+      );
+    });
+  }
+
   Future<void> resetController() async {
     if (core.state.incidentLog.scrollController.offset == 0) {
       return;
@@ -48,11 +61,10 @@ class _IncidentLogState extends State<IncidentLog> {
 
     preventAnimationSpoofing = true;
 
-    double offset = core.state.incidentLog.scrollController.offset;
     await core.state.incidentLog.scrollController.animateTo(
       0,
       duration: Duration(
-        milliseconds: ((offset / 335) * kAnimateToPosDuration).toInt(),
+        milliseconds: 200,
       ),
       curve: Curves.decelerate,
     );
@@ -80,9 +92,7 @@ class _IncidentLogState extends State<IncidentLog> {
           resetController();
         },
         onOpened: () {
-          core.state.incidentLog.setScrollPhysics(
-            AlwaysScrollableScrollPhysics(),
-          );
+          core.state.incidentLog.setScrollPhysics(kIncidentLogScrollPhysics);
           resetController();
         },
         onClosed: () {

@@ -89,6 +89,22 @@ mixin _$IncidentLogStore on _IncidentLogStore, Store {
     });
   }
 
+  late final _$scrollOffsetAtom =
+      Atom(name: '_IncidentLogStore.scrollOffset', context: context);
+
+  @override
+  double get scrollOffset {
+    _$scrollOffsetAtom.reportRead();
+    return super.scrollOffset;
+  }
+
+  @override
+  set scrollOffset(double value) {
+    _$scrollOffsetAtom.reportWrite(value, super.scrollOffset, () {
+      super.scrollOffset = value;
+    });
+  }
+
   late final _$_IncidentLogStoreActionController =
       ActionController(name: '_IncidentLogStore', context: context);
 
@@ -126,13 +142,25 @@ mixin _$IncidentLogStore on _IncidentLogStore, Store {
   }
 
   @override
+  void setScrollOffset(double o) {
+    final _$actionInfo = _$_IncidentLogStoreActionController.startAction(
+        name: '_IncidentLogStore.setScrollOffset');
+    try {
+      return super.setScrollOffset(o);
+    } finally {
+      _$_IncidentLogStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 controller: ${controller},
 offset: ${offset},
 scrollController: ${scrollController},
 scrollPhysics: ${scrollPhysics},
-incidents: ${incidents}
+incidents: ${incidents},
+scrollOffset: ${scrollOffset}
     ''';
   }
 }

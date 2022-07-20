@@ -20,26 +20,29 @@ class _NavigationButtonsState extends State<NavigationButtons> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        IncidentNavigationButton(
-          text: core.utils.language
-                  .langMap[core.state.preferences.language]!["incident_log"]
-              ["contacts_button"],
-          onTap: () {
-            print("open contacts popup");
-          },
-        ),
-        SizedBox(height: 10),
-        IncidentNavigationButton(
-          text: core.utils.language
-                  .langMap[core.state.preferences.language]!["incident_log"]
-              ["settings_button"],
-          onTap: () {
-            print("navigate to settings");
-          },
-        ),
-      ],
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 1),
+      child: Column(
+        children: [
+          IncidentNavigationButton(
+            text: core.utils.language
+                    .langMap[core.state.preferences.language]!["incident_log"]
+                ["contacts_button"],
+            onTap: () {
+              print("open contacts popup");
+            },
+          ),
+          SizedBox(height: 10),
+          IncidentNavigationButton(
+            text: core.utils.language
+                    .langMap[core.state.preferences.language]!["incident_log"]
+                ["settings_button"],
+            onTap: () {
+              print("navigate to settings");
+            },
+          ),
+        ],
+      ),
     );
   }
 }

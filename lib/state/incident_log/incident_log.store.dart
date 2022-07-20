@@ -31,4 +31,10 @@ abstract class _IncidentLogStore with Store {
 
   @action
   setIncidents(List<Incident>? i) => incidents = i;
+
+  @observable
+  double scrollOffset = 0;
+
+  @action
+  void setScrollOffset(double o) => scrollOffset = o;
 }

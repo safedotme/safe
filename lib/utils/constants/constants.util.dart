@@ -271,7 +271,8 @@ const double kHomeHeaderToButtonMargin = 60;
 const double kIncidentLogBorderRadius = 12;
 const double kIncidentLogActiveTopPading = 44;
 const double kNavigationTabCutoff = 0.6;
-const int kAnimateToPosDuration = 200;
+const ScrollPhysics kIncidentLogScrollPhysics = AlwaysScrollableScrollPhysics();
+const double kIncidentLogNavButtonCutoff = 0.7;
 
 // INCIDENT CARD
 const MutableColor kIncidentCardBgColor = MutableColor.neutral9;
