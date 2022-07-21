@@ -293,4 +293,7 @@ const double kEmergencyContactAvatarSize = 24;
 const double kEmergencyContactAvatarSpacing = 3;
 
 // TRANSITIONS
-const double kScreenTransitionBound = 200;
+const double kScreenTransitionBounds = 400;
+// const Duration kScreenTransitionOnDragEndDuration = Duration(milliseconds: 150);
+const Duration kScreenTransitionDuration = Duration(milliseconds: 200);
+const Curve kTransitionCurve = Curves.decelerate;

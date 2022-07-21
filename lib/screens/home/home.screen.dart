@@ -64,7 +64,9 @@ class _HomeScreenState extends State<HomeScreen> {
           padding: EdgeInsets.only(bottom: kIncidentLogMinPopupHeight - 40),
           child: Center(
             child: MutableSafeButton(
-              onTap: () {},
+              onTap: () {
+                core.state.capture.controller.open();
+              },
             ),
           ),
         ),
