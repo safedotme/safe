@@ -266,7 +266,7 @@ const Duration kSafeButtonPulsateDuration = Duration(milliseconds: 1300);
 const double kSafeButtonPuslateScale = 1.05;
 
 // -> LAYOUT
-const double kIncidentLogMinPopupHeight = 138;
+const double kIncidentLogMinPopupHeight = 0.18;
 const double kHomeHeaderToButtonMargin = 60;
 const double kMainPopupBorderRadius = 12;
 const double kIncidentLogActiveTopPading = 44;

@@ -18,6 +18,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   late Core core;
+  late MediaQueryData queryData;
 
   @override
   void initState() {
@@ -41,6 +42,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    queryData = MediaQuery.of(context);
     Core core = Provider.of<Core>(context, listen: false);
     return MutableScaffold(
       overlays: [
@@ -49,7 +51,8 @@ class _HomeScreenState extends State<HomeScreen> {
       underlays: [
         Padding(
           padding: EdgeInsets.only(
-              bottom: (kIncidentLogMinPopupHeight + kSafeButtonSize) +
+              bottom: ((queryData.size.height * kIncidentLogMinPopupHeight) +
+                      kSafeButtonSize) +
                   (kHomeHeaderToButtonMargin * 2) -
                   40),
           child: Center(
@@ -61,7 +64,9 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ),
         Padding(
-          padding: EdgeInsets.only(bottom: kIncidentLogMinPopupHeight - 40),
+          padding: EdgeInsets.only(
+              bottom:
+                  (queryData.size.height * kIncidentLogMinPopupHeight) - 40),
           child: Center(
             child: MutableSafeButton(
               onTap: () {

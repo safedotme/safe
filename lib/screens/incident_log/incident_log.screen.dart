@@ -102,7 +102,7 @@ class _IncidentLogState extends State<IncidentLog> {
           );
           resetController();
         },
-        minHeight: kIncidentLogMinPopupHeight,
+        minHeight: queryData.size.height * kIncidentLogMinPopupHeight,
         maxHeight: queryData.size.height,
 
         body: ClipRRect(
