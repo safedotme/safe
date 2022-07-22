@@ -64,7 +64,7 @@ class _IncidentCardImageState extends State<IncidentCardImage>
               widget.incident.thumbnail,
               backgroundColor: kColorMap[kIncidentCardLoaderColor]!,
               fit: BoxFit.cover,
-              shimmerColor: kIncidentLoaderShimmerColor,
+              shimmerColor: kBoxLoaderShimmerColor,
             ),
           ),
 

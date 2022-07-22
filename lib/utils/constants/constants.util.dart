@@ -282,8 +282,6 @@ const MutableColor kIncidentCardLoaderColor = MutableColor.neutral8;
 const MutableColor kIncidentCardBorderColor = MutableColor.neutral7;
 const double kIncidentCardImageHeight = 165;
 const double kIncidentCardBodyPadding = 10;
-final Color kIncidentLoaderShimmerColor =
-    kShimmerAnimationColor.withOpacity(0.05);
 const int kCachedImageLoadDuration = 300;
 const double kIncidentLogCardSpacing = 25;
 // EMERGENCY CONTACTS
@@ -301,3 +299,6 @@ const Curve kTransitionCurve = Curves.decelerate;
 const Color kCaptureTextShimmerDarkColor = Color(0xff3D3B3D);
 const Color kCaptureTextShimmerLightColor = Color(0xffBFBFBF);
 const double kCaptureControlBorderRadius = 8;
+
+// SHIMMER
+final Color kBoxLoaderShimmerColor = kShimmerAnimationColor.withOpacity(0.05);
