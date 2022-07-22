@@ -6,7 +6,7 @@ class MutableCaptureControlBox extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: kCaptureControlBoxHeight,
-      color: Colors.red,
+      color: kColorMap[MutableColor.neutral9],
     );
   }
 }

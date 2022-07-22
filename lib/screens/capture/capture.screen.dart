@@ -24,7 +24,6 @@ class _CaptureState extends State<Capture> {
   @override
   Widget build(BuildContext context) {
     return MutableScreenTransition(
-      isOpen: true,
       controller: core.state.capture.controller,
       body: Container(
         color: kColorMap[MutableColor.neutral10],
@@ -35,6 +34,7 @@ class _CaptureState extends State<Capture> {
               child: Center(
                 child: MutableText(
                   "Hide controls with your hand",
+                  align: TextAlign.center,
                   style: TypeStyle.h3,
                   weight: TypeWeight.heavy,
                 ),

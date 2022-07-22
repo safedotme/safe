@@ -8,11 +8,13 @@ class MutableScreenTransition extends StatefulWidget {
   final ScreenTransitionController? controller;
   final bool isOpen;
   final Color? backgroundColor;
+  final bool isDismissable;
   final double minSizePercentage;
 
   MutableScreenTransition({
     required this.body,
     this.backgroundColor,
+    this.isDismissable = true,
     this.minSizePercentage = 0.8,
     this.isOpen = false,
     this.controller,
@@ -322,14 +324,26 @@ class _MutableScreenTransitionState extends State<MutableScreenTransition>
             top: genTopPos(state) - kBorderWidth,
             child: GestureDetector(
               onVerticalDragUpdate: (dragUpdate) {
+                if (!widget.isDismissable) {
+                  return;
+                }
+
                 updateState(dragUpdate.globalPosition.dy);
               },
               onVerticalDragStart: (dragStart) {
+                if (!widget.isDismissable) {
+                  return;
+                }
+
                 isDragging = true;
                 isGestured = true;
                 forward = false;
               },
               onVerticalDragEnd: (dragEnd) {
+                if (!widget.isDismissable) {
+                  return;
+                }
+
                 endDragAnimation();
               },
               child: Transform.scale(
