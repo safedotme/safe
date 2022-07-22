@@ -5,6 +5,10 @@ import 'package:safe/utils/constants/constants.util.dart';
 import 'package:safe/widgets/mutable_text/mutable_text.widget.dart';
 
 class CaptureTextShimmer extends StatefulWidget {
+  final CaptureTextShimmerController? controller;
+
+  CaptureTextShimmer({this.controller});
+
   @override
   State<CaptureTextShimmer> createState() => _CaptureTextShimmerState();
 }
@@ -24,7 +28,10 @@ class _CaptureTextShimmerState extends State<CaptureTextShimmer>
     // Initialize controllers
     core = Provider.of<Core>(context, listen: false);
     init();
-    animate();
+
+    if (widget.controller != null) {
+      widget.controller!.setState(this);
+    }
   }
 
   void init() {
@@ -58,7 +65,7 @@ class _CaptureTextShimmerState extends State<CaptureTextShimmer>
     });
   }
 
-  void animate() async {
+  Future<void> animate() async {
     int rounds = 5;
     opacityController.forward();
     for (int i = 0; i < rounds; i++) {
@@ -110,5 +117,19 @@ class _CaptureTextShimmerState extends State<CaptureTextShimmer>
         ),
       ),
     );
+  }
+}
+
+class CaptureTextShimmerController {
+  _CaptureTextShimmerState? _state;
+
+  // ignore: library_private_types_in_public_api
+  void setState(_CaptureTextShimmerState s) => _state = s;
+
+  bool get isAttached => _state != null;
+
+  Future<void> animate() async {
+    assert(_state != null, "Controller has not been attached");
+    return _state!.animate();
   }
 }
