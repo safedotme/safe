@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
+import 'package:safe/screens/capture/local_widgets/capture_control_box.widget.dart';
 import 'package:safe/screens/capture/local_widgets/capture_text_shimmer.widget.dart';
 import 'package:safe/utils/constants/constants.util.dart';
-import 'package:safe/widgets/mutable_capture_control_box/mutable_capture_control_box.widget.dart';
 import 'package:safe/widgets/mutable_screen_transition/mutable_screen_tranistion.widget.dart';
 
 class Capture extends StatefulWidget {
@@ -48,7 +48,7 @@ class _CaptureState extends State<Capture> {
                 ),
               ),
             ),
-            MutableCaptureControlBox(),
+            CaptureControlBox(),
           ],
         ),
       ),

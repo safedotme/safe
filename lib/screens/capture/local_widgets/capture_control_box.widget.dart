@@ -1,18 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
+import 'package:safe/screens/capture/local_widgets/control_button.widget.dart';
 import 'package:safe/utils/constants/constants.util.dart';
 import 'package:safe/utils/icon/icon.util.dart';
-import 'package:safe/widgets/mutable_capture_control_box/local_widgets/control_button.widget.dart';
 import 'package:safe/widgets/mutable_handle/mutable_handle.dart';
 
-class MutableCaptureControlBox extends StatefulWidget {
+class CaptureControlBox extends StatefulWidget {
   @override
-  State<MutableCaptureControlBox> createState() =>
-      _MutableCaptureControlBoxState();
+  State<CaptureControlBox> createState() => _CaptureControlBoxState();
 }
 
-class _MutableCaptureControlBoxState extends State<MutableCaptureControlBox> {
+class _CaptureControlBoxState extends State<CaptureControlBox> {
   late MediaQueryData queryData;
   late Core core;
 
