@@ -7,10 +7,12 @@ class MutableScreenTransition extends StatefulWidget {
   final Widget body;
   final ScreenTransitionController? controller;
   final bool isOpen;
+  final Color? backgroundColor;
   final double minSizePercentage;
 
   MutableScreenTransition({
     required this.body,
+    this.backgroundColor,
     this.minSizePercentage = 0.8,
     this.isOpen = false,
     this.controller,
@@ -264,7 +266,7 @@ class _MutableScreenTransitionState extends State<MutableScreenTransition>
   }
 
   // -> Generates a value between 5 and 15
-  double genRad(double s) => 5 + (10 * difference(s));
+  double genRad(double s) => 5 + (20 * difference(s));
 
   // ⬇️ HELPER FUNCTIONS
   double difference(double d) => (d - 1).abs();
@@ -308,35 +310,53 @@ class _MutableScreenTransitionState extends State<MutableScreenTransition>
     queryData = MediaQuery.of(context);
     return Visibility(
       visible: state != 0,
-      child: Positioned(
-        top: genTopPos(state),
-        child: GestureDetector(
-          onVerticalDragUpdate: (dragUpdate) {
-            updateState(dragUpdate.globalPosition.dy);
-          },
-          onVerticalDragStart: (dragStart) {
-            isDragging = true;
-            isGestured = true;
-            forward = false;
-          },
-          onVerticalDragEnd: (dragEnd) {
-            endDragAnimation();
-          },
-          child: Transform.scale(
-            scale: genScale(state),
-            child: Opacity(
-              opacity: genOpacity(state),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(genRad(state)),
-                child: SizedBox(
-                  height: queryData.size.height,
-                  width: queryData.size.width,
-                  child: widget.body,
+      child: Stack(
+        children: [
+          Container(
+            color: widget.backgroundColor != null
+                ? widget.backgroundColor!.withOpacity(state)
+                : kColorMap[MutableColor.neutral9]!.withOpacity(state * 0.5),
+          ),
+          Positioned(
+            left: -kBorderWidth,
+            top: genTopPos(state) - kBorderWidth,
+            child: GestureDetector(
+              onVerticalDragUpdate: (dragUpdate) {
+                updateState(dragUpdate.globalPosition.dy);
+              },
+              onVerticalDragStart: (dragStart) {
+                isDragging = true;
+                isGestured = true;
+                forward = false;
+              },
+              onVerticalDragEnd: (dragEnd) {
+                endDragAnimation();
+              },
+              child: Transform.scale(
+                scale: genScale(state),
+                child: Opacity(
+                  opacity: genOpacity(state),
+                  child: Container(
+                    height: queryData.size.height + (kBorderWidth * 2),
+                    width: queryData.size.width + (kBorderWidth * 2),
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        width: kBorderWidth,
+                        color: kColorMap[MutableColor.neutral8]!,
+                      ),
+                      borderRadius: BorderRadius.circular(genRad(state)),
+                    ),
+                    child: ClipRRect(
+                      borderRadius:
+                          BorderRadius.circular(genRad(state) - kBorderWidth),
+                      child: widget.body,
+                    ),
+                  ),
                 ),
               ),
             ),
           ),
-        ),
+        ],
       ),
     );
   }

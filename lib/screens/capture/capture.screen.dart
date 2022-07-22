@@ -25,7 +25,7 @@ class _CaptureState extends State<Capture> {
     return MutableScreenTransition(
       controller: core.state.capture.controller,
       body: Container(
-        color: Colors.blue[900],
+        color: kColorMap[MutableColor.neutral10],
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
