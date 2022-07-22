@@ -298,6 +298,5 @@ const Duration kScreenTransitionDuration = Duration(milliseconds: 200);
 const Curve kTransitionCurve = Curves.decelerate;
 
 // CAPTURE
-const double kCaptureControlBoxHeight = 210;
 const Color kCaptureTextShimmerDarkColor = Color(0xff3D3B3D);
 const Color kCaptureTextShimmerLightColor = Color(0xffBFBFBF);
