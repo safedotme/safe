@@ -1,6 +1,6 @@
 import 'package:camera/camera.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
 import 'package:safe/utils/constants/constants.util.dart';
@@ -11,8 +11,14 @@ class CameraPreviewControl extends StatefulWidget {
   State<CameraPreviewControl> createState() => _CameraPreviewControlState();
 }
 
-class _CameraPreviewControlState extends State<CameraPreviewControl> {
+class _CameraPreviewControlState extends State<CameraPreviewControl>
+    with TickerProviderStateMixin {
   late Core core;
+  late AnimationController controller;
+  GlobalKey key = GlobalKey();
+
+  // STATE
+  double opacity = 1;
 
   @override
   void initState() {
@@ -21,7 +27,36 @@ class _CameraPreviewControlState extends State<CameraPreviewControl> {
     core = Provider.of<Core>(context, listen: false);
 
     // Initializes camera controller
-    initCamera();
+    initAnimation();
+    sync();
+  }
+
+  void sync() async {
+    await initCamera();
+    await Future.delayed(
+      Duration(milliseconds: 2000),
+    );
+    controller.forward();
+  }
+
+  void initAnimation() {
+    controller = AnimationController(
+      vsync: this,
+      duration: Duration(milliseconds: 500),
+    );
+
+    var animation = Tween<double>(begin: 1, end: 0).animate(
+      CurvedAnimation(
+        parent: controller,
+        curve: Curves.easeIn,
+      ),
+    );
+
+    controller.addListener(() {
+      setState(() {
+        opacity = animation.value;
+      });
+    });
   }
 
   Future<void> initCamera() async {
@@ -33,26 +68,59 @@ class _CameraPreviewControlState extends State<CameraPreviewControl> {
       cameras: cameras,
     );
 
+    camera ??= core.services.cam.getCamera(
+      direction: CameraLensDirection.front,
+      cameras: cameras,
+    );
+
     if (camera == null) {
-      // ADD ERROR HANDLING
+      // ADD ERROR HANDLING FOR WHEN FRONT AND BACK CAMERAS ARE NOT FOUND
       return;
     }
 
-    var controller = CameraController(
+    var camController = CameraController(
       camera,
       ResolutionPreset.high, // Check if user has custom settings
       enableAudio: true,
     );
 
-    core.state.capture.setCamera(controller);
+    core.state.capture.setCamera(camController);
+
+    await core.state.capture.camera!.initialize();
+    core.state.capture.setIsCameraInitialized(true);
+  }
+
+  double genScale() {
+    if (key.currentContext == null) {
+      return 1;
+    }
+
+    if (core.state.capture.camera == null) {
+      return 1;
+    }
+
+    var box = key.currentContext!.findRenderObject() as RenderBox;
+
+    double parentRatio = box.size.width / box.size.height;
+
+    return core.state.capture.camera!.value.aspectRatio / parentRatio;
+  }
+
+  @override
+  void dispose() {
+    if (core.state.capture.camera != null) {
+      core.state.capture.setIsCameraInitialized(false);
+      core.state.capture.camera!.dispose();
+    }
+    controller.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return MutableShimmer(
-      animateToColor: kBoxLoaderShimmerColor,
-      active: true,
-      child: Container(
+    return Observer(
+      builder: (_) => Container(
+        key: key,
         height: double.infinity,
         width: double.infinity,
         decoration: BoxDecoration(
@@ -60,12 +128,32 @@ class _CameraPreviewControlState extends State<CameraPreviewControl> {
             width: kBorderWidth,
             color: kColorMap[MutableColor.neutral7]!,
           ),
-          color: kColorMap[MutableColor.neutral8],
           borderRadius: BorderRadius.circular(kCaptureControlBorderRadius),
         ),
-        child: core.state.capture.camera != null
-            ? CameraPreview(core.state.capture.camera!)
-            : SizedBox(),
+        child: ClipRRect(
+          borderRadius:
+              BorderRadius.circular(kCaptureControlBorderRadius - kBorderWidth),
+          child: core.state.capture.isCameraInitialized
+              ? Transform.scale(
+                  scale: genScale(),
+                  child: Center(
+                    child: CameraPreview(
+                      core.state.capture.camera!,
+                      child: MutableShimmer(
+                        active: opacity > 0.05,
+                        animateToColor: kBoxLoaderShimmerColor,
+                        child: Opacity(
+                          opacity: opacity,
+                          child: Container(
+                            color: kColorMap[MutableColor.neutral8],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                )
+              : SizedBox(),
+        ),
       ),
     );
   }

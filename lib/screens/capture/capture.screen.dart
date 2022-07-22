@@ -25,7 +25,6 @@ class _CaptureState extends State<Capture> {
   @override
   Widget build(BuildContext context) {
     return MutableScreenTransition(
-      isOpen: true,
       onOpen: () {
         if (canRepaint) {
           core.state.capture.hintTextController.animate();

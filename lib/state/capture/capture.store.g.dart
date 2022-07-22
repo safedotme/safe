@@ -73,6 +73,22 @@ mixin _$CaptureStore on _CaptureStore, Store {
     });
   }
 
+  late final _$isCameraInitializedAtom =
+      Atom(name: '_CaptureStore.isCameraInitialized', context: context);
+
+  @override
+  bool get isCameraInitialized {
+    _$isCameraInitializedAtom.reportRead();
+    return super.isCameraInitialized;
+  }
+
+  @override
+  set isCameraInitialized(bool value) {
+    _$isCameraInitializedAtom.reportWrite(value, super.isCameraInitialized, () {
+      super.isCameraInitialized = value;
+    });
+  }
+
   late final _$_CaptureStoreActionController =
       ActionController(name: '_CaptureStore', context: context);
 
@@ -99,12 +115,24 @@ mixin _$CaptureStore on _CaptureStore, Store {
   }
 
   @override
+  void setIsCameraInitialized(bool v) {
+    final _$actionInfo = _$_CaptureStoreActionController.startAction(
+        name: '_CaptureStore.setIsCameraInitialized');
+    try {
+      return super.setIsCameraInitialized(v);
+    } finally {
+      _$_CaptureStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 controller: ${controller},
 hintTextController: ${hintTextController},
 camera: ${camera},
-cameras: ${cameras}
+cameras: ${cameras},
+isCameraInitialized: ${isCameraInitialized}
     ''';
   }
 }

@@ -27,4 +27,10 @@ abstract class _CaptureStore with Store {
 
   @action
   void setCameras(List<CameraDescription> c) => cameras = c;
+
+  @observable
+  bool isCameraInitialized = false;
+
+  @action
+  void setIsCameraInitialized(bool v) => isCameraInitialized = v;
 }
