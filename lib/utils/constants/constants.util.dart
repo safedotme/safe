@@ -300,3 +300,4 @@ const Curve kTransitionCurve = Curves.decelerate;
 // CAPTURE
 const Color kCaptureTextShimmerDarkColor = Color(0xff3D3B3D);
 const Color kCaptureTextShimmerLightColor = Color(0xffBFBFBF);
+const double kCaptureControlBorderRadius = 8;
