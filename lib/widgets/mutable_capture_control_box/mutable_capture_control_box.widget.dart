@@ -48,7 +48,7 @@ class _MutableCaptureControlBoxState extends State<MutableCaptureControlBox> {
                     children: [
                       ControlButton(
                         text: "Flip Camera",
-                        icon: MutableIcons.key,
+                        icon: MutableIcons.camera,
                         iconSize: Size(20, 16),
                         onTap: () {
                           print("flip camera");
@@ -57,8 +57,8 @@ class _MutableCaptureControlBoxState extends State<MutableCaptureControlBox> {
                       SizedBox(height: 10),
                       ControlButton(
                         text: "Notify 911",
-                        icon: MutableIcons.key,
-                        iconSize: Size(14, 17),
+                        icon: MutableIcons.shield,
+                        iconSize: Size(15, 17),
                         onTap: () {
                           print("navigate to 911 popup");
                         },
@@ -66,7 +66,7 @@ class _MutableCaptureControlBoxState extends State<MutableCaptureControlBox> {
                       SizedBox(height: 10),
                       ControlButton(
                         text: "Stop Recording",
-                        icon: MutableIcons.key,
+                        icon: MutableIcons.stopRecording,
                         iconSize: Size(17, 17),
                         onTap: () {
                           print("stop incident");
