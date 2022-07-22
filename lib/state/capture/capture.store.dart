@@ -1,3 +1,4 @@
+import 'package:camera/camera.dart';
 import 'package:mobx/mobx.dart';
 import 'package:safe/screens/capture/local_widgets/capture_text_shimmer.widget.dart';
 import 'package:safe/widgets/mutable_screen_transition/mutable_screen_tranistion.widget.dart';
@@ -14,4 +15,16 @@ abstract class _CaptureStore with Store {
   @observable
   CaptureTextShimmerController hintTextController =
       CaptureTextShimmerController();
+
+  @observable
+  CameraController? camera;
+
+  @action
+  void setCamera(CameraController c) => camera = c;
+
+  @observable
+  List<CameraDescription> cameras = [];
+
+  @action
+  void setCameras(List<CameraDescription> c) => cameras = c;
 }

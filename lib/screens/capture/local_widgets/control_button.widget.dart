@@ -35,7 +35,7 @@ class ControlButton extends StatelessWidget {
               width: kBorderWidth,
               color: kColorMap[MutableColor.neutral7]!,
             ),
-            borderRadius: BorderRadius.circular(8),
+            borderRadius: BorderRadius.circular(kCaptureControlBorderRadius),
           ),
           child: Row(
             children: [

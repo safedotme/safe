@@ -41,11 +41,70 @@ mixin _$CaptureStore on _CaptureStore, Store {
     });
   }
 
+  late final _$cameraAtom =
+      Atom(name: '_CaptureStore.camera', context: context);
+
+  @override
+  CameraController? get camera {
+    _$cameraAtom.reportRead();
+    return super.camera;
+  }
+
+  @override
+  set camera(CameraController? value) {
+    _$cameraAtom.reportWrite(value, super.camera, () {
+      super.camera = value;
+    });
+  }
+
+  late final _$camerasAtom =
+      Atom(name: '_CaptureStore.cameras', context: context);
+
+  @override
+  List<CameraDescription> get cameras {
+    _$camerasAtom.reportRead();
+    return super.cameras;
+  }
+
+  @override
+  set cameras(List<CameraDescription> value) {
+    _$camerasAtom.reportWrite(value, super.cameras, () {
+      super.cameras = value;
+    });
+  }
+
+  late final _$_CaptureStoreActionController =
+      ActionController(name: '_CaptureStore', context: context);
+
+  @override
+  void setCamera(CameraController c) {
+    final _$actionInfo = _$_CaptureStoreActionController.startAction(
+        name: '_CaptureStore.setCamera');
+    try {
+      return super.setCamera(c);
+    } finally {
+      _$_CaptureStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void setCameras(List<CameraDescription> c) {
+    final _$actionInfo = _$_CaptureStoreActionController.startAction(
+        name: '_CaptureStore.setCameras');
+    try {
+      return super.setCameras(c);
+    } finally {
+      _$_CaptureStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
   @override
   String toString() {
     return '''
 controller: ${controller},
-hintTextController: ${hintTextController}
+hintTextController: ${hintTextController},
+camera: ${camera},
+cameras: ${cameras}
     ''';
   }
 }

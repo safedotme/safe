@@ -49,7 +49,7 @@ class _CaptureControlBoxState extends State<CaptureControlBox> {
               children: [
                 Expanded(
                   flex: 4,
-                  child: CameraPreview(),
+                  child: CameraPreviewControl(),
                 ),
                 SizedBox(width: 10),
                 Expanded(
