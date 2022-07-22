@@ -82,8 +82,8 @@ class _IncidentLogState extends State<IncidentLog> {
         style: MutablePopupStyle(
           backgroundColor: null,
           borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(kIncidentLogBorderRadius),
-            topRight: Radius.circular(kIncidentLogBorderRadius),
+            topLeft: Radius.circular(kMainPopupBorderRadius),
+            topRight: Radius.circular(kMainPopupBorderRadius),
           ),
         ),
         enableBorder: false,
@@ -107,8 +107,8 @@ class _IncidentLogState extends State<IncidentLog> {
 
         body: ClipRRect(
           borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(kIncidentLogBorderRadius),
-            topRight: Radius.circular(kIncidentLogBorderRadius),
+            topLeft: Radius.circular(kMainPopupBorderRadius),
+            topRight: Radius.circular(kMainPopupBorderRadius),
           ),
           child: Container(
             height: queryData.size.height,
