@@ -25,10 +25,27 @@ mixin _$CaptureStore on _CaptureStore, Store {
     });
   }
 
+  late final _$hintTextControllerAtom =
+      Atom(name: '_CaptureStore.hintTextController', context: context);
+
+  @override
+  CaptureTextShimmerController get hintTextController {
+    _$hintTextControllerAtom.reportRead();
+    return super.hintTextController;
+  }
+
+  @override
+  set hintTextController(CaptureTextShimmerController value) {
+    _$hintTextControllerAtom.reportWrite(value, super.hintTextController, () {
+      super.hintTextController = value;
+    });
+  }
+
   @override
   String toString() {
     return '''
-controller: ${controller}
+controller: ${controller},
+hintTextController: ${hintTextController}
     ''';
   }
 }

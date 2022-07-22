@@ -5,8 +5,6 @@ import 'package:safe/screens/capture/local_widgets/capture_text_shimmer.widget.d
 import 'package:safe/utils/constants/constants.util.dart';
 import 'package:safe/widgets/mutable_capture_control_box/mutable_capture_control_box.widget.dart';
 import 'package:safe/widgets/mutable_screen_transition/mutable_screen_tranistion.widget.dart';
-import 'package:safe/widgets/mutable_shimmer/mutable_shimmer.widget.dart';
-import 'package:safe/widgets/mutable_text/mutable_text.widget.dart';
 
 class Capture extends StatefulWidget {
   @override
@@ -15,6 +13,7 @@ class Capture extends StatefulWidget {
 
 class _CaptureState extends State<Capture> {
   late Core core;
+  bool canRepaint = true;
 
   @override
   void initState() {
@@ -22,14 +21,18 @@ class _CaptureState extends State<Capture> {
 
     core = Provider.of<Core>(context, listen: false);
   }
-  // value - 0.5, value, value + 0.5
 
   @override
   Widget build(BuildContext context) {
     return MutableScreenTransition(
-      isOpen: true,
       onOpen: () {
-        print("OPEN");
+        if (canRepaint) {
+          core.state.capture.hintTextController.animate();
+          canRepaint = false;
+        }
+      },
+      onClose: () {
+        canRepaint = true;
       },
       controller: core.state.capture.controller,
       body: Container(
@@ -39,7 +42,9 @@ class _CaptureState extends State<Capture> {
           children: [
             Expanded(
               child: Center(
-                child: CaptureTextShimmer(),
+                child: CaptureTextShimmer(
+                  controller: core.state.capture.hintTextController,
+                ),
               ),
             ),
             MutableCaptureControlBox(),
