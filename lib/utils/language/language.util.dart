@@ -163,6 +163,9 @@ class LanguageUtil {
     },
     "incident_card": {
       "secured": "Secured",
+    },
+    "capture": {
+      "hint": "Hide controls with your hand",
     }
   };
 }

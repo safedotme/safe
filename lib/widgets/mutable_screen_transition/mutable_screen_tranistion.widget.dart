@@ -8,12 +8,16 @@ class MutableScreenTransition extends StatefulWidget {
   final ScreenTransitionController? controller;
   final bool isOpen;
   final Color? backgroundColor;
+  final void Function()? onOpen;
+  final void Function()? onClose;
   final bool isDismissable;
   final double minSizePercentage;
 
   MutableScreenTransition({
     required this.body,
     this.backgroundColor,
+    this.onOpen,
+    this.onClose,
     this.isDismissable = true,
     this.minSizePercentage = 0.8,
     this.isOpen = false,
@@ -110,6 +114,10 @@ class _MutableScreenTransitionState extends State<MutableScreenTransition>
     });
 
     await controller!.forward();
+
+    if (widget.onOpen != null) {
+      widget.onOpen!();
+    }
   }
 
   Future<void> close() async {
@@ -143,6 +151,9 @@ class _MutableScreenTransitionState extends State<MutableScreenTransition>
     });
 
     await controller!.forward();
+    if (widget.onClose != null) {
+      widget.onClose!();
+    }
   }
 
   // ⬇️ ANIMATION FUNCTIONS - (USER GENERATED)
@@ -182,6 +193,16 @@ class _MutableScreenTransitionState extends State<MutableScreenTransition>
 
     // Could be not changing is dragging OR dragController is not working second time around
     await dragController.forward();
+
+    if (forward) {
+      if (widget.onClose != null) {
+        widget.onClose!();
+      }
+    } else {
+      if (widget.onOpen != null) {
+        widget.onOpen!();
+      }
+    }
 
     setState(() {
       state = forward ? 0 : 1;
