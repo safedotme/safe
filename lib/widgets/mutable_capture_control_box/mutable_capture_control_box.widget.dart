@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:safe/core.dart';
 import 'package:safe/utils/constants/constants.util.dart';
 import 'package:safe/utils/icon/icon.util.dart';
 import 'package:safe/widgets/mutable_capture_control_box/local_widgets/control_button.widget.dart';
@@ -12,6 +14,14 @@ class MutableCaptureControlBox extends StatefulWidget {
 
 class _MutableCaptureControlBoxState extends State<MutableCaptureControlBox> {
   late MediaQueryData queryData;
+  late Core core;
+
+  @override
+  void initState() {
+    super.initState();
+
+    core = Provider.of<Core>(context, listen: false);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +57,9 @@ class _MutableCaptureControlBoxState extends State<MutableCaptureControlBox> {
                   child: Column(
                     children: [
                       ControlButton(
-                        text: "Flip Camera",
+                        text: core.utils.language.langMap[
+                                core.state.preferences.language]!["capture"]
+                            ["controls"]["flip_camera"]["header"],
                         icon: MutableIcons.camera,
                         iconSize: Size(20, 16),
                         onTap: () {
@@ -56,7 +68,8 @@ class _MutableCaptureControlBoxState extends State<MutableCaptureControlBox> {
                       ),
                       SizedBox(height: 10),
                       ControlButton(
-                        text: "Notify 911",
+                        text: core.utils.language.langMap[core.state.preferences
+                            .language]!["capture"]["controls"]["911"]["header"],
                         icon: MutableIcons.shield,
                         iconSize: Size(15, 17),
                         onTap: () {
@@ -65,7 +78,9 @@ class _MutableCaptureControlBoxState extends State<MutableCaptureControlBox> {
                       ),
                       SizedBox(height: 10),
                       ControlButton(
-                        text: "Stop Recording",
+                        text: core.utils.language.langMap[
+                                core.state.preferences.language]!["capture"]
+                            ["controls"]["stop"]["header"],
                         icon: MutableIcons.stopRecording,
                         iconSize: Size(17, 17),
                         onTap: () {

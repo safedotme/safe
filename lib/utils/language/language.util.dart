@@ -166,6 +166,11 @@ class LanguageUtil {
     },
     "capture": {
       "hint": "Hide controls with your hand",
+      "controls": {
+        "flip_camera": {"header": "Flip Camera"},
+        "911": {"header": "Notify 911"},
+        "stop": {"header": "Stop Recording"},
+      }
     }
   };
 }
