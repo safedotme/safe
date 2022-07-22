@@ -71,8 +71,6 @@ class _MutableScreenTransitionState extends State<MutableScreenTransition>
     );
 
     dragController.addListener(() {
-      print(
-          "WORKING"); // THIS IS THE ISSUE (its not being called a second time around)
       setState(() {});
     });
   }
@@ -175,7 +173,7 @@ class _MutableScreenTransitionState extends State<MutableScreenTransition>
   }
 
   void endDragAnimation() async {
-    forward = state < 0.5;
+    forward = state < 0.8;
     isDragging = false;
 
     // Could be not changing is dragging OR dragController is not working second time around
@@ -252,14 +250,13 @@ class _MutableScreenTransitionState extends State<MutableScreenTransition>
     }
 
     if (!isDragging) {
+      double moved = (initialDrag! - drag!).abs();
       topPosAnimation ??= genAnimation(
-        begin: drag!,
-        end: (forward ? drag! + 200 : 0).toDouble(),
+        begin: moved,
+        end: (forward ? moved + 200 : 0).toDouble(),
       );
 
-      print("HERE");
-
-      return topPosAnimation!.value; // ANIMATE DRAG BACK TO 0 or ADD 200
+      return topPosAnimation!.value;
     }
 
     double moved = (initialDrag! - drag!);
