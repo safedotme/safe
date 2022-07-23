@@ -1,3 +1,4 @@
+import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
@@ -100,9 +101,7 @@ class _CaptureControlBoxState extends State<CaptureControlBox> {
                                       ["controls"]["flip_camera"]["header"],
                                   icon: MutableIcons.camera,
                                   iconSize: Size(20, 16),
-                                  onTap: () {
-                                    print("flip camera");
-                                  },
+                                  onTap: () {},
                                 ),
                                 SizedBox(height: 10),
                                 ControlButton(
