@@ -22,16 +22,31 @@ class _CaptureState extends State<Capture> {
     core = Provider.of<Core>(context, listen: false);
   }
 
+  void animateHint() async {
+    int length = core.utils.language
+        .langMap[core.state.preferences.language]!["capture"]["hint"].length;
+
+    core.state.capture.setHintTextIndex(0);
+
+    for (int i = 0; i < length; i++) {
+      await core.state.capture.hintTextController.animate();
+      if (!(i + 1 == length)) {
+        core.state.capture.setHintTextIndex(i + 1);
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return MutableScreenTransition(
-      onOpen: () {
+      onOpen: () async {
         if (canRepaint) {
-          core.state.capture.hintTextController.animate();
           canRepaint = false;
+          animateHint();
         }
       },
       onClose: () {
+        core.state.capture.setHintTextIndex(0);
         canRepaint = true;
       },
       isDismissable: false,

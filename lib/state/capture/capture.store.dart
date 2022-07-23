@@ -49,4 +49,10 @@ abstract class _CaptureStore with Store {
 
   @action
   void setPanelHeight(double p) => panelHeight = p;
+
+  @observable
+  int hintTextIndex = 0;
+
+  @action
+  void setHintTextIndex(int i) => hintTextIndex = i;
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
 import 'package:safe/utils/constants/constants.util.dart';
@@ -66,7 +67,7 @@ class _CaptureTextShimmerState extends State<CaptureTextShimmer>
   }
 
   Future<void> animate() async {
-    int rounds = 5;
+    int rounds = 4;
     opacityController.forward();
     for (int i = 0; i < rounds; i++) {
       if (i + 1 == rounds) {
@@ -90,30 +91,32 @@ class _CaptureTextShimmerState extends State<CaptureTextShimmer>
 
   @override
   Widget build(BuildContext context) {
-    return Opacity(
-      opacity: opacity,
-      child: ShaderMask(
-        shaderCallback: (rect) => LinearGradient(
-          colors: [
-            kCaptureTextShimmerDarkColor,
-            kCaptureTextShimmerLightColor,
-            kCaptureTextShimmerDarkColor,
-          ],
-          stops: [
-            stop - 0.5,
-            stop,
-            stop + 0.5,
-          ],
-          begin: Alignment(1.2, 0),
-          end: Alignment(-1.2, 0),
-        ).createShader(rect),
-        child: MutableText(
-          core.utils.language
-                  .langMap[core.state.preferences.language]!["capture"]
-              ["hint"], // Extract
-          align: TextAlign.center,
-          style: TypeStyle.h3,
-          weight: TypeWeight.heavy,
+    return Observer(
+      builder: (_) => Opacity(
+        opacity: opacity,
+        child: ShaderMask(
+          shaderCallback: (rect) => LinearGradient(
+            colors: [
+              kCaptureTextShimmerDarkColor,
+              kCaptureTextShimmerLightColor,
+              kCaptureTextShimmerDarkColor,
+            ],
+            stops: [
+              stop - 0.5,
+              stop,
+              stop + 0.5,
+            ],
+            begin: Alignment(1.2, 0),
+            end: Alignment(-1.2, 0),
+          ).createShader(rect),
+          child: MutableText(
+            core.utils.language
+                    .langMap[core.state.preferences.language]!["capture"]
+                ["hint"][core.state.capture.hintTextIndex], // Extract
+            align: TextAlign.center,
+            style: TypeStyle.h3,
+            weight: TypeWeight.heavy,
+          ),
         ),
       ),
     );

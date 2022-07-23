@@ -137,6 +137,22 @@ mixin _$CaptureStore on _CaptureStore, Store {
     });
   }
 
+  late final _$hintTextIndexAtom =
+      Atom(name: '_CaptureStore.hintTextIndex', context: context);
+
+  @override
+  int get hintTextIndex {
+    _$hintTextIndexAtom.reportRead();
+    return super.hintTextIndex;
+  }
+
+  @override
+  set hintTextIndex(int value) {
+    _$hintTextIndexAtom.reportWrite(value, super.hintTextIndex, () {
+      super.hintTextIndex = value;
+    });
+  }
+
   late final _$_CaptureStoreActionController =
       ActionController(name: '_CaptureStore', context: context);
 
@@ -196,6 +212,17 @@ mixin _$CaptureStore on _CaptureStore, Store {
   }
 
   @override
+  void setHintTextIndex(int i) {
+    final _$actionInfo = _$_CaptureStoreActionController.startAction(
+        name: '_CaptureStore.setHintTextIndex');
+    try {
+      return super.setHintTextIndex(i);
+    } finally {
+      _$_CaptureStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 controller: ${controller},
@@ -205,7 +232,8 @@ cameras: ${cameras},
 isCameraInitialized: ${isCameraInitialized},
 panelController: ${panelController},
 offset: ${offset},
-panelHeight: ${panelHeight}
+panelHeight: ${panelHeight},
+hintTextIndex: ${hintTextIndex}
     ''';
   }
 }
