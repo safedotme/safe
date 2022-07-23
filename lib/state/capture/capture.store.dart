@@ -3,6 +3,7 @@ import 'package:mobx/mobx.dart';
 import 'package:safe/models/incident/incident.model.dart';
 import 'package:safe/screens/capture/local_widgets/camera_preview.widget.dart';
 import 'package:safe/screens/capture/local_widgets/capture_text_shimmer.widget.dart';
+import 'package:safe/utils/incident/incident.util.dart';
 import 'package:safe/widgets/mutable_screen_transition/mutable_screen_tranistion.widget.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
@@ -66,4 +67,10 @@ abstract class _CaptureStore with Store {
 
   @action
   void setIncident(Incident i) => incident = i;
+
+  @observable
+  IncidentType type = IncidentType.general;
+
+  @action
+  void setIncidentType(IncidentType t) => type = t;
 }

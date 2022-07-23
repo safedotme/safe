@@ -186,6 +186,21 @@ mixin _$CaptureStore on _CaptureStore, Store {
     });
   }
 
+  late final _$typeAtom = Atom(name: '_CaptureStore.type', context: context);
+
+  @override
+  IncidentType get type {
+    _$typeAtom.reportRead();
+    return super.type;
+  }
+
+  @override
+  set type(IncidentType value) {
+    _$typeAtom.reportWrite(value, super.type, () {
+      super.type = value;
+    });
+  }
+
   late final _$_CaptureStoreActionController =
       ActionController(name: '_CaptureStore', context: context);
 
@@ -267,6 +282,17 @@ mixin _$CaptureStore on _CaptureStore, Store {
   }
 
   @override
+  void setIncidentType(IncidentType t) {
+    final _$actionInfo = _$_CaptureStoreActionController.startAction(
+        name: '_CaptureStore.setIncidentType');
+    try {
+      return super.setIncidentType(t);
+    } finally {
+      _$_CaptureStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 controller: ${controller},
@@ -279,7 +305,8 @@ offset: ${offset},
 panelHeight: ${panelHeight},
 hintTextIndex: ${hintTextIndex},
 cameraPreviewController: ${cameraPreviewController},
-incident: ${incident}
+incident: ${incident},
+type: ${type}
     ''';
   }
 }

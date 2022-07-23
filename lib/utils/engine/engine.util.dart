@@ -2,12 +2,14 @@
 import 'dart:async';
 import 'package:camera/camera.dart';
 import 'package:safe/core.dart';
+import 'package:safe/models/incident/incident.model.dart';
 import 'package:safe/models/incident/shard.model.dart';
 import 'package:uuid/uuid.dart';
 
 class IngestionEngine {
   final IsolateManager _manager = IsolateManager();
   late CameraController _controller;
+  late Incident _incident;
   late Core _core;
   late Timer _ticker;
   int i = 0;
@@ -24,7 +26,11 @@ class IngestionEngine {
   }
 
   /// Called when a stream of clips begins (AFTER controller has been initialzied)
-  void initialize(CameraController c, Core cre) async {
+  void initialize({
+    required CameraController c,
+    required Core cre,
+    required Incident incident,
+  }) async {
     _controller = c;
     _core = cre;
 
@@ -33,12 +39,22 @@ class IngestionEngine {
 
     // Start scheduler
     _ticker = Timer.periodic(Duration(seconds: 5), _tick);
+
+    setIncident(incident);
   }
 
   // Called when user wishes to stop recording
   void stop() {
     // dispose controller
     // stop ticker
+  }
+
+  void setIncident(Incident i) {
+    _incident = i;
+  }
+
+  void _generateThumbnail(XFile file) {
+    // Add thumbnail functionality
   }
 
   /// Uploads primitive data and sends rest to be handled by the manager

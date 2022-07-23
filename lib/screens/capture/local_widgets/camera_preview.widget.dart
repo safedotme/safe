@@ -3,8 +3,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
+import 'package:safe/models/incident/incident.model.dart';
 import 'package:safe/utils/constants/constants.util.dart';
 import 'package:safe/widgets/mutable_shimmer/mutable_shimmer.widget.dart';
+import 'package:uuid/uuid.dart';
 
 class CameraPreviewControl extends StatefulWidget {
   final CameraPreviewController? controller;
@@ -110,6 +112,21 @@ class _CameraPreviewControlState extends State<CameraPreviewControl>
   }
 
   Future<void> initCamera() async {
+    // Generates Incident
+
+    int incidentNumber = core.state.incidentLog.incidents == null
+        ? 1
+        : core.state.incidentLog.incidents!.length + 1;
+
+    var incident = Incident(
+      id: Uuid().v1(),
+      userId: core.services.auth.currentUser!.uid,
+      name: "Incident #$incidentNumber",
+      type: [core.state.capture.type],
+      datetime: DateTime.now(),
+    );
+
+    // Searches for cameras
     var cameras = await core.services.cam.cameras;
     core.state.capture.setCameras(cameras);
 
@@ -128,6 +145,7 @@ class _CameraPreviewControlState extends State<CameraPreviewControl>
       return;
     }
 
+    // Creates controllers and updates them with MobX
     var camController = CameraController(
       camera,
       core.state.preferences.cameraResolution,
@@ -140,7 +158,12 @@ class _CameraPreviewControlState extends State<CameraPreviewControl>
     await core.state.capture.camera!.prepareForVideoRecording();
 
     // Initializes the engine (will start the recording)
-    core.utils.engine.initialize(core.state.capture.camera!, core);
+    core.utils.engine.initialize(
+      c: core.state.capture.camera!,
+      cre: core,
+      incident: incident,
+    );
+
     core.state.capture.setIsCameraInitialized(true);
   }
 
