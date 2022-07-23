@@ -170,6 +170,22 @@ mixin _$CaptureStore on _CaptureStore, Store {
     });
   }
 
+  late final _$incidentAtom =
+      Atom(name: '_CaptureStore.incident', context: context);
+
+  @override
+  Incident? get incident {
+    _$incidentAtom.reportRead();
+    return super.incident;
+  }
+
+  @override
+  set incident(Incident? value) {
+    _$incidentAtom.reportWrite(value, super.incident, () {
+      super.incident = value;
+    });
+  }
+
   late final _$_CaptureStoreActionController =
       ActionController(name: '_CaptureStore', context: context);
 
@@ -240,6 +256,17 @@ mixin _$CaptureStore on _CaptureStore, Store {
   }
 
   @override
+  void setIncident(Incident i) {
+    final _$actionInfo = _$_CaptureStoreActionController.startAction(
+        name: '_CaptureStore.setIncident');
+    try {
+      return super.setIncident(i);
+    } finally {
+      _$_CaptureStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 controller: ${controller},
@@ -251,7 +278,8 @@ panelController: ${panelController},
 offset: ${offset},
 panelHeight: ${panelHeight},
 hintTextIndex: ${hintTextIndex},
-cameraPreviewController: ${cameraPreviewController}
+cameraPreviewController: ${cameraPreviewController},
+incident: ${incident}
     ''';
   }
 }

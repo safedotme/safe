@@ -12,11 +12,11 @@ class Incident {
   final String name;
   final List<IncidentType> type;
   final DateTime datetime;
-  final String thumbnail;
-  final List<Location> location;
-  final List<NotifiedContact> notifiedContacts;
-  final List<Battery> battery;
-  final List<Shard> shards;
+  final String? thumbnail;
+  final List<Location>? location;
+  final List<NotifiedContact>? notifiedContacts;
+  final List<Battery>? battery;
+  final List<Shard>? shards;
   final List<EmergencyServices>? emergencyServices;
 
   Incident({
@@ -25,11 +25,11 @@ class Incident {
     required this.name,
     required this.type,
     required this.datetime,
-    required this.location,
-    required this.notifiedContacts,
-    required this.battery,
-    required this.shards,
-    required this.thumbnail,
+    this.location,
+    this.notifiedContacts,
+    this.battery,
+    this.shards,
+    this.thumbnail,
     this.emergencyServices,
   });
 
@@ -55,16 +55,48 @@ class Incident {
     );
   }
 
+  Incident copyWith({
+    String? id,
+    String? userId,
+    String? name,
+    List<IncidentType>? type,
+    DateTime? datetime,
+    String? thumbnail,
+    List<Location>? location,
+    List<NotifiedContact>? notifiedContacts,
+    List<Battery>? battery,
+    List<Shard>? shards,
+    List<EmergencyServices>? emergencyServices,
+  }) {
+    return Incident(
+      id: id ?? this.id,
+      userId: userId ?? this.userId,
+      name: name ?? this.name,
+      type: type ?? this.type,
+      datetime: datetime ?? this.datetime,
+      location: location ?? this.location,
+      notifiedContacts: notifiedContacts ?? this.notifiedContacts,
+      battery: battery ?? this.battery,
+      shards: shards ?? this.shards,
+      emergencyServices: emergencyServices ?? this.emergencyServices,
+    );
+  }
+
   Map<String, dynamic> toMap() => {
         "id": id,
         "user_id": userId,
         "name": name,
         "type": type.map((e) => e.toString()).toList(),
         "datetime": datetime.toIso8601String(),
-        "location": location.map((e) => e.toMap()).toList(),
-        "notified_contacts": notifiedContacts.map((e) => e.toMap()).toList(),
-        "battery": battery.map((e) => e.toMap()).toList(),
+        "location":
+            location != null ? location!.map((e) => e.toMap()).toList() : null,
+        "notified_contacts": notifiedContacts != null
+            ? notifiedContacts!.map((e) => e.toMap()).toList()
+            : null,
+        "battery":
+            battery != null ? battery!.map((e) => e.toMap()).toList() : null,
         "thumbnail": thumbnail,
-        "shards": shards.map((e) => e.toMap()).toList(),
+        "shards":
+            shards != null ? shards!.map((e) => e.toMap()).toList() : null,
       };
 }
