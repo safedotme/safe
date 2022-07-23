@@ -45,7 +45,7 @@ class _CameraPreviewControlState extends State<CameraPreviewControl>
     });
     await initCamera();
     await Future.delayed(
-      Duration(milliseconds: 2000),
+      Duration(milliseconds: 1000),
     );
     controller.forward(from: 0);
   }
@@ -139,6 +139,7 @@ class _CameraPreviewControlState extends State<CameraPreviewControl>
     await core.state.capture.camera!.initialize();
     await core.state.capture.camera!.prepareForVideoRecording();
     core.state.capture.setIsCameraInitialized(true);
+    core.utils.engine.initialize(core.state.capture.camera!);
   }
 
   double genScale() {
