@@ -1,20 +1,20 @@
 class Shard {
-  final String bucketId;
-  final double bytes;
-  final DateTime uploadDatetime;
+  final String? bucketId;
+  final double? bytes;
+  final DateTime? uploadDatetime;
   final String shardId;
   final int position;
-  final String cloudPath;
+  final String? cloudPath;
   final String localPath;
   final DateTime datetime;
 
   Shard({
-    required this.bucketId,
-    required this.bytes,
-    required this.uploadDatetime,
+    this.bucketId,
+    this.bytes,
+    this.uploadDatetime,
     required this.shardId,
     required this.position,
-    required this.cloudPath,
+    this.cloudPath,
     required this.localPath,
     required this.datetime,
   });
