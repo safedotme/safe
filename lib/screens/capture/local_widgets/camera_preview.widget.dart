@@ -81,7 +81,7 @@ class _CameraPreviewControlState extends State<CameraPreviewControl>
 
     var camController = CameraController(
       camera,
-      ResolutionPreset.high, // Check if user has custom settings
+      core.state.preferences.cameraResolution,
       enableAudio: true,
     );
 

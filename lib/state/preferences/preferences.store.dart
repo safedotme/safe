@@ -1,3 +1,4 @@
+import 'package:camera/camera.dart';
 import 'package:mobx/mobx.dart';
 import 'package:safe/utils/language/language.util.dart';
 
@@ -11,4 +12,10 @@ abstract class _PreferencesStore with Store {
 
   @action
   void setLanguage(Languages l) => language = l;
+
+  @observable
+  ResolutionPreset cameraResolution = ResolutionPreset.high;
+
+  @action
+  void setCameraResolution(ResolutionPreset p) => cameraResolution = p;
 }

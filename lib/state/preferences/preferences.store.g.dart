@@ -25,6 +25,22 @@ mixin _$PreferencesStore on _PreferencesStore, Store {
     });
   }
 
+  late final _$cameraResolutionAtom =
+      Atom(name: '_PreferencesStore.cameraResolution', context: context);
+
+  @override
+  ResolutionPreset get cameraResolution {
+    _$cameraResolutionAtom.reportRead();
+    return super.cameraResolution;
+  }
+
+  @override
+  set cameraResolution(ResolutionPreset value) {
+    _$cameraResolutionAtom.reportWrite(value, super.cameraResolution, () {
+      super.cameraResolution = value;
+    });
+  }
+
   late final _$_PreferencesStoreActionController =
       ActionController(name: '_PreferencesStore', context: context);
 
@@ -40,9 +56,21 @@ mixin _$PreferencesStore on _PreferencesStore, Store {
   }
 
   @override
+  void setCameraResolution(ResolutionPreset p) {
+    final _$actionInfo = _$_PreferencesStoreActionController.startAction(
+        name: '_PreferencesStore.setCameraResolution');
+    try {
+      return super.setCameraResolution(p);
+    } finally {
+      _$_PreferencesStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
-language: ${language}
+language: ${language},
+cameraResolution: ${cameraResolution}
     ''';
   }
 }
