@@ -60,28 +60,34 @@ class _IncidentCardImageState extends State<IncidentCardImage>
           Container(
             width: double.infinity,
             color: kColorMap[kIncidentCardLoaderColor],
-            child: MutableCachedImage(
-              widget.incident.thumbnail,
-              backgroundColor: kColorMap[kIncidentCardLoaderColor]!,
-              fit: BoxFit.cover,
-              shimmerColor: kBoxLoaderShimmerColor,
-            ),
+            child: widget.incident.thumbnail != null
+                ? MutableCachedImage(
+                    widget.incident.thumbnail!,
+                    backgroundColor: kColorMap[kIncidentCardLoaderColor]!,
+                    fit: BoxFit.cover,
+                    shimmerColor: kBoxLoaderShimmerColor,
+                  )
+                : Container(
+                    color: kColorMap[kIncidentCardLoaderColor]!,
+                  ),
           ),
 
           // Gradient Overlay
 
-          Container(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [
-                  Colors.black.withOpacity(animation.value),
-                  Colors.transparent
-                ],
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-              ),
-            ),
-          ),
+          widget.incident.thumbnail != null
+              ? Container(
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [
+                        Colors.black.withOpacity(animation.value),
+                        Colors.transparent
+                      ],
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                    ),
+                  ),
+                )
+              : SizedBox(),
 
           IncidentCardPlayButton(onTap: widget.onPlayTap),
 

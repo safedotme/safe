@@ -46,28 +46,33 @@ class _IncidentCardBodyState extends State<IncidentCardBody> {
                 ),
                 SizedBox(height: kIncidentBodyVerticalSpacing),
                 MutableText(
-                  widget.incident.location.isEmpty
+                  widget.incident.location == null
                       ? ""
-                      : (widget.incident.location[0].address ?? ""),
+                      : widget.incident.location!.isEmpty
+                          ? ""
+                          : (widget.incident.location![0].address ?? ""),
                   style: TypeStyle.body,
                   color: MutableColor.neutral2,
                 ),
                 SizedBox(height: kIncidentBodyVerticalSpacing),
-                Row(
-                  children: List.generate(
-                    widget.incident.notifiedContacts.length,
-                    (i) => Padding(
-                      padding: EdgeInsets.only(
-                        right: i + 1 == widget.incident.notifiedContacts.length
-                            ? 0
-                            : kEmergencyContactAvatarSpacing,
+                widget.incident.notifiedContacts == null
+                    ? SizedBox()
+                    : Row(
+                        children: List.generate(
+                          widget.incident.notifiedContacts!.length,
+                          (i) => Padding(
+                            padding: EdgeInsets.only(
+                              right: i + 1 ==
+                                      widget.incident.notifiedContacts!.length
+                                  ? 0
+                                  : kEmergencyContactAvatarSpacing,
+                            ),
+                            child: MutableEmergencyContactAvatar(
+                              widget.incident.notifiedContacts![i],
+                            ),
+                          ),
+                        ),
                       ),
-                      child: MutableEmergencyContactAvatar(
-                        widget.incident.notifiedContacts[i],
-                      ),
-                    ),
-                  ),
-                ),
               ],
             ),
           ),
