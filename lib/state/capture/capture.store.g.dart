@@ -89,6 +89,54 @@ mixin _$CaptureStore on _CaptureStore, Store {
     });
   }
 
+  late final _$panelControllerAtom =
+      Atom(name: '_CaptureStore.panelController', context: context);
+
+  @override
+  PanelController get panelController {
+    _$panelControllerAtom.reportRead();
+    return super.panelController;
+  }
+
+  @override
+  set panelController(PanelController value) {
+    _$panelControllerAtom.reportWrite(value, super.panelController, () {
+      super.panelController = value;
+    });
+  }
+
+  late final _$offsetAtom =
+      Atom(name: '_CaptureStore.offset', context: context);
+
+  @override
+  double get offset {
+    _$offsetAtom.reportRead();
+    return super.offset;
+  }
+
+  @override
+  set offset(double value) {
+    _$offsetAtom.reportWrite(value, super.offset, () {
+      super.offset = value;
+    });
+  }
+
+  late final _$panelHeightAtom =
+      Atom(name: '_CaptureStore.panelHeight', context: context);
+
+  @override
+  double get panelHeight {
+    _$panelHeightAtom.reportRead();
+    return super.panelHeight;
+  }
+
+  @override
+  set panelHeight(double value) {
+    _$panelHeightAtom.reportWrite(value, super.panelHeight, () {
+      super.panelHeight = value;
+    });
+  }
+
   late final _$_CaptureStoreActionController =
       ActionController(name: '_CaptureStore', context: context);
 
@@ -126,13 +174,38 @@ mixin _$CaptureStore on _CaptureStore, Store {
   }
 
   @override
+  void setOffset(double d) {
+    final _$actionInfo = _$_CaptureStoreActionController.startAction(
+        name: '_CaptureStore.setOffset');
+    try {
+      return super.setOffset(d);
+    } finally {
+      _$_CaptureStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void setPanelHeight(double p) {
+    final _$actionInfo = _$_CaptureStoreActionController.startAction(
+        name: '_CaptureStore.setPanelHeight');
+    try {
+      return super.setPanelHeight(p);
+    } finally {
+      _$_CaptureStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 controller: ${controller},
 hintTextController: ${hintTextController},
 camera: ${camera},
 cameras: ${cameras},
-isCameraInitialized: ${isCameraInitialized}
+isCameraInitialized: ${isCameraInitialized},
+panelController: ${panelController},
+offset: ${offset},
+panelHeight: ${panelHeight}
     ''';
   }
 }

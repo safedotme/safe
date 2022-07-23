@@ -300,6 +300,7 @@ const Color kCaptureTextShimmerDarkColor = Color(0xff3D3B3D);
 const Color kCaptureTextShimmerLightColor = Color(0xffBFBFBF);
 const double kCaptureControlBorderRadius = 8;
 const double kCameraPreviewWidthPercentage = 0.3;
+const double kControlBoxBodyHeight = 150;
 
 // SHIMMER
 final Color kBoxLoaderShimmerColor = kShimmerAnimationColor.withOpacity(0.05);

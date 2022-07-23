@@ -165,7 +165,7 @@ class LanguageUtil {
       "secured": "Secured",
     },
     "capture": {
-      "hint": "Hide controls with your hand",
+      "hint": "Swipe down to hide the controls",
       "controls": {
         "flip_camera": {"header": "Flip Camera"},
         "911": {"header": "Notify 911"},

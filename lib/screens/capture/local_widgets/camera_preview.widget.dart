@@ -1,4 +1,5 @@
 import 'package:camera/camera.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
@@ -13,9 +14,9 @@ class CameraPreviewControl extends StatefulWidget {
 
 class _CameraPreviewControlState extends State<CameraPreviewControl>
     with TickerProviderStateMixin {
+  late MediaQueryData queryData;
   late Core core;
   late AnimationController controller;
-  GlobalKey key = GlobalKey();
 
   // STATE
   double opacity = 1;
@@ -91,17 +92,13 @@ class _CameraPreviewControlState extends State<CameraPreviewControl>
   }
 
   double genScale() {
-    if (key.currentContext == null) {
-      return 1;
-    }
-
     if (core.state.capture.camera == null) {
       return 1;
     }
 
-    var box = key.currentContext!.findRenderObject() as RenderBox;
-
-    double parentRatio = box.size.width / box.size.height;
+    double parentRatio =
+        (queryData.size.width * kCameraPreviewWidthPercentage) /
+            kControlBoxBodyHeight;
 
     return core.state.capture.camera!.value.aspectRatio / parentRatio;
   }
@@ -118,41 +115,47 @@ class _CameraPreviewControlState extends State<CameraPreviewControl>
 
   @override
   Widget build(BuildContext context) {
+    queryData = MediaQuery.of(context);
     return Observer(
-      builder: (_) => Container(
-        key: key,
-        height: double.infinity,
-        width: double.infinity,
-        decoration: BoxDecoration(
-          border: Border.all(
-            width: kBorderWidth,
-            color: kColorMap[MutableColor.neutral7]!,
-          ),
-          borderRadius: BorderRadius.circular(kCaptureControlBorderRadius),
-        ),
-        child: ClipRRect(
-          borderRadius:
-              BorderRadius.circular(kCaptureControlBorderRadius - kBorderWidth),
-          child: core.state.capture.isCameraInitialized
-              ? Transform.scale(
-                  scale: genScale(),
-                  child: Center(
-                    child: CameraPreview(
-                      core.state.capture.camera!,
-                      child: MutableShimmer(
-                        active: opacity > 0.05,
-                        animateToColor: kBoxLoaderShimmerColor,
-                        child: Opacity(
-                          opacity: opacity,
-                          child: Container(
-                            color: kColorMap[MutableColor.neutral8],
+      builder: (_) => SizedBox(
+        width: queryData.size.width * kCameraPreviewWidthPercentage,
+        child: CupertinoContextMenu(
+          actions: [Container()], // Add button
+          child: Container(
+            height: double.infinity,
+            width: double.infinity,
+            decoration: BoxDecoration(
+              border: Border.all(
+                width: kBorderWidth,
+                color: kColorMap[MutableColor.neutral7]!,
+              ),
+              borderRadius: BorderRadius.circular(kCaptureControlBorderRadius),
+            ),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(
+                  kCaptureControlBorderRadius - kBorderWidth),
+              child: core.state.capture.isCameraInitialized
+                  ? Transform.scale(
+                      scale: genScale(),
+                      child: Center(
+                        child: CameraPreview(
+                          core.state.capture.camera!,
+                          child: MutableShimmer(
+                            active: opacity > 0.05,
+                            animateToColor: kBoxLoaderShimmerColor,
+                            child: Opacity(
+                              opacity: opacity,
+                              child: Container(
+                                color: kColorMap[MutableColor.neutral8],
+                              ),
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  ),
-                )
-              : SizedBox(),
+                    )
+                  : SizedBox(),
+            ),
+          ),
         ),
       ),
     );

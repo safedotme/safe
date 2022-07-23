@@ -34,6 +34,7 @@ class _CaptureState extends State<Capture> {
       onClose: () {
         canRepaint = true;
       },
+      isDismissable: false,
       controller: core.state.capture.controller,
       body: Container(
         color: kColorMap[MutableColor.neutral10],

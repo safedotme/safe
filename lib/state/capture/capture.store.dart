@@ -2,6 +2,7 @@ import 'package:camera/camera.dart';
 import 'package:mobx/mobx.dart';
 import 'package:safe/screens/capture/local_widgets/capture_text_shimmer.widget.dart';
 import 'package:safe/widgets/mutable_screen_transition/mutable_screen_tranistion.widget.dart';
+import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 part 'capture.store.g.dart';
 
@@ -33,4 +34,19 @@ abstract class _CaptureStore with Store {
 
   @action
   void setIsCameraInitialized(bool v) => isCameraInitialized = v;
+
+  @observable
+  PanelController panelController = PanelController();
+
+  @observable
+  double offset = 1;
+
+  @action
+  void setOffset(double d) => offset = d;
+
+  @observable
+  double panelHeight = 300;
+
+  @action
+  void setPanelHeight(double p) => panelHeight = p;
 }
