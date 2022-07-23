@@ -4,7 +4,8 @@ class Shard {
   final DateTime uploadDatetime;
   final String shardId;
   final int position;
-  final String path;
+  final String cloudPath;
+  final String localPath;
   final DateTime datetime;
 
   Shard({
@@ -13,7 +14,8 @@ class Shard {
     required this.uploadDatetime,
     required this.shardId,
     required this.position,
-    required this.path,
+    required this.cloudPath,
+    required this.localPath,
     required this.datetime,
   });
 
@@ -23,7 +25,8 @@ class Shard {
         uploadDatetime: DateTime.parse(json["upload_datetime"]),
         shardId: json["shard_id"],
         position: json["position"],
-        path: json["path"],
+        localPath: json["local_path"],
+        cloudPath: json["cloud_path"],
         datetime: DateTime.parse(json["datetime"]),
       );
 
@@ -33,7 +36,8 @@ class Shard {
         "upload_datetime": datetime.toIso8601String(),
         "shard_id": shardId,
         "position": position,
-        "path": path,
+        "local_path": localPath,
+        "cloud_path": cloudPath,
         "datetime": datetime.toIso8601String(),
       };
 }
