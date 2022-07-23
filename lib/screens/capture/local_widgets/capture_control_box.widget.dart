@@ -60,71 +60,80 @@ class _CaptureControlBoxState extends State<CaptureControlBox> {
         maxHeight: core.state.capture.panelHeight,
         minHeight: 100,
         body: Center(
-          child: Padding(
-            key: key,
-            padding: EdgeInsets.fromLTRB(
-              kSideScreenMargin,
-              10,
-              kSideScreenMargin,
-              kBottomScreenMargin,
+          child: ClipRRect(
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(kMainPopupBorderRadius),
+              topRight: Radius.circular(kMainPopupBorderRadius),
             ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                MutableHandle(),
-                SizedBox(height: 15),
-                Opacity(
-                  opacity: core.state.capture.offset,
-                  child: SizedBox(
-                    height: kControlBoxBodyHeight,
-                    child: Row(
-                      children: [
-                        CameraPreviewControl(),
-                        SizedBox(width: 10),
-                        Expanded(
-                          child: Column(
-                            children: [
-                              ControlButton(
-                                text: core.utils.language.langMap[core
-                                        .state.preferences.language]!["capture"]
-                                    ["controls"]["flip_camera"]["header"],
-                                icon: MutableIcons.camera,
-                                iconSize: Size(20, 16),
-                                onTap: () {
-                                  print("flip camera");
-                                },
-                              ),
-                              SizedBox(height: 10),
-                              ControlButton(
-                                text: core.utils.language.langMap[core
-                                        .state.preferences.language]!["capture"]
-                                    ["controls"]["911"]["header"],
-                                icon: MutableIcons.shield,
-                                iconSize: Size(15, 17),
-                                onTap: () {
-                                  print("navigate to 911 popup");
-                                },
-                              ),
-                              SizedBox(height: 10),
-                              ControlButton(
-                                text: core.utils.language.langMap[core
-                                        .state.preferences.language]!["capture"]
-                                    ["controls"]["stop"]["header"],
-                                icon: MutableIcons.stopRecording,
-                                iconSize: Size(17, 17),
-                                onTap: () {
-                                  print("stop incident");
-                                },
-                              ),
-                            ],
+            child: Container(
+              color: kColorMap[MutableColor.neutral10]!.withOpacity(
+                (core.state.capture.offset - 1) * -1,
+              ),
+              key: key,
+              padding: EdgeInsets.fromLTRB(
+                kSideScreenMargin,
+                10,
+                kSideScreenMargin,
+                kBottomScreenMargin,
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  MutableHandle(),
+                  SizedBox(height: 15),
+                  Opacity(
+                    opacity: core.state.capture.offset,
+                    child: SizedBox(
+                      height: kControlBoxBodyHeight,
+                      child: Row(
+                        children: [
+                          CameraPreviewControl(),
+                          SizedBox(width: 10),
+                          Expanded(
+                            child: Column(
+                              children: [
+                                ControlButton(
+                                  text: core.utils.language.langMap[core.state
+                                          .preferences.language]!["capture"]
+                                      ["controls"]["flip_camera"]["header"],
+                                  icon: MutableIcons.camera,
+                                  iconSize: Size(20, 16),
+                                  onTap: () {
+                                    print("flip camera");
+                                  },
+                                ),
+                                SizedBox(height: 10),
+                                ControlButton(
+                                  text: core.utils.language.langMap[core.state
+                                          .preferences.language]!["capture"]
+                                      ["controls"]["911"]["header"],
+                                  icon: MutableIcons.shield,
+                                  iconSize: Size(15, 17),
+                                  onTap: () {
+                                    print("navigate to 911 popup");
+                                  },
+                                ),
+                                SizedBox(height: 10),
+                                ControlButton(
+                                  text: core.utils.language.langMap[core.state
+                                          .preferences.language]!["capture"]
+                                      ["controls"]["stop"]["header"],
+                                  icon: MutableIcons.stopRecording,
+                                  iconSize: Size(17, 17),
+                                  onTap: () {
+                                    print("stop incident");
+                                  },
+                                ),
+                              ],
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),
