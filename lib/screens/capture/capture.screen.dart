@@ -38,11 +38,13 @@ class _CaptureState extends State<Capture> {
       controller: core.state.capture.controller,
       body: Container(
         color: kColorMap[MutableColor.neutral10],
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
+        child: Stack(
           children: [
-            Expanded(
-              child: Center(
+            Center(
+              child: Padding(
+                padding: EdgeInsets.only(
+                  bottom: core.state.capture.panelHeight,
+                ),
                 child: CaptureTextShimmer(
                   controller: core.state.capture.hintTextController,
                 ),

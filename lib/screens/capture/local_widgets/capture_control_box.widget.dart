@@ -47,6 +47,7 @@ class _CaptureControlBoxState extends State<CaptureControlBox> {
         backdropTapClose: false,
         defaultState: PanelState.OPEN,
         style: MutablePopupStyle(
+          backdropOpacity: 0,
           backgroundColor: kColorMap[MutableColor.neutral9],
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(kMainPopupBorderRadius),

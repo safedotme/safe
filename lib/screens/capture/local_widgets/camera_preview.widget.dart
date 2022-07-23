@@ -133,7 +133,8 @@ class _CameraPreviewControlState extends State<CameraPreviewControl>
             ),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(
-                  kCaptureControlBorderRadius - kBorderWidth),
+                kCaptureControlBorderRadius - kBorderWidth,
+              ),
               child: core.state.capture.isCameraInitialized
                   ? Transform.scale(
                       scale: genScale(),
