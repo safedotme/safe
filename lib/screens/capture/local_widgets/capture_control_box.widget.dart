@@ -40,32 +40,6 @@ class _CaptureControlBoxState extends State<CaptureControlBox> {
     });
   }
 
-  void flipCamera() async {
-    if (core.state.capture.camera == null) {
-      return;
-    }
-
-    CameraDescription? cam = core.services.cam.flipCamera(
-      oldDirection: core.state.capture.camera!.description.lensDirection,
-      cameras: core.state.capture.cameras,
-    );
-
-    if (cam == null) {
-      return;
-    }
-
-    var controller = CameraController(
-      cam,
-      core.state.preferences.cameraResolution,
-      enableAudio: true,
-    );
-
-    core.state.capture.setIsCameraInitialized(false);
-    core.state.capture.setCamera(controller);
-    await core.state.capture.camera!.initialize();
-    core.state.capture.setIsCameraInitialized(true);
-  }
-
   @override
   Widget build(BuildContext context) {
     getSize();
@@ -116,7 +90,10 @@ class _CaptureControlBoxState extends State<CaptureControlBox> {
                       height: kControlBoxBodyHeight,
                       child: Row(
                         children: [
-                          CameraPreviewControl(),
+                          CameraPreviewControl(
+                            controller:
+                                core.state.capture.cameraPreviewController,
+                          ),
                           SizedBox(width: 10),
                           Expanded(
                             child: Column(
@@ -128,7 +105,8 @@ class _CaptureControlBoxState extends State<CaptureControlBox> {
                                   icon: MutableIcons.camera,
                                   iconSize: Size(20, 16),
                                   onTap: () {
-                                    flipCamera();
+                                    core.state.capture.cameraPreviewController
+                                        .flipCamera();
                                   },
                                 ),
                                 SizedBox(height: 10),

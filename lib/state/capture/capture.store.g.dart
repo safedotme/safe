@@ -153,6 +153,23 @@ mixin _$CaptureStore on _CaptureStore, Store {
     });
   }
 
+  late final _$cameraPreviewControllerAtom =
+      Atom(name: '_CaptureStore.cameraPreviewController', context: context);
+
+  @override
+  CameraPreviewController get cameraPreviewController {
+    _$cameraPreviewControllerAtom.reportRead();
+    return super.cameraPreviewController;
+  }
+
+  @override
+  set cameraPreviewController(CameraPreviewController value) {
+    _$cameraPreviewControllerAtom
+        .reportWrite(value, super.cameraPreviewController, () {
+      super.cameraPreviewController = value;
+    });
+  }
+
   late final _$_CaptureStoreActionController =
       ActionController(name: '_CaptureStore', context: context);
 
@@ -233,7 +250,8 @@ isCameraInitialized: ${isCameraInitialized},
 panelController: ${panelController},
 offset: ${offset},
 panelHeight: ${panelHeight},
-hintTextIndex: ${hintTextIndex}
+hintTextIndex: ${hintTextIndex},
+cameraPreviewController: ${cameraPreviewController}
     ''';
   }
 }

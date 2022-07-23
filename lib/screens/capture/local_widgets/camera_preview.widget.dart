@@ -1,6 +1,5 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
@@ -8,6 +7,9 @@ import 'package:safe/utils/constants/constants.util.dart';
 import 'package:safe/widgets/mutable_shimmer/mutable_shimmer.widget.dart';
 
 class CameraPreviewControl extends StatefulWidget {
+  final CameraPreviewController? controller;
+
+  CameraPreviewControl({this.controller});
   @override
   State<CameraPreviewControl> createState() => _CameraPreviewControlState();
 }
@@ -17,6 +19,7 @@ class _CameraPreviewControlState extends State<CameraPreviewControl>
   late MediaQueryData queryData;
   late Core core;
   late AnimationController controller;
+  bool canFlip = true;
 
   // STATE
   double opacity = 1;
@@ -27,17 +30,24 @@ class _CameraPreviewControlState extends State<CameraPreviewControl>
 
     core = Provider.of<Core>(context, listen: false);
 
+    if (widget.controller != null) {
+      widget.controller!.setState(this);
+    }
+
     // Initializes camera controller
     initAnimation();
     sync();
   }
 
   void sync() async {
+    setState(() {
+      opacity = 1;
+    });
     await initCamera();
     await Future.delayed(
       Duration(milliseconds: 2000),
     );
-    controller.forward();
+    controller.forward(from: 0);
   }
 
   void initAnimation() {
@@ -58,6 +68,45 @@ class _CameraPreviewControlState extends State<CameraPreviewControl>
         opacity = animation.value;
       });
     });
+  }
+
+  void flipCamera() async {
+    if (core.state.capture.camera == null) {
+      return;
+    }
+
+    if (!canFlip) {
+      return;
+    }
+
+    canFlip = false;
+
+    CameraDescription? cam = core.services.cam.flipCamera(
+      oldDirection: core.state.capture.camera!.description.lensDirection,
+      cameras: core.state.capture.cameras,
+    );
+
+    if (cam == null) {
+      return;
+    }
+
+    var camController = CameraController(
+      cam,
+      core.state.preferences.cameraResolution,
+      enableAudio: true,
+    );
+
+    setState(() {
+      opacity = 1;
+    });
+
+    core.state.capture.setIsCameraInitialized(false);
+    core.state.capture.setCamera(camController);
+    await core.state.capture.camera!.initialize();
+    await core.state.capture.camera!.prepareForVideoRecording();
+    core.state.capture.setIsCameraInitialized(true);
+    await controller.forward(from: 0);
+    canFlip = true;
   }
 
   Future<void> initCamera() async {
@@ -88,6 +137,7 @@ class _CameraPreviewControlState extends State<CameraPreviewControl>
     core.state.capture.setCamera(camController);
 
     await core.state.capture.camera!.initialize();
+    await core.state.capture.camera!.prepareForVideoRecording();
     core.state.capture.setIsCameraInitialized(true);
   }
 
@@ -154,11 +204,34 @@ class _CameraPreviewControlState extends State<CameraPreviewControl>
                         ),
                       ),
                     )
-                  : SizedBox(),
+                  : MutableShimmer(
+                      active: true,
+                      animateToColor: kBoxLoaderShimmerColor,
+                      child: Opacity(
+                        opacity: opacity,
+                        child: Container(
+                          color: kColorMap[MutableColor.neutral8],
+                        ),
+                      ),
+                    ),
             ),
           ),
         ),
       ),
     );
+  }
+}
+
+class CameraPreviewController {
+  _CameraPreviewControlState? _state;
+
+  // ignore: library_private_types_in_public_api
+  void setState(_CameraPreviewControlState s) => _state = s;
+
+  bool get isAttached => _state != null;
+
+  void flipCamera() {
+    assert(_state != null, "Controller has not been attached");
+    _state!.flipCamera();
   }
 }
