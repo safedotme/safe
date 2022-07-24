@@ -91,15 +91,33 @@ class IngestionEngine {
   }
 }
 
+typedef HandleJob = Map<String, dynamic>? Function(Map<String, dynamic>? id);
+
 class ThreadWorker {
   final int id;
   ThreadWorker(this.id);
 
   // STATE
   bool working = false;
+
+  // onFinish returns next job (or null if none) and takes the object to remove job from stack
+  void processJob(HandleJob onFinish) async {
+    working = true;
+    var job = onFinish(null);
+
+    while (job != null) {
+      // PROCESS HERE
+      await Future.delayed(Duration(seconds: 3));
+
+      job = onFinish(job);
+    }
+
+    working = false;
+  }
 }
 
 class IsolateManager {
+  // LATER: Update thread availability for horizontal scaling
   static const int threadAvailability = 2;
   List<Map<String, dynamic>> backlog = [];
   List<ThreadWorker> workers = [];
@@ -116,8 +134,16 @@ class IsolateManager {
     return;
   }
 
-  void _populate() {}
+  /// Populates worker pool based on the thread availability
+  void _populate() {
+    for (int i = 0; i < threadAvailability; i++) {
+      var worker = ThreadWorker(i);
 
+      workers.add(worker);
+    }
+  }
+
+  // Checks if workers are available. If they are, it puts them to work
   void review() {
     for (ThreadWorker worker in workers) {
       if (!worker.working) {
@@ -126,8 +152,14 @@ class IsolateManager {
     }
   }
 
-  /// Used to request a job when an isolate has finished
-  void _clockIn(int id) {
-    // Puts them to work
+  /// Distributes jobs when workers ask for them or assigns jobs when they're not working
+  void _clockIn(int workerId) {
+    workers[workerId].processJob((job) {
+      if (job != null) {
+        backlog.remove(job);
+      }
+
+      return backlog.isEmpty ? null : backlog[0];
+    });
   }
 }
