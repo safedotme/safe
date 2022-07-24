@@ -81,11 +81,11 @@ class IngestionEngine {
       true,
     );
 
-    _manager.request({
-      "file": file,
-      "shard": shard,
-      "taken": false,
-    });
+    // Sends data to be processed by the isolate manager
+    _manager.request(
+      {"file": file, "shard": shard, "taken": false},
+      _core,
+    );
   }
 
   void _tick(Timer t) async {
@@ -101,8 +101,9 @@ class IngestionEngine {
 typedef HandleJob = Map<String, dynamic>? Function(Map<String, dynamic>? id);
 
 class ThreadWorker {
+  final Core core;
   final int id;
-  ThreadWorker(this.id);
+  ThreadWorker(this.id, this.core);
 
   // STATE
   bool working = false;
@@ -113,13 +114,12 @@ class ThreadWorker {
     var job = onFinish(null);
 
     while (job != null) {
-      // PROCESS HERE
       await Future.delayed(Duration(seconds: 3));
       XFile file = job["file"];
       Shard shard = job["shard"];
-      var media = await compress(file.path);
 
-      print(media);
+      // Handles compression and uploading
+      await intake(file.path, shard, shard.position == 0);
 
       job = onFinish(job);
     }
@@ -136,6 +136,30 @@ class ThreadWorker {
 
     return media;
   }
+
+  Future<File> genThumbnail(String path) async {
+    var thumbnail = await VideoCompress.getFileThumbnail(path);
+
+    return thumbnail;
+  }
+
+  Future<void> upload(File file) async {}
+
+  Future<void> intake(String path, Shard shard, bool shouldGenThumbnail) async {
+    await compress(path);
+    // Upload
+
+    if (shouldGenThumbnail) {
+      var image = await genThumbnail(path);
+      // Upload
+    }
+
+    // Send to firestore
+    core.services.server.incidents.upsert(
+      // UPDATE WITH DATA
+      core.state.capture.incident!.copyWith(),
+    );
+  }
 }
 
 class IsolateManager {
@@ -145,11 +169,11 @@ class IsolateManager {
   List<ThreadWorker> workers = [];
 
   /// Used to request a job esternally
-  void request(Map<String, dynamic> job) {
+  void request(Map<String, dynamic> job, Core core) {
     backlog.add(job);
 
     if (workers.isEmpty) {
-      _populate();
+      _populate(core);
     }
 
     review();
@@ -157,9 +181,9 @@ class IsolateManager {
   }
 
   /// Populates worker pool based on the thread availability
-  void _populate() {
+  void _populate(Core core) {
     for (int i = 0; i < threadAvailability; i++) {
-      var worker = ThreadWorker(i);
+      var worker = ThreadWorker(i, core);
 
       workers.add(worker);
     }
