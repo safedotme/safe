@@ -1,10 +1,12 @@
 // ignore_for_file: unused_field
 import 'dart:async';
+import 'dart:io';
 import 'package:camera/camera.dart';
 import 'package:safe/core.dart';
 import 'package:safe/models/incident/incident.model.dart';
 import 'package:safe/models/incident/shard.model.dart';
 import 'package:uuid/uuid.dart';
+import 'package:video_compress/video_compress.dart';
 
 class IngestionEngine {
   final IsolateManager _manager = IsolateManager();
@@ -35,6 +37,7 @@ class IngestionEngine {
     _core = cre;
 
     // Start recording
+
     await _controller.startVideoRecording();
 
     // Start scheduler
@@ -78,7 +81,11 @@ class IngestionEngine {
       true,
     );
 
-    _manager.request({"file": file, "shard": shard});
+    _manager.request({
+      "file": file,
+      "shard": shard,
+      "taken": false,
+    });
   }
 
   void _tick(Timer t) async {
@@ -108,11 +115,26 @@ class ThreadWorker {
     while (job != null) {
       // PROCESS HERE
       await Future.delayed(Duration(seconds: 3));
+      XFile file = job["file"];
+      Shard shard = job["shard"];
+      var media = await compress(file.path);
+
+      print(media);
 
       job = onFinish(job);
     }
 
     working = false;
+  }
+
+  Future<MediaInfo?> compress(String path) async {
+    var media = await VideoCompress.compressVideo(
+      path,
+      includeAudio: true,
+      deleteOrigin: false,
+    );
+
+    return media;
   }
 }
 
@@ -144,7 +166,7 @@ class IsolateManager {
   }
 
   // Checks if workers are available. If they are, it puts them to work
-  void review() {
+  void review() async {
     for (ThreadWorker worker in workers) {
       if (!worker.working) {
         _clockIn(worker.id);
@@ -159,7 +181,24 @@ class IsolateManager {
         backlog.remove(job);
       }
 
-      return backlog.isEmpty ? null : backlog[0];
+      var available = backlog;
+
+      if (available.isEmpty) {
+        return null;
+      }
+
+      available.removeWhere((element) => element["taken"]);
+
+      if (available.isEmpty) {
+        return null;
+      }
+
+      var newJob = available[0];
+
+      // change new job to taken
+      backlog[backlog.indexOf(newJob)]["taken"] = true;
+
+      return newJob;
     });
   }
 }
