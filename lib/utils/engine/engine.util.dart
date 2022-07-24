@@ -45,8 +45,7 @@ class IngestionEngine {
 
   // Called when user wishes to stop recording
   void stop() {
-    // dispose controller
-    // stop ticker
+    _ticker.cancel();
   }
 
   Future<void> setIncident(Incident i, bool upload) async {
@@ -75,13 +74,11 @@ class IngestionEngine {
     List<Shard>? shards = _incident.shards;
 
     setIncident(
-      _incident.copyWith(
-        shards: shards == null ? [shard] : [...shards, shard],
-      ),
+      _incident.copyWith(shards: shards == null ? [shard] : [...shards, shard]),
       true,
     );
 
-    // Send to isolate manager
+    _manager.request({"file": file, "shard": shard});
   }
 
   void _tick(Timer t) async {
@@ -94,6 +91,43 @@ class IngestionEngine {
   }
 }
 
-class ThreadWorker {}
+class ThreadWorker {
+  final int id;
+  ThreadWorker(this.id);
 
-class IsolateManager {}
+  // STATE
+  bool working = false;
+}
+
+class IsolateManager {
+  static const int threadAvailability = 2;
+  List<Map<String, dynamic>> backlog = [];
+  List<ThreadWorker> workers = [];
+
+  /// Used to request a job esternally
+  void request(Map<String, dynamic> job) {
+    backlog.add(job);
+
+    if (workers.isEmpty) {
+      _populate();
+    }
+
+    review();
+    return;
+  }
+
+  void _populate() {}
+
+  void review() {
+    for (ThreadWorker worker in workers) {
+      if (!worker.working) {
+        _clockIn(worker.id);
+      }
+    }
+  }
+
+  /// Used to request a job when an isolate has finished
+  void _clockIn(int id) {
+    // Puts them to work
+  }
+}
