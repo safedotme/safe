@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_null_aware_operators
+
 class Shard {
   final String? bucketId;
   final double? bytes;
@@ -21,7 +23,7 @@ class Shard {
 
   factory Shard.fromJson(Map<String, dynamic> json) => Shard(
         bucketId: json["bucket_id"],
-        bytes: json["bytes"].toDouble(),
+        bytes: json["bytes"]?.toDouble(),
         uploadDatetime: DateTime.parse(json["upload_datetime"]),
         shardId: json["shard_id"],
         position: json["position"],

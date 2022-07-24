@@ -34,11 +34,19 @@ class Incident {
   });
 
   factory Incident.fromJson(Map<String, dynamic> json) {
-    var _location = List<Map<String, dynamic>>.from(json["location"]);
-    var _contacts = List<Map<String, dynamic>>.from(json["notified_contacts"]);
-    var _battery = List<Map<String, dynamic>>.from(json["battery"]);
-    var _shards = List<Map<String, dynamic>>.from(json["shards"]);
-    var _type = List<String>.from(json["type"]);
+    List<Map<String, dynamic>>? _location = json["location"] == null
+        ? null
+        : List<Map<String, dynamic>>.from(json["location"]);
+    List<Map<String, dynamic>>? _contacts = json["notified_contacts"] == null
+        ? null
+        : List<Map<String, dynamic>>.from(json["notified_contacts"]);
+    List<Map<String, dynamic>>? _battery = json["battery"] == null
+        ? null
+        : List<Map<String, dynamic>>.from(json["battery"]);
+    List<Map<String, dynamic>>? _shards = json["shards"] == null
+        ? null
+        : List<Map<String, dynamic>>.from(json["shards"]);
+    List<String> _type = List<String>.from(json["type"]);
 
     return Incident(
       id: json["id"],
@@ -46,12 +54,12 @@ class Incident {
       name: json["name"],
       type: _type.map((e) => IncidentUtil.parseType(e)).toList(),
       datetime: DateTime.parse(json["datetime"]),
-      location: _location.map((e) => Location.fromJson(e)).toList(),
+      location: _location?.map((e) => Location.fromJson(e)).toList(),
       notifiedContacts:
-          _contacts.map((e) => NotifiedContact.fromJson(e)).toList(),
-      battery: _battery.map((e) => Battery.fromJson(e)).toList(),
+          _contacts?.map((e) => NotifiedContact.fromJson(e)).toList(),
+      battery: _battery?.map((e) => Battery.fromJson(e)).toList(),
       thumbnail: json["thumbnail"],
-      shards: _shards.map((e) => Shard.fromJson(e)).toList(),
+      shards: _shards?.map((e) => Shard.fromJson(e)).toList(),
     );
   }
 

@@ -38,9 +38,9 @@ class IngestionEngine {
     await _controller.startVideoRecording();
 
     // Start scheduler
-    _ticker = Timer.periodic(Duration(seconds: 5), _tick);
+    _ticker = Timer.periodic(clipBound, _tick);
 
-    setIncident(incident);
+    setIncident(incident, true);
   }
 
   // Called when user wishes to stop recording
@@ -49,8 +49,13 @@ class IngestionEngine {
     // stop ticker
   }
 
-  void setIncident(Incident i) {
+  Future<void> setIncident(Incident i, bool upload) async {
     _incident = i;
+    _core.state.capture.setIncident(i);
+
+    if (upload) {
+      _core.services.server.incidents.upsert(i);
+    }
   }
 
   void _generateThumbnail(XFile file) {
@@ -66,6 +71,17 @@ class IngestionEngine {
       localPath: file.path,
       datetime: time,
     );
+
+    List<Shard>? shards = _incident.shards;
+
+    setIncident(
+      _incident.copyWith(
+        shards: shards == null ? [shard] : [...shards, shard],
+      ),
+      true,
+    );
+
+    // Send to isolate manager
   }
 
   void _tick(Timer t) async {
