@@ -3,17 +3,12 @@ import 'dart:math';
 
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:safe/models/incident/shard.model.dart';
+import 'package:safe/neuances.dart';
 
 class ShardStorageService {
   FirebaseStorage? _instance;
 
-  final List<String> _buckets = [
-    "gs://safe-f73bf-2iwra",
-    "gs://safe-f73bf-2iymj",
-    "gs://safe-f73bf-6rjlm",
-    "gs://safe-f73bf-he25n",
-    "gs://safe-f73bf-yomzj",
-  ];
+  final List<String> _buckets = kBuckets;
 
   bool get isInitialized => _instance != null;
 

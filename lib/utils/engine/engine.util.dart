@@ -144,6 +144,13 @@ class ThreadWorker {
     return thumbnail;
   }
 
+  Future<String?> uploadThumbnail(String path) async {
+    return core.services.storage.thumbnail.upload(
+      path,
+      core.state.capture.incident!.id,
+    );
+  }
+
   Future<Shard?> upload(Shard sh, String path) {
     var service = ShardStorageService();
 
@@ -163,21 +170,35 @@ class ThreadWorker {
   }
 
   Future<void> intake(String path, Shard shard, bool shouldGenThumbnail) async {
-    var media = await compress(path);
-    // Upload
+    Incident incident = core.state.capture.incident!;
 
-    if (shouldGenThumbnail) {
-      var image = await genThumbnail(path);
-      print(image);
-      // Upload
+    // LATER: Add error handling for when media or path are null
+    var media = await compress(path);
+    var completeShard = await upload(shard, media!.path!);
+
+    if (completeShard == null) {
+      // DO SOMETHING
+      return;
     }
 
-    // Send to firestore
-    // SET INCIDENT HERE
-    // core.services.server.incidents.upsert(
-    //   // UPDATE WITH DATA
-    //   core.state.capture.incident!.copyWith(),
-    // );
+    if (shouldGenThumbnail) {
+      var thumbnail = await genThumbnail(media.path!);
+      var url = await uploadThumbnail(thumbnail.path);
+      incident = incident.copyWith(
+        thumbnail: url,
+      );
+    }
+
+    // Synchronize incidents with shards
+    incident = incident.copyWith(
+      shards: [
+        ...incident.shards!,
+        completeShard,
+      ],
+    );
+
+    core.state.capture.setIncident(incident);
+    core.services.server.incidents.upsert(incident);
   }
 }
 
