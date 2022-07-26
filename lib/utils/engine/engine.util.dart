@@ -49,6 +49,10 @@ class IngestionEngine {
 
   // Called when user wishes to stop recording
   void stop() {
+    // Tick is called one final time to clip the video on stop
+    _tick(_ticker);
+
+    // Ticker is canceled to terminate recording
     _ticker.cancel();
   }
 
@@ -59,10 +63,6 @@ class IngestionEngine {
     if (upload) {
       _core.services.server.incidents.upsert(i);
     }
-  }
-
-  void _generateThumbnail(XFile file) {
-    // Add thumbnail functionality
   }
 
   /// Uploads primitive data and sends rest to be handled by the manager
@@ -177,7 +177,7 @@ class ThreadWorker {
     var completeShard = await upload(shard, media!.path!);
 
     if (completeShard == null) {
-      // DO SOMETHING
+      // DO SOMETHING IF UPLOAD IS NOT SUCCESSFUL
       return;
     }
 
