@@ -147,11 +147,13 @@ class ThreadWorker {
   Future<void> upload(File file) async {}
 
   Future<void> intake(String path, Shard shard, bool shouldGenThumbnail) async {
-    var media = await compute(compress, path);
+    var media = await compress(path);
+    print(media);
     // Upload
 
     if (shouldGenThumbnail) {
-      var image = await compute(genThumbnail, path);
+      var image = await genThumbnail(path);
+      print(image);
       // Upload
     }
 
