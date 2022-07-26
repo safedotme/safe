@@ -2,6 +2,7 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:camera/camera.dart';
+import 'package:flutter/foundation.dart';
 import 'package:safe/core.dart';
 import 'package:safe/models/incident/incident.model.dart';
 import 'package:safe/models/incident/shard.model.dart';
@@ -146,19 +147,19 @@ class ThreadWorker {
   Future<void> upload(File file) async {}
 
   Future<void> intake(String path, Shard shard, bool shouldGenThumbnail) async {
-    await compress(path);
+    var media = await compute(compress, path);
     // Upload
 
     if (shouldGenThumbnail) {
-      var image = await genThumbnail(path);
+      var image = await compute(genThumbnail, path);
       // Upload
     }
 
     // Send to firestore
-    core.services.server.incidents.upsert(
-      // UPDATE WITH DATA
-      core.state.capture.incident!.copyWith(),
-    );
+    // core.services.server.incidents.upsert(
+    //   // UPDATE WITH DATA
+    //   core.state.capture.incident!.copyWith(),
+    // );
   }
 }
 
