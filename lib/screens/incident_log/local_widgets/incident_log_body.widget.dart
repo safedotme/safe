@@ -64,30 +64,12 @@ class _IncidentLogBodyState extends State<IncidentLogBody> {
 
   List<Widget> handleResponse(List<Incident>? incidents) {
     if (incidents == null) {
-      WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-        setState(() {
-          isEmpty = true;
-        });
-      });
-
       return [IncidentCardLoader()];
     }
 
     if (incidents.isEmpty) {
-      WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-        setState(() {
-          isEmpty = true;
-        });
-      });
-
       return [EmptyIncidentLog()]; // Empty State
     }
-
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      setState(() {
-        isEmpty = false;
-      });
-    });
 
     return List.generate(
         incidents.length,
@@ -118,7 +100,8 @@ class _IncidentLogBodyState extends State<IncidentLogBody> {
                 ),
                 child: Observer(
                   builder: (_) => SizedBox(
-                    height: isEmpty
+                    height: (core.state.incidentLog.incidents == null ||
+                            core.state.incidentLog.incidents!.isEmpty)
                         ? queryData.size.height -
                             genTopPadding(core.state.incidentLog.offset) -
                             kBottomScreenMargin
@@ -148,7 +131,10 @@ class _IncidentLogBodyState extends State<IncidentLogBody> {
                           height: 35 *
                               genNavBtnSpacer(core.state.incidentLog.offset),
                         ),
-                        !isEmpty ? IncidentLogSubheader() : SizedBox(),
+                        (core.state.incidentLog.incidents == null ||
+                                core.state.incidentLog.incidents!.isEmpty)
+                            ? SizedBox()
+                            : IncidentLogSubheader(),
                         SizedBox(height: 15),
                         ...handleResponse(core.state.incidentLog.incidents),
                       ],
