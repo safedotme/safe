@@ -2,7 +2,7 @@
 
 class Shard {
   final String? bucketId;
-  final double? bytes;
+  final int? bytes;
   final DateTime? uploadDatetime;
   final String shardId;
   final int position;
@@ -23,7 +23,7 @@ class Shard {
 
   factory Shard.fromJson(Map<String, dynamic> json) => Shard(
         bucketId: json["bucket_id"],
-        bytes: json["bytes"]?.toDouble(),
+        bytes: json["bytes"]?.toInt(),
         uploadDatetime: DateTime.parse(json["upload_datetime"]),
         shardId: json["shard_id"],
         position: json["position"],
@@ -42,4 +42,26 @@ class Shard {
         "cloud_path": cloudPath,
         "datetime": datetime.toIso8601String(),
       };
+
+  Shard copyWith({
+    String? bucketId,
+    int? bytes,
+    DateTime? uploadDatetime,
+    String? shardId,
+    int? position,
+    String? cloudPath,
+    String? localPath,
+    DateTime? datetime,
+  }) {
+    return Shard(
+      bucketId: bucketId ?? this.bucketId,
+      bytes: bytes ?? this.bytes,
+      uploadDatetime: uploadDatetime ?? this.uploadDatetime,
+      shardId: shardId ?? this.shardId,
+      position: position ?? this.position,
+      cloudPath: cloudPath ?? this.cloudPath,
+      localPath: localPath ?? this.localPath,
+      datetime: datetime ?? this.datetime,
+    );
+  }
 }

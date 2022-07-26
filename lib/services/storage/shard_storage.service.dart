@@ -1,6 +1,8 @@
+import 'dart:io';
 import 'dart:math';
 
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:safe/models/incident/shard.model.dart';
 
 class ShardStorageService {
   FirebaseStorage? _instance;
@@ -86,6 +88,29 @@ class ShardStorageService {
     }
 
     return distributionChart;
+  }
+
+  /// Uploads shard video and returns new shard content
+  Future<Shard?> uploadShardContent(Shard shard, String path) async {
+    assert(
+      _instance != null,
+      "Firebase Storage instance has not been initialized",
+    );
+
+    var file = File(path);
+
+    var task = _instance!.ref().putFile(file);
+
+    String url = await task.snapshot.ref.getDownloadURL();
+    int bytes = await file.length();
+
+    return shard.copyWith(
+      bucketId: _instance!.bucket,
+      bytes: bytes,
+      uploadDatetime: DateTime.now(),
+      localPath: file.path,
+      cloudPath: url,
+    );
   }
 
   void fetch(String path) {}
