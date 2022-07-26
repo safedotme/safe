@@ -2,10 +2,10 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:camera/camera.dart';
-import 'package:flutter/foundation.dart';
 import 'package:safe/core.dart';
 import 'package:safe/models/incident/incident.model.dart';
 import 'package:safe/models/incident/shard.model.dart';
+import 'package:safe/services/storage/shard_storage.service.dart';
 import 'package:uuid/uuid.dart';
 import 'package:video_compress/video_compress.dart';
 
@@ -144,11 +144,26 @@ class ThreadWorker {
     return thumbnail;
   }
 
-  Future<void> upload(File file) async {}
+  Future<Shard?> upload(Shard sh, String path) {
+    var service = ShardStorageService();
+
+    // Takes incidents and extracts bucket ids
+    List<String?> ids = (core.state.capture.incident!.shards ?? [])
+        .map((e) => e.bucketId)
+        .toList()
+      ..removeWhere((e) => e == null);
+
+    // Confirms datatypes
+    var nonNullIds = List<String>.from(ids);
+
+    // Sets bucket based on previous shards
+    service.setDistributedBucket(nonNullIds);
+
+    return service.uploadShardContent(sh, path);
+  }
 
   Future<void> intake(String path, Shard shard, bool shouldGenThumbnail) async {
     var media = await compress(path);
-    print(media);
     // Upload
 
     if (shouldGenThumbnail) {
@@ -158,6 +173,7 @@ class ThreadWorker {
     }
 
     // Send to firestore
+    // SET INCIDENT HERE
     // core.services.server.incidents.upsert(
     //   // UPDATE WITH DATA
     //   core.state.capture.incident!.copyWith(),
