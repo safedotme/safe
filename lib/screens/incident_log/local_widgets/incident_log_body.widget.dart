@@ -71,13 +71,21 @@ class _IncidentLogBodyState extends State<IncidentLogBody> {
       return [EmptyIncidentLog()]; // Empty State
     }
 
+    incidents.sort(
+      ((a, b) => a.datetime.compareTo(b.datetime)),
+    );
+
+    var sortedIncidents = incidents.reversed.toList();
+
     return List.generate(
-        incidents.length,
+        sortedIncidents.length,
         (i) => Padding(
               padding: EdgeInsets.only(
-                bottom: i + 1 == incidents.length ? 0 : kIncidentLogCardSpacing,
+                bottom: i + 1 == sortedIncidents.length
+                    ? 0
+                    : kIncidentLogCardSpacing,
               ),
-              child: MutableIncidentCard(incidents[i]),
+              child: MutableIncidentCard(sortedIncidents[i]),
             ) // Add spacing between incidents,
         );
   }
