@@ -4,19 +4,20 @@ class GeocoderUtil {
       return raw;
     }
 
-    String untagged = "";
+    var noPref = raw.substring(raw.indexOf("+"));
     bool shouldIngest = false;
+    String address = "";
 
-    for (int i = 0; i < raw.length; i++) {
+    for (int i = 0; i < noPref.length; i++) {
       if (shouldIngest) {
-        untagged += raw[i];
+        address += noPref[i];
       }
 
-      if (raw[i] == ",") {
+      if (noPref[i] == " ") {
         shouldIngest = true;
       }
     }
 
-    return untagged.replaceFirst(" ", "");
+    return address;
   }
 }

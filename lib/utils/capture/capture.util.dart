@@ -93,7 +93,6 @@ class CaptureUtil {
       // Check if log is null | this will be the first time
       if (log == null) {
         _generateAddress(location).then((address) {
-          print(address);
           _sendLocation([location.copyWith(address: address)]);
         });
 
