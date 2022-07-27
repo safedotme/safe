@@ -1,5 +1,6 @@
 import 'package:safe/services/auth/auth.service.dart';
 import 'package:safe/services/camera/camera.service.dart';
+import 'package:safe/services/geocoder/geocoder.service.dart';
 import 'package:safe/services/location/location.service.dart';
 import 'package:safe/services/permissions/permisions.service.dart';
 import 'package:safe/services/server/server.service.dart';
@@ -12,4 +13,5 @@ class Services {
   CameraService cam = CameraService();
   StorageService storage = StorageService();
   LocationService location = LocationService();
+  GeocoderService geocoder = GeocoderService();
 }

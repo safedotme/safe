@@ -36,4 +36,24 @@ class Location {
         "speed": speed,
         "accuracy": accuracy,
       };
+
+  Location copyWith({
+    double? lat,
+    double? long,
+    double? alt,
+    double? speed,
+    double? accuracy,
+    DateTime? datetime,
+    String? address,
+  }) {
+    return Location(
+      lat: lat ?? this.lat,
+      accuracy: accuracy ?? this.accuracy,
+      speed: speed ?? this.speed,
+      long: long ?? this.long,
+      alt: alt ?? this.alt,
+      datetime: datetime ?? this.datetime,
+      address: address ?? this.address,
+    );
+  }
 }

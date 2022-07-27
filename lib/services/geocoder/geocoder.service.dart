@@ -19,10 +19,12 @@ class GeocoderService {
 
     var response = await http.get(Uri.parse(loaded));
 
-    if (response.body.isEmpty) {
+    Map<String, dynamic> json = jsonDecode(response.body);
+
+    if (json["status"] != "OK") {
       return null;
     }
 
-    return jsonDecode(response.body);
+    return json;
   }
 }

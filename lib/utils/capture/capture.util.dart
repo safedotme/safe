@@ -10,7 +10,9 @@ class CaptureUtil {
   Core? _core;
   StreamSubscription<Location>? subscription;
 
-  void initialize(Core core) => _core = core;
+  void initialize(Core core) {
+    _core = core;
+  }
 
   void start() {
     assert(_core != null, "CaptureUtil must be initialized");
@@ -30,12 +32,31 @@ class CaptureUtil {
   }
 
   void stop() async {
+    // CALL STOP WHEN NECESSARY
     if (subscription != null) {
       await subscription!.cancel();
     }
   }
 
-  void generateAddress(Location location) {}
+  Future<String?> _generateAddress(Location location) async {
+    // Build better system for judging addresses based on whether one has been generated
+
+    // Checks that received data is not null
+    if (location.lat == null || location.long == null) {
+      return null;
+    }
+
+    var response = await _core!.services.geocoder.fetchAddress(
+      lat: location.lat!,
+      long: location.long!,
+    );
+
+    if (response == null) {
+      return null;
+    }
+
+    return response["results"][0]["formatted_address"];
+  }
 
   // Initializes incident and sends primitives to backend
   Future<void> _uploadChanges(Incident? i) async {
@@ -63,44 +84,39 @@ class CaptureUtil {
   }
 
   // Updates location as user moves
-  void _locationListen() {
-    bool timeout = false;
-    List<Location> backlog = [];
+  void _locationListen() async {
+    List<Location>? log;
+    bool shouldUpsert = true;
 
     _core!.services.location.initilaize();
     subscription = _core!.services.location.stream.listen((location) async {
-      if (timeout) {
-        // Data thats not sent will be added to a backlog
-        backlog.add(location);
+      // Check if log is null | this will be the first time
+      if (log == null) {
+        _sendLocation([location]);
+        // Generate address
+        log = [];
         return;
       }
 
-      // Update incident
-      // Send incident
-      _sendLocation(location);
+      log!.add(location);
+      if (!shouldUpsert) {
+        return;
+      }
 
-      // Prevents from spamming firestore
-      timeout = true;
+      shouldUpsert = false;
       await Future.delayed(kLocationStreamTimeout);
-      timeout = false;
-
-      // If there is items in the backlog, send them
-      if (backlog.isNotEmpty) {
-        _sendLocation(backlog[0]);
-        backlog.remove(backlog[0]);
-        return;
-      }
-
-      return;
+      _sendLocation(log!);
+      log = [];
+      shouldUpsert = true;
     });
   }
 
-  Future<void> _sendLocation(Location location) async {
+  Future<void> _sendLocation(List<Location> location) async {
     var incident = _core!.state.capture.incident!;
 
     _uploadChanges(
       incident.copyWith(
-        location: [...incident.location ?? [], location],
+        location: [...incident.location ?? [], ...location],
       ),
     );
   }
