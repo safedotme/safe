@@ -1,6 +1,7 @@
 import 'package:safe/core.dart';
 import 'package:safe/models/incident/incident.model.dart';
 import 'package:safe/models/incident/location.model.dart';
+import 'package:safe/services/server/incident_server.service.dart';
 import 'package:safe/utils/constants/constants.util.dart';
 import 'package:uuid/uuid.dart';
 
@@ -29,6 +30,7 @@ class CaptureUtil {
 
   // Initializes incident and sends primitives to backend
   Future<void> _uploadChanges(Incident? i) async {
+    Incident? incident;
     // If incident does not exist, create it
     if (i == null) {
       // Generates incident number
@@ -36,17 +38,18 @@ class CaptureUtil {
           ? 1
           : _core!.state.incidentLog.incidents!.length + 1;
 
-      var incident = Incident(
+      incident = Incident(
         id: Uuid().v1(),
         userId: _core!.services.auth.currentUser!.uid,
         name: "Incident #$incidentNumber",
         type: [_core!.state.capture.type],
         datetime: DateTime.now(),
       );
-
-      _core!.services.server.incidents.upsert(incident);
-      return;
     }
+
+    incident ??= i;
+
+    return _core!.services.server.incidents.upsert(incident!);
   }
 
   // Updates location as user moves
