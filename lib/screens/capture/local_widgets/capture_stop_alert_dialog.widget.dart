@@ -1,18 +1,30 @@
 import 'package:flutter/cupertino.dart';
+import 'package:provider/provider.dart';
+import 'package:safe/core.dart';
 
 class CaptureStopAlertDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    Core core = Provider.of<Core>(context, listen: false);
     return CupertinoAlertDialog(
-      title: Text("Stop Recording"),
+      title: Text(
+        core.utils.language.langMap[core.state.preferences.language]!["capture"]
+            ["controls"]["stop_alert"]["header"],
+      ),
       content: Text(
-          "This will stop location and camera streams and upload data to the cloud"),
+        core.utils.language.langMap[core.state.preferences.language]!["capture"]
+            ["controls"]["stop_alert"]["content"],
+      ),
       actions: [
         CupertinoDialogAction(
           onPressed: () {
             Navigator.of(context).pop();
           },
-          child: Text("Cancel"),
+          child: Text(
+            core.utils.language
+                    .langMap[core.state.preferences.language]!["capture"]
+                ["controls"]["stop_alert"]["cancel"],
+          ),
         ),
         CupertinoDialogAction(
           onPressed: () {
@@ -20,7 +32,11 @@ class CaptureStopAlertDialog extends StatelessWidget {
           },
           isDefaultAction: true,
           textStyle: TextStyle(fontWeight: FontWeight.w500),
-          child: Text("Confirm"),
+          child: Text(
+            core.utils.language
+                    .langMap[core.state.preferences.language]!["capture"]
+                ["controls"]["stop_alert"]["confirm"],
+          ),
         ),
       ],
     );

@@ -174,6 +174,13 @@ class LanguageUtil {
         "flip_camera": {"header": "Flip Camera"},
         "911": {"header": "Notify 911"},
         "stop": {"header": "Stop Recording"},
+        "stop_alert": {
+          "header": "Stop Recording",
+          "content":
+              "This will stop location and camera streams and upload data to the cloud",
+          "cancel": "Cancel",
+          "confirm": "Confirm"
+        }
       }
     }
   };
