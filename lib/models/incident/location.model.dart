@@ -1,9 +1,9 @@
 class Location {
-  final double lat;
-  final double long;
-  final double alt;
-  final double speed;
-  final double accuracy;
+  final double? lat;
+  final double? long;
+  final double? alt;
+  final double? speed;
+  final double? accuracy;
   final DateTime datetime;
   final String? address;
 

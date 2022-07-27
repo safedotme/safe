@@ -4,9 +4,16 @@ import 'package:safe/models/incident/location.model.dart';
 class LocationService {
   final location = api.Location();
 
-  void listen() {
-    location.onLocationChanged.listen((event) {
-      print(event.accuracy);
+  Stream<Location> listen() {
+    return location.onLocationChanged.map((e) {
+      return Location(
+        lat: e.latitude,
+        long: e.longitude,
+        alt: e.altitude,
+        speed: e.speed,
+        accuracy: e.accuracy,
+        datetime: DateTime.now(),
+      );
     });
   }
 }
