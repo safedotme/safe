@@ -5,7 +5,6 @@ import 'package:safe/models/incident/incident.model.dart';
 import 'package:safe/models/incident/location.model.dart';
 import 'package:safe/utils/constants/constants.util.dart';
 import 'package:uuid/uuid.dart';
-import 'package:video_compress/video_compress.dart';
 
 class CaptureUtil {
   Core? _core;
@@ -35,6 +34,8 @@ class CaptureUtil {
       await subscription!.cancel();
     }
   }
+
+  void generateAddress(Location location) {}
 
   // Initializes incident and sends primitives to backend
   Future<void> _uploadChanges(Incident? i) async {
