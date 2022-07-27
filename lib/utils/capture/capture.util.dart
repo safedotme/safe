@@ -1,8 +1,10 @@
 import 'dart:async';
 
 import 'package:safe/core.dart';
+import 'package:safe/models/contact/contact.model.dart';
 import 'package:safe/models/incident/incident.model.dart';
 import 'package:safe/models/incident/location.model.dart';
+import 'package:safe/neuances.dart';
 import 'package:safe/utils/constants/constants.util.dart';
 import 'package:uuid/uuid.dart';
 
@@ -125,5 +127,20 @@ class CaptureUtil {
   }
 
   // ⬇️ SMS
-  void notifyContacts() {}
+  void notifyContacts() async {
+    var contacts = await _core!.services.server.contacts.readFromUserIdOnce(
+      id: _core!.services.auth.currentUser!.uid,
+    );
+
+    // contacts.forEach((contact) {
+    message(contacts[0]);
+    // });
+  }
+
+  Future<void> message(Contact contact) async {
+    _core!.services.twilio.messageSMS(
+      phone: "+506 71099519",
+      message: kContactMessageTemplate,
+    );
+  }
 }

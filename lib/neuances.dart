@@ -10,3 +10,8 @@ const List<String> kBuckets = [
 ];
 
 const String kThumbnailBucketPath = "gs://safe-thumbnails";
+
+const String kContactMessageTemplate = """
+hello world
+yo
+""";
