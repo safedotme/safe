@@ -1,12 +1,15 @@
+import 'dart:async';
+
 import 'package:safe/core.dart';
 import 'package:safe/models/incident/incident.model.dart';
 import 'package:safe/models/incident/location.model.dart';
-import 'package:safe/services/server/incident_server.service.dart';
 import 'package:safe/utils/constants/constants.util.dart';
 import 'package:uuid/uuid.dart';
+import 'package:video_compress/video_compress.dart';
 
 class CaptureUtil {
   Core? _core;
+  StreamSubscription<Location>? subscription;
 
   void initialize(Core core) => _core = core;
 
@@ -18,6 +21,7 @@ class CaptureUtil {
 
     // ⬇️ LOCATION
     _locationListen();
+    // Get address if is first time
 
     // ⬇️ SMS
 
@@ -26,7 +30,11 @@ class CaptureUtil {
     // ⬇️ BATTERY
   }
 
-  void stop() {}
+  void stop() async {
+    if (subscription != null) {
+      await subscription!.cancel();
+    }
+  }
 
   // Initializes incident and sends primitives to backend
   Future<void> _uploadChanges(Incident? i) async {
@@ -58,7 +66,8 @@ class CaptureUtil {
     bool timeout = false;
     List<Location> backlog = [];
 
-    _core!.services.location.stream.listen((location) async {
+    _core!.services.location.initilaize();
+    subscription = _core!.services.location.stream.listen((location) async {
       if (timeout) {
         // Data thats not sent will be added to a backlog
         backlog.add(location);
