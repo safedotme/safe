@@ -22,7 +22,6 @@ class CaptureUtil {
 
     // ⬇️ LOCATION
     _locationListen();
-    // Get address if is first time
 
     // ⬇️ SMS
 
@@ -37,6 +36,8 @@ class CaptureUtil {
       await subscription!.cancel();
     }
   }
+
+  // ⬇️ LOCATION
 
   Future<String?> _generateAddress(Location location) async {
     // Build better system for judging addresses based on whether one has been generated
@@ -122,4 +123,7 @@ class CaptureUtil {
       ),
     );
   }
+
+  // ⬇️ SMS
+  void notifyContacts() {}
 }
