@@ -70,7 +70,8 @@ class _HomeScreenState extends State<HomeScreen> {
           child: Center(
             child: MutableSafeButton(
               onTap: () {
-                core.services.location.listen();
+                core.utils.capture.initialize(core);
+                core.utils.capture.start();
                 core.state.capture.controller.open();
               },
             ),

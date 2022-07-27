@@ -1,6 +1,7 @@
 import 'package:camera/camera.dart';
 import 'package:mobx/mobx.dart';
 import 'package:safe/models/incident/incident.model.dart';
+import 'package:safe/models/incident/location.model.dart';
 import 'package:safe/screens/capture/local_widgets/camera_preview.widget.dart';
 import 'package:safe/screens/capture/local_widgets/capture_text_shimmer.widget.dart';
 import 'package:safe/utils/incident/incident.util.dart';
@@ -73,4 +74,10 @@ abstract class _CaptureStore with Store {
 
   @action
   void setIncidentType(IncidentType t) => type = t;
+
+  @observable
+  Stream<Location>? locationUpdates;
+
+  @action
+  void setLocationUpdates(Stream<Location> l) => locationUpdates = l;
 }

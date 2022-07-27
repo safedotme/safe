@@ -1,5 +1,6 @@
 import 'package:logger/logger.dart';
 import 'package:safe/utils/animation/animation.util.dart';
+import 'package:safe/utils/capture/capture.util.dart';
 import 'package:safe/utils/color/color.util.dart';
 import 'package:safe/utils/engine/engine.util.dart';
 import 'package:safe/utils/flows/flows.dart';
@@ -29,4 +30,5 @@ class Utils {
   AnimationUtil animation = AnimationUtil();
   NameUtil name = NameUtil();
   IngestionEngine engine = IngestionEngine();
+  CaptureUtil capture = CaptureUtil();
 }

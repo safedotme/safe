@@ -201,6 +201,22 @@ mixin _$CaptureStore on _CaptureStore, Store {
     });
   }
 
+  late final _$locationUpdatesAtom =
+      Atom(name: '_CaptureStore.locationUpdates', context: context);
+
+  @override
+  Stream<Location>? get locationUpdates {
+    _$locationUpdatesAtom.reportRead();
+    return super.locationUpdates;
+  }
+
+  @override
+  set locationUpdates(Stream<Location>? value) {
+    _$locationUpdatesAtom.reportWrite(value, super.locationUpdates, () {
+      super.locationUpdates = value;
+    });
+  }
+
   late final _$_CaptureStoreActionController =
       ActionController(name: '_CaptureStore', context: context);
 
@@ -293,6 +309,17 @@ mixin _$CaptureStore on _CaptureStore, Store {
   }
 
   @override
+  void setLocationUpdates(Stream<Location> l) {
+    final _$actionInfo = _$_CaptureStoreActionController.startAction(
+        name: '_CaptureStore.setLocationUpdates');
+    try {
+      return super.setLocationUpdates(l);
+    } finally {
+      _$_CaptureStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 controller: ${controller},
@@ -306,7 +333,8 @@ panelHeight: ${panelHeight},
 hintTextIndex: ${hintTextIndex},
 cameraPreviewController: ${cameraPreviewController},
 incident: ${incident},
-type: ${type}
+type: ${type},
+locationUpdates: ${locationUpdates}
     ''';
   }
 }

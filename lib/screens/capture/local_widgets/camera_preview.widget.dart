@@ -112,20 +112,6 @@ class _CameraPreviewControlState extends State<CameraPreviewControl>
   }
 
   Future<void> initCamera() async {
-    // Generates Incident
-
-    int incidentNumber = core.state.incidentLog.incidents == null
-        ? 1
-        : core.state.incidentLog.incidents!.length + 1;
-
-    var incident = Incident(
-      id: Uuid().v1(),
-      userId: core.services.auth.currentUser!.uid,
-      name: "Incident #$incidentNumber",
-      type: [core.state.capture.type],
-      datetime: DateTime.now(),
-    );
-
     // Searches for cameras
     var cameras = await core.services.cam.cameras;
     core.state.capture.setCameras(cameras);
