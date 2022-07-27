@@ -142,6 +142,7 @@ class _CameraPreviewControlState extends State<CameraPreviewControl>
 
     if (camera == null) {
       // ADD ERROR HANDLING FOR WHEN FRONT AND BACK CAMERAS ARE NOT FOUND
+      print("No cameras were found");
       return;
     }
 
@@ -158,11 +159,12 @@ class _CameraPreviewControlState extends State<CameraPreviewControl>
     await core.state.capture.camera!.prepareForVideoRecording();
 
     // Initializes the engine (will start the recording)
-    core.utils.engine.initialize(
-      c: core.state.capture.camera!,
-      cre: core,
-      incident: incident,
-    );
+    // UNCOMMENT LATER
+    // core.utils.engine.initialize(
+    //   c: core.state.capture.camera!,
+    //   cre: core,
+    //   incident: incident,
+    // );
 
     core.state.capture.setIsCameraInitialized(true);
   }

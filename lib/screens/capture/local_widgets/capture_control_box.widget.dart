@@ -1,9 +1,11 @@
 import 'package:camera/camera.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
 import 'package:safe/screens/capture/local_widgets/camera_preview.widget.dart';
+import 'package:safe/screens/capture/local_widgets/capture_stop_alert_dialog.widget.dart';
 import 'package:safe/screens/capture/local_widgets/control_button.widget.dart';
 import 'package:safe/utils/constants/constants.util.dart';
 import 'package:safe/utils/icon/icon.util.dart';
@@ -128,7 +130,13 @@ class _CaptureControlBoxState extends State<CaptureControlBox> {
                                   icon: MutableIcons.stopRecording,
                                   iconSize: Size(17, 17),
                                   onTap: () {
-                                    print("stop incident");
+                                    showCupertinoDialog(
+                                      context: context,
+                                      barrierDismissible: true,
+                                      builder: (_) => CaptureStopAlertDialog(),
+                                    );
+                                    // ADD FUNCTIONALITY TO ASK
+                                    // STOP THE ENGINE
                                   },
                                 ),
                               ],

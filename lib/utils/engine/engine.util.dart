@@ -12,7 +12,6 @@ import 'package:video_compress/video_compress.dart';
 class IngestionEngine {
   final IsolateManager _manager = IsolateManager();
   late CameraController _controller;
-  late Incident _incident;
   late Core _core;
   late Timer _ticker;
   int i = 0;
@@ -23,8 +22,8 @@ class IngestionEngine {
   /// Called only when a user action clips as a byproductz
   void clip(CameraController c, Core core) {
     // Stop the recording
-
     _controller = c;
+
     // Reset the scheduler and route the clip
   }
 
@@ -32,7 +31,6 @@ class IngestionEngine {
   void initialize({
     required CameraController c,
     required Core cre,
-    required Incident incident,
   }) async {
     _controller = c;
     _core = cre;
@@ -43,8 +41,6 @@ class IngestionEngine {
 
     // Start scheduler
     _ticker = Timer.periodic(clipBound, _tick);
-
-    setIncident(incident, true);
   }
 
   // Called when user wishes to stop recording
@@ -57,7 +53,6 @@ class IngestionEngine {
   }
 
   Future<void> setIncident(Incident i, bool upload) async {
-    _incident = i;
     _core.state.capture.setIncident(i);
 
     if (upload) {
@@ -75,10 +70,12 @@ class IngestionEngine {
       datetime: time,
     );
 
-    List<Shard>? shards = _incident.shards;
+    List<Shard>? shards = _core.state.capture.incident!.shards;
 
     setIncident(
-      _incident.copyWith(shards: shards == null ? [shard] : [...shards, shard]),
+      _core.state.capture.incident!.copyWith(
+        shards: shards == null ? [shard] : [...shards, shard],
+      ),
       true,
     );
 
