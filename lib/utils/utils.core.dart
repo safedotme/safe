@@ -4,6 +4,7 @@ import 'package:safe/utils/capture/capture.util.dart';
 import 'package:safe/utils/color/color.util.dart';
 import 'package:safe/utils/engine/engine.util.dart';
 import 'package:safe/utils/flows/flows.dart';
+import 'package:safe/utils/geocoder/geocoder.util.dart';
 import 'package:safe/utils/icon/icon.util.dart';
 import 'package:safe/utils/language/language.util.dart';
 import 'package:safe/utils/name/name.util.dart';
@@ -31,4 +32,5 @@ class Utils {
   NameUtil name = NameUtil();
   IngestionEngine engine = IngestionEngine();
   CaptureUtil capture = CaptureUtil();
+  GeocoderUtil geocoder = GeocoderUtil();
 }

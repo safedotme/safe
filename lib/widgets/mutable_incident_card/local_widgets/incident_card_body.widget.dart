@@ -27,6 +27,22 @@ class _IncidentCardBodyState extends State<IncidentCardBody> {
     core = Provider.of<Core>(context, listen: false);
   }
 
+  String generateAddress() {
+    if (widget.incident.location == null) {
+      return "";
+    }
+
+    if (widget.incident.location!.isEmpty) {
+      return "";
+    }
+
+    if (widget.incident.location![0].address == null) {
+      return "";
+    }
+
+    return core.utils.geocoder.removeTag(widget.incident.location![0].address!);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -46,13 +62,10 @@ class _IncidentCardBodyState extends State<IncidentCardBody> {
                 ),
                 SizedBox(height: kIncidentBodyVerticalSpacing),
                 MutableText(
-                  widget.incident.location == null
-                      ? ""
-                      : widget.incident.location!.isEmpty
-                          ? ""
-                          : (widget.incident.location![0].address ?? ""),
+                  generateAddress(),
                   style: TypeStyle.body,
                   color: MutableColor.neutral2,
+                  maxLines: 2,
                 ),
                 SizedBox(height: kIncidentBodyVerticalSpacing),
                 widget.incident.notifiedContacts == null

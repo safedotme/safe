@@ -92,8 +92,11 @@ class CaptureUtil {
     subscription = _core!.services.location.stream.listen((location) async {
       // Check if log is null | this will be the first time
       if (log == null) {
-        _sendLocation([location]);
-        // Generate address
+        _generateAddress(location).then((address) {
+          print(address);
+          _sendLocation([location.copyWith(address: address)]);
+        });
+
         log = [];
         return;
       }
