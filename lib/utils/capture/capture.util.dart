@@ -49,7 +49,8 @@ class CaptureUtil {
 
     incident ??= i;
 
-    return _core!.services.server.incidents.upsert(incident!);
+    _core!.state.capture.setIncident(incident!);
+    return _core!.services.server.incidents.upsert(incident);
   }
 
   // Updates location as user moves
@@ -69,6 +70,7 @@ class CaptureUtil {
       _sendLocation(location);
 
       // Prevents from spamming firestore
+      timeout = true;
       await Future.delayed(kLocationStreamTimeout);
       timeout = false;
 
@@ -84,7 +86,12 @@ class CaptureUtil {
   }
 
   Future<void> _sendLocation(Location location) async {
-    // Update incident
-    // Send incident
+    var incident = _core!.state.capture.incident!;
+
+    _uploadChanges(
+      incident.copyWith(
+        location: [...incident.location ?? [], location],
+      ),
+    );
   }
 }
