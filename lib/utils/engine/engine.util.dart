@@ -117,9 +117,9 @@ class ThreadWorker {
       Shard shard = job["shard"];
 
       // Handles compression and uploading
-      print("\n\nShard ${shard.position}: START");
+      print("Shard ${shard.position}: START");
       await intake(file.path, shard, shard.position == 0);
-      print("\n\nShard ${shard.position}: DONE");
+      print("Shard ${shard.position}: DONE");
 
       job = onFinish(job);
     }
@@ -161,6 +161,8 @@ class ThreadWorker {
 
     // Confirms datatypes
     var nonNullIds = List<String>.from(ids);
+
+    nonNullIds = nonNullIds.map((e) => "gs://$e").toList();
 
     // Sets bucket based on previous shards
     service.setDistributedBucket(nonNullIds);
