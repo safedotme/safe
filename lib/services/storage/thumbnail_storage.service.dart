@@ -9,8 +9,22 @@ class ThumbnailStorageService {
   );
 
   Future<String?> upload(String path, String incidentId) async {
-    var task = _instance.ref().child(incidentId).putFile(File(path));
-    String url = await task.snapshot.ref.getDownloadURL();
+    var file = File(path);
+    bool exists = await file.exists();
+
+    if (!exists) {
+      print("Path does not exist");
+      return null;
+    }
+
+    Reference ref = _instance.ref().child(incidentId);
+    TaskSnapshot uploadedFile = await ref.putFile(file);
+
+    String? url;
+    if (uploadedFile.state == TaskState.success) {
+      url = await ref.getDownloadURL();
+    }
+
     return url;
   }
 }

@@ -117,7 +117,9 @@ class ThreadWorker {
       Shard shard = job["shard"];
 
       // Handles compression and uploading
+      print("\n\nShard ${shard.position}: START");
       await intake(file.path, shard, shard.position == 0);
+      print("\n\nShard ${shard.position}: DONE");
 
       job = onFinish(job);
     }
@@ -179,6 +181,7 @@ class ThreadWorker {
     }
 
     if (shouldGenThumbnail) {
+      print("Shard ${shard.position}: GENERATING THUMBNAIL");
       var thumbnail = await genThumbnail(media.path!);
       var url = await uploadThumbnail(thumbnail.path);
       incident = incident.copyWith(
