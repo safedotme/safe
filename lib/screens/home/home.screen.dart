@@ -73,9 +73,8 @@ class _HomeScreenState extends State<HomeScreen> {
             child: MutableSafeButton(
               onTap: () async {
                 core.utils.capture.initialize(core);
-                // core.utils.capture.start();
+                core.utils.capture.start();
                 // core.state.capture.controller.open();
-                core.utils.capture.notifyContacts();
               },
             ),
           ),

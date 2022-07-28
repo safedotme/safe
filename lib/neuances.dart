@@ -14,9 +14,9 @@ const String kThumbnailBucketPath = "gs://safe-thumbnails";
 const String kContactMessageTemplate = """
 {FULL_NAME} is actively in an emergency. {NAME} listed you, {FULL_CONTACT_NAME}, as an emergency contacts.
 
-The emergency began at {TIME} EST and is listed as a {TYPE}.
+The emergency began at {TIME} and is listed as a {TYPE}.
 
-His last recorded location is {ADDRESS} ({LAT}° N, {LONG}° W).
+His last recorded location was {ADDRESS} ({LAT}° N, {LONG}° W).
 
 Watch a livestream of the incident from {NAME_POSESSIVE} phone: {LINK}
 

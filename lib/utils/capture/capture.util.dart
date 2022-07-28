@@ -8,6 +8,7 @@ import 'package:safe/models/incident/location.model.dart';
 import 'package:safe/models/user/user.model.dart';
 import 'package:safe/neuances.dart';
 import 'package:safe/utils/constants/constants.util.dart';
+import 'package:safe/utils/incident/incident.util.dart';
 import 'package:uuid/uuid.dart';
 
 class CaptureUtil {
@@ -24,12 +25,10 @@ class CaptureUtil {
     // ⬇️ INCIDENT CREATE
     _uploadChanges(null);
 
-    // ⬇️ LOCATION
-    _locationListen();
-
-    // ⬇️ SMS
-
     // ⬇️ WEBRTC
+
+    // ⬇️ LOCATION + SMS
+    _locationListen();
 
     // ⬇️ BATTERY
   }
@@ -97,8 +96,9 @@ class CaptureUtil {
     subscription = _core!.services.location.stream.listen((location) async {
       // Check if log is null | this will be the first time
       if (log == null) {
-        _generateAddress(location).then((address) {
-          _sendLocation([location.copyWith(address: address)]);
+        _generateAddress(location).then((address) async {
+          await _sendLocation([location.copyWith(address: address)]);
+          _notifyContacts();
         });
 
         log = [];
@@ -129,7 +129,7 @@ class CaptureUtil {
   }
 
   // ⬇️ SMS
-  void notifyContacts() async {
+  void _notifyContacts() async {
     var contacts = await _core!.services.server.contacts.readFromUserIdOnce(
       id: _core!.services.auth.currentUser!.uid,
     );
@@ -142,18 +142,21 @@ class CaptureUtil {
 
     final Map<String, String> replacementMap = {
       "{FULL_NAME}": user.name,
-      "{NAME}": user.name.split(" ")[0],
+      "{NAME}": _core!.utils.name.genFirstName(user.name, false),
       "{FULL_CONTACT_NAME}": contact.name,
       "{TIME}": DateFormat.jm().format(incident.datetime),
-      "{ADDRESS}": incident.location![0].address!,
-      "{LAT}": incident.location![0].lat.toString(),
-      "{LONG}": incident.location![0].long.toString(),
-      "{NAME_POSESSIVE}": user.name.split(" ")[0],
-      "{LINK}": "https://joinsafe.me/incident",
+      "{TYPE}": _core!.utils.incident.generateType(incident.type[0])!,
+      "{ADDRESS}": _core!.utils.geocoder.removeTag(
+        incident.location![0].address!,
+      ),
+      "{LAT}": incident.location![0].lat!.toStringAsFixed(4),
+      "{LONG}": incident.location![0].long!.toStringAsFixed(4),
+      "{NAME_POSESSIVE}": _core!.utils.name.genFirstName(user.name, true),
+      "{LINK}": "https://joinsafe.me/incident", // CHANGE ME
     };
 
     for (String key in replacementMap.keys) {
-      message.replaceAll(key, replacementMap[key]!);
+      message = message.replaceAll(key, replacementMap[key]!);
     }
 
     return message;
