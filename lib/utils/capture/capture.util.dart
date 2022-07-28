@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:intl/intl.dart';
 import 'package:safe/core.dart';
 import 'package:safe/models/contact/contact.model.dart';
@@ -8,7 +7,6 @@ import 'package:safe/models/incident/location.model.dart';
 import 'package:safe/models/user/user.model.dart';
 import 'package:safe/neuances.dart';
 import 'package:safe/utils/constants/constants.util.dart';
-import 'package:safe/utils/incident/incident.util.dart';
 import 'package:uuid/uuid.dart';
 
 class CaptureUtil {
@@ -28,7 +26,7 @@ class CaptureUtil {
     // ⬇️ WEBRTC
 
     // ⬇️ LOCATION + SMS
-    _locationListen();
+    // _locationListen();
 
     // ⬇️ BATTERY
   }
@@ -98,7 +96,9 @@ class CaptureUtil {
       if (log == null) {
         _generateAddress(location).then((address) async {
           await _sendLocation([location.copyWith(address: address)]);
-          _notifyContacts();
+
+          // Notifies contact after address is generated and incident is complete
+          // _notifyContacts(); // UNCOMMENT
         });
 
         log = [];

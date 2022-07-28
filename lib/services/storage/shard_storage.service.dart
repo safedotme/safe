@@ -93,15 +93,24 @@ class ShardStorageService {
     );
 
     var file = File(path);
+    bool exists = await file.exists();
 
-    var task = _instance!.ref().putFile(file);
+    if (!exists) {
+      print("Path does not exist");
+      return null;
+    }
 
-    String url = await task.snapshot.ref.getDownloadURL();
-    int bytes = await file.length();
+    Reference ref = _instance!.ref().child(shard.shardId);
+    TaskSnapshot uploadedFile = await ref.putFile(file);
+
+    String? url;
+    if (uploadedFile.state == TaskState.success) {
+      url = await ref.getDownloadURL();
+    }
 
     return shard.copyWith(
       bucketId: _instance!.bucket,
-      bytes: bytes,
+      bytes: uploadedFile.totalBytes,
       uploadDatetime: DateTime.now(),
       localPath: file.path,
       cloudPath: url,

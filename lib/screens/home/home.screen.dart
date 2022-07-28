@@ -74,7 +74,7 @@ class _HomeScreenState extends State<HomeScreen> {
               onTap: () async {
                 core.utils.capture.initialize(core);
                 core.utils.capture.start();
-                // core.state.capture.controller.open();
+                core.state.capture.controller.open();
               },
             ),
           ),
