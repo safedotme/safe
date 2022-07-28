@@ -1,9 +1,11 @@
 import 'dart:async';
 
+import 'package:intl/intl.dart';
 import 'package:safe/core.dart';
 import 'package:safe/models/contact/contact.model.dart';
 import 'package:safe/models/incident/incident.model.dart';
 import 'package:safe/models/incident/location.model.dart';
+import 'package:safe/models/user/user.model.dart';
 import 'package:safe/neuances.dart';
 import 'package:safe/utils/constants/constants.util.dart';
 import 'package:uuid/uuid.dart';
@@ -132,15 +134,40 @@ class CaptureUtil {
       id: _core!.services.auth.currentUser!.uid,
     );
 
-    // contacts.forEach((contact) {
-    message(contacts[0]);
-    // });
+    contacts.forEach(message);
+  }
+
+  String _generateMessage(Contact contact, User user, Incident incident) {
+    String message = kContactMessageTemplate;
+
+    final Map<String, String> replacementMap = {
+      "{FULL_NAME}": user.name,
+      "{NAME}": user.name.split(" ")[0],
+      "{FULL_CONTACT_NAME}": contact.name,
+      "{TIME}": DateFormat.jm().format(incident.datetime),
+      "{ADDRESS}": incident.location![0].address!,
+      "{LAT}": incident.location![0].lat.toString(),
+      "{LONG}": incident.location![0].long.toString(),
+      "{NAME_POSESSIVE}": user.name.split(" ")[0],
+      "{LINK}": "https://joinsafe.me/incident",
+    };
+
+    for (String key in replacementMap.keys) {
+      message.replaceAll(key, replacementMap[key]!);
+    }
+
+    return message;
   }
 
   Future<void> message(Contact contact) async {
+    var incident = _core!.state.capture.incident!;
+    var user = await _core!.services.server.user.readFromIdOnce(
+      id: _core!.services.auth.currentUser!.uid,
+    );
+
     _core!.services.twilio.messageSMS(
-      phone: "+506 71099519",
-      message: kContactMessageTemplate,
+      phone: contact.phone,
+      message: _generateMessage(contact, user!, incident),
     );
   }
 }

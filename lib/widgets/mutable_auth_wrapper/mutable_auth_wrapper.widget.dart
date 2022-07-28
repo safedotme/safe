@@ -36,8 +36,6 @@ class _MutableAuthWrapperState extends State<MutableAuthWrapper> {
       name: core.state.auth.name,
       phone: core.state.auth.phoneNumber,
       picturePath: null,
-      incidents: [],
-      contacts: [],
       joined: time,
     );
 
