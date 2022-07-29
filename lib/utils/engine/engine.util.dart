@@ -41,9 +41,14 @@ class IngestionEngine {
   }
 
   // Called when user wishes to stop recording
-  void stop() {
+  void stop({bool shouldClear = true}) {
     // Tick is called one final time to clip the video on stop
     _tick(shouldStop: true);
+
+    // Clears the counter
+    if (shouldClear) {
+      _core.state.capture.clearCount();
+    }
 
     // Ticker is canceled to terminate recording
     _ticker.cancel();
@@ -228,8 +233,6 @@ class ThreadWorker {
     incident = incident.copyWith(
       shards: replaceShard(incident.shards!, completeShard),
     );
-
-    print(incident.thumbnail);
 
     core.state.capture.setIncident(incident);
     core.services.server.incidents.upsert(incident);
