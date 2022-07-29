@@ -217,6 +217,38 @@ mixin _$CaptureStore on _CaptureStore, Store {
     });
   }
 
+  late final _$isLoadingAtom =
+      Atom(name: '_CaptureStore.isLoading', context: context);
+
+  @override
+  bool get isLoading {
+    _$isLoadingAtom.reportRead();
+    return super.isLoading;
+  }
+
+  @override
+  set isLoading(bool value) {
+    _$isLoadingAtom.reportWrite(value, super.isLoading, () {
+      super.isLoading = value;
+    });
+  }
+
+  late final _$overlayControllerAtom =
+      Atom(name: '_CaptureStore.overlayController', context: context);
+
+  @override
+  OverlayController get overlayController {
+    _$overlayControllerAtom.reportRead();
+    return super.overlayController;
+  }
+
+  @override
+  set overlayController(OverlayController value) {
+    _$overlayControllerAtom.reportWrite(value, super.overlayController, () {
+      super.overlayController = value;
+    });
+  }
+
   late final _$_CaptureStoreActionController =
       ActionController(name: '_CaptureStore', context: context);
 
@@ -320,6 +352,17 @@ mixin _$CaptureStore on _CaptureStore, Store {
   }
 
   @override
+  void setIsLoading(bool v) {
+    final _$actionInfo = _$_CaptureStoreActionController.startAction(
+        name: '_CaptureStore.setIsLoading');
+    try {
+      return super.setIsLoading(v);
+    } finally {
+      _$_CaptureStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 controller: ${controller},
@@ -334,7 +377,9 @@ hintTextIndex: ${hintTextIndex},
 cameraPreviewController: ${cameraPreviewController},
 incident: ${incident},
 type: ${type},
-locationUpdates: ${locationUpdates}
+locationUpdates: ${locationUpdates},
+isLoading: ${isLoading},
+overlayController: ${overlayController}
     ''';
   }
 }

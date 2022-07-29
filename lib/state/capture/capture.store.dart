@@ -5,6 +5,7 @@ import 'package:safe/models/incident/location.model.dart';
 import 'package:safe/screens/capture/local_widgets/camera_preview.widget.dart';
 import 'package:safe/screens/capture/local_widgets/capture_text_shimmer.widget.dart';
 import 'package:safe/utils/incident/incident.util.dart';
+import 'package:safe/widgets/mutable_overlay/mutable_overlay.widget.dart';
 import 'package:safe/widgets/mutable_screen_transition/mutable_screen_tranistion.widget.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
@@ -80,4 +81,13 @@ abstract class _CaptureStore with Store {
 
   @action
   void setLocationUpdates(Stream<Location> l) => locationUpdates = l;
+
+  @observable
+  bool isLoading = false;
+
+  @action
+  void setIsLoading(bool v) => isLoading = v;
+
+  @observable
+  OverlayController overlayController = OverlayController();
 }

@@ -32,13 +32,15 @@ class CaptureUtil {
   }
 
   void stop() async {
+    _core!.utils.engine.stop();
+    _core!.state.capture.overlayController.show();
+    _core!.state.capture.setIsLoading(true);
     // CALL STOP WHEN NECESSARY
     if (subscription != null) {
       await subscription!.cancel();
     }
 
     // Stops sharding -> Will complete ongoing systems
-    _core!.utils.engine.stop();
   }
 
   // ⬇️ LOCATION

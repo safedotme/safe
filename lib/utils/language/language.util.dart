@@ -128,6 +128,7 @@ class LanguageUtil {
         "title": "Enter Phone Number",
         "desc": "We'll send you a SMS code to verify your\n account",
         "buttonText": "Send SMS",
+        "loader": "Creating account"
       }
     },
     "country_code_selector": {
@@ -181,7 +182,8 @@ class LanguageUtil {
           "cancel": "Cancel",
           "confirm": "Confirm"
         }
-      }
+      },
+      "loader": "Uploading content",
     }
   };
 }

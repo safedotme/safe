@@ -124,6 +124,13 @@ class ThreadWorker {
       await intake(file.path, shard, shard.position == 0);
       print("Shard ${shard.position}: DONE");
 
+      // This will dismiss the screen once the final shard processes
+      if (core.state.capture.isLoading) {
+        core.state.capture.setIsLoading(false);
+        await core.state.capture.overlayController.hide();
+        core.state.capture.controller.close();
+      }
+
       job = onFinish(job);
     }
 

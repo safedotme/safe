@@ -4,6 +4,8 @@ import 'package:safe/core.dart';
 import 'package:safe/screens/capture/local_widgets/capture_control_box.widget.dart';
 import 'package:safe/screens/capture/local_widgets/capture_text_shimmer.widget.dart';
 import 'package:safe/utils/constants/constants.util.dart';
+import 'package:safe/widgets/mutable_loader/mutable_loader.widget.dart';
+import 'package:safe/widgets/mutable_overlay/mutable_overlay.widget.dart';
 import 'package:safe/widgets/mutable_screen_transition/mutable_screen_tranistion.widget.dart';
 
 class Capture extends StatefulWidget {
@@ -66,6 +68,16 @@ class _CaptureState extends State<Capture> {
               ),
             ),
             CaptureControlBox(),
+            MutableOverlay(
+              controller: core.state.capture.overlayController,
+              child: Center(
+                child: MutableLoader(
+                  text: core.utils.language
+                          .langMap[core.state.preferences.language]!["capture"]
+                      ["loader"],
+                ),
+              ),
+            ),
           ],
         ),
       ),
