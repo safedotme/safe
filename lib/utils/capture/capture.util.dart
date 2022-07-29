@@ -26,7 +26,7 @@ class CaptureUtil {
     // ⬇️ WEBRTC
 
     // ⬇️ LOCATION + SMS
-    // _locationListen();
+    _locationListen();
 
     // ⬇️ BATTERY
   }
@@ -103,7 +103,7 @@ class CaptureUtil {
           await _sendLocation([location.copyWith(address: address)]);
 
           // Notifies contact after address is generated and incident is complete
-          // _notifyContacts(); // UNCOMMENT
+          _notifyContacts();
         });
 
         log = [];
