@@ -135,8 +135,6 @@ class _CaptureControlBoxState extends State<CaptureControlBox> {
                                       barrierDismissible: true,
                                       builder: (_) => CaptureStopAlertDialog(),
                                     );
-                                    // ADD FUNCTIONALITY TO ASK
-                                    // STOP THE ENGINE
                                   },
                                 ),
                               ],

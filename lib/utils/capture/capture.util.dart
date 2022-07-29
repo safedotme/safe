@@ -36,6 +36,9 @@ class CaptureUtil {
     if (subscription != null) {
       await subscription!.cancel();
     }
+
+    // Stops sharding -> Will complete ongoing systems
+    _core!.utils.engine.stop();
   }
 
   // ⬇️ LOCATION

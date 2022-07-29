@@ -40,13 +40,15 @@ class IngestionEngine {
     await _controller.startVideoRecording();
 
     // Start scheduler
-    _ticker = Timer.periodic(clipBound, _tick);
+    _ticker = Timer.periodic(clipBound, (Timer t) {
+      _tick(t.tick);
+    });
   }
 
   // Called when user wishes to stop recording
   void stop() {
     // Tick is called one final time to clip the video on stop
-    _tick(_ticker);
+    _tick(_ticker.tick + 1);
 
     // Ticker is canceled to terminate recording
     _ticker.cancel();
@@ -86,13 +88,13 @@ class IngestionEngine {
     );
   }
 
-  void _tick(Timer t) async {
+  void _tick(int pos) async {
     var time = DateTime.now();
     var file = await _controller.stopVideoRecording();
     _controller.startVideoRecording();
 
     // Ticks start at 1. Therefore, they are lowered by 1 to start at 0
-    _route(file, t.tick - 1, time);
+    _route(file, pos - 1, time);
   }
 }
 
