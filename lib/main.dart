@@ -30,6 +30,7 @@ class Safe extends StatelessWidget {
         title: "Safe",
         debugShowCheckedModeBanner: false,
         themeMode: ThemeMode.dark,
+        theme: ThemeData(brightness: Brightness.dark),
         routes: {
           WelcomeScreen.id: (_) => WelcomeScreen(),
           HomeScreen.id: (_) => HomeScreen(),
