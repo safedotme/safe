@@ -66,7 +66,7 @@ class IngestionEngine {
   void _route(XFile file, DateTime time) {
     // Create the shard primitives
     var shard = Shard(
-      shardId: Uuid().v1(),
+      id: Uuid().v1(),
       position: _core.state.capture.count,
       localPath: file.path,
       datetime: time,
@@ -190,6 +190,19 @@ class ThreadWorker {
     return service.uploadShardContent(sh, path);
   }
 
+  List<Shard> replaceShard(List<Shard> shards, Shard replacement) {
+    List<Shard> newList = shards;
+
+    for (int i = 0; i < newList.length; i++) {
+      if (newList[i].id == replacement.id) {
+        newList.removeAt(i);
+        newList.insert(i, replacement);
+      }
+    }
+
+    return newList;
+  }
+
   Future<void> intake(String path, Shard shard, bool shouldGenThumbnail) async {
     Incident incident = core.state.capture.incident!;
 
@@ -213,10 +226,7 @@ class ThreadWorker {
 
     // Synchronize incidents with shards
     incident = incident.copyWith(
-      shards: [
-        ...incident.shards!,
-        completeShard,
-      ],
+      shards: replaceShard(incident.shards!, completeShard),
     );
 
     core.state.capture.setIncident(incident);

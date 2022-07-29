@@ -100,7 +100,7 @@ class ShardStorageService {
       return null;
     }
 
-    Reference ref = _instance!.ref().child(shard.shardId);
+    Reference ref = _instance!.ref().child(shard.id);
     TaskSnapshot uploadedFile = await ref.putFile(file);
 
     String? url;
