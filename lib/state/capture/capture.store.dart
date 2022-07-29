@@ -83,11 +83,20 @@ abstract class _CaptureStore with Store {
   void setLocationUpdates(Stream<Location> l) => locationUpdates = l;
 
   @observable
-  bool isLoading = false;
+  bool onStop = false;
 
   @action
-  void setIsLoading(bool v) => isLoading = v;
+  void setOnStop(bool v) => onStop = v;
 
   @observable
   OverlayController overlayController = OverlayController();
+
+  @observable
+  int count = 0;
+
+  @action
+  void clearCount() => count = 0;
+
+  @action
+  void addCount() => count++;
 }

@@ -217,19 +217,19 @@ mixin _$CaptureStore on _CaptureStore, Store {
     });
   }
 
-  late final _$isLoadingAtom =
-      Atom(name: '_CaptureStore.isLoading', context: context);
+  late final _$onStopAtom =
+      Atom(name: '_CaptureStore.onStop', context: context);
 
   @override
-  bool get isLoading {
-    _$isLoadingAtom.reportRead();
-    return super.isLoading;
+  bool get onStop {
+    _$onStopAtom.reportRead();
+    return super.onStop;
   }
 
   @override
-  set isLoading(bool value) {
-    _$isLoadingAtom.reportWrite(value, super.isLoading, () {
-      super.isLoading = value;
+  set onStop(bool value) {
+    _$onStopAtom.reportWrite(value, super.onStop, () {
+      super.onStop = value;
     });
   }
 
@@ -246,6 +246,21 @@ mixin _$CaptureStore on _CaptureStore, Store {
   set overlayController(OverlayController value) {
     _$overlayControllerAtom.reportWrite(value, super.overlayController, () {
       super.overlayController = value;
+    });
+  }
+
+  late final _$countAtom = Atom(name: '_CaptureStore.count', context: context);
+
+  @override
+  int get count {
+    _$countAtom.reportRead();
+    return super.count;
+  }
+
+  @override
+  set count(int value) {
+    _$countAtom.reportWrite(value, super.count, () {
+      super.count = value;
     });
   }
 
@@ -352,11 +367,33 @@ mixin _$CaptureStore on _CaptureStore, Store {
   }
 
   @override
-  void setIsLoading(bool v) {
+  void setOnStop(bool v) {
     final _$actionInfo = _$_CaptureStoreActionController.startAction(
-        name: '_CaptureStore.setIsLoading');
+        name: '_CaptureStore.setOnStop');
     try {
-      return super.setIsLoading(v);
+      return super.setOnStop(v);
+    } finally {
+      _$_CaptureStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void clearCount() {
+    final _$actionInfo = _$_CaptureStoreActionController.startAction(
+        name: '_CaptureStore.clearCount');
+    try {
+      return super.clearCount();
+    } finally {
+      _$_CaptureStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void addCount() {
+    final _$actionInfo = _$_CaptureStoreActionController.startAction(
+        name: '_CaptureStore.addCount');
+    try {
+      return super.addCount();
     } finally {
       _$_CaptureStoreActionController.endAction(_$actionInfo);
     }
@@ -378,8 +415,9 @@ cameraPreviewController: ${cameraPreviewController},
 incident: ${incident},
 type: ${type},
 locationUpdates: ${locationUpdates},
-isLoading: ${isLoading},
-overlayController: ${overlayController}
+onStop: ${onStop},
+overlayController: ${overlayController},
+count: ${count}
     ''';
   }
 }

@@ -19,14 +19,6 @@ class IngestionEngine {
   // Duration of each clip
   static const clipBound = Duration(seconds: 15);
 
-  /// Called only when a user action clips as a byproductz
-  void clip(CameraController c, Core core) {
-    // Stop the recording
-    _controller = c;
-
-    // Reset the scheduler and route the clip
-  }
-
   /// Called when a stream of clips begins (AFTER controller has been initialzied)
   void initialize({
     required CameraController c,
@@ -36,22 +28,30 @@ class IngestionEngine {
     _core = cre;
 
     // Start recording
-
     await _controller.startVideoRecording();
 
     // Start scheduler
+    initTicker();
+  }
+
+  void initTicker() {
     _ticker = Timer.periodic(clipBound, (Timer t) {
-      _tick(t.tick);
+      _tick();
     });
   }
 
   // Called when user wishes to stop recording
   void stop() {
     // Tick is called one final time to clip the video on stop
-    _tick(_ticker.tick + 1);
+    _tick(shouldStop: true);
 
     // Ticker is canceled to terminate recording
     _ticker.cancel();
+  }
+
+  void flip() async {
+    await _controller.startVideoRecording();
+    initTicker();
   }
 
   Future<void> setIncident(Incident i, bool upload) async {
@@ -63,14 +63,17 @@ class IngestionEngine {
   }
 
   /// Uploads primitive data and sends rest to be handled by the manager
-  void _route(XFile file, int position, DateTime time) {
+  void _route(XFile file, DateTime time) {
     // Create the shard primitives
     var shard = Shard(
       shardId: Uuid().v1(),
-      position: position,
+      position: _core.state.capture.count,
       localPath: file.path,
       datetime: time,
     );
+
+    // Adds to the counter
+    _core.state.capture.addCount();
 
     List<Shard>? shards = _core.state.capture.incident!.shards;
 
@@ -88,13 +91,16 @@ class IngestionEngine {
     );
   }
 
-  void _tick(int pos) async {
+  void _tick({bool shouldStop = false}) async {
     var time = DateTime.now();
     var file = await _controller.stopVideoRecording();
-    _controller.startVideoRecording();
+
+    if (!shouldStop) {
+      _controller.startVideoRecording();
+    }
 
     // Ticks start at 1. Therefore, they are lowered by 1 to start at 0
-    _route(file, pos - 1, time);
+    _route(file, time);
   }
 }
 
@@ -125,16 +131,20 @@ class ThreadWorker {
       print("Shard ${shard.position}: DONE");
 
       // This will dismiss the screen once the final shard processes
-      if (core.state.capture.isLoading) {
-        core.state.capture.setIsLoading(false);
-        await core.state.capture.overlayController.hide();
-        core.state.capture.controller.close();
-      }
+      callExtenalStopState();
 
       job = onFinish(job);
     }
 
     working = false;
+  }
+
+  Future<void> callExtenalStopState() async {
+    if (core.state.capture.onStop) {
+      core.state.capture.setOnStop(false);
+      await core.state.capture.overlayController.hide();
+      core.state.capture.controller.close();
+    }
   }
 
   Future<MediaInfo?> compress(String path) async {

@@ -102,10 +102,12 @@ class _CameraPreviewControlState extends State<CameraPreviewControl>
       opacity = 1;
     });
 
+    core.utils.engine.stop();
     core.state.capture.setIsCameraInitialized(false);
     core.state.capture.setCamera(camController);
     await core.state.capture.camera!.initialize();
     await core.state.capture.camera!.prepareForVideoRecording();
+    core.utils.engine.flip();
     core.state.capture.setIsCameraInitialized(true);
     await controller.forward(from: 0);
     canFlip = true;
@@ -145,7 +147,6 @@ class _CameraPreviewControlState extends State<CameraPreviewControl>
     await core.state.capture.camera!.prepareForVideoRecording();
 
     // Initializes the engine (will start the recording)
-    // UNCOMMENT LATER
     core.utils.engine.initialize(
       c: core.state.capture.camera!,
       cre: core,
