@@ -6,6 +6,21 @@ enum IncidentType {
 }
 
 class IncidentUtil {
+  Map<IncidentType, String> incidentTypeMap = {
+    IncidentType.general: "general emergency",
+    IncidentType.kidnapping: "kidnapping",
+    IncidentType.shooting: "shooting",
+    IncidentType.trafficStop: "traffic stop",
+  };
+
+  String? generateType(IncidentType type) {
+    for (IncidentType t in incidentTypeMap.keys) {
+      if (type == t) {
+        return incidentTypeMap[t]!;
+      }
+    }
+  }
+
   /// [parseType] expects a String formatted as "IncidentType..."
   static IncidentType parseType(String type) {
     String gen = "";

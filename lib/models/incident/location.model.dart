@@ -1,12 +1,16 @@
 class Location {
-  final double lat;
-  final double long;
-  final double alt;
+  final double? lat;
+  final double? long;
+  final double? alt;
+  final double? speed;
+  final double? accuracy;
   final DateTime datetime;
   final String? address;
 
   Location({
     required this.lat,
+    required this.accuracy,
+    required this.speed,
     required this.long,
     required this.alt,
     required this.datetime,
@@ -19,6 +23,8 @@ class Location {
         alt: json["alt"],
         datetime: DateTime.parse(json["datetime"]),
         address: json["address"],
+        speed: json["speed"],
+        accuracy: json["accuracy"],
       );
 
   Map<String, dynamic> toMap() => {
@@ -27,5 +33,27 @@ class Location {
         "alt": alt,
         "datetime": datetime.toIso8601String(),
         "address": address,
+        "speed": speed,
+        "accuracy": accuracy,
       };
+
+  Location copyWith({
+    double? lat,
+    double? long,
+    double? alt,
+    double? speed,
+    double? accuracy,
+    DateTime? datetime,
+    String? address,
+  }) {
+    return Location(
+      lat: lat ?? this.lat,
+      accuracy: accuracy ?? this.accuracy,
+      speed: speed ?? this.speed,
+      long: long ?? this.long,
+      alt: alt ?? this.alt,
+      datetime: datetime ?? this.datetime,
+      address: address ?? this.address,
+    );
+  }
 }

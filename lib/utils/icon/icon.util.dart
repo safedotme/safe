@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:safe/widgets/mutable_icon/local_widgets/camera.icon.dart';
 import 'package:safe/widgets/mutable_icon/local_widgets/caret_right.icon.dart';
 import 'package:safe/widgets/mutable_icon/local_widgets/checkmark.icon.dart';
 import 'package:safe/widgets/mutable_icon/local_widgets/gear.icon.dart';
@@ -8,6 +9,8 @@ import 'package:safe/widgets/mutable_icon/local_widgets/phone.icon.dart';
 import 'package:safe/widgets/mutable_icon/local_widgets/play_large.icon.dart';
 import 'package:safe/widgets/mutable_icon/local_widgets/profile.icon.dart';
 import 'package:safe/widgets/mutable_icon/local_widgets/safe.icon.dart';
+import 'package:safe/widgets/mutable_icon/local_widgets/shield.icon.dart';
+import 'package:safe/widgets/mutable_icon/local_widgets/stop_recording.icon.dart';
 
 enum MutableIcons {
   phone,
@@ -17,6 +20,9 @@ enum MutableIcons {
   gear,
   playLarge,
   menu,
+  shield,
+  camera,
+  stopRecording,
   key,
   safe,
 }
@@ -29,6 +35,9 @@ class IconUtil {
       MutableIcons.profile: (c) => ProfileIcon(c),
       MutableIcons.playLarge: (c) => PlayLargeIcon(c),
       MutableIcons.safe: (c) => SafeIcon(c),
+      MutableIcons.shield: (c) => ShieldIcon(c),
+      MutableIcons.camera: (c) => CameraIcon(c),
+      MutableIcons.stopRecording: (c) => StopRecordingIcon(c),
       MutableIcons.menu: (c) => MenuIcon(c),
       MutableIcons.checkmark: (c) => CheckmarkIcon(c),
       MutableIcons.key: (c) => KeyIcon(c),

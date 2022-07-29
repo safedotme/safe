@@ -32,7 +32,6 @@ class _MutablePillState extends State<MutablePill> {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 8, vertical: 3),
       decoration: BoxDecoration(
-        color: Colors.red,
         boxShadow: core.utils.color.applyGradientShadow(22),
         borderRadius: BorderRadius.circular(20),
         gradient: LinearGradient(

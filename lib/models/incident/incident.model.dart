@@ -12,11 +12,11 @@ class Incident {
   final String name;
   final List<IncidentType> type;
   final DateTime datetime;
-  final String thumbnail;
-  final List<Location> location;
-  final List<NotifiedContact> notifiedContacts;
-  final List<Battery> battery;
-  final List<Shard> shards;
+  final String? thumbnail;
+  final List<Location>? location;
+  final List<NotifiedContact>? notifiedContacts;
+  final List<Battery>? battery;
+  final List<Shard>? shards;
   final List<EmergencyServices>? emergencyServices;
 
   Incident({
@@ -25,20 +25,28 @@ class Incident {
     required this.name,
     required this.type,
     required this.datetime,
-    required this.location,
-    required this.notifiedContacts,
-    required this.battery,
-    required this.shards,
-    required this.thumbnail,
+    this.location,
+    this.notifiedContacts,
+    this.battery,
+    this.shards,
+    this.thumbnail,
     this.emergencyServices,
   });
 
   factory Incident.fromJson(Map<String, dynamic> json) {
-    var _location = List<Map<String, dynamic>>.from(json["location"]);
-    var _contacts = List<Map<String, dynamic>>.from(json["notified_contacts"]);
-    var _battery = List<Map<String, dynamic>>.from(json["battery"]);
-    var _shards = List<Map<String, dynamic>>.from(json["shards"]);
-    var _type = List<String>.from(json["type"]);
+    List<Map<String, dynamic>>? _location = json["location"] == null
+        ? null
+        : List<Map<String, dynamic>>.from(json["location"]);
+    List<Map<String, dynamic>>? _contacts = json["notified_contacts"] == null
+        ? null
+        : List<Map<String, dynamic>>.from(json["notified_contacts"]);
+    List<Map<String, dynamic>>? _battery = json["battery"] == null
+        ? null
+        : List<Map<String, dynamic>>.from(json["battery"]);
+    List<Map<String, dynamic>>? _shards = json["shards"] == null
+        ? null
+        : List<Map<String, dynamic>>.from(json["shards"]);
+    List<String> _type = List<String>.from(json["type"]);
 
     return Incident(
       id: json["id"],
@@ -46,12 +54,39 @@ class Incident {
       name: json["name"],
       type: _type.map((e) => IncidentUtil.parseType(e)).toList(),
       datetime: DateTime.parse(json["datetime"]),
-      location: _location.map((e) => Location.fromJson(e)).toList(),
+      location: _location?.map((e) => Location.fromJson(e)).toList(),
       notifiedContacts:
-          _contacts.map((e) => NotifiedContact.fromJson(e)).toList(),
-      battery: _battery.map((e) => Battery.fromJson(e)).toList(),
+          _contacts?.map((e) => NotifiedContact.fromJson(e)).toList(),
+      battery: _battery?.map((e) => Battery.fromJson(e)).toList(),
       thumbnail: json["thumbnail"],
-      shards: _shards.map((e) => Shard.fromJson(e)).toList(),
+      shards: _shards?.map((e) => Shard.fromJson(e)).toList(),
+    );
+  }
+
+  Incident copyWith({
+    String? id,
+    String? userId,
+    String? name,
+    List<IncidentType>? type,
+    DateTime? datetime,
+    String? thumbnail,
+    List<Location>? location,
+    List<NotifiedContact>? notifiedContacts,
+    List<Battery>? battery,
+    List<Shard>? shards,
+    List<EmergencyServices>? emergencyServices,
+  }) {
+    return Incident(
+      id: id ?? this.id,
+      userId: userId ?? this.userId,
+      name: name ?? this.name,
+      type: type ?? this.type,
+      datetime: datetime ?? this.datetime,
+      location: location ?? this.location,
+      notifiedContacts: notifiedContacts ?? this.notifiedContacts,
+      battery: battery ?? this.battery,
+      shards: shards ?? this.shards,
+      emergencyServices: emergencyServices ?? this.emergencyServices,
     );
   }
 
@@ -61,10 +96,15 @@ class Incident {
         "name": name,
         "type": type.map((e) => e.toString()).toList(),
         "datetime": datetime.toIso8601String(),
-        "location": location.map((e) => e.toMap()).toList(),
-        "notified_contacts": notifiedContacts.map((e) => e.toMap()).toList(),
-        "battery": battery.map((e) => e.toMap()).toList(),
+        "location":
+            location != null ? location!.map((e) => e.toMap()).toList() : null,
+        "notified_contacts": notifiedContacts != null
+            ? notifiedContacts!.map((e) => e.toMap()).toList()
+            : null,
+        "battery":
+            battery != null ? battery!.map((e) => e.toMap()).toList() : null,
         "thumbnail": thumbnail,
-        "shards": shards.map((e) => e.toMap()).toList(),
+        "shards":
+            shards != null ? shards!.map((e) => e.toMap()).toList() : null,
       };
 }

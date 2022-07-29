@@ -59,6 +59,12 @@ class _MutableOverlayState extends State<MutableOverlay>
   }
 
   @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return opacity != 0
         ? Opacity(

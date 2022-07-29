@@ -266,9 +266,9 @@ const Duration kSafeButtonPulsateDuration = Duration(milliseconds: 1300);
 const double kSafeButtonPuslateScale = 1.05;
 
 // -> LAYOUT
-const double kIncidentLogMinPopupHeight = 138;
+const double kIncidentLogMinPopupHeight = 0.18;
 const double kHomeHeaderToButtonMargin = 60;
-const double kIncidentLogBorderRadius = 12;
+const double kMainPopupBorderRadius = 12;
 const double kIncidentLogActiveTopPading = 44;
 const double kNavigationTabCutoff = 0.6;
 const ScrollPhysics? kIncidentLogScrollPhysics = null;
@@ -282,8 +282,6 @@ const MutableColor kIncidentCardLoaderColor = MutableColor.neutral8;
 const MutableColor kIncidentCardBorderColor = MutableColor.neutral7;
 const double kIncidentCardImageHeight = 165;
 const double kIncidentCardBodyPadding = 10;
-final Color kIncidentLoaderShimmerColor =
-    kShimmerAnimationColor.withOpacity(0.05);
 const int kCachedImageLoadDuration = 300;
 const double kIncidentLogCardSpacing = 25;
 // EMERGENCY CONTACTS
@@ -291,3 +289,21 @@ const double kIncidentLogCardSpacing = 25;
 // -> AVATAR
 const double kEmergencyContactAvatarSize = 24;
 const double kEmergencyContactAvatarSpacing = 3;
+
+// TRANSITIONS
+const double kScreenTransitionBounds = 400;
+const Duration kScreenTransitionDuration = Duration(milliseconds: 200);
+const Curve kTransitionCurve = Curves.decelerate;
+
+// CAPTURE
+const Color kCaptureTextShimmerDarkColor = Color(0xff3D3B3D);
+const Color kCaptureTextShimmerLightColor = Color(0xffBFBFBF);
+const double kCaptureControlBorderRadius = 8;
+const double kCameraPreviewWidthPercentage = 0.3;
+const double kControlBoxBodyHeight = 150;
+
+// -> LOCATION TIMEOUT
+const Duration kLocationStreamTimeout = Duration(seconds: 10);
+
+// SHIMMER
+final Color kBoxLoaderShimmerColor = kShimmerAnimationColor.withOpacity(0.05);

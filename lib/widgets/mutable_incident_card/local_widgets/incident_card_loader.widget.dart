@@ -12,7 +12,7 @@ class IncidentCardLoader extends StatelessWidget {
   Widget build(BuildContext context) {
     return MutableShimmer(
       active: animate,
-      animateToColor: kIncidentLoaderShimmerColor,
+      animateToColor: kBoxLoaderShimmerColor,
       child: Container(
         decoration: BoxDecoration(
           color: kColorMap[kIncidentCardBgColor],

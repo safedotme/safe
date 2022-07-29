@@ -128,6 +128,7 @@ class LanguageUtil {
         "title": "Enter Phone Number",
         "desc": "We'll send you a SMS code to verify your\n account",
         "buttonText": "Send SMS",
+        "loader": "Creating account"
       }
     },
     "country_code_selector": {
@@ -163,6 +164,26 @@ class LanguageUtil {
     },
     "incident_card": {
       "secured": "Secured",
+    },
+    "capture": {
+      "hint": [
+        "Swipe down to hide the controls",
+        "Long press camera feed to enlarge",
+        "Safe has activated. Stay safe",
+      ],
+      "controls": {
+        "flip_camera": {"header": "Flip Camera"},
+        "911": {"header": "Notify 911"},
+        "stop": {"header": "Stop Recording"},
+        "stop_alert": {
+          "header": "Stop Recording",
+          "content":
+              "This will stop location and camera streams and upload data to the cloud",
+          "cancel": "Cancel",
+          "confirm": "Confirm"
+        }
+      },
+      "loader": "Uploading content",
     }
   };
 }

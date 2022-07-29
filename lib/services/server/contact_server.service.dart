@@ -22,6 +22,12 @@ class ContactServer {
         );
   }
 
+  Future<List<Contact>> readFromUserIdOnce({required String id}) async {
+    var map = await _db.collection(path).where("user_id", isEqualTo: id).get();
+
+    return map.docs.map((json) => Contact.fromJson(json.data())).toList();
+  }
+
   Stream<Contact> readFromId({required String id}) {
     return _db.collection(path).doc(id).snapshots().map(
           (doc) => Contact.fromJson(doc.data()!), // Handle null value
