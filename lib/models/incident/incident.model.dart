@@ -81,6 +81,7 @@ class Incident {
       userId: userId ?? this.userId,
       name: name ?? this.name,
       type: type ?? this.type,
+      thumbnail: thumbnail ?? this.thumbnail,
       datetime: datetime ?? this.datetime,
       location: location ?? this.location,
       notifiedContacts: notifiedContacts ?? this.notifiedContacts,

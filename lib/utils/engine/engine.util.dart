@@ -229,6 +229,8 @@ class ThreadWorker {
       shards: replaceShard(incident.shards!, completeShard),
     );
 
+    print(incident.thumbnail);
+
     core.state.capture.setIncident(incident);
     core.services.server.incidents.upsert(incident);
   }
