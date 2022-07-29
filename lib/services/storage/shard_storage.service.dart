@@ -22,19 +22,14 @@ class ShardStorageService {
   void setDistributedBucket(List<String> usedBuckets) {
     late bool isDistributed;
 
-    print(usedBuckets);
     // Generates distribution
     var distribution = _generateDistribution(
       usedBuckets,
       _buckets,
     );
 
-    print(distribution);
-
     // Checks for even distribution
     isDistributed = _checkDistribution(distribution);
-
-    print(isDistributed);
 
     if (isDistributed) {
       var rnd = Random().nextInt(_buckets.length);

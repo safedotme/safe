@@ -117,6 +117,7 @@ class ThreadWorker {
       Shard shard = job["shard"];
 
       // Handles compression and uploading
+      print("");
       print("Shard ${shard.position}: START");
       await intake(file.path, shard, shard.position == 0);
       print("Shard ${shard.position}: DONE");
