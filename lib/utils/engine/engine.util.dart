@@ -41,14 +41,9 @@ class IngestionEngine {
   }
 
   // Called when user wishes to stop recording
-  void stop({bool shouldClear = true}) {
+  void stop() {
     // Tick is called one final time to clip the video on stop
     _tick(shouldStop: true);
-
-    // Clears the counter
-    if (shouldClear) {
-      _core.state.capture.clearCount();
-    }
 
     // Ticker is canceled to terminate recording
     _ticker.cancel();
@@ -138,6 +133,7 @@ class ThreadWorker {
       // This will dismiss the screen once the final shard processes
       callExtenalStopState();
 
+      core.state.capture.clearCount();
       job = onFinish(job);
     }
 

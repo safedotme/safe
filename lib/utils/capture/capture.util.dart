@@ -4,6 +4,7 @@ import 'package:safe/core.dart';
 import 'package:safe/models/contact/contact.model.dart';
 import 'package:safe/models/incident/incident.model.dart';
 import 'package:safe/models/incident/location.model.dart';
+import 'package:safe/models/incident/notified_contacts.model.dart';
 import 'package:safe/models/user/user.model.dart';
 import 'package:safe/neuances.dart';
 import 'package:safe/utils/constants/constants.util.dart';
@@ -169,13 +170,36 @@ class CaptureUtil {
 
   Future<void> message(Contact contact) async {
     var incident = _core!.state.capture.incident!;
+
     var user = await _core!.services.server.user.readFromIdOnce(
       id: _core!.services.auth.currentUser!.uid,
     );
 
+    var message = _generateMessage(contact, user!, incident);
+
     _core!.services.twilio.messageSMS(
       phone: contact.phone,
-      message: _generateMessage(contact, user!, incident),
+      message: message,
     );
+
+    var notified = NotifiedContact(
+      id: contact.id,
+      name: contact.name,
+      phone: contact.phone,
+      messageSent: message,
+      datetime: DateTime.now(),
+    );
+
+    incident = incident.copyWith(
+      notifiedContacts: incident.notifiedContacts == null
+          ? [notified]
+          : [
+              ...incident.notifiedContacts!,
+              notified,
+            ],
+    );
+
+    _core!.state.capture.setIncident(incident);
+    _core!.services.server.incidents.upsert(incident);
   }
 }

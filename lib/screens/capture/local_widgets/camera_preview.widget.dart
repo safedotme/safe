@@ -100,7 +100,7 @@ class _CameraPreviewControlState extends State<CameraPreviewControl>
       opacity = 1;
     });
 
-    core.utils.engine.stop(shouldClear: false);
+    core.utils.engine.stop();
     core.state.capture.setIsCameraInitialized(false);
     core.state.capture.setCamera(camController);
     await core.state.capture.camera!.initialize();
