@@ -140,7 +140,11 @@ class CaptureUtil {
       id: _core!.services.auth.currentUser!.uid,
     );
 
-    contacts.forEach(message);
+    print("");
+
+    for (Contact contact in contacts) {
+      await message(contact);
+    }
   }
 
   String _generateMessage(Contact contact, User user, Incident incident) {
@@ -177,10 +181,12 @@ class CaptureUtil {
 
     var message = _generateMessage(contact, user!, incident);
 
-    _core!.services.twilio.messageSMS(
+    await _core!.services.twilio.messageSMS(
       phone: contact.phone,
       message: message,
     );
+
+    print("CAPTURE: Notified ${contact.name}");
 
     var notified = NotifiedContact(
       id: contact.id,
