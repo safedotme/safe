@@ -11,6 +11,8 @@ class Incident {
   final String userId;
   final String name;
   final List<IncidentType> type;
+  final List<Map>? rtcCandidates;
+  final Map<String, dynamic>? rtcOffer;
   final DateTime datetime;
   final String? thumbnail;
   final List<Location>? location;
@@ -26,6 +28,8 @@ class Incident {
     required this.type,
     required this.datetime,
     this.location,
+    this.rtcCandidates,
+    this.rtcOffer,
     this.notifiedContacts,
     this.battery,
     this.shards,
@@ -51,6 +55,8 @@ class Incident {
     return Incident(
       id: json["id"],
       userId: json['user_id'],
+      rtcOffer: json["rtc_offer"],
+      rtcCandidates: json["rtc_candidates"],
       name: json["name"],
       type: _type.map((e) => IncidentUtil.parseType(e)).toList(),
       datetime: DateTime.parse(json["datetime"]),
@@ -70,6 +76,8 @@ class Incident {
     List<IncidentType>? type,
     DateTime? datetime,
     String? thumbnail,
+    Map<String, dynamic>? rtcOffer,
+    List<Map>? rtcCandidates,
     List<Location>? location,
     List<NotifiedContact>? notifiedContacts,
     List<Battery>? battery,
@@ -79,6 +87,8 @@ class Incident {
     return Incident(
       id: id ?? this.id,
       userId: userId ?? this.userId,
+      rtcOffer: rtcOffer ?? this.rtcOffer,
+      rtcCandidates: rtcCandidates ?? this.rtcCandidates,
       name: name ?? this.name,
       type: type ?? this.type,
       thumbnail: thumbnail ?? this.thumbnail,
@@ -94,6 +104,8 @@ class Incident {
   Map<String, dynamic> toMap() => {
         "id": id,
         "user_id": userId,
+        "rtc_offer": rtcOffer,
+        "rtc_candidates": rtcCandidates,
         "name": name,
         "type": type.map((e) => e.toString()).toList(),
         "datetime": datetime.toIso8601String(),
