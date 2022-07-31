@@ -38,6 +38,7 @@ class CaptureUtil {
   }
 
   void stop() async {
+    // Stops sharding -> Will complete ongoing systems
     _core!.utils.engine.stop();
     _core!.state.capture.overlayController.show();
     _core!.state.engine.setOnStop(true);
@@ -45,8 +46,6 @@ class CaptureUtil {
     if (locationSubscription != null) {
       await locationSubscription!.cancel();
     }
-
-    // Stops sharding -> Will complete ongoing systems
   }
 
   // ⬇️ LOCATION
