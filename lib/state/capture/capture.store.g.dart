@@ -233,6 +233,22 @@ mixin _$CaptureStore on _CaptureStore, Store {
     });
   }
 
+  late final _$batteryAtom =
+      Atom(name: '_CaptureStore.battery', context: context);
+
+  @override
+  List<Battery> get battery {
+    _$batteryAtom.reportRead();
+    return super.battery;
+  }
+
+  @override
+  set battery(List<Battery> value) {
+    _$batteryAtom.reportWrite(value, super.battery, () {
+      super.battery = value;
+    });
+  }
+
   late final _$_CaptureStoreActionController =
       ActionController(name: '_CaptureStore', context: context);
 
@@ -336,6 +352,17 @@ mixin _$CaptureStore on _CaptureStore, Store {
   }
 
   @override
+  void addToBattery(Battery b) {
+    final _$actionInfo = _$_CaptureStoreActionController.startAction(
+        name: '_CaptureStore.addToBattery');
+    try {
+      return super.addToBattery(b);
+    } finally {
+      _$_CaptureStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 controller: ${controller},
@@ -351,7 +378,8 @@ cameraPreviewController: ${cameraPreviewController},
 incident: ${incident},
 type: ${type},
 locationUpdates: ${locationUpdates},
-overlayController: ${overlayController}
+overlayController: ${overlayController},
+battery: ${battery}
     ''';
   }
 }

@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:safe/core.dart';
 import 'package:safe/models/contact/contact.model.dart';
 import 'package:safe/models/incident/battery.model.dart';
+import 'package:battery_plus/battery_plus.dart' as api;
 import 'package:safe/models/incident/incident.model.dart';
 import 'package:safe/models/incident/location.model.dart';
 import 'package:safe/models/incident/notified_contacts.model.dart';
@@ -15,6 +16,7 @@ class CaptureUtil {
   Core? _core;
   StreamSubscription<Location>? locationSubscription;
   Timer? batteryTimer;
+  api.Battery? battery;
 
   void initialize(Core core) {
     _core = core;
@@ -29,9 +31,10 @@ class CaptureUtil {
     // ⬇️ WEBRTC
 
     // ⬇️ LOCATION + SMS
-    // _locationListen();
+    _locationListen();
 
     // ⬇️ BATTERY
+    _batteryListen();
   }
 
   void stop() async {
@@ -213,10 +216,34 @@ class CaptureUtil {
   }
 
   // ⬇️ BATTERY
-  void _batteryListen() {
-    batteryTimer = Timer.periodic(Duration(seconds: 10), (timer) {
-      // Add to the battery of capture
-      // Send the mofo to the backend
+  void _batteryListen() async {
+    battery = api.Battery();
+
+    // Gets battery immediately
+    await uploadBattery();
+
+    // Set timer
+    batteryTimer = Timer.periodic(Duration(seconds: 10), (_) async {
+      await uploadBattery();
     });
+  }
+
+  Future<void> uploadBattery() async {
+    // Get battery level
+    var current = await battery!.batteryLevel;
+
+    // Set local state
+    _core!.state.capture.addToBattery(Battery(
+      percentage: current / 100,
+      datetime: DateTime.now(),
+    ));
+
+    // Upload to server
+    var incident = _core!.state.capture.incident!.copyWith(
+      battery: _core!.state.capture.battery,
+    );
+
+    _core!.state.capture.setIncident(incident);
+    _core!.services.server.incidents.upsert(incident);
   }
 }
