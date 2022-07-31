@@ -27,7 +27,7 @@ class CaptureUtil {
     // ⬇️ WEBRTC
 
     // ⬇️ LOCATION + SMS
-    // _locationListen();
+    _locationListen();
 
     // ⬇️ BATTERY
   }
