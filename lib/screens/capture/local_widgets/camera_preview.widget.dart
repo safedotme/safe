@@ -144,11 +144,11 @@ class _CameraPreviewControlState extends State<CameraPreviewControl>
     await core.state.capture.camera!.initialize();
     await core.state.capture.camera!.prepareForVideoRecording();
 
-    // Initializes the engine (will start the recording)
-    core.utils.engine.initialize(
-      c: core.state.capture.camera!,
-      cre: core,
-    );
+    // Initializes the engine (will start the recording) UNCOMMENT LATER
+    // core.utils.engine.initialize(
+    //   c: core.state.capture.camera!,
+    //   cre: core,
+    // );
 
     core.state.capture.setIsCameraInitialized(true);
   }

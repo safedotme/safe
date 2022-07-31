@@ -249,6 +249,23 @@ mixin _$CaptureStore on _CaptureStore, Store {
     });
   }
 
+  late final _$emergencyServicesNotifiedAtom =
+      Atom(name: '_CaptureStore.emergencyServicesNotified', context: context);
+
+  @override
+  bool get emergencyServicesNotified {
+    _$emergencyServicesNotifiedAtom.reportRead();
+    return super.emergencyServicesNotified;
+  }
+
+  @override
+  set emergencyServicesNotified(bool value) {
+    _$emergencyServicesNotifiedAtom
+        .reportWrite(value, super.emergencyServicesNotified, () {
+      super.emergencyServicesNotified = value;
+    });
+  }
+
   late final _$_CaptureStoreActionController =
       ActionController(name: '_CaptureStore', context: context);
 
@@ -363,6 +380,17 @@ mixin _$CaptureStore on _CaptureStore, Store {
   }
 
   @override
+  void setEmergencyServicesNotified(bool b) {
+    final _$actionInfo = _$_CaptureStoreActionController.startAction(
+        name: '_CaptureStore.setEmergencyServicesNotified');
+    try {
+      return super.setEmergencyServicesNotified(b);
+    } finally {
+      _$_CaptureStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 controller: ${controller},
@@ -379,7 +407,8 @@ incident: ${incident},
 type: ${type},
 locationUpdates: ${locationUpdates},
 overlayController: ${overlayController},
-battery: ${battery}
+battery: ${battery},
+emergencyServicesNotified: ${emergencyServicesNotified}
     ''';
   }
 }

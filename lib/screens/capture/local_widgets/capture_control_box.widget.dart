@@ -115,17 +115,6 @@ class _CaptureControlBoxState extends State<CaptureControlBox> {
                                 ControlButton(
                                   text: core.utils.language.langMap[core.state
                                           .preferences.language]!["capture"]
-                                      ["controls"]["911"]["header"],
-                                  icon: MutableIcons.shield,
-                                  iconSize: Size(15, 17),
-                                  onTap: () {
-                                    print("navigate to 911 popup");
-                                  },
-                                ),
-                                SizedBox(height: 10),
-                                ControlButton(
-                                  text: core.utils.language.langMap[core.state
-                                          .preferences.language]!["capture"]
                                       ["controls"]["stop"]["header"],
                                   icon: MutableIcons.stopRecording,
                                   iconSize: Size(17, 17),
@@ -135,6 +124,18 @@ class _CaptureControlBoxState extends State<CaptureControlBox> {
                                       barrierDismissible: true,
                                       builder: (_) => CaptureStopAlertDialog(),
                                     );
+                                  },
+                                ),
+                                SizedBox(height: 10),
+                                ControlButton(
+                                  active: true,
+                                  text: core.utils.language.langMap[core.state
+                                          .preferences.language]!["capture"]
+                                      ["controls"]["911"]["header"],
+                                  icon: MutableIcons.shield,
+                                  iconSize: Size(15, 17),
+                                  onTap: () {
+                                    print("navigate to 911 popup");
                                   },
                                 ),
                               ],

@@ -91,4 +91,10 @@ abstract class _CaptureStore with Store {
 
   @action
   void addToBattery(Battery b) => battery.add(b);
+
+  @observable
+  bool emergencyServicesNotified = false;
+
+  @action
+  void setEmergencyServicesNotified(bool b) => emergencyServicesNotified = b;
 }

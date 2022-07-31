@@ -43,6 +43,7 @@ class CaptureUtil {
     _core!.utils.engine.stop();
     _core!.state.capture.overlayController.show();
     _core!.state.engine.setOnStop(true);
+    _core!.services.signaling.hangUp();
     // CALL STOP WHEN NECESSARY
     if (locationSubscription != null) {
       await locationSubscription!.cancel();
