@@ -3,10 +3,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
-import 'package:safe/models/incident/incident.model.dart';
 import 'package:safe/utils/constants/constants.util.dart';
 import 'package:safe/widgets/mutable_shimmer/mutable_shimmer.widget.dart';
-import 'package:uuid/uuid.dart';
 
 class CameraPreviewControl extends StatefulWidget {
   final CameraPreviewController? controller;

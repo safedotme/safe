@@ -217,22 +217,6 @@ mixin _$CaptureStore on _CaptureStore, Store {
     });
   }
 
-  late final _$onStopAtom =
-      Atom(name: '_CaptureStore.onStop', context: context);
-
-  @override
-  bool get onStop {
-    _$onStopAtom.reportRead();
-    return super.onStop;
-  }
-
-  @override
-  set onStop(bool value) {
-    _$onStopAtom.reportWrite(value, super.onStop, () {
-      super.onStop = value;
-    });
-  }
-
   late final _$overlayControllerAtom =
       Atom(name: '_CaptureStore.overlayController', context: context);
 
@@ -249,18 +233,19 @@ mixin _$CaptureStore on _CaptureStore, Store {
     });
   }
 
-  late final _$countAtom = Atom(name: '_CaptureStore.count', context: context);
+  late final _$batteryAtom =
+      Atom(name: '_CaptureStore.battery', context: context);
 
   @override
-  int get count {
-    _$countAtom.reportRead();
-    return super.count;
+  List<Battery> get battery {
+    _$batteryAtom.reportRead();
+    return super.battery;
   }
 
   @override
-  set count(int value) {
-    _$countAtom.reportWrite(value, super.count, () {
-      super.count = value;
+  set battery(List<Battery> value) {
+    _$batteryAtom.reportWrite(value, super.battery, () {
+      super.battery = value;
     });
   }
 
@@ -367,33 +352,11 @@ mixin _$CaptureStore on _CaptureStore, Store {
   }
 
   @override
-  void setOnStop(bool v) {
+  void addToBattery(Battery b) {
     final _$actionInfo = _$_CaptureStoreActionController.startAction(
-        name: '_CaptureStore.setOnStop');
+        name: '_CaptureStore.addToBattery');
     try {
-      return super.setOnStop(v);
-    } finally {
-      _$_CaptureStoreActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
-  void clearCount() {
-    final _$actionInfo = _$_CaptureStoreActionController.startAction(
-        name: '_CaptureStore.clearCount');
-    try {
-      return super.clearCount();
-    } finally {
-      _$_CaptureStoreActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
-  void addCount() {
-    final _$actionInfo = _$_CaptureStoreActionController.startAction(
-        name: '_CaptureStore.addCount');
-    try {
-      return super.addCount();
+      return super.addToBattery(b);
     } finally {
       _$_CaptureStoreActionController.endAction(_$actionInfo);
     }
@@ -415,9 +378,8 @@ cameraPreviewController: ${cameraPreviewController},
 incident: ${incident},
 type: ${type},
 locationUpdates: ${locationUpdates},
-onStop: ${onStop},
 overlayController: ${overlayController},
-count: ${count}
+battery: ${battery}
     ''';
   }
 }

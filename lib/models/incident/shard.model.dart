@@ -4,7 +4,7 @@ class Shard {
   final String? bucketId;
   final int? bytes;
   final DateTime? uploadDatetime;
-  final String shardId;
+  final String id;
   final int position;
   final String? cloudPath;
   final String localPath;
@@ -14,7 +14,7 @@ class Shard {
     this.bucketId,
     this.bytes,
     this.uploadDatetime,
-    required this.shardId,
+    required this.id,
     required this.position,
     this.cloudPath,
     required this.localPath,
@@ -25,7 +25,7 @@ class Shard {
         bucketId: json["bucket_id"],
         bytes: json["bytes"]?.toInt(),
         uploadDatetime: DateTime.parse(json["upload_datetime"]),
-        shardId: json["shard_id"],
+        id: json["id"],
         position: json["position"],
         localPath: json["local_path"],
         cloudPath: json["cloud_path"],
@@ -36,7 +36,7 @@ class Shard {
         "bucket_id": bucketId,
         "bytes": bytes,
         "upload_datetime": datetime.toIso8601String(),
-        "shard_id": shardId,
+        "id": id,
         "position": position,
         "local_path": localPath,
         "cloud_path": cloudPath,
@@ -47,7 +47,7 @@ class Shard {
     String? bucketId,
     int? bytes,
     DateTime? uploadDatetime,
-    String? shardId,
+    String? id,
     int? position,
     String? cloudPath,
     String? localPath,
@@ -57,7 +57,7 @@ class Shard {
       bucketId: bucketId ?? this.bucketId,
       bytes: bytes ?? this.bytes,
       uploadDatetime: uploadDatetime ?? this.uploadDatetime,
-      shardId: shardId ?? this.shardId,
+      id: id ?? this.id,
       position: position ?? this.position,
       cloudPath: cloudPath ?? this.cloudPath,
       localPath: localPath ?? this.localPath,

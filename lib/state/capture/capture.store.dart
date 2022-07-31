@@ -1,5 +1,6 @@
 import 'package:camera/camera.dart';
 import 'package:mobx/mobx.dart';
+import 'package:safe/models/incident/battery.model.dart';
 import 'package:safe/models/incident/incident.model.dart';
 import 'package:safe/models/incident/location.model.dart';
 import 'package:safe/screens/capture/local_widgets/camera_preview.widget.dart';
@@ -83,20 +84,11 @@ abstract class _CaptureStore with Store {
   void setLocationUpdates(Stream<Location> l) => locationUpdates = l;
 
   @observable
-  bool onStop = false;
-
-  @action
-  void setOnStop(bool v) => onStop = v;
-
-  @observable
   OverlayController overlayController = OverlayController();
 
   @observable
-  int count = 0;
+  List<Battery> battery = [];
 
   @action
-  void clearCount() => count = 0;
-
-  @action
-  void addCount() => count++;
+  void addToBattery(Battery b) => battery.add(b);
 }

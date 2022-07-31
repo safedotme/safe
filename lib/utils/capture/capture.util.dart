@@ -2,8 +2,11 @@ import 'dart:async';
 import 'package:intl/intl.dart';
 import 'package:safe/core.dart';
 import 'package:safe/models/contact/contact.model.dart';
+import 'package:safe/models/incident/battery.model.dart';
+import 'package:battery_plus/battery_plus.dart' as api;
 import 'package:safe/models/incident/incident.model.dart';
 import 'package:safe/models/incident/location.model.dart';
+import 'package:safe/models/incident/notified_contacts.model.dart';
 import 'package:safe/models/user/user.model.dart';
 import 'package:safe/neuances.dart';
 import 'package:safe/utils/constants/constants.util.dart';
@@ -11,7 +14,9 @@ import 'package:uuid/uuid.dart';
 
 class CaptureUtil {
   Core? _core;
-  StreamSubscription<Location>? subscription;
+  StreamSubscription<Location>? locationSubscription;
+  Timer? batteryTimer;
+  api.Battery? battery;
 
   void initialize(Core core) {
     _core = core;
@@ -23,24 +28,25 @@ class CaptureUtil {
     // ⬇️ INCIDENT CREATE
     _uploadChanges(null);
 
-    // ⬇️ WEBRTC
-
     // ⬇️ LOCATION + SMS
     _locationListen();
 
     // ⬇️ BATTERY
+    _batteryListen();
+
+    // ⬇️ WEBRTC
+    _initStream();
   }
 
   void stop() async {
+    // Stops sharding -> Will complete ongoing systems
     _core!.utils.engine.stop();
     _core!.state.capture.overlayController.show();
-    _core!.state.capture.setOnStop(true);
+    _core!.state.engine.setOnStop(true);
     // CALL STOP WHEN NECESSARY
-    if (subscription != null) {
-      await subscription!.cancel();
+    if (locationSubscription != null) {
+      await locationSubscription!.cancel();
     }
-
-    // Stops sharding -> Will complete ongoing systems
   }
 
   // ⬇️ LOCATION
@@ -96,7 +102,8 @@ class CaptureUtil {
     bool shouldUpsert = true;
 
     _core!.services.location.initilaize();
-    subscription = _core!.services.location.stream.listen((location) async {
+    locationSubscription =
+        _core!.services.location.stream.listen((location) async {
       // Check if log is null | this will be the first time
       if (log == null) {
         _generateAddress(location).then((address) async {
@@ -139,7 +146,11 @@ class CaptureUtil {
       id: _core!.services.auth.currentUser!.uid,
     );
 
-    contacts.forEach(message);
+    print("");
+
+    for (Contact contact in contacts) {
+      await message(contact);
+    }
   }
 
   String _generateMessage(Contact contact, User user, Incident incident) {
@@ -169,13 +180,78 @@ class CaptureUtil {
 
   Future<void> message(Contact contact) async {
     var incident = _core!.state.capture.incident!;
+
     var user = await _core!.services.server.user.readFromIdOnce(
       id: _core!.services.auth.currentUser!.uid,
     );
 
-    _core!.services.twilio.messageSMS(
+    var message = _generateMessage(contact, user!, incident);
+
+    await _core!.services.twilio.messageSMS(
       phone: contact.phone,
-      message: _generateMessage(contact, user!, incident),
+      message: message,
     );
+
+    print("CAPTURE: Notified ${contact.name}");
+
+    var notified = NotifiedContact(
+      id: contact.id,
+      name: contact.name,
+      phone: contact.phone,
+      messageSent: message,
+      datetime: DateTime.now(),
+    );
+
+    incident = incident.copyWith(
+      notifiedContacts: incident.notifiedContacts == null
+          ? [notified]
+          : [
+              ...incident.notifiedContacts!,
+              notified,
+            ],
+    );
+
+    _core!.state.capture.setIncident(incident);
+    _core!.services.server.incidents.upsert(incident);
+  }
+
+  // ⬇️ BATTERY
+
+  void _batteryListen() async {
+    battery = api.Battery();
+
+    // Gets battery immediately
+    await uploadBattery();
+
+    // Set timer
+    batteryTimer = Timer.periodic(Duration(seconds: 10), (_) async {
+      await uploadBattery();
+    });
+  }
+
+  Future<void> uploadBattery() async {
+    // Get battery level
+    var current = await battery!.batteryLevel;
+
+    // Set local state
+    _core!.state.capture.addToBattery(Battery(
+      percentage: current / 100,
+      datetime: DateTime.now(),
+    ));
+
+    // Upload to server
+    var incident = _core!.state.capture.incident!.copyWith(
+      battery: _core!.state.capture.battery,
+    );
+
+    _core!.state.capture.setIncident(incident);
+    _core!.services.server.incidents.upsert(incident);
+  }
+
+  // ⬇️ WEBRTC
+  void _initStream() async {
+    _core!.services.signaling.init(_core!);
+    await _core!.services.signaling.openLocalMedia();
+    await _core!.services.signaling.createSession();
   }
 }

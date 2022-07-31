@@ -22,6 +22,12 @@ class IncidentServer {
         );
   }
 
+  Stream<Incident> readFromId({required String id}) {
+    return _db.collection(path).doc(id).snapshots().map(
+          (doc) => Incident.fromJson(doc.data()!),
+        );
+  }
+
   // -> UPSERT
   Future<void> upsert(Incident incident) {
     var options = SetOptions(merge: true);
