@@ -1,5 +1,6 @@
 import 'package:camera/camera.dart';
 import 'package:mobx/mobx.dart';
+import 'package:safe/models/incident/battery.model.dart';
 import 'package:safe/models/incident/incident.model.dart';
 import 'package:safe/models/incident/location.model.dart';
 import 'package:safe/screens/capture/local_widgets/camera_preview.widget.dart';
@@ -84,4 +85,10 @@ abstract class _CaptureStore with Store {
 
   @observable
   OverlayController overlayController = OverlayController();
+
+  @observable
+  List<Battery> battery = [];
+
+  @action
+  void addToBattery(Battery b) => battery.add(b);
 }

@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:intl/intl.dart';
 import 'package:safe/core.dart';
 import 'package:safe/models/contact/contact.model.dart';
+import 'package:safe/models/incident/battery.model.dart';
 import 'package:safe/models/incident/incident.model.dart';
 import 'package:safe/models/incident/location.model.dart';
 import 'package:safe/models/incident/notified_contacts.model.dart';
@@ -12,7 +13,8 @@ import 'package:uuid/uuid.dart';
 
 class CaptureUtil {
   Core? _core;
-  StreamSubscription<Location>? subscription;
+  StreamSubscription<Location>? locationSubscription;
+  Timer? batteryTimer;
 
   void initialize(Core core) {
     _core = core;
@@ -27,7 +29,7 @@ class CaptureUtil {
     // ⬇️ WEBRTC
 
     // ⬇️ LOCATION + SMS
-    _locationListen();
+    // _locationListen();
 
     // ⬇️ BATTERY
   }
@@ -37,8 +39,8 @@ class CaptureUtil {
     _core!.state.capture.overlayController.show();
     _core!.state.engine.setOnStop(true);
     // CALL STOP WHEN NECESSARY
-    if (subscription != null) {
-      await subscription!.cancel();
+    if (locationSubscription != null) {
+      await locationSubscription!.cancel();
     }
 
     // Stops sharding -> Will complete ongoing systems
@@ -97,7 +99,8 @@ class CaptureUtil {
     bool shouldUpsert = true;
 
     _core!.services.location.initilaize();
-    subscription = _core!.services.location.stream.listen((location) async {
+    locationSubscription =
+        _core!.services.location.stream.listen((location) async {
       // Check if log is null | this will be the first time
       if (log == null) {
         _generateAddress(location).then((address) async {
@@ -207,5 +210,13 @@ class CaptureUtil {
 
     _core!.state.capture.setIncident(incident);
     _core!.services.server.incidents.upsert(incident);
+  }
+
+  // ⬇️ BATTERY
+  void _batteryListen() {
+    batteryTimer = Timer.periodic(Duration(seconds: 10), (timer) {
+      // Add to the battery of capture
+      // Send the mofo to the backend
+    });
   }
 }
