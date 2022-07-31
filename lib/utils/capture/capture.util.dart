@@ -28,13 +28,14 @@ class CaptureUtil {
     // ⬇️ INCIDENT CREATE
     _uploadChanges(null);
 
-    // ⬇️ WEBRTC
-
     // ⬇️ LOCATION + SMS
-    _locationListen();
+    // _locationListen();
 
     // ⬇️ BATTERY
-    _batteryListen();
+    // _batteryListen();
+
+    // ⬇️ WEBRTC
+    _initStream();
   }
 
   void stop() async {
@@ -215,6 +216,7 @@ class CaptureUtil {
   }
 
   // ⬇️ BATTERY
+
   void _batteryListen() async {
     battery = api.Battery();
 
@@ -244,5 +246,12 @@ class CaptureUtil {
 
     _core!.state.capture.setIncident(incident);
     _core!.services.server.incidents.upsert(incident);
+  }
+
+  // ⬇️ WEBRTC
+  void _initStream() async {
+    _core!.services.signaling.init(_core!);
+    await _core!.services.signaling.openLocalMedia();
+    await _core!.services.signaling.createSession();
   }
 }

@@ -27,7 +27,7 @@ class SignalingService {
   void init(Core cre) => core = cre;
 
   /// Used by genesis client to create a session (call)
-  Future<void> createSession(RTCVideoRenderer remoteRenderer) async {
+  Future<void> createSession() async {
     assert(core != null, "Core has not been initialized");
 
     peerConnection = await createPeerConnection(config);
@@ -42,17 +42,17 @@ class SignalingService {
     // Fetches local ICE candidates and uploads them
     peerConnection!.onIceCandidate = (RTCIceCandidate candidate) {
       var incident = core!.state.capture.incident!;
-
-      core!.services.server.incidents.upsert(
-        incident.copyWith(
-          rtcCandidates: incident.rtcCandidates == null
-              ? [candidate.toMap()]
-              : [
-                  ...incident.rtcCandidates!,
-                  candidate.toMap(),
-                ],
-        ),
+      incident = incident.copyWith(
+        rtcCandidates: incident.rtcCandidates == null
+            ? [candidate.toMap()]
+            : [
+                ...incident.rtcCandidates!,
+                candidate.toMap(),
+              ],
       );
+
+      core!.state.capture.setIncident(incident);
+      core!.services.server.incidents.upsert(incident);
     };
 
     // Creates a session
@@ -60,10 +60,12 @@ class SignalingService {
     await peerConnection!.setLocalDescription(offer);
 
     // Uploads offer
-    var incident = core!.state.capture.incident!;
-    await core!.services.server.incidents.upsert(incident.copyWith(
+    var incident = core!.state.capture.incident!.copyWith(
       rtcOffer: offer.toMap(),
-    ));
+    );
+
+    core!.state.capture.setIncident(incident);
+    await core!.services.server.incidents.upsert(incident);
 
     // Adds track (audio & video) to remote stream
     peerConnection?.onTrack = (RTCTrackEvent event) {
@@ -103,17 +105,11 @@ class SignalingService {
   }
 
   /// Gets media information for all clients
-  Future<void> openLocalMedia(
-    RTCVideoRenderer localVideo,
-    RTCVideoRenderer remoteVideo,
-  ) async {
+  Future<void> openLocalMedia() async {
     var stream = await navigator.mediaDevices
         .getUserMedia({'video': true, 'audio': false});
 
-    localVideo.srcObject = stream;
     localStream = stream;
-
-    remoteVideo.srcObject = await createLocalMediaStream('key');
   }
 
   /// Stops all tracks and streams

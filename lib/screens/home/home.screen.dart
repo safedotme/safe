@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
-import 'package:safe/models/contact/contact.model.dart';
 import 'package:safe/models/user/user.model.dart';
 import 'package:safe/screens/capture/capture.screen.dart';
 import 'package:safe/screens/incident_log/incident_log.screen.dart';
@@ -9,7 +8,6 @@ import 'package:safe/utils/constants/constants.util.dart';
 import 'package:safe/widgets/mutable_safe_button/mutable_safe_button.widget.dart';
 import 'package:safe/widgets/mutable_scaffold/mutable_scaffold.widget.dart';
 import 'package:safe/widgets/mutable_text/mutable_text.widget.dart';
-import 'package:uuid/uuid.dart';
 
 class HomeScreen extends StatefulWidget {
   static const String id = "home_screen";
@@ -74,7 +72,7 @@ class _HomeScreenState extends State<HomeScreen> {
               onTap: () async {
                 core.utils.capture.initialize(core);
                 core.utils.capture.start();
-                core.state.capture.controller.open();
+                // core.state.capture.controller.open();
               },
             ),
           ),
