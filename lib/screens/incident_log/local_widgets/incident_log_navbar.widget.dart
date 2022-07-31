@@ -1,10 +1,9 @@
 import 'dart:ui';
-
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
-import 'package:safe/models/user/user.model.dart';
 import 'package:safe/utils/constants/constants.util.dart';
 import 'package:safe/utils/icon/icon.util.dart';
 import 'package:safe/widgets/mutable_avatar/mutable_avatar.widget.dart';
@@ -177,9 +176,10 @@ class _IncidentLogNavBarState extends State<IncidentLogNavBar> {
                           SizedBox(width: 15),
                           MutableNavSafeButton(
                             onTap: () {
-                              print(core
-                                  .state.incidentLog.scrollController.offset);
-                              print("activate safe");
+                              HapticFeedback.heavyImpact();
+                              core.utils.capture.initialize(core);
+                              core.utils.capture.start();
+                              core.state.capture.controller.open();
                             },
                           ),
                         ],

@@ -113,12 +113,7 @@ class SignalingService {
   }
 
   /// Stops all tracks and streams
-  Future<void> hangUp(RTCVideoRenderer localVideo) async {
-    List<MediaStreamTrack> tracks = localVideo.srcObject!.getTracks();
-    tracks.forEach((track) {
-      track.stop();
-    });
-
+  Future<void> hangUp() async {
     if (remoteStream != null) {
       remoteStream!.getTracks().forEach((track) => track.stop());
     }

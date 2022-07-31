@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
 import 'package:safe/models/user/user.model.dart';
@@ -70,9 +71,10 @@ class _HomeScreenState extends State<HomeScreen> {
           child: Center(
             child: MutableSafeButton(
               onTap: () async {
+                HapticFeedback.heavyImpact();
                 core.utils.capture.initialize(core);
                 core.utils.capture.start();
-                // core.state.capture.controller.open();
+                core.state.capture.controller.open();
               },
             ),
           ),
