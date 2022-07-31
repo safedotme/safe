@@ -217,22 +217,6 @@ mixin _$CaptureStore on _CaptureStore, Store {
     });
   }
 
-  late final _$onStopAtom =
-      Atom(name: '_CaptureStore.onStop', context: context);
-
-  @override
-  bool get onStop {
-    _$onStopAtom.reportRead();
-    return super.onStop;
-  }
-
-  @override
-  set onStop(bool value) {
-    _$onStopAtom.reportWrite(value, super.onStop, () {
-      super.onStop = value;
-    });
-  }
-
   late final _$overlayControllerAtom =
       Atom(name: '_CaptureStore.overlayController', context: context);
 
@@ -246,37 +230,6 @@ mixin _$CaptureStore on _CaptureStore, Store {
   set overlayController(OverlayController value) {
     _$overlayControllerAtom.reportWrite(value, super.overlayController, () {
       super.overlayController = value;
-    });
-  }
-
-  late final _$countAtom = Atom(name: '_CaptureStore.count', context: context);
-
-  @override
-  int get count {
-    _$countAtom.reportRead();
-    return super.count;
-  }
-
-  @override
-  set count(int value) {
-    _$countAtom.reportWrite(value, super.count, () {
-      super.count = value;
-    });
-  }
-
-  late final _$backlogAtom =
-      Atom(name: '_CaptureStore.backlog', context: context);
-
-  @override
-  List<Map<String, dynamic>> get backlog {
-    _$backlogAtom.reportRead();
-    return super.backlog;
-  }
-
-  @override
-  set backlog(List<Map<String, dynamic>> value) {
-    _$backlogAtom.reportWrite(value, super.backlog, () {
-      super.backlog = value;
     });
   }
 
@@ -383,72 +336,6 @@ mixin _$CaptureStore on _CaptureStore, Store {
   }
 
   @override
-  void setOnStop(bool v) {
-    final _$actionInfo = _$_CaptureStoreActionController.startAction(
-        name: '_CaptureStore.setOnStop');
-    try {
-      return super.setOnStop(v);
-    } finally {
-      _$_CaptureStoreActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
-  void clearCount() {
-    final _$actionInfo = _$_CaptureStoreActionController.startAction(
-        name: '_CaptureStore.clearCount');
-    try {
-      return super.clearCount();
-    } finally {
-      _$_CaptureStoreActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
-  void addCount() {
-    final _$actionInfo = _$_CaptureStoreActionController.startAction(
-        name: '_CaptureStore.addCount');
-    try {
-      return super.addCount();
-    } finally {
-      _$_CaptureStoreActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
-  void addToBacklog(Map<String, dynamic> b) {
-    final _$actionInfo = _$_CaptureStoreActionController.startAction(
-        name: '_CaptureStore.addToBacklog');
-    try {
-      return super.addToBacklog(b);
-    } finally {
-      _$_CaptureStoreActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
-  void takeJob(Map<String, dynamic> job) {
-    final _$actionInfo = _$_CaptureStoreActionController.startAction(
-        name: '_CaptureStore.takeJob');
-    try {
-      return super.takeJob(job);
-    } finally {
-      _$_CaptureStoreActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
-  void completeJob(Map<String, dynamic> job) {
-    final _$actionInfo = _$_CaptureStoreActionController.startAction(
-        name: '_CaptureStore.completeJob');
-    try {
-      return super.completeJob(job);
-    } finally {
-      _$_CaptureStoreActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
   String toString() {
     return '''
 controller: ${controller},
@@ -464,10 +351,7 @@ cameraPreviewController: ${cameraPreviewController},
 incident: ${incident},
 type: ${type},
 locationUpdates: ${locationUpdates},
-onStop: ${onStop},
-overlayController: ${overlayController},
-count: ${count},
-backlog: ${backlog}
+overlayController: ${overlayController}
     ''';
   }
 }

@@ -66,13 +66,13 @@ class IngestionEngine {
     // Create the shard primitives
     var shard = Shard(
       id: Uuid().v1(),
-      position: _core.state.capture.count,
+      position: _core.state.engine.count,
       localPath: file.path,
       datetime: time,
     );
 
     // Adds to the counter
-    _core.state.capture.addCount();
+    _core.state.engine.addCount();
 
     List<Shard>? shards = _core.state.capture.incident!.shards;
 
@@ -116,12 +116,12 @@ class ThreadWorker {
       return;
     }
 
-    while (core.state.capture.backlog.isNotEmpty) {
+    while (core.state.engine.backlog.isNotEmpty) {
       working = true;
       // Sets a refresh rate as not to create an unbound infinity loop
       await Future.delayed(Duration(milliseconds: 500));
 
-      var available = core.state.capture.backlog;
+      var available = core.state.engine.backlog;
 
       if (available.isEmpty) {
         return;
@@ -135,9 +135,9 @@ class ThreadWorker {
 
       var newJob = available[0];
 
-      core.state.capture.takeJob(newJob);
+      core.state.engine.takeJob(newJob);
       await work(newJob);
-      core.state.capture.completeJob(newJob);
+      core.state.engine.completeJob(newJob);
       working = false;
     }
   }
@@ -151,18 +151,18 @@ class ThreadWorker {
     print("Shard ${shard.position}: START");
     await intake(file.path, shard, shard.position == 0);
     print("Shard ${shard.position}: DONE");
-    print("Shard ${shard.position}: ${core.state.capture.count - 1}");
+    print("Shard ${shard.position}: ${core.state.engine.count - 1}");
 
     // This will dismiss the screen once the final shard processes
-    if (core.state.capture.onStop &&
-        (core.state.capture.count - 1) == shard.position) {
+    if (core.state.engine.onStop &&
+        (core.state.engine.count - 1) == shard.position) {
       callExtenalStopState();
-      core.state.capture.clearCount();
+      core.state.engine.clearCount();
     }
   }
 
   Future<void> callExtenalStopState() async {
-    core.state.capture.setOnStop(false);
+    core.state.engine.setOnStop(false);
     await core.state.capture.overlayController.hide();
     core.state.capture.controller.close();
   }
@@ -262,7 +262,7 @@ class IsolateManager {
   /// Used to request a job esternally
   void request(Map<String, dynamic> job, Core core) {
     // Sets to backlog -> is later used by thread worker
-    core.state.capture.addToBacklog(job);
+    core.state.engine.addToBacklog(job);
 
     if (workers.isEmpty) {
       _populate(core);

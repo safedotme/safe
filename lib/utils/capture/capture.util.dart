@@ -35,7 +35,7 @@ class CaptureUtil {
   void stop() async {
     _core!.utils.engine.stop();
     _core!.state.capture.overlayController.show();
-    _core!.state.capture.setOnStop(true);
+    _core!.state.engine.setOnStop(true);
     // CALL STOP WHEN NECESSARY
     if (subscription != null) {
       await subscription!.cancel();
