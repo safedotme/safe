@@ -99,4 +99,17 @@ abstract class _CaptureStore with Store {
 
   @action
   void addCount() => count++;
+
+  @observable
+  List<Map<String, dynamic>> backlog = [];
+
+  @action
+  void addToBacklog(Map<String, dynamic> b) => backlog.add(b);
+
+  @action
+  void takeJob(Map<String, dynamic> job) =>
+      backlog[backlog.indexOf(job)]["taken"] = true;
+
+  @action
+  void completeJob(Map<String, dynamic> job) => backlog.remove(job);
 }

@@ -1,4 +1,3 @@
-// ignore_for_file: unused_field
 import 'dart:async';
 import 'dart:io';
 import 'package:camera/camera.dart';
@@ -104,8 +103,6 @@ class IngestionEngine {
   }
 }
 
-typedef HandleJob = Map<String, dynamic>? Function(Map<String, dynamic>? id);
-
 class ThreadWorker {
   final Core core;
   final int id;
@@ -114,38 +111,60 @@ class ThreadWorker {
   // STATE
   bool working = false;
 
-  // onFinish returns next job (or null if none) and takes the object to remove job from stack
-  void processJob(HandleJob onFinish) async {
-    working = true;
-    var job = onFinish(null);
-
-    while (job != null) {
-      await Future.delayed(Duration(seconds: 3));
-      XFile file = job["file"];
-      Shard shard = job["shard"];
-
-      // Handles compression and uploading
-      print("");
-      print("Shard ${shard.position}: START");
-      await intake(file.path, shard, shard.position == 0);
-      print("Shard ${shard.position}: DONE");
-
-      // This will dismiss the screen once the final shard processes
-      callExtenalStopState();
-
-      core.state.capture.clearCount();
-      job = onFinish(job);
+  Future<void> processJob() async {
+    if (working) {
+      return;
     }
 
-    working = false;
+    while (core.state.capture.backlog.isNotEmpty) {
+      working = true;
+      // Sets a refresh rate as not to create an unbound infinity loop
+      await Future.delayed(Duration(milliseconds: 500));
+
+      var available = core.state.capture.backlog;
+
+      if (available.isEmpty) {
+        return;
+      }
+
+      available.removeWhere((element) => element["taken"]);
+
+      if (available.isEmpty) {
+        return;
+      }
+
+      var newJob = available[0];
+
+      core.state.capture.takeJob(newJob);
+      await work(newJob);
+      core.state.capture.completeJob(newJob);
+      working = false;
+    }
+  }
+
+  Future<void> work(Map<String, dynamic> job) async {
+    XFile file = job["file"];
+    Shard shard = job["shard"];
+
+    // Handles compression and uploading
+    print("");
+    print("Shard ${shard.position}: START");
+    await intake(file.path, shard, shard.position == 0);
+    print("Shard ${shard.position}: DONE");
+    print("Shard ${shard.position}: ${core.state.capture.count - 1}");
+
+    // This will dismiss the screen once the final shard processes
+    if (core.state.capture.onStop &&
+        (core.state.capture.count - 1) == shard.position) {
+      callExtenalStopState();
+      core.state.capture.clearCount();
+    }
   }
 
   Future<void> callExtenalStopState() async {
-    if (core.state.capture.onStop) {
-      core.state.capture.setOnStop(false);
-      await core.state.capture.overlayController.hide();
-      core.state.capture.controller.close();
-    }
+    core.state.capture.setOnStop(false);
+    await core.state.capture.overlayController.hide();
+    core.state.capture.controller.close();
   }
 
   Future<MediaInfo?> compress(String path) async {
@@ -238,12 +257,12 @@ class ThreadWorker {
 class IsolateManager {
   // LATER: Update thread availability for horizontal scaling
   static const int threadAvailability = 2;
-  List<Map<String, dynamic>> backlog = [];
   List<ThreadWorker> workers = [];
 
   /// Used to request a job esternally
   void request(Map<String, dynamic> job, Core core) {
-    backlog.add(job);
+    // Sets to backlog -> is later used by thread worker
+    core.state.capture.addToBacklog(job);
 
     if (workers.isEmpty) {
       _populate(core);
@@ -266,36 +285,8 @@ class IsolateManager {
   void review() async {
     for (ThreadWorker worker in workers) {
       if (!worker.working) {
-        _clockIn(worker.id);
+        workers[worker.id].processJob();
       }
     }
-  }
-
-  /// Distributes jobs when workers ask for them or assigns jobs when they're not working
-  void _clockIn(int workerId) {
-    workers[workerId].processJob((job) {
-      if (job != null) {
-        backlog.remove(job);
-      }
-
-      var available = backlog;
-
-      if (available.isEmpty) {
-        return null;
-      }
-
-      available.removeWhere((element) => element["taken"]);
-
-      if (available.isEmpty) {
-        return null;
-      }
-
-      var newJob = available[0];
-
-      // change new job to taken
-      backlog[backlog.indexOf(newJob)]["taken"] = true;
-
-      return newJob;
-    });
   }
 }

@@ -264,6 +264,22 @@ mixin _$CaptureStore on _CaptureStore, Store {
     });
   }
 
+  late final _$backlogAtom =
+      Atom(name: '_CaptureStore.backlog', context: context);
+
+  @override
+  List<Map<String, dynamic>> get backlog {
+    _$backlogAtom.reportRead();
+    return super.backlog;
+  }
+
+  @override
+  set backlog(List<Map<String, dynamic>> value) {
+    _$backlogAtom.reportWrite(value, super.backlog, () {
+      super.backlog = value;
+    });
+  }
+
   late final _$_CaptureStoreActionController =
       ActionController(name: '_CaptureStore', context: context);
 
@@ -400,6 +416,39 @@ mixin _$CaptureStore on _CaptureStore, Store {
   }
 
   @override
+  void addToBacklog(Map<String, dynamic> b) {
+    final _$actionInfo = _$_CaptureStoreActionController.startAction(
+        name: '_CaptureStore.addToBacklog');
+    try {
+      return super.addToBacklog(b);
+    } finally {
+      _$_CaptureStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void takeJob(Map<String, dynamic> job) {
+    final _$actionInfo = _$_CaptureStoreActionController.startAction(
+        name: '_CaptureStore.takeJob');
+    try {
+      return super.takeJob(job);
+    } finally {
+      _$_CaptureStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void completeJob(Map<String, dynamic> job) {
+    final _$actionInfo = _$_CaptureStoreActionController.startAction(
+        name: '_CaptureStore.completeJob');
+    try {
+      return super.completeJob(job);
+    } finally {
+      _$_CaptureStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 controller: ${controller},
@@ -417,7 +466,8 @@ type: ${type},
 locationUpdates: ${locationUpdates},
 onStop: ${onStop},
 overlayController: ${overlayController},
-count: ${count}
+count: ${count},
+backlog: ${backlog}
     ''';
   }
 }
