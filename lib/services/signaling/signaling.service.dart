@@ -10,7 +10,7 @@ class SignalingService {
   String? roomId;
   String? currentRoomText;
   StreamStateCallback? onAddRemoteStream;
-  late Core core;
+  Core? core;
 
   // Configuration for testing (will change later)
   static const Map<String, dynamic> config = {
@@ -41,18 +41,29 @@ class SignalingService {
 
     // Fetches local ICE candidates and uploads them
     peerConnection!.onIceCandidate = (RTCIceCandidate candidate) {
-      // Sends to backend (ADD)
+      var incident = core!.state.capture.incident!;
+
+      core!.services.server.incidents.upsert(
+        incident.copyWith(
+          rtcCandidates: incident.rtcCandidates == null
+              ? [candidate.toMap()]
+              : [
+                  ...incident.rtcCandidates!,
+                  candidate.toMap(),
+                ],
+        ),
+      );
     };
 
     // Creates a session
     RTCSessionDescription offer = await peerConnection!.createOffer();
     await peerConnection!.setLocalDescription(offer);
 
-    // Upload offer to server (ADD)
-    // Map<String, dynamic> roomWithOffer = {'offer': offer.toMap()};
-
-    // await roomRef.set(roomWithOffer);
-    // var roomId = roomRef.id;
+    // Uploads offer
+    var incident = core!.state.capture.incident!;
+    await core!.services.server.incidents.upsert(incident.copyWith(
+      rtcOffer: offer.toMap(),
+    ));
 
     // Adds track (audio & video) to remote stream
     peerConnection?.onTrack = (RTCTrackEvent event) {
@@ -62,40 +73,33 @@ class SignalingService {
     };
 
     // Listen for remote session descriptions (ADD)
+    var stream = core!.services.server.incidents.readFromId(id: incident.id);
 
-    // roomRef.snapshots().listen((snapshot) async {
-    //   print('Got updated room: ${snapshot.data()}');
+    stream.listen((event) async {
+      if (peerConnection?.getRemoteDescription() != null &&
+          event.rtcOffer?["answer"] != null) {
+        // Create session description
+        var answer = RTCSessionDescription(
+          event.rtcOffer?["answer"]["sdp"],
+          event.rtcOffer?["answer"]["type"],
+        );
 
-    //   Map<String, dynamic> data = snapshot.data() as Map<String, dynamic>;
-    //   if (peerConnection?.getRemoteDescription() != null &&
-    //       data['answer'] != null) {
-    //     var answer = RTCSessionDescription(
-    //       data['answer']['sdp'],
-    //       data['answer']['type'],
-    //     );
+        await peerConnection?.setRemoteDescription(answer);
+      }
 
-    //     print("Someone tried to connect");
-    //     await peerConnection?.setRemoteDescription(answer);
-    //   }
-    // });
+      // Check if any candidates were added
+      if (event.rtcCandidates != core!.state.signaling.candidates) {
+        peerConnection!.addCandidate(
+          RTCIceCandidate(
+            event.rtcCandidates!.last["candidate"],
+            event.rtcCandidates!.last["sdpMid"],
+            event.rtcCandidates!.last["sdpMLineIndex"],
+          ),
+        );
 
-    // Listen for remote ICE candidates (ADD)
-
-    // roomRef.collection('calleeCandidates').snapshots().listen((snapshot) {
-    //   snapshot.docChanges.forEach((change) {
-    //     if (change.type == DocumentChangeType.added) {
-    //       Map<String, dynamic> data = change.doc.data() as Map<String, dynamic>;
-    //       print('Got new remote ICE candidate: ${jsonEncode(data)}');
-    //       peerConnection!.addCandidate(
-    //         RTCIceCandidate(
-    //           data['candidate'],
-    //           data['sdpMid'],
-    //           data['sdpMLineIndex'],
-    //         ),
-    //       );
-    //     }
-    //   });
-    // });
+        core!.state.signaling.setCandidates(event.rtcCandidates!);
+      }
+    });
   }
 
   /// Gets media information for all clients

@@ -11,7 +11,7 @@ class Incident {
   final String userId;
   final String name;
   final List<IncidentType> type;
-  final List<Map>? rtcCandidates;
+  final List<Map<String, dynamic>>? rtcCandidates;
   final Map<String, dynamic>? rtcOffer;
   final DateTime datetime;
   final String? thumbnail;
@@ -51,12 +51,15 @@ class Incident {
         ? null
         : List<Map<String, dynamic>>.from(json["shards"]);
     List<String> _type = List<String>.from(json["type"]);
+    List<Map<String, dynamic>>? _candidates = json["rtc_candidates"] == null
+        ? null
+        : List<Map<String, dynamic>>.from(json["rtc_candidates"]);
 
     return Incident(
       id: json["id"],
       userId: json['user_id'],
       rtcOffer: json["rtc_offer"],
-      rtcCandidates: json["rtc_candidates"],
+      rtcCandidates: _candidates,
       name: json["name"],
       type: _type.map((e) => IncidentUtil.parseType(e)).toList(),
       datetime: DateTime.parse(json["datetime"]),
@@ -77,7 +80,7 @@ class Incident {
     DateTime? datetime,
     String? thumbnail,
     Map<String, dynamic>? rtcOffer,
-    List<Map>? rtcCandidates,
+    List<Map<String, dynamic>>? rtcCandidates,
     List<Location>? location,
     List<NotifiedContact>? notifiedContacts,
     List<Battery>? battery,
