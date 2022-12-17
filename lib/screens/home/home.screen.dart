@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
 import 'package:safe/models/user/user.model.dart';
 import 'package:safe/screens/capture/capture.screen.dart';
+import 'package:safe/screens/capture/local_widgets/emergency_services.widget.dart';
 import 'package:safe/screens/incident_log/incident_log.screen.dart';
 import 'package:safe/utils/constants/constants.util.dart';
+import 'package:safe/widgets/mutable_popup/mutable_popup.widget.dart';
 import 'package:safe/widgets/mutable_safe_button/mutable_safe_button.widget.dart';
 import 'package:safe/widgets/mutable_scaffold/mutable_scaffold.widget.dart';
 import 'package:safe/widgets/mutable_text/mutable_text.widget.dart';
@@ -48,6 +49,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return MutableScaffold(
       overlays: [
         Capture(),
+        //EmergencyServicesPopup(),
       ],
       underlays: [
         Padding(
@@ -74,7 +76,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 // HapticFeedback.heavyImpact();
                 // core.utils.capture.initialize(core);
                 // core.utils.capture.start();
-                core.state.capture.controller.open();
+                //core.state.capture.controller.open();
               },
             ),
           ),

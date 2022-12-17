@@ -127,16 +127,19 @@ class _CaptureControlBoxState extends State<CaptureControlBox> {
                                   },
                                 ),
                                 SizedBox(height: 10),
-                                ControlButton(
-                                  active: true,
-                                  text: core.utils.language.langMap[core.state
-                                          .preferences.language]!["capture"]
-                                      ["controls"]["911"]["header"],
-                                  icon: MutableIcons.shield,
-                                  iconSize: Size(15, 17),
-                                  onTap: () {
-                                    print("navigate to 911 popup");
-                                  },
+                                Observer(
+                                  builder: (_) => ControlButton(
+                                    active: core.state.capture
+                                        .emergencyServicesNotified,
+                                    text: core.utils.language.langMap[core.state
+                                            .preferences.language]!["capture"]
+                                        ["controls"]["911"]["header"],
+                                    icon: MutableIcons.shield,
+                                    iconSize: Size(15, 17),
+                                    onTap: () {
+                                      print("navigate to 911 popup");
+                                    },
+                                  ),
                                 ),
                               ],
                             ),

@@ -5,6 +5,8 @@ import 'package:safe/widgets/mutable_icon/local_widgets/checkmark.icon.dart';
 import 'package:safe/widgets/mutable_icon/local_widgets/gear.icon.dart';
 import 'package:safe/widgets/mutable_icon/local_widgets/key.icon.dart';
 import 'package:safe/widgets/mutable_icon/local_widgets/menu.icon.dart';
+import 'package:safe/widgets/mutable_icon/local_widgets/next.icon.dart';
+import 'package:safe/widgets/mutable_icon/local_widgets/next_borderless.icon.dart';
 import 'package:safe/widgets/mutable_icon/local_widgets/phone.icon.dart';
 import 'package:safe/widgets/mutable_icon/local_widgets/play_large.icon.dart';
 import 'package:safe/widgets/mutable_icon/local_widgets/profile.icon.dart';
@@ -20,6 +22,8 @@ enum MutableIcons {
   gear,
   playLarge,
   menu,
+  nextBorderless,
+  next,
   shield,
   camera,
   stopRecording,
@@ -44,6 +48,8 @@ class IconUtil {
       MutableIcons.gear: (c) => GearIcon(c),
       MutableIcons.phone: (c) => PhoneIcon(c),
       MutableIcons.caretRight: (c) => CaretRightIcon(c),
+      MutableIcons.nextBorderless: (c) => NextBorderlessIcon(c),
+      MutableIcons.next: (c) => NextIcon(c),
     };
   }
 }

@@ -31,8 +31,8 @@ class Utils {
   TextUtil text = TextUtil();
   AnimationUtil animation = AnimationUtil();
   NameUtil name = NameUtil();
-  IngestionEngine engine = IngestionEngine();
-  CaptureUtil capture = CaptureUtil();
+  // IngestionEngine engine = IngestionEngine();
+  // CaptureUtil capture = CaptureUtil();
   GeocoderUtil geocoder = GeocoderUtil();
   IncidentUtil incident = IncidentUtil();
 }

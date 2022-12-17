@@ -14,6 +14,8 @@ Future<void> main() async {
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   await dotenv.load(fileName: ".env");
   Paint.enableDithering = true;
+
+  // Load Firebase
   await Firebase.initializeApp();
 
   runApp(Safe());
@@ -22,15 +24,14 @@ Future<void> main() async {
 class Safe extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
+      return MultiProvider(
       providers: [
         Provider<Core>(create: (_) => Core()),
       ],
       child: MaterialApp(
         title: "Safe",
         debugShowCheckedModeBanner: false,
-        themeMode: ThemeMode.dark,
-        theme: ThemeData(brightness: Brightness.dark),
+          themeMode: ThemeMode.dark,
         routes: {
           WelcomeScreen.id: (_) => WelcomeScreen(),
           HomeScreen.id: (_) => HomeScreen(),

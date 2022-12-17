@@ -70,46 +70,46 @@ class _CameraPreviewControlState extends State<CameraPreviewControl>
     });
   }
 
-  void flipCamera() async {
-    if (core.state.capture.camera == null) {
-      return;
-    }
+  // void flipCamera() async {
+  //   if (core.state.capture.camera == null) {
+  //     return;
+  //   }
 
-    if (!canFlip) {
-      return;
-    }
+  //   if (!canFlip) {
+  //     return;
+  //   }
 
-    canFlip = false;
+  //   canFlip = false;
 
-    CameraDescription? cam = core.services.cam.flipCamera(
-      oldDirection: core.state.capture.camera!.description.lensDirection,
-      cameras: core.state.capture.cameras,
-    );
+  //   CameraDescription? cam = core.services.cam.flipCamera(
+  //     oldDirection: core.state.capture.camera!.description.lensDirection,
+  //     cameras: core.state.capture.cameras,
+  //   );
 
-    if (cam == null) {
-      return;
-    }
+  //   if (cam == null) {
+  //     return;
+  //   }
 
-    var camController = CameraController(
-      cam,
-      core.state.preferences.cameraResolution,
-      enableAudio: true,
-    );
+  //   var camController = CameraController(
+  //     cam,
+  //     core.state.preferences.cameraResolution,
+  //     enableAudio: true,
+  //   );
 
-    setState(() {
-      opacity = 1;
-    });
+  //   setState(() {
+  //     opacity = 1;
+  //   });
 
-    core.utils.engine.stop();
-    core.state.capture.setIsCameraInitialized(false);
-    core.state.capture.setCamera(camController);
-    await core.state.capture.camera!.initialize();
-    await core.state.capture.camera!.prepareForVideoRecording();
-    core.utils.engine.flip();
-    core.state.capture.setIsCameraInitialized(true);
-    await controller.forward(from: 0);
-    canFlip = true;
-  }
+  //   // core.utils.engine.stop();
+  //   core.state.capture.setIsCameraInitialized(false);
+  //   core.state.capture.setCamera(camController);
+  //   await core.state.capture.camera!.initialize();
+  //   await core.state.capture.camera!.prepareForVideoRecording();
+  //   core.utils.engine.flip();
+  //   core.state.capture.setIsCameraInitialized(true);
+  //   await controller.forward(from: 0);
+  //   canFlip = true;
+  // }
 
   Future<void> initCamera() async {
     // Searches for cameras
@@ -244,6 +244,6 @@ class CameraPreviewController {
 
   void flipCamera() {
     assert(_state != null, "Controller has not been attached");
-    _state!.flipCamera();
+    //_state!.flipCamera();
   }
 }

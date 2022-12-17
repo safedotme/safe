@@ -7,6 +7,7 @@ import 'package:safe/utils/icon/icon.util.dart';
 import 'package:safe/widgets/mutable_banner/mutable_banner.widget.dart';
 import 'package:safe/widgets/mutable_input_panel/mutable_input_panel.widget.dart';
 import 'package:safe/widgets/mutable_popup/mutable_popup.widget.dart';
+import 'package:safe/widgets/mutable_submit_textfield_button/mutable_submit_textfield_button.widget.dart';
 import 'package:safe/widgets/mutable_text_field/local_widgets/phone_extention_display.widget.dart';
 import 'package:safe/widgets/mutable_text_field/mutable_text_field.widget.dart';
 
@@ -27,7 +28,7 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen>
   bool dismissDetector = false;
 
   // Animates popup down with banner when banners are displayed
-  double topMargin = kTopMargin;
+  double? topMargin;
   void initializeAnimation() {
     controller = AnimationController(
       vsync: this,
@@ -36,7 +37,7 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen>
 
     // Initialize tween
     Animation tween =
-        Tween<double>(begin: kTopMargin, end: kMutableBannerHeight + 20)
+        Tween<double>(begin: topMargin, end: kMutableBannerHeight + 20)
             // 20 is the margin between the banner and the popup
             .animate(
       CurvedAnimation(parent: controller, curve: Curves.ease),
@@ -54,7 +55,6 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen>
     super.initState();
 
     core = Provider.of<Core>(context, listen: false);
-    initializeAnimation();
 
     // Sync forward & reverse functionality with banner
     core.state.auth.setOnBannerForward(() {
@@ -78,7 +78,7 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen>
 
   // Generates different hint text based on country
   String handleHint(String code) {
-    return code == "US" ? "(999) 999-9999" : "9999 9999";
+    return code == "US" ? "(999) 999-9999" : "9999 9999"; //TODO: Fix later on
   }
 
   void submit() async {
@@ -110,6 +110,7 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen>
         return;
       }
 
+      node.unfocus();
       core.state.auth.otpInputPanelController.open();
       return;
     }
@@ -159,9 +160,15 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen>
   @override
   Widget build(BuildContext context) {
     queryData = MediaQuery.of(context);
+
+    if (topMargin == null) {
+      topMargin = queryData.padding.top;
+      initializeAnimation();
+    }
+
     return MutablePopup(
       minHeight: 0,
-      maxHeight: queryData.size.height - topMargin,
+      maxHeight: queryData.size.height - topMargin!,
       controller: core.state.auth.phoneVerificationController,
       onFreezeInteraction: dismissDetector
           ? () {
@@ -188,6 +195,7 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen>
             focusNode: node,
             onChange: format,
             hintText: handleHint(core.state.auth.countryCode),
+            leadingRight: MutableSubmitTextFieldButton(submit),
             leadingLeft: Observer(
               builder: (_) => PhoneExtentionDisplay(
                 core.state.auth.countryDialCode,

@@ -102,6 +102,8 @@ class PermissionsService {
     if (request && status == PermissionStatus.denied) {
       // Permission status defaults to denied
       status = await Permission.microphone.request();
+
+      print(status);
     }
 
     switch (status) {

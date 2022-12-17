@@ -28,7 +28,7 @@ class CaptureStopAlertDialog extends StatelessWidget {
         ),
         CupertinoDialogAction(
           onPressed: () async {
-            core.utils.capture.stop();
+            // core.utils.capture.stop();
             Navigator.of(context).pop();
           },
           isDefaultAction: true,

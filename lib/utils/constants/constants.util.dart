@@ -203,7 +203,7 @@ const double kCornerSmoothing = 0.6;
 // POPUPS
 const double kSideMarginPreviewPopup = 11;
 const double kBottomMarginPreviewPopup = 34;
-const double kTopMargin = 42;
+const double kDefaultTopMargin = 42;
 const double kHandleTopMargin = 6;
 const double kPanelHandleToHeader = 7;
 

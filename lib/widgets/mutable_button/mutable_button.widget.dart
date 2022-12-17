@@ -4,10 +4,12 @@ class MutableButton extends StatefulWidget {
   final void Function()? onTap;
   final Widget child;
   final Duration? duration;
+  final void Function()? onSlide;
 
   MutableButton({
     this.onTap,
     required this.child,
+    this.onSlide,
     this.duration,
   });
 
@@ -57,6 +59,11 @@ class _MutableButtonState extends State<MutableButton>
           widget.onTap!();
         }
         animate();
+      },
+      onVerticalDragStart: (_) {
+        if (widget.onSlide != null) {
+          widget.onSlide!();
+        }
       },
       child: Transform.scale(
         scale: currentState,

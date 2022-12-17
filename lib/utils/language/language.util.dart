@@ -51,10 +51,9 @@ class LanguageUtil {
           "Elle Woods",
           "Regina George",
           "Merideth Grey",
-          "Joe Goldberg",
           "Derek Shepard",
           "Daenerys Targaryen",
-          "Erlich Bachman"
+          "Erlich Bachman",
         ],
         "title": "What should we call you?",
         "desc":

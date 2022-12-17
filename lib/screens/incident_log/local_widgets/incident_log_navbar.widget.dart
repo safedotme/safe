@@ -177,8 +177,8 @@ class _IncidentLogNavBarState extends State<IncidentLogNavBar> {
                           MutableNavSafeButton(
                             onTap: () {
                               HapticFeedback.heavyImpact();
-                              core.utils.capture.initialize(core);
-                              core.utils.capture.start();
+                              // core.utils.capture.initialize(core);
+                              // core.utils.capture.start();
                               core.state.capture.controller.open();
                             },
                           ),
