@@ -1,9 +1,7 @@
-import 'package:camera/camera.dart';
 import 'package:mobx/mobx.dart';
 import 'package:safe/models/incident/battery.model.dart';
 import 'package:safe/models/incident/incident.model.dart';
 import 'package:safe/models/incident/location.model.dart';
-import 'package:safe/screens/capture/local_widgets/camera_preview.widget.dart';
 import 'package:safe/screens/capture/local_widgets/capture_text_shimmer.widget.dart';
 import 'package:safe/utils/incident/incident.util.dart';
 import 'package:safe/widgets/mutable_overlay/mutable_overlay.widget.dart';
@@ -22,25 +20,6 @@ abstract class _CaptureStore with Store {
   @observable
   CaptureTextShimmerController hintTextController =
       CaptureTextShimmerController();
-
-  @observable
-  CameraController? camera;
-
-  @action
-  void setCamera(CameraController c) => camera = c;
-
-  @observable
-  List<CameraDescription> cameras = [];
-
-  @action
-  void setCameras(List<CameraDescription> c) => cameras = c;
-
-  @observable
-  bool isCameraInitialized = false;
-
-  @action
-  void setIsCameraInitialized(bool v) => isCameraInitialized = v;
-
   @observable
   PanelController panelController = PanelController();
 
@@ -61,9 +40,6 @@ abstract class _CaptureStore with Store {
 
   @action
   void setHintTextIndex(int i) => hintTextIndex = i;
-
-  @observable
-  CameraPreviewController cameraPreviewController = CameraPreviewController();
 
   @observable
   Incident? incident;

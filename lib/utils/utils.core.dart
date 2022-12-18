@@ -2,7 +2,6 @@ import 'package:logger/logger.dart';
 import 'package:safe/utils/animation/animation.util.dart';
 import 'package:safe/utils/capture/capture.util.dart';
 import 'package:safe/utils/color/color.util.dart';
-import 'package:safe/utils/engine/engine.util.dart';
 import 'package:safe/utils/flows/flows.dart';
 import 'package:safe/utils/geocoder/geocoder.util.dart';
 import 'package:safe/utils/icon/icon.util.dart';
@@ -31,8 +30,7 @@ class Utils {
   TextUtil text = TextUtil();
   AnimationUtil animation = AnimationUtil();
   NameUtil name = NameUtil();
-  // IngestionEngine engine = IngestionEngine();
-  // CaptureUtil capture = CaptureUtil();
+  CaptureUtil capture = CaptureUtil();
   GeocoderUtil geocoder = GeocoderUtil();
   IncidentUtil incident = IncidentUtil();
 }

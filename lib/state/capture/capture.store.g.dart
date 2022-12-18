@@ -41,54 +41,6 @@ mixin _$CaptureStore on _CaptureStore, Store {
     });
   }
 
-  late final _$cameraAtom =
-      Atom(name: '_CaptureStore.camera', context: context);
-
-  @override
-  CameraController? get camera {
-    _$cameraAtom.reportRead();
-    return super.camera;
-  }
-
-  @override
-  set camera(CameraController? value) {
-    _$cameraAtom.reportWrite(value, super.camera, () {
-      super.camera = value;
-    });
-  }
-
-  late final _$camerasAtom =
-      Atom(name: '_CaptureStore.cameras', context: context);
-
-  @override
-  List<CameraDescription> get cameras {
-    _$camerasAtom.reportRead();
-    return super.cameras;
-  }
-
-  @override
-  set cameras(List<CameraDescription> value) {
-    _$camerasAtom.reportWrite(value, super.cameras, () {
-      super.cameras = value;
-    });
-  }
-
-  late final _$isCameraInitializedAtom =
-      Atom(name: '_CaptureStore.isCameraInitialized', context: context);
-
-  @override
-  bool get isCameraInitialized {
-    _$isCameraInitializedAtom.reportRead();
-    return super.isCameraInitialized;
-  }
-
-  @override
-  set isCameraInitialized(bool value) {
-    _$isCameraInitializedAtom.reportWrite(value, super.isCameraInitialized, () {
-      super.isCameraInitialized = value;
-    });
-  }
-
   late final _$panelControllerAtom =
       Atom(name: '_CaptureStore.panelController', context: context);
 
@@ -150,23 +102,6 @@ mixin _$CaptureStore on _CaptureStore, Store {
   set hintTextIndex(int value) {
     _$hintTextIndexAtom.reportWrite(value, super.hintTextIndex, () {
       super.hintTextIndex = value;
-    });
-  }
-
-  late final _$cameraPreviewControllerAtom =
-      Atom(name: '_CaptureStore.cameraPreviewController', context: context);
-
-  @override
-  CameraPreviewController get cameraPreviewController {
-    _$cameraPreviewControllerAtom.reportRead();
-    return super.cameraPreviewController;
-  }
-
-  @override
-  set cameraPreviewController(CameraPreviewController value) {
-    _$cameraPreviewControllerAtom
-        .reportWrite(value, super.cameraPreviewController, () {
-      super.cameraPreviewController = value;
     });
   }
 
@@ -270,39 +205,6 @@ mixin _$CaptureStore on _CaptureStore, Store {
       ActionController(name: '_CaptureStore', context: context);
 
   @override
-  void setCamera(CameraController c) {
-    final _$actionInfo = _$_CaptureStoreActionController.startAction(
-        name: '_CaptureStore.setCamera');
-    try {
-      return super.setCamera(c);
-    } finally {
-      _$_CaptureStoreActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
-  void setCameras(List<CameraDescription> c) {
-    final _$actionInfo = _$_CaptureStoreActionController.startAction(
-        name: '_CaptureStore.setCameras');
-    try {
-      return super.setCameras(c);
-    } finally {
-      _$_CaptureStoreActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
-  void setIsCameraInitialized(bool v) {
-    final _$actionInfo = _$_CaptureStoreActionController.startAction(
-        name: '_CaptureStore.setIsCameraInitialized');
-    try {
-      return super.setIsCameraInitialized(v);
-    } finally {
-      _$_CaptureStoreActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
   void setOffset(double d) {
     final _$actionInfo = _$_CaptureStoreActionController.startAction(
         name: '_CaptureStore.setOffset');
@@ -395,14 +297,10 @@ mixin _$CaptureStore on _CaptureStore, Store {
     return '''
 controller: ${controller},
 hintTextController: ${hintTextController},
-camera: ${camera},
-cameras: ${cameras},
-isCameraInitialized: ${isCameraInitialized},
 panelController: ${panelController},
 offset: ${offset},
 panelHeight: ${panelHeight},
 hintTextIndex: ${hintTextIndex},
-cameraPreviewController: ${cameraPreviewController},
 incident: ${incident},
 type: ${type},
 locationUpdates: ${locationUpdates},

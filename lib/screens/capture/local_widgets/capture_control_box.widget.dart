@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
-import 'package:safe/screens/capture/local_widgets/camera_preview.widget.dart';
 import 'package:safe/screens/capture/local_widgets/capture_stop_alert_dialog.widget.dart';
 import 'package:safe/screens/capture/local_widgets/control_button.widget.dart';
 import 'package:safe/utils/constants/constants.util.dart';
@@ -92,9 +91,15 @@ class _CaptureControlBoxState extends State<CaptureControlBox> {
                       height: kControlBoxBodyHeight,
                       child: Row(
                         children: [
-                          CameraPreviewControl(
-                            controller:
-                                core.state.capture.cameraPreviewController,
+                          Container(
+                            height: double.infinity,
+                            width: 125,
+                            decoration: BoxDecoration(
+                              color: Colors.red,
+                              borderRadius: BorderRadius.circular(
+                                kCaptureControlBorderRadius,
+                              ),
+                            ),
                           ),
                           SizedBox(width: 10),
                           Expanded(
@@ -107,8 +112,7 @@ class _CaptureControlBoxState extends State<CaptureControlBox> {
                                   icon: MutableIcons.camera,
                                   iconSize: Size(20, 16),
                                   onTap: () {
-                                    core.state.capture.cameraPreviewController
-                                        .flipCamera();
+                                    // TODO: Flip camera
                                   },
                                 ),
                                 SizedBox(height: 10),
