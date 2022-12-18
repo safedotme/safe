@@ -29,8 +29,8 @@ class IncidentServer {
   }
 
   // -> UPSERT
-  Future<void> upsert(Incident incident) {
-    var options = SetOptions(merge: true);
+  Future<void> upsert(Incident incident, {bool shouldMerge = true}) {
+    var options = SetOptions(merge: shouldMerge);
 
     return _db.collection(path).doc(incident.id).set(incident.toMap(), options);
   }

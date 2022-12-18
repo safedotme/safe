@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:intl/intl.dart';
+import 'package:location/location.dart' as API;
 import 'package:safe/core.dart';
 import 'package:safe/models/contact/contact.model.dart';
 import 'package:safe/models/incident/battery.model.dart';
@@ -17,6 +18,7 @@ class CaptureUtil {
   StreamSubscription<Location>? locationSubscription;
   Timer? batteryTimer;
   api.Battery? battery;
+  bool isActive = false;
 
   void initialize(Core core) {
     _core = core;
@@ -25,6 +27,9 @@ class CaptureUtil {
   void start() {
     assert(_core != null, "CaptureUtil must be initialized");
 
+    // Will be used to start & stop incident
+    isActive = true;
+
     // ⬇️ INCIDENT CREATE
     _uploadChanges(null);
 
@@ -32,19 +37,12 @@ class CaptureUtil {
     _locationListen();
 
     // ⬇️ BATTERY
-    _batteryListen();
+    // _batteryListen();
   }
 
   void stop() async {
-    // // Stops sharding -> Will complete ongoing systems
-    // _core!.utils.engine.stop();
+    isActive = false;
     // _core!.state.capture.overlayController.show();
-    // _core!.state.engine.setOnStop(true);
-    // _core!.services.signaling.hangUp();
-    // // CALL STOP WHEN NECESSARY
-    // if (locationSubscription != null) {
-    //   await locationSubscription!.cancel();
-    // }
   }
 
   // ⬇️ LOCATION
@@ -70,7 +68,7 @@ class CaptureUtil {
   }
 
   // Initializes incident and sends primitives to backend
-  Future<void> _uploadChanges(Incident? i) async {
+  Future<void> _uploadChanges(Incident? i, {bool shouldMerge = true}) async {
     Incident? incident;
     // If incident does not exist, create it
     if (i == null) {
@@ -91,51 +89,58 @@ class CaptureUtil {
     incident ??= i;
 
     _core!.state.capture.setIncident(incident!);
-    return _core!.services.server.incidents.upsert(incident);
+    return _core!.services.server.incidents.upsert(
+      incident,
+      shouldMerge: shouldMerge,
+    );
   }
 
   // Updates location as user moves
   void _locationListen() async {
-    List<Location>? log;
-    bool shouldUpsert = true;
+    List<Location> log = [];
+    String? adr;
 
     _core!.services.location.initilaize();
-    locationSubscription =
-        _core!.services.location.stream.listen((location) async {
-      // Check if log is null | this will be the first time
-      if (log == null) {
-        _generateAddress(location).then((address) async {
-          await _sendLocation([location.copyWith(address: address)]);
 
-          // Notifies contact after address is generated and incident is complete
-          _notifyContacts();
-        });
+    while (isActive) {
+      // Fetches location
+      API.LocationData data =
+          await _core!.services.location.location.getLocation();
 
-        log = [];
-        return;
+      Location loc = Location(
+        lat: data.latitude,
+        long: data.longitude,
+        alt: data.altitude,
+        speed: data.speed,
+        accuracy: data.accuracy,
+        datetime: DateTime.now(),
+      );
+
+      if (log.isEmpty) {
+        adr = await _generateAddress(loc);
+
+        log.add(
+          loc.copyWith(address: adr),
+        );
+
+        await _sendLocation(log);
+
+        // TODO: NOTIFY CONTACTS
+      } else {
+        log.add(
+          loc.copyWith(address: adr),
+        );
+        await _sendLocation(log);
       }
 
-      log!.add(location);
-      if (!shouldUpsert) {
-        return;
-      }
-
-      shouldUpsert = false;
       await Future.delayed(kLocationStreamTimeout);
-      _sendLocation(log!);
-      log = [];
-      shouldUpsert = true;
-    });
+    }
   }
 
   Future<void> _sendLocation(List<Location> location) async {
-    var incident = _core!.state.capture.incident!;
+    var incident = _core!.state.capture.incident!.copyWith(location: location);
 
-    _uploadChanges(
-      incident.copyWith(
-        location: [...incident.location ?? [], ...location],
-      ),
-    );
+    _uploadChanges(incident, shouldMerge: false);
   }
 
   // ⬇️ SMS
