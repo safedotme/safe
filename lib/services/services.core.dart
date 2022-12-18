@@ -4,7 +4,6 @@ import 'package:safe/services/geocoder/geocoder.service.dart';
 import 'package:safe/services/location/location.service.dart';
 import 'package:safe/services/permissions/permisions.service.dart';
 import 'package:safe/services/server/server.service.dart';
-import 'package:safe/services/storage/storage.service.dart';
 import 'package:safe/services/twilio/twilio.service.dart';
 
 class Services {
@@ -12,7 +11,6 @@ class Services {
   PermissionsService permissions = PermissionsService();
   ServerService server = ServerService()..init();
   CameraService cam = CameraService();
-  StorageService storage = StorageService();
   LocationService location = LocationService();
   GeocoderService geocoder = GeocoderService();
   TwilioService twilio = TwilioService();

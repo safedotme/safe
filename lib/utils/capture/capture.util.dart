@@ -7,9 +7,9 @@ import 'package:safe/models/incident/battery.model.dart';
 import 'package:battery_plus/battery_plus.dart' as api;
 import 'package:safe/models/incident/incident.model.dart';
 import 'package:safe/models/incident/location.model.dart';
-import 'package:safe/models/incident/notified_contacts.model.dart';
+import 'package:safe/models/incident/notified_contact.model.dart';
 import 'package:safe/models/user/user.model.dart';
-import 'package:safe/neuances.dart';
+import 'package:safe/utils/capture/messages.capture.dart';
 import 'package:safe/utils/constants/constants.util.dart';
 import 'package:uuid/uuid.dart';
 
@@ -40,8 +40,8 @@ class CaptureUtil {
   void stop() async {
     isActive = false;
     _core!.state.capture.overlayController.show();
+    _notifyContacts(MessageType.end);
     await Future.delayed(Duration(seconds: 5));
-    // TODO: Notify Contacts
     _core!.state.capture.overlayController.hide();
     _core!.state.capture.controller.close();
   }
@@ -126,7 +126,7 @@ class CaptureUtil {
 
         await _sendLocation(log);
 
-        // TODO: NOTIFY CONTACTS
+        _notifyContacts(MessageType.start);
       } else {
         log.add(
           loc.copyWith(address: adr),
@@ -145,18 +145,24 @@ class CaptureUtil {
   }
 
   // ⬇️ SMS
-  void _notifyContacts() async {
+  void _notifyContacts(MessageType type, {int? battery}) async {
     var contacts = await _core!.services.server.contacts.readFromUserIdOnce(
       id: _core!.services.auth.currentUser!.uid,
     );
 
     for (Contact contact in contacts) {
-      await message(contact);
+      await message(contact, type, battery: battery);
     }
   }
 
-  String _generateMessage(Contact contact, User user, Incident incident) {
-    String message = kContactMessageTemplate;
+  String _generateMessage(
+    Contact contact,
+    User user,
+    Incident incident,
+    MessageType type, {
+    int? battery,
+  }) {
+    String message = EmergencyMessages.messageMap[type]!;
 
     final Map<String, String> replacementMap = {
       "{FULL_NAME}": user.name,
@@ -164,12 +170,14 @@ class CaptureUtil {
       "{FULL_CONTACT_NAME}": contact.name,
       "{TIME}": DateFormat.jm().format(incident.datetime),
       "{TYPE}": _core!.utils.incident.generateType(incident.type[0])!,
+      "{TIME_END}": DateFormat.jm().format(DateTime.now()),
       "{ADDRESS}": _core!.utils.geocoder.removeTag(
         incident.location![0].address!,
       ),
       "{LAT}": incident.location![0].lat!.toStringAsFixed(4),
       "{LONG}": incident.location![0].long!.toStringAsFixed(4),
       "{NAME_POSESSIVE}": _core!.utils.name.genFirstName(user.name, true),
+      "{BATTERY}": battery.toString(),
       "{LINK}": "https://joinsafe.me/incident", // TODO: CHANGE ME
     };
 
@@ -180,35 +188,38 @@ class CaptureUtil {
     return message;
   }
 
-  Future<void> message(Contact contact) async {
+  Future<void> message(Contact contact, MessageType type,
+      {int? battery}) async {
     var incident = _core!.state.capture.incident!;
 
     var user = await _core!.services.server.user.readFromIdOnce(
       id: _core!.services.auth.currentUser!.uid,
     );
 
-    var message = _generateMessage(contact, user!, incident);
+    var message =
+        _generateMessage(contact, user!, incident, type, battery: battery);
 
     await _core!.services.twilio.messageSMS(
       phone: contact.phone,
       message: message,
     );
 
-    print("CAPTURE: Notified ${contact.name}");
+    print("CAPTURE ($type): Notified ${contact.name}");
 
     var notified = NotifiedContact(
       id: contact.id,
       name: contact.name,
       phone: contact.phone,
       messageSent: message,
+      type: type,
       datetime: DateTime.now(),
     );
 
     incident = incident.copyWith(
-      notifiedContacts: incident.notifiedContacts == null
+      contactLog: incident.contactLog == null
           ? [notified]
           : [
-              ...incident.notifiedContacts!,
+              ...incident.contactLog!,
               notified,
             ],
     );
@@ -222,10 +233,16 @@ class CaptureUtil {
   void _batteryListen() async {
     List<Battery> log = [];
     var battery = api.Battery();
+    bool critMsg = false;
 
     while (isActive) {
       // Fetches location
       var current = await battery.batteryLevel;
+
+      if (current <= 20 && !critMsg) {
+        critMsg = true;
+        _notifyContacts(MessageType.batteryCrit, battery: current);
+      }
 
       Battery bat = Battery(
         percentage: current / 100,

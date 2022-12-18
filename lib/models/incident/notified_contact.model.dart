@@ -1,7 +1,10 @@
+import 'package:safe/utils/capture/messages.capture.dart';
+
 class NotifiedContact {
   final String id;
   final String name;
   final String phone;
+  final MessageType type;
   final String messageSent;
   final DateTime datetime;
 
@@ -10,6 +13,7 @@ class NotifiedContact {
     required this.name,
     required this.phone,
     required this.messageSent,
+    required this.type,
     required this.datetime,
   });
 
@@ -19,6 +23,7 @@ class NotifiedContact {
         name: json["name"],
         phone: json["phone"],
         messageSent: json["message_sent"],
+        type: EmergencyMessages.parseType(json["type"]),
         datetime: DateTime.parse(json["datetime"]),
       );
 
@@ -27,6 +32,7 @@ class NotifiedContact {
         "name": name,
         "phone": phone,
         "message_sent": messageSent,
+        "type": type.toString(),
         "datetime": datetime.toIso8601String(),
       };
 }

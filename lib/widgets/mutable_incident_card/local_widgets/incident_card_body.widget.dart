@@ -68,20 +68,20 @@ class _IncidentCardBodyState extends State<IncidentCardBody> {
                   maxLines: 2,
                 ),
                 SizedBox(height: kIncidentBodyVerticalSpacing),
-                widget.incident.notifiedContacts == null
+                // TODO: FIX CONTACT LOG
+                widget.incident.contactLog == null
                     ? SizedBox()
                     : Row(
                         children: List.generate(
-                          widget.incident.notifiedContacts!.length,
+                          widget.incident.contactLog!.length,
                           (i) => Padding(
                             padding: EdgeInsets.only(
-                              right: i + 1 ==
-                                      widget.incident.notifiedContacts!.length
+                              right: i + 1 == widget.incident.contactLog!.length
                                   ? 0
                                   : kEmergencyContactAvatarSpacing,
                             ),
                             child: MutableEmergencyContactAvatar(
-                              widget.incident.notifiedContacts![i],
+                              widget.incident.contactLog![i],
                             ),
                           ),
                         ),

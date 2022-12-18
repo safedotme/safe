@@ -2,8 +2,7 @@
 import 'package:safe/models/incident/battery.model.dart';
 import 'package:safe/models/incident/emergency_services.model.dart';
 import 'package:safe/models/incident/location.model.dart';
-import 'package:safe/models/incident/notified_contacts.model.dart';
-import 'package:safe/models/incident/shard.model.dart';
+import 'package:safe/models/incident/notified_contact.model.dart';
 import 'package:safe/utils/incident/incident.util.dart';
 
 class Incident {
@@ -14,7 +13,7 @@ class Incident {
   final DateTime datetime;
   final String? thumbnail;
   final List<Location>? location;
-  final List<NotifiedContact>? notifiedContacts;
+  final List<NotifiedContact>? contactLog;
   final List<Battery>? battery;
   final List<EmergencyServices>? emergencyServices;
 
@@ -25,7 +24,7 @@ class Incident {
     required this.type,
     required this.datetime,
     this.location,
-    this.notifiedContacts,
+    this.contactLog,
     this.battery,
     this.thumbnail,
     this.emergencyServices,
@@ -35,15 +34,12 @@ class Incident {
     List<Map<String, dynamic>>? _location = json["location"] == null
         ? null
         : List<Map<String, dynamic>>.from(json["location"]);
-    List<Map<String, dynamic>>? _contacts = json["notified_contacts"] == null
+    List<Map<String, dynamic>>? _contacts = json["contact_log"] == null
         ? null
-        : List<Map<String, dynamic>>.from(json["notified_contacts"]);
+        : List<Map<String, dynamic>>.from(json["contact_log"]);
     List<Map<String, dynamic>>? _battery = json["battery"] == null
         ? null
         : List<Map<String, dynamic>>.from(json["battery"]);
-    List<Map<String, dynamic>>? _shards = json["shards"] == null
-        ? null
-        : List<Map<String, dynamic>>.from(json["shards"]);
     List<String> _type = List<String>.from(json["type"]);
 
     return Incident(
@@ -53,8 +49,7 @@ class Incident {
       type: _type.map((e) => IncidentUtil.parseType(e)).toList(),
       datetime: DateTime.parse(json["datetime"]),
       location: _location?.map((e) => Location.fromJson(e)).toList(),
-      notifiedContacts:
-          _contacts?.map((e) => NotifiedContact.fromJson(e)).toList(),
+      contactLog: _contacts?.map((e) => NotifiedContact.fromJson(e)).toList(),
       battery: _battery?.map((e) => Battery.fromJson(e)).toList(),
       thumbnail: json["thumbnail"],
     );
@@ -67,12 +62,9 @@ class Incident {
     List<IncidentType>? type,
     DateTime? datetime,
     String? thumbnail,
-    Map<String, dynamic>? rtcOffer,
-    List<Map<String, dynamic>>? rtcCandidates,
     List<Location>? location,
-    List<NotifiedContact>? notifiedContacts,
+    List<NotifiedContact>? contactLog,
     List<Battery>? battery,
-    List<Shard>? shards,
     List<EmergencyServices>? emergencyServices,
   }) {
     return Incident(
@@ -83,7 +75,7 @@ class Incident {
       thumbnail: thumbnail ?? this.thumbnail,
       datetime: datetime ?? this.datetime,
       location: location ?? this.location,
-      notifiedContacts: notifiedContacts ?? this.notifiedContacts,
+      contactLog: contactLog ?? this.contactLog,
       battery: battery ?? this.battery,
       emergencyServices: emergencyServices ?? this.emergencyServices,
     );
@@ -97,8 +89,8 @@ class Incident {
         "datetime": datetime.toIso8601String(),
         "location":
             location != null ? location!.map((e) => e.toMap()).toList() : null,
-        "notified_contacts": notifiedContacts != null
-            ? notifiedContacts!.map((e) => e.toMap()).toList()
+        "contact_log": contactLog != null
+            ? contactLog!.map((e) => e.toMap()).toList()
             : null,
         "battery":
             battery != null ? battery!.map((e) => e.toMap()).toList() : null,
