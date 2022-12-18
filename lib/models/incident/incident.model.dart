@@ -11,14 +11,11 @@ class Incident {
   final String userId;
   final String name;
   final List<IncidentType> type;
-  final List<Map<String, dynamic>>? rtcCandidates;
-  final Map<String, dynamic>? rtcOffer;
   final DateTime datetime;
   final String? thumbnail;
   final List<Location>? location;
   final List<NotifiedContact>? notifiedContacts;
   final List<Battery>? battery;
-  final List<Shard>? shards;
   final List<EmergencyServices>? emergencyServices;
 
   Incident({
@@ -28,11 +25,8 @@ class Incident {
     required this.type,
     required this.datetime,
     this.location,
-    this.rtcCandidates,
-    this.rtcOffer,
     this.notifiedContacts,
     this.battery,
-    this.shards,
     this.thumbnail,
     this.emergencyServices,
   });
@@ -51,15 +45,10 @@ class Incident {
         ? null
         : List<Map<String, dynamic>>.from(json["shards"]);
     List<String> _type = List<String>.from(json["type"]);
-    List<Map<String, dynamic>>? _candidates = json["rtc_candidates"] == null
-        ? null
-        : List<Map<String, dynamic>>.from(json["rtc_candidates"]);
 
     return Incident(
       id: json["id"],
       userId: json['user_id'],
-      rtcOffer: json["rtc_offer"],
-      rtcCandidates: _candidates,
       name: json["name"],
       type: _type.map((e) => IncidentUtil.parseType(e)).toList(),
       datetime: DateTime.parse(json["datetime"]),
@@ -68,7 +57,6 @@ class Incident {
           _contacts?.map((e) => NotifiedContact.fromJson(e)).toList(),
       battery: _battery?.map((e) => Battery.fromJson(e)).toList(),
       thumbnail: json["thumbnail"],
-      shards: _shards?.map((e) => Shard.fromJson(e)).toList(),
     );
   }
 
@@ -90,8 +78,6 @@ class Incident {
     return Incident(
       id: id ?? this.id,
       userId: userId ?? this.userId,
-      rtcOffer: rtcOffer ?? this.rtcOffer,
-      rtcCandidates: rtcCandidates ?? this.rtcCandidates,
       name: name ?? this.name,
       type: type ?? this.type,
       thumbnail: thumbnail ?? this.thumbnail,
@@ -99,7 +85,6 @@ class Incident {
       location: location ?? this.location,
       notifiedContacts: notifiedContacts ?? this.notifiedContacts,
       battery: battery ?? this.battery,
-      shards: shards ?? this.shards,
       emergencyServices: emergencyServices ?? this.emergencyServices,
     );
   }
@@ -107,8 +92,6 @@ class Incident {
   Map<String, dynamic> toMap() => {
         "id": id,
         "user_id": userId,
-        "rtc_offer": rtcOffer,
-        "rtc_candidates": rtcCandidates,
         "name": name,
         "type": type.map((e) => e.toString()).toList(),
         "datetime": datetime.toIso8601String(),
@@ -120,7 +103,5 @@ class Incident {
         "battery":
             battery != null ? battery!.map((e) => e.toMap()).toList() : null,
         "thumbnail": thumbnail,
-        "shards":
-            shards != null ? shards!.map((e) => e.toMap()).toList() : null,
       };
 }
