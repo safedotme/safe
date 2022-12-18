@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:intl/intl.dart';
-import 'package:location/location.dart' as API;
+import 'package:location/location.dart' as api;
 import 'package:safe/core.dart';
 import 'package:safe/models/contact/contact.model.dart';
 import 'package:safe/models/incident/battery.model.dart';
@@ -15,9 +15,6 @@ import 'package:uuid/uuid.dart';
 
 class CaptureUtil {
   Core? _core;
-  StreamSubscription<Location>? locationSubscription;
-  Timer? batteryTimer;
-  api.Battery? battery;
   bool isActive = false;
 
   void initialize(Core core) {
@@ -37,12 +34,16 @@ class CaptureUtil {
     _locationListen();
 
     // ⬇️ BATTERY
-    // _batteryListen();
+    _batteryListen();
   }
 
   void stop() async {
     isActive = false;
-    // _core!.state.capture.overlayController.show();
+    _core!.state.capture.overlayController.show();
+    await Future.delayed(Duration(seconds: 5));
+    // TODO: Notify Contacts
+    _core!.state.capture.overlayController.hide();
+    _core!.state.capture.controller.close();
   }
 
   // ⬇️ LOCATION
@@ -104,7 +105,7 @@ class CaptureUtil {
 
     while (isActive) {
       // Fetches location
-      API.LocationData data =
+      api.LocationData data =
           await _core!.services.location.location.getLocation();
 
       Location loc = Location(
@@ -133,7 +134,7 @@ class CaptureUtil {
         await _sendLocation(log);
       }
 
-      await Future.delayed(kLocationStreamTimeout);
+      await Future.delayed(kCaptureStreamTimeout);
     }
   }
 
@@ -219,33 +220,28 @@ class CaptureUtil {
   // ⬇️ BATTERY
 
   void _batteryListen() async {
-    battery = api.Battery();
+    List<Battery> log = [];
+    var battery = api.Battery();
 
-    // Gets battery immediately
-    await uploadBattery();
+    while (isActive) {
+      // Fetches location
+      var current = await battery.batteryLevel;
 
-    // Set timer
-    batteryTimer = Timer.periodic(Duration(seconds: 10), (_) async {
-      await uploadBattery();
-    });
+      Battery bat = Battery(
+        percentage: current / 100,
+        datetime: DateTime.now(),
+      );
+
+      log.add(bat);
+      await _uploadBattery(log);
+
+      await Future.delayed(kCaptureStreamTimeout);
+    }
   }
 
-  Future<void> uploadBattery() async {
-    // Get battery level
-    var current = await battery!.batteryLevel;
+  Future<void> _uploadBattery(List<Battery> log) async {
+    var incident = _core!.state.capture.incident!.copyWith(battery: log);
 
-    // Set local state
-    _core!.state.capture.addToBattery(Battery(
-      percentage: current / 100,
-      datetime: DateTime.now(),
-    ));
-
-    // Upload to server
-    var incident = _core!.state.capture.incident!.copyWith(
-      battery: _core!.state.capture.battery,
-    );
-
-    _core!.state.capture.setIncident(incident);
-    _core!.services.server.incidents.upsert(incident);
+    _uploadChanges(incident, shouldMerge: false);
   }
 }

@@ -60,11 +60,8 @@ class _MutableButtonState extends State<MutableButton>
         }
         animate();
       },
-      onVerticalDragStart: (_) {
-        if (widget.onSlide != null) {
-          widget.onSlide!();
-        }
-      },
+      onVerticalDragStart:
+          widget.onSlide == null ? null : (_) => widget.onSlide,
       child: Transform.scale(
         scale: currentState,
         child: widget.child,
