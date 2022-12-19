@@ -1,3 +1,4 @@
+import 'package:safe/services/agora/agora.service.dart';
 import 'package:safe/services/auth/auth.service.dart';
 import 'package:safe/services/camera/camera.service.dart';
 import 'package:safe/services/geocoder/geocoder.service.dart';
@@ -14,4 +15,5 @@ class Services {
   LocationService location = LocationService();
   GeocoderService geocoder = GeocoderService();
   TwilioService twilio = TwilioService();
+  AgoraService agora = AgoraService();
 }
