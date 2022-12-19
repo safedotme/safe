@@ -239,7 +239,10 @@ class CaptureUtil {
       // Fetches location
       var current = await battery.batteryLevel;
 
-      if (current <= 20 && !critMsg) {
+      // Checks if battery, if message has already been sent, and if address has been generated
+      if (current <= 20 &&
+          !critMsg &&
+          _core!.state.capture.incident!.location != null) {
         critMsg = true;
         _notifyContacts(MessageType.batteryCrit, battery: current);
       }
