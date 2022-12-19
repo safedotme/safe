@@ -1,3 +1,4 @@
+import 'package:agora_rtc_engine/agora_rtc_engine.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -91,15 +92,17 @@ class _CaptureControlBoxState extends State<CaptureControlBox> {
                       height: kControlBoxBodyHeight,
                       child: Row(
                         children: [
-                          Container(
+                          SizedBox(
                             height: double.infinity,
                             width: 125,
-                            decoration: BoxDecoration(
-                              color: Colors.red,
-                              borderRadius: BorderRadius.circular(
-                                kCaptureControlBorderRadius,
-                              ),
-                            ),
+                            child: core.state.capture.engine == null
+                                ? SizedBox()
+                                : AgoraVideoView(
+                                    controller: VideoViewController(
+                                      rtcEngine: core.state.capture.engine!,
+                                      canvas: VideoCanvas(uid: 0),
+                                    ),
+                                  ),
                           ),
                           SizedBox(width: 10),
                           Expanded(

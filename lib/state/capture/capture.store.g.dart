@@ -201,6 +201,22 @@ mixin _$CaptureStore on _CaptureStore, Store {
     });
   }
 
+  late final _$engineAtom =
+      Atom(name: '_CaptureStore.engine', context: context);
+
+  @override
+  RtcEngine? get engine {
+    _$engineAtom.reportRead();
+    return super.engine;
+  }
+
+  @override
+  set engine(RtcEngine? value) {
+    _$engineAtom.reportWrite(value, super.engine, () {
+      super.engine = value;
+    });
+  }
+
   late final _$_CaptureStoreActionController =
       ActionController(name: '_CaptureStore', context: context);
 
@@ -293,6 +309,17 @@ mixin _$CaptureStore on _CaptureStore, Store {
   }
 
   @override
+  void setEngine(RtcEngine e) {
+    final _$actionInfo = _$_CaptureStoreActionController.startAction(
+        name: '_CaptureStore.setEngine');
+    try {
+      return super.setEngine(e);
+    } finally {
+      _$_CaptureStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 controller: ${controller},
@@ -306,7 +333,8 @@ type: ${type},
 locationUpdates: ${locationUpdates},
 overlayController: ${overlayController},
 battery: ${battery},
-emergencyServicesNotified: ${emergencyServicesNotified}
+emergencyServicesNotified: ${emergencyServicesNotified},
+engine: ${engine}
     ''';
   }
 }

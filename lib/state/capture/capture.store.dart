@@ -1,3 +1,4 @@
+import 'package:agora_rtc_engine/agora_rtc_engine.dart';
 import 'package:mobx/mobx.dart';
 import 'package:safe/models/incident/battery.model.dart';
 import 'package:safe/models/incident/incident.model.dart';
@@ -73,4 +74,17 @@ abstract class _CaptureStore with Store {
 
   @action
   void setEmergencyServicesNotified(bool b) => emergencyServicesNotified = b;
+
+  // STREAM
+  @observable
+  RtcEngine? engine;
+
+  @action
+  void setEngine(RtcEngine e) => engine = e;
+
+  @observable
+  String? token;
+
+  @action
+  void setToken(String t) => token = t;
 }

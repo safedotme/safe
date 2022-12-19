@@ -1,102 +1,52 @@
 import 'package:agora_rtc_engine/agora_rtc_engine.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:safe/models/incident/incident.model.dart';
 
 class AgoraService {
-  late RtcEngine engine;
-  int? uid;
-  Incident? incident;
-
-  Future<void> initialize(int id, Incident icd) async {
-    engine = createAgoraRtcEngine();
-    uid = id;
-    incident = icd;
-
-    await engine.initialize(
-      RtcEngineContext(appId: dotenv.env["AGORA_APP_ID"]),
-    );
-
-    // SEND IMPORTANT INFO TO DB
-    engine.registerEventHandler(RtcEngineEventHandler(
-      onError: (error, message) {
-        print(error);
-        print(message);
-        //TODO: Add propper error handling
-      },
+  Future<void> initialize(RtcEngine engine) async {
+    // Configure engine
+    await engine.initialize(RtcEngineContext(
+      appId: dotenv.env["AGORA_APP_ID"],
     ));
 
-    await engine.enableAudio();
+    await engine.setVideoEncoderConfiguration(VideoEncoderConfiguration(
+        // codecType: VideoCodecType.videoCodecH264,
+        // dimensions: VideoDimensions(width: 1280, height: 720),
+        // frameRate: 15,
+        // bitrate: 0,
+        ));
+
     await engine.enableVideo();
 
-    // TODO: Add actual configs
-    await engine.setVideoEncoderConfiguration(VideoEncoderConfiguration(
-      codecType: VideoCodecType.videoCodecH264,
-      dimensions: VideoDimensions(width: 1280, height: 720),
-      frameRate: 15,
-      bitrate: 0,
+    // Set channel and client options
+    engine.setChannelProfile(
+      ChannelProfileType.channelProfileLiveBroadcasting,
+    );
+    engine.setClientRole(
+      role: ClientRoleType.clientRoleBroadcaster,
+    );
+
+    engine.registerEventHandler(RtcEngineEventHandler(
+      onError: (err, msg) {
+        print("$err: $msg");
+      },
     ));
   }
 
-  Future<void> start(int id) async {
-    if (uid == null) {
-      print("STREAM ERROR: UID is null");
-      return;
-    }
-    if (incident == null) {
-      print("STREAM ERROR: Incident is null");
-      return;
-    }
-
+  Future<void> stream(
+    RtcEngine engine, {
+    required String token,
+    required int uid,
+    required String channelId,
+  }) async {
     await engine.startPreview();
 
     await engine.joinChannel(
-      token: incident!.id,
-      channelId: incident!.name,
-      uid: id,
+      token: token,
+      channelId: channelId, // Channel Name (Incident ID)
+      uid: uid, // User ID (Different for each user, need to store in firebase)
       options: ChannelMediaOptions(
         clientRoleType: ClientRoleType.clientRoleBroadcaster,
       ),
     );
-  }
-
-  Future<void> stop() async {
-    if (uid == null) {
-      print("STREAM ERROR: UID is null");
-      return;
-    }
-    if (incident == null) {
-      print("STREAM ERROR: Incident is null");
-      return;
-    }
-
-    await engine.leaveChannel();
-  }
-
-  Future<void> dispose() async {
-    if (uid == null) {
-      print("STREAM ERROR: UID is null");
-      return;
-    }
-    if (incident == null) {
-      print("STREAM ERROR: Incident is null");
-      return;
-    }
-
-    incident = null;
-    uid = null;
-    await engine.release();
-  }
-
-  Future<void> flipCamera() async {
-    if (uid == null) {
-      print("STREAM ERROR: UID is null");
-      return;
-    }
-    if (incident == null) {
-      print("STREAM ERROR: Incident is null");
-      return;
-    }
-
-    await engine.switchCamera();
   }
 }

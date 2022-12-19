@@ -22,6 +22,7 @@ class _CaptureState extends State<Capture> {
     super.initState();
 
     core = Provider.of<Core>(context, listen: false);
+    core.utils.capture.initialize(core);
   }
 
   void animateHint() async {

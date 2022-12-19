@@ -1,4 +1,6 @@
 import 'dart:async';
+import 'package:agora_rtc_engine/agora_rtc_engine.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:intl/intl.dart';
 import 'package:location/location.dart' as api;
 import 'package:safe/core.dart';
@@ -19,22 +21,26 @@ class CaptureUtil {
 
   void initialize(Core core) {
     _core = core;
+    _initEngine();
   }
 
-  void start() {
+  void start() async {
     assert(_core != null, "CaptureUtil must be initialized");
 
     // Will be used to start & stop incident
     isActive = true;
 
     // ⬇️ INCIDENT CREATE
-    _uploadChanges(null);
+    await _uploadChanges(null);
 
-    // ⬇️ LOCATION + SMS
-    _locationListen();
+    // ⬇️ STREAM / RECORDING
+    _stream();
 
-    // ⬇️ BATTERY
-    _batteryListen();
+    // // ⬇️ LOCATION + SMS
+    // _locationListen();
+
+    // // ⬇️ BATTERY
+    // _batteryListen();
   }
 
   void stop() async {
@@ -44,6 +50,22 @@ class CaptureUtil {
     await Future.delayed(Duration(seconds: 5));
     _core!.state.capture.overlayController.hide();
     _core!.state.capture.controller.close();
+  }
+
+  // ⬇️ STREAM / RECORDING
+  Future<void> _initEngine() async {
+    _core!.state.capture.setEngine(createAgoraRtcEngine());
+    _core!.services.agora.initialize(_core!.state.capture.engine!);
+  }
+
+  Future<void> _stream() async {
+    _core!.services.agora.stream(
+      _core!.state.capture.engine!,
+      token:
+          "007eJxTYLA5+v/pzJ+f6ivbmaOCn12dE5T69/l7o17DH3ezz2T2KskrMJgaJ6YlGycmGhomW5gkWlompaSYm5iYpFoYmqUYW6YZr3y+ILkhkJFBMieFiZEBAkF8FobgxLRUBgYAb5wiiw==",
+      uid: 0,
+      channelId: "Safe",
+    );
   }
 
   // ⬇️ LOCATION
