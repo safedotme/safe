@@ -11,6 +11,7 @@ import 'package:safe/models/incident/incident.model.dart';
 import 'package:safe/models/incident/location.model.dart';
 import 'package:safe/models/incident/notified_contact.model.dart';
 import 'package:safe/models/user/user.model.dart';
+import 'package:safe/services/token_server/token_server.service.dart';
 import 'package:safe/utils/capture/messages.capture.dart';
 import 'package:safe/utils/constants/constants.util.dart';
 import 'package:uuid/uuid.dart';
@@ -40,7 +41,7 @@ class CaptureUtil {
     isActive = true;
 
     // ⬇️ INCIDENT CREATE
-    //await _uploadChanges(null);
+    await _uploadChanges(null);
 
     // ⬇️ STREAM / RECORDING
     _stream();
@@ -85,11 +86,22 @@ class CaptureUtil {
   }
 
   Future<void> _stream() async {
+    String? token = await _core!.services.token.generate(
+      channelName: _core!.state.capture.incident!.id,
+      role: TokenRole.publisher,
+      type: TokenType.userAccount,
+      uid: "0",
+    );
+
+    if (token == null) {
+      // TODO: Send to firebase that stream is unavailable
+    }
+
     _core!.services.agora.stream(
       _core!.state.capture.engine!,
-      token: "", // implement fetch
+      token: token!,
       uid: 0,
-      channelId: "Safe",
+      channelId: _core!.state.capture.incident!.id,
     );
   }
 

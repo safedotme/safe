@@ -83,6 +83,12 @@ abstract class _CaptureStore with Store {
   void setEngine(RtcEngine e) => engine = e;
 
   @observable
+  String? channel;
+
+  @action
+  void setChannel(String c) => channel = c;
+
+  @observable
   String? token;
 
   @action
