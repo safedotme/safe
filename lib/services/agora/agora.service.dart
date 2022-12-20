@@ -2,7 +2,8 @@ import 'package:agora_rtc_engine/agora_rtc_engine.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class AgoraService {
-  Future<void> initialize(RtcEngine engine) async {
+  Future<void> initialize(
+      RtcEngine engine, RtcEngineEventHandler eventHandler) async {
     // Configure engine
     await engine.initialize(RtcEngineContext(
       appId: dotenv.env["AGORA_APP_ID"],
@@ -25,11 +26,7 @@ class AgoraService {
       role: ClientRoleType.clientRoleBroadcaster,
     );
 
-    engine.registerEventHandler(RtcEngineEventHandler(
-      onError: (err, msg) {
-        print("$err: $msg");
-      },
-    ));
+    engine.registerEventHandler(eventHandler);
   }
 
   Future<void> stream(

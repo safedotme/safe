@@ -217,6 +217,37 @@ mixin _$CaptureStore on _CaptureStore, Store {
     });
   }
 
+  late final _$tokenAtom = Atom(name: '_CaptureStore.token', context: context);
+
+  @override
+  String? get token {
+    _$tokenAtom.reportRead();
+    return super.token;
+  }
+
+  @override
+  set token(String? value) {
+    _$tokenAtom.reportWrite(value, super.token, () {
+      super.token = value;
+    });
+  }
+
+  late final _$displayPreviewAtom =
+      Atom(name: '_CaptureStore.displayPreview', context: context);
+
+  @override
+  bool get displayPreview {
+    _$displayPreviewAtom.reportRead();
+    return super.displayPreview;
+  }
+
+  @override
+  set displayPreview(bool value) {
+    _$displayPreviewAtom.reportWrite(value, super.displayPreview, () {
+      super.displayPreview = value;
+    });
+  }
+
   late final _$_CaptureStoreActionController =
       ActionController(name: '_CaptureStore', context: context);
 
@@ -320,6 +351,28 @@ mixin _$CaptureStore on _CaptureStore, Store {
   }
 
   @override
+  void setToken(String t) {
+    final _$actionInfo = _$_CaptureStoreActionController.startAction(
+        name: '_CaptureStore.setToken');
+    try {
+      return super.setToken(t);
+    } finally {
+      _$_CaptureStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void setDisplayPreview(bool p) {
+    final _$actionInfo = _$_CaptureStoreActionController.startAction(
+        name: '_CaptureStore.setDisplayPreview');
+    try {
+      return super.setDisplayPreview(p);
+    } finally {
+      _$_CaptureStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 controller: ${controller},
@@ -334,7 +387,9 @@ locationUpdates: ${locationUpdates},
 overlayController: ${overlayController},
 battery: ${battery},
 emergencyServicesNotified: ${emergencyServicesNotified},
-engine: ${engine}
+engine: ${engine},
+token: ${token},
+displayPreview: ${displayPreview}
     ''';
   }
 }

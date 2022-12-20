@@ -87,4 +87,10 @@ abstract class _CaptureStore with Store {
 
   @action
   void setToken(String t) => token = t;
+
+  @observable
+  bool displayPreview = false;
+
+  @action
+  void setDisplayPreview(bool p) => displayPreview = p;
 }

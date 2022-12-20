@@ -15,6 +15,16 @@ import 'package:safe/utils/capture/messages.capture.dart';
 import 'package:safe/utils/constants/constants.util.dart';
 import 'package:uuid/uuid.dart';
 
+/*
+TODOS:
+- Dispose
+  - handle engine
+  - displayPreview = false
+  - token = null
+- Token Generation
+- 
+*/
+
 class CaptureUtil {
   Core? _core;
   bool isActive = false;
@@ -31,7 +41,7 @@ class CaptureUtil {
     isActive = true;
 
     // ⬇️ INCIDENT CREATE
-    await _uploadChanges(null);
+    //await _uploadChanges(null);
 
     // ⬇️ STREAM / RECORDING
     _stream();
@@ -55,14 +65,31 @@ class CaptureUtil {
   // ⬇️ STREAM / RECORDING
   Future<void> _initEngine() async {
     _core!.state.capture.setEngine(createAgoraRtcEngine());
-    _core!.services.agora.initialize(_core!.state.capture.engine!);
+
+    // Initializes engine and sets event handler
+    _core!.services.agora.initialize(
+      _core!.state.capture.engine!,
+      RtcEngineEventHandler(
+        onError: (err, msg) {
+          print("$err: $msg");
+        },
+        onLocalVideoStateChanged: (type, state, err) {
+          // Triggers animation
+          if (state == LocalVideoStreamState.localVideoStreamStateCapturing) {
+            Future.delayed(Duration(seconds: 1), () {
+              // Add logic here...
+            });
+          }
+        },
+      ),
+    );
   }
 
   Future<void> _stream() async {
     _core!.services.agora.stream(
       _core!.state.capture.engine!,
       token:
-          "007eJxTYLA5+v/pzJ+f6ivbmaOCn12dE5T69/l7o17DH3ezz2T2KskrMJgaJ6YlGycmGhomW5gkWlompaSYm5iYpFoYmqUYW6YZr3y+ILkhkJFBMieFiZEBAkF8FobgxLRUBgYAb5wiiw==",
+          "007eJxTYND5tk9vup3Mn6x1ofvumfBO/8AdEf5tp744c7n5/71LJr9RYDA1TkxLNk5MNDRMtjBJtLRMSkkxNzExSbUwNEsxtkwz9tZemNwQyMhw668oMyMDBIL4LAzBiWmpDAwAcS8f1Q==",
       uid: 0,
       channelId: "Safe",
     );

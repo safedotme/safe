@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
+import 'package:safe/screens/capture/local_widgets/camera_feed.widget.dart';
 import 'package:safe/screens/capture/local_widgets/capture_stop_alert_dialog.widget.dart';
 import 'package:safe/screens/capture/local_widgets/control_button.widget.dart';
 import 'package:safe/utils/constants/constants.util.dart';
@@ -92,18 +93,7 @@ class _CaptureControlBoxState extends State<CaptureControlBox> {
                       height: kControlBoxBodyHeight,
                       child: Row(
                         children: [
-                          SizedBox(
-                            height: double.infinity,
-                            width: 125,
-                            child: core.state.capture.engine == null
-                                ? SizedBox()
-                                : AgoraVideoView(
-                                    controller: VideoViewController(
-                                      rtcEngine: core.state.capture.engine!,
-                                      canvas: VideoCanvas(uid: 0),
-                                    ),
-                                  ),
-                          ),
+                          CameraFeed(),
                           SizedBox(width: 10),
                           Expanded(
                             child: Column(
