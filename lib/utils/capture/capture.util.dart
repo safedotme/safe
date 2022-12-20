@@ -88,8 +88,7 @@ class CaptureUtil {
   Future<void> _stream() async {
     _core!.services.agora.stream(
       _core!.state.capture.engine!,
-      token:
-          "007eJxTYND5tk9vup3Mn6x1ofvumfBO/8AdEf5tp744c7n5/71LJr9RYDA1TkxLNk5MNDRMtjBJtLRMSkkxNzExSbUwNEsxtkwz9tZemNwQyMhw668oMyMDBIL4LAzBiWmpDAwAcS8f1Q==",
+      token: "", // implement fetch
       uid: 0,
       channelId: "Safe",
     );

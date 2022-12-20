@@ -24,14 +24,14 @@ Future<void> main() async {
 class Safe extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-      return MultiProvider(
+    return MultiProvider(
       providers: [
         Provider<Core>(create: (_) => Core()),
       ],
       child: MaterialApp(
         title: "Safe",
         debugShowCheckedModeBanner: false,
-          themeMode: ThemeMode.dark,
+        themeMode: ThemeMode.dark,
         routes: {
           WelcomeScreen.id: (_) => WelcomeScreen(),
           HomeScreen.id: (_) => HomeScreen(),
