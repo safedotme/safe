@@ -93,4 +93,10 @@ abstract class _CaptureStore with Store {
 
   @action
   void setHidePreview(Function? s) => hidePreview = s;
+
+  @observable
+  bool isBackCam = true;
+
+  @action
+  void changeCam() => isBackCam = !isBackCam;
 }

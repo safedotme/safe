@@ -106,8 +106,10 @@ class _CaptureControlBoxState extends State<CaptureControlBox> {
                                   icon: MutableIcons.camera,
                                   iconSize: Size(20, 16),
                                   onTap: () {
-                                    core.services.agora
-                                        .flipCam(core.state.capture.engine!);
+                                    core.services.agora.flipCam(
+                                      core.state.capture.engine!,
+                                      core,
+                                    );
                                   },
                                 ),
                                 SizedBox(height: 10),

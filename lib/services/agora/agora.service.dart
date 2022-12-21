@@ -1,5 +1,8 @@
 import 'package:agora_rtc_engine/agora_rtc_engine.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:safe/core.dart';
+
+enum CamType { front, back }
 
 class AgoraService {
   Future<void> initialize(
@@ -34,8 +37,21 @@ class AgoraService {
     await engine.stopPreview();
   }
 
-  Future<void> flipCam(RtcEngine engine) async {
-    await engine.switchCamera();
+  Future<void> flipCam(RtcEngine engine, Core core, {CamType? type}) async {
+    if (type == null) {
+      core.state.capture.changeCam();
+      return engine.switchCamera();
+    }
+
+    if (type == CamType.back && core.state.capture.isBackCam) return;
+    if (type == CamType.front && !core.state.capture.isBackCam) return;
+
+    core.state.capture.changeCam();
+    return engine.switchCamera();
+  }
+
+  Future<void> muteExernalStreams(RtcEngine engine) async {
+    await engine.muteAllRemoteAudioStreams(true);
   }
 
   Future<void> stream(

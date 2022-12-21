@@ -249,6 +249,22 @@ mixin _$CaptureStore on _CaptureStore, Store {
     });
   }
 
+  late final _$isBackCamAtom =
+      Atom(name: '_CaptureStore.isBackCam', context: context);
+
+  @override
+  bool get isBackCam {
+    _$isBackCamAtom.reportRead();
+    return super.isBackCam;
+  }
+
+  @override
+  set isBackCam(bool value) {
+    _$isBackCamAtom.reportWrite(value, super.isBackCam, () {
+      super.isBackCam = value;
+    });
+  }
+
   late final _$_CaptureStoreActionController =
       ActionController(name: '_CaptureStore', context: context);
 
@@ -374,6 +390,17 @@ mixin _$CaptureStore on _CaptureStore, Store {
   }
 
   @override
+  void changeCam() {
+    final _$actionInfo = _$_CaptureStoreActionController.startAction(
+        name: '_CaptureStore.changeCam');
+    try {
+      return super.changeCam();
+    } finally {
+      _$_CaptureStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 controller: ${controller},
@@ -390,7 +417,8 @@ battery: ${battery},
 emergencyServicesNotified: ${emergencyServicesNotified},
 engine: ${engine},
 showPreview: ${showPreview},
-hidePreview: ${hidePreview}
+hidePreview: ${hidePreview},
+isBackCam: ${isBackCam}
     ''';
   }
 }

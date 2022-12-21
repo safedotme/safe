@@ -2,6 +2,7 @@ import 'package:agora_rtc_engine/agora_rtc_engine.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
+import 'package:safe/services/agora/agora.service.dart';
 import 'package:safe/utils/constants/constants.util.dart';
 import 'package:safe/widgets/mutable_shimmer/mutable_shimmer.widget.dart';
 
@@ -36,7 +37,12 @@ class _CameraFeedState extends State<CameraFeed> with TickerProviderStateMixin {
 
   Future<void> animateIn() async {
     await Future.delayed(Duration(seconds: 1));
-    await core.services.agora.flipCam(core.state.capture.engine!);
+    await core.services.agora.flipCam(
+      core.state.capture.engine!,
+      core,
+      type: CamType.front,
+    );
+    await core.services.agora.muteExernalStreams(core.state.capture.engine!);
     await Future.delayed(Duration(seconds: 1));
     controller.forward(from: 0);
   }
