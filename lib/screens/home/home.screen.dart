@@ -31,13 +31,15 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void userSubscribe() {
-    Stream<User> stream = core.services.server.user.readFromId(
+    Stream<User?> stream = core.services.server.user.readFromId(
       id: core.services.auth.currentUser!.uid,
     );
 
     stream.listen((event) {
       WidgetsBinding.instance.addPersistentFrameCallback((timeStamp) {
-        core.state.incidentLog.setUser(event);
+        if (event != null) {
+          core.state.incidentLog.setUser(event);
+        }
       });
     });
   }
@@ -46,6 +48,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     queryData = MediaQuery.of(context);
     Core core = Provider.of<Core>(context, listen: false);
+
     return MutableScaffold(
       overlays: [
         Capture(),
@@ -74,7 +77,7 @@ class _HomeScreenState extends State<HomeScreen> {
             child: MutableSafeButton(
               onTap: () async {
                 HapticFeedback.heavyImpact();
-                //core.utils.capture.start();
+                core.utils.capture.start();
                 core.state.capture.controller.open();
               },
             ),
