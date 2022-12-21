@@ -10,6 +10,7 @@ class Incident {
   final String userId;
   final String name;
   final List<IncidentType> type;
+  final bool streamAvailable;
   final DateTime datetime;
   final String? thumbnail;
   final List<Location>? location;
@@ -23,6 +24,7 @@ class Incident {
     required this.name,
     required this.type,
     required this.datetime,
+    this.streamAvailable = false,
     this.location,
     this.contactLog,
     this.battery,
@@ -52,6 +54,7 @@ class Incident {
       contactLog: _contacts?.map((e) => NotifiedContact.fromJson(e)).toList(),
       battery: _battery?.map((e) => Battery.fromJson(e)).toList(),
       thumbnail: json["thumbnail"],
+      streamAvailable: json["stream_available"],
     );
   }
 
@@ -62,6 +65,7 @@ class Incident {
     List<IncidentType>? type,
     DateTime? datetime,
     String? thumbnail,
+    bool? streamAvailable,
     List<Location>? location,
     List<NotifiedContact>? contactLog,
     List<Battery>? battery,
@@ -69,6 +73,7 @@ class Incident {
   }) {
     return Incident(
       id: id ?? this.id,
+      streamAvailable: streamAvailable ?? this.streamAvailable,
       userId: userId ?? this.userId,
       name: name ?? this.name,
       type: type ?? this.type,
@@ -85,6 +90,7 @@ class Incident {
         "id": id,
         "user_id": userId,
         "name": name,
+        "stream_available": streamAvailable,
         "type": type.map((e) => e.toString()).toList(),
         "datetime": datetime.toIso8601String(),
         "location":

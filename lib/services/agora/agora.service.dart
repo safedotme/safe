@@ -29,6 +29,15 @@ class AgoraService {
     engine.registerEventHandler(eventHandler);
   }
 
+  Future<void> stop(RtcEngine engine) async {
+    await engine.leaveChannel();
+    await engine.stopPreview();
+  }
+
+  Future<void> flipCam(RtcEngine engine) async {
+    await engine.switchCamera();
+  }
+
   Future<void> stream(
     RtcEngine engine, {
     required String token,

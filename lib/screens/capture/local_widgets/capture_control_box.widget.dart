@@ -2,6 +2,7 @@ import 'package:agora_rtc_engine/agora_rtc_engine.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
@@ -105,7 +106,8 @@ class _CaptureControlBoxState extends State<CaptureControlBox> {
                                   icon: MutableIcons.camera,
                                   iconSize: Size(20, 16),
                                   onTap: () {
-                                    // TODO: Flip camera
+                                    core.services.agora
+                                        .flipCam(core.state.capture.engine!);
                                   },
                                 ),
                                 SizedBox(height: 10),

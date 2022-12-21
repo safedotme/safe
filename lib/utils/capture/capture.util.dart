@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'package:agora_rtc_engine/agora_rtc_engine.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:intl/intl.dart';
 import 'package:location/location.dart' as api;
 import 'package:safe/core.dart';
@@ -16,22 +15,12 @@ import 'package:safe/utils/capture/messages.capture.dart';
 import 'package:safe/utils/constants/constants.util.dart';
 import 'package:uuid/uuid.dart';
 
-/*
-TODOS:
-- Dispose
-  - handle engine
-  - displayPreview = false
-  - token = null
-- 
-*/
-
 class CaptureUtil {
   Core? _core;
   bool isActive = false;
 
   void initialize(Core core) {
     _core = core;
-    _initEngine();
   }
 
   void start() async {
@@ -46,28 +35,36 @@ class CaptureUtil {
     // ⬇️ STREAM / RECORDING
     _stream();
 
-    // // ⬇️ LOCATION + SMS
-    // _locationListen();
+    // ⬇️ LOCATION + SMS
+    //_locationListen();
 
-    // // ⬇️ BATTERY
-    // _batteryListen();
+    // ⬇️ BATTERY
+    //_batteryListen();
   }
 
   void stop() async {
     isActive = false;
     _core!.state.capture.overlayController.show();
     _notifyContacts(MessageType.end);
+
+    // STREAM
+    _core!.services.agora.stop(_core!.state.capture.engine!);
+
     await Future.delayed(Duration(seconds: 5));
+    _core!.state.capture.showPreview?.call();
+
     _core!.state.capture.overlayController.hide();
     _core!.state.capture.controller.close();
   }
 
   // ⬇️ STREAM / RECORDING
   Future<void> _initEngine() async {
+    if (_core!.state.capture.engine != null) return;
+
     _core!.state.capture.setEngine(createAgoraRtcEngine());
 
     // Initializes engine and sets event handler
-    _core!.services.agora.initialize(
+    await _core!.services.agora.initialize(
       _core!.state.capture.engine!,
       RtcEngineEventHandler(
         onError: (err, msg) {
@@ -76,9 +73,8 @@ class CaptureUtil {
         onLocalVideoStateChanged: (type, state, err) {
           // Triggers animation
           if (state == LocalVideoStreamState.localVideoStreamStateCapturing) {
-            Future.delayed(Duration(seconds: 1), () {
-              // Add logic here...
-            });
+            _core!.services.agora.flipCam(_core!.state.capture.engine!);
+            _core!.state.capture.hidePreview?.call();
           }
         },
       ),
@@ -86,6 +82,8 @@ class CaptureUtil {
   }
 
   Future<void> _stream() async {
+    _initEngine();
+
     String? token = await _core!.services.token.generate(
       channelName: _core!.state.capture.incident!.id,
       role: TokenRole.publisher,
@@ -93,13 +91,13 @@ class CaptureUtil {
       uid: "0",
     );
 
-    if (token == null) {
-      // TODO: Send to firebase that stream is unavailable
-    }
+    _uploadChanges(_core!.state.capture.incident!.copyWith(
+      streamAvailable: token != null,
+    ));
 
     _core!.services.agora.stream(
       _core!.state.capture.engine!,
-      token: token!,
+      token: token ?? "",
       uid: 0,
       channelId: _core!.state.capture.incident!.id,
     );

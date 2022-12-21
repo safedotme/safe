@@ -217,34 +217,35 @@ mixin _$CaptureStore on _CaptureStore, Store {
     });
   }
 
-  late final _$tokenAtom = Atom(name: '_CaptureStore.token', context: context);
+  late final _$showPreviewAtom =
+      Atom(name: '_CaptureStore.showPreview', context: context);
 
   @override
-  String? get token {
-    _$tokenAtom.reportRead();
-    return super.token;
+  Function? get showPreview {
+    _$showPreviewAtom.reportRead();
+    return super.showPreview;
   }
 
   @override
-  set token(String? value) {
-    _$tokenAtom.reportWrite(value, super.token, () {
-      super.token = value;
+  set showPreview(Function? value) {
+    _$showPreviewAtom.reportWrite(value, super.showPreview, () {
+      super.showPreview = value;
     });
   }
 
-  late final _$displayPreviewAtom =
-      Atom(name: '_CaptureStore.displayPreview', context: context);
+  late final _$hidePreviewAtom =
+      Atom(name: '_CaptureStore.hidePreview', context: context);
 
   @override
-  bool get displayPreview {
-    _$displayPreviewAtom.reportRead();
-    return super.displayPreview;
+  Function? get hidePreview {
+    _$hidePreviewAtom.reportRead();
+    return super.hidePreview;
   }
 
   @override
-  set displayPreview(bool value) {
-    _$displayPreviewAtom.reportWrite(value, super.displayPreview, () {
-      super.displayPreview = value;
+  set hidePreview(Function? value) {
+    _$hidePreviewAtom.reportWrite(value, super.hidePreview, () {
+      super.hidePreview = value;
     });
   }
 
@@ -351,22 +352,22 @@ mixin _$CaptureStore on _CaptureStore, Store {
   }
 
   @override
-  void setToken(String t) {
+  void setShowPreview(Function? s) {
     final _$actionInfo = _$_CaptureStoreActionController.startAction(
-        name: '_CaptureStore.setToken');
+        name: '_CaptureStore.setShowPreview');
     try {
-      return super.setToken(t);
+      return super.setShowPreview(s);
     } finally {
       _$_CaptureStoreActionController.endAction(_$actionInfo);
     }
   }
 
   @override
-  void setDisplayPreview(bool p) {
+  void setHidePreview(Function? s) {
     final _$actionInfo = _$_CaptureStoreActionController.startAction(
-        name: '_CaptureStore.setDisplayPreview');
+        name: '_CaptureStore.setHidePreview');
     try {
-      return super.setDisplayPreview(p);
+      return super.setHidePreview(s);
     } finally {
       _$_CaptureStoreActionController.endAction(_$actionInfo);
     }
@@ -388,8 +389,8 @@ overlayController: ${overlayController},
 battery: ${battery},
 emergencyServicesNotified: ${emergencyServicesNotified},
 engine: ${engine},
-token: ${token},
-displayPreview: ${displayPreview}
+showPreview: ${showPreview},
+hidePreview: ${hidePreview}
     ''';
   }
 }

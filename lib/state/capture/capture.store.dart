@@ -83,20 +83,14 @@ abstract class _CaptureStore with Store {
   void setEngine(RtcEngine e) => engine = e;
 
   @observable
-  String? channel;
+  Function? showPreview;
 
   @action
-  void setChannel(String c) => channel = c;
+  void setShowPreview(Function? s) => showPreview = s;
 
   @observable
-  String? token;
+  Function? hidePreview;
 
   @action
-  void setToken(String t) => token = t;
-
-  @observable
-  bool displayPreview = false;
-
-  @action
-  void setDisplayPreview(bool p) => displayPreview = p;
+  void setHidePreview(Function? s) => hidePreview = s;
 }

@@ -10,13 +10,45 @@ class CameraFeed extends StatefulWidget {
   State<CameraFeed> createState() => _CameraFeedState();
 }
 
-class _CameraFeedState extends State<CameraFeed> {
+class _CameraFeedState extends State<CameraFeed> with TickerProviderStateMixin {
   late Core core;
+  late AnimationController controller;
+  late Animation<double> animation;
+  double opacity = 1;
 
   @override
   void initState() {
     super.initState();
     core = Provider.of<Core>(context, listen: false);
+
+    initAnimation();
+
+    core.state.capture.setHidePreview(() {
+      Future.delayed(Duration(seconds: 1)).then((value) {
+        controller.forward(from: 0);
+      });
+    });
+
+    core.state.capture.setShowPreview(() {
+      setState(() {
+        opacity = 1;
+      });
+    });
+  }
+
+  void initAnimation() {
+    controller = AnimationController(
+      vsync: this,
+      duration: Duration(seconds: 3),
+    );
+
+    animation = CurveTween(curve: Curves.easeInSine).animate(controller);
+
+    controller.addListener(() {
+      setState(() {
+        opacity = 1 - animation.value;
+      });
+    });
   }
 
   @override
@@ -51,21 +83,25 @@ class _CameraFeedState extends State<CameraFeed> {
                     ),
                   ),
           ),
-          // MutableShimmer(
-          //   active: true,
-          //   child: Container(
-          //     decoration: BoxDecoration(
-          //       border: Border.all(
-          //         width: kBorderWidth,
-          //         color: kColorMap[MutableColor.neutral7]!,
-          //       ),
-          //       color: kColorMap[MutableColor.neutral8],
-          //       borderRadius: BorderRadius.circular(
-          //         kCaptureControlBorderRadius,
-          //       ),
-          //     ),
-          //   ),
-          // ),
+          Opacity(
+            opacity: opacity,
+            child: MutableShimmer(
+              active: opacity != 0,
+              animateToColor: kBoxLoaderShimmerColor,
+              child: Container(
+                decoration: BoxDecoration(
+                  border: Border.all(
+                    width: kBorderWidth,
+                    color: kColorMap[MutableColor.neutral7]!,
+                  ),
+                  color: kColorMap[MutableColor.neutral8],
+                  borderRadius: BorderRadius.circular(
+                    kCaptureControlBorderRadius,
+                  ),
+                ),
+              ),
+            ),
+          ),
         ],
       ),
     );
