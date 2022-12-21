@@ -74,7 +74,7 @@ class _HomeScreenState extends State<HomeScreen> {
             child: MutableSafeButton(
               onTap: () async {
                 HapticFeedback.heavyImpact();
-                core.utils.capture.start();
+                //core.utils.capture.start();
                 core.state.capture.controller.open();
               },
             ),

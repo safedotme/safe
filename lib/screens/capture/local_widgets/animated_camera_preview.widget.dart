@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
 import 'package:safe/screens/capture/local_widgets/camera_feed.widget.dart';
@@ -39,7 +41,15 @@ class _AnimatedCameraPreviewState extends State<AnimatedCameraPreview> {
         left: kSideScreenMargin,
         child: Opacity(
           opacity: (core.state.capture.offset).abs(),
-          child: CameraFeed(),
+          child: GestureDetector(
+            onLongPressStart: (details) {
+              HapticFeedback.lightImpact();
+            },
+            onLongPressEnd: (details) {
+              print("end");
+            },
+            child: CameraFeed(),
+          ),
         ),
       ),
     );
