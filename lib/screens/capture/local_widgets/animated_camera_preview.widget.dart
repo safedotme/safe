@@ -12,13 +12,18 @@ class AnimatedCameraPreview extends StatefulWidget {
   State<AnimatedCameraPreview> createState() => _AnimatedCameraPreviewState();
 }
 
-class _AnimatedCameraPreviewState extends State<AnimatedCameraPreview> {
+class _AnimatedCameraPreviewState extends State<AnimatedCameraPreview>
+    with TickerProviderStateMixin {
   late Core core;
+  late AnimationController controller;
+  late Animation<double> animation;
+  double scaleState = 1;
 
   @override
   void initState() {
     super.initState();
     core = Provider.of<Core>(context, listen: false);
+    initAnimation();
   }
 
   double genBottomPosition(double panelPosition) {
@@ -31,6 +36,29 @@ class _AnimatedCameraPreviewState extends State<AnimatedCameraPreview> {
     return def;
   }
 
+  void initAnimation() {
+    controller = AnimationController(
+      vsync: this,
+      duration: kScaleDownButtonTime,
+    );
+
+    animation = Tween<double>(
+      begin: 1,
+      end: kScaleDownButtonPercentage,
+    ).animate(
+      CurvedAnimation(
+        parent: controller,
+        curve: Curves.easeIn,
+      ),
+    );
+
+    controller.addListener(() {
+      setState(() {
+        scaleState = animation.value;
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Observer(
@@ -41,14 +69,18 @@ class _AnimatedCameraPreviewState extends State<AnimatedCameraPreview> {
         left: kSideScreenMargin,
         child: Opacity(
           opacity: (core.state.capture.offset).abs(),
-          child: GestureDetector(
-            onLongPressStart: (details) {
-              HapticFeedback.lightImpact();
-            },
-            onLongPressEnd: (details) {
-              print("end");
-            },
-            child: CameraFeed(),
+          child: Transform.scale(
+            scale: scaleState,
+            child: GestureDetector(
+              onLongPressStart: (details) async {
+                HapticFeedback.mediumImpact();
+                await controller.forward();
+                await Future.delayed(Duration(milliseconds: 200));
+                controller.reverse();
+              },
+              onLongPressEnd: (details) {},
+              child: CameraFeed(),
+            ),
           ),
         ),
       ),

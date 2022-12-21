@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:pin_code_fields/pin_code_fields.dart';
+import 'package:safe/utils/constants/constants.util.dart';
 
 class MutableButton extends StatefulWidget {
   final void Function()? onTap;
@@ -27,10 +29,11 @@ class _MutableButtonState extends State<MutableButton>
     controller = AnimationController(
       vsync: this,
       // Duration to reach the midpoint
-      duration: Duration(milliseconds: 125),
+      duration: kScaleDownButtonTime,
     );
 
-    Animation animation = Tween(begin: 1, end: 0.97).animate(
+    Animation animation =
+        Tween(begin: 1, end: kScaleDownButtonPercentage).animate(
       CurvedAnimation(
         parent: controller,
         curve: Curves.decelerate,

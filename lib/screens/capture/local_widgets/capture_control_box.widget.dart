@@ -124,6 +124,7 @@ class _CaptureControlBoxState extends State<CaptureControlBox> {
                                   icon: MutableIcons.stopRecording,
                                   iconSize: Size(17, 17),
                                   onTap: () {
+                                    HapticFeedback.lightImpact();
                                     showCupertinoDialog(
                                       context: context,
                                       barrierDismissible: true,

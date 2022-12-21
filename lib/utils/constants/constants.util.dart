@@ -218,6 +218,10 @@ const double kBorderWidth = 1.5;
 const double kLargeButtonHeight = 50;
 const double kLargeButtonBorderRadius = kLargeButtonHeight / 2;
 
+// BUTTONS
+const double kScaleDownButtonPercentage = 0.97;
+const Duration kScaleDownButtonTime = Duration(milliseconds: 125);
+
 // NAVIGATION BUTTON
 const double kNavButtonSize = 40;
 
