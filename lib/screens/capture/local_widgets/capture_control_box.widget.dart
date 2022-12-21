@@ -46,6 +46,7 @@ class _CaptureControlBoxState extends State<CaptureControlBox> {
 
   @override
   Widget build(BuildContext context) {
+    var query = MediaQuery.of(context);
     getSize();
     return Observer(
       builder: (_) => MutablePopup(
@@ -94,7 +95,10 @@ class _CaptureControlBoxState extends State<CaptureControlBox> {
                       height: kControlBoxBodyHeight,
                       child: Row(
                         children: [
-                          CameraFeed(),
+                          SizedBox(
+                            width: query.size.width *
+                                kCameraPreviewWidthPercentage,
+                          ),
                           SizedBox(width: 10),
                           Expanded(
                             child: Column(

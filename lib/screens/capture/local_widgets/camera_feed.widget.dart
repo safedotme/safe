@@ -1,5 +1,5 @@
 import 'package:agora_rtc_engine/agora_rtc_engine.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
 import 'package:safe/services/agora/agora.service.dart';
@@ -50,7 +50,7 @@ class _CameraFeedState extends State<CameraFeed> with TickerProviderStateMixin {
   void initAnimation() {
     controller = AnimationController(
       vsync: this,
-      duration: Duration(seconds: 3),
+      duration: Duration(seconds: 1),
     );
 
     animation = CurveTween(curve: Curves.easeInSine).animate(controller);
@@ -64,12 +64,15 @@ class _CameraFeedState extends State<CameraFeed> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+    var query = MediaQuery.of(context);
     return SizedBox(
-      height: double.infinity,
-      width: 125,
+      width: query.size.width * kCameraPreviewWidthPercentage,
+      height: kControlBoxBodyHeight,
       child: Stack(
         children: [
           Container(
+            height: double.infinity,
+            width: double.infinity,
             decoration: BoxDecoration(
               border: Border.all(
                 width: kBorderWidth,
@@ -100,6 +103,8 @@ class _CameraFeedState extends State<CameraFeed> with TickerProviderStateMixin {
               active: opacity != 0,
               animateToColor: kBoxLoaderShimmerColor,
               child: Container(
+                height: double.infinity,
+                width: double.infinity,
                 decoration: BoxDecoration(
                   border: Border.all(
                     width: kBorderWidth,

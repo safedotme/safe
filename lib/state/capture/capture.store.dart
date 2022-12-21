@@ -25,6 +25,9 @@ abstract class _CaptureStore with Store {
   PanelController panelController = PanelController();
 
   @observable
+  PanelController controlPanelController = PanelController();
+
+  @observable
   double offset = 1;
 
   @action

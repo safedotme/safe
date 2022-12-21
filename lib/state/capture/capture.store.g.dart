@@ -57,6 +57,23 @@ mixin _$CaptureStore on _CaptureStore, Store {
     });
   }
 
+  late final _$controlPanelControllerAtom =
+      Atom(name: '_CaptureStore.controlPanelController', context: context);
+
+  @override
+  PanelController get controlPanelController {
+    _$controlPanelControllerAtom.reportRead();
+    return super.controlPanelController;
+  }
+
+  @override
+  set controlPanelController(PanelController value) {
+    _$controlPanelControllerAtom
+        .reportWrite(value, super.controlPanelController, () {
+      super.controlPanelController = value;
+    });
+  }
+
   late final _$offsetAtom =
       Atom(name: '_CaptureStore.offset', context: context);
 
@@ -406,6 +423,7 @@ mixin _$CaptureStore on _CaptureStore, Store {
 controller: ${controller},
 hintTextController: ${hintTextController},
 panelController: ${panelController},
+controlPanelController: ${controlPanelController},
 offset: ${offset},
 panelHeight: ${panelHeight},
 hintTextIndex: ${hintTextIndex},

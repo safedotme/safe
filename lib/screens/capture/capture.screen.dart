@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
+import 'package:safe/screens/capture/local_widgets/animated_camera_preview.widget.dart';
+import 'package:safe/screens/capture/local_widgets/camera_feed.widget.dart';
 import 'package:safe/screens/capture/local_widgets/capture_control_box.widget.dart';
 import 'package:safe/screens/capture/local_widgets/capture_text_shimmer.widget.dart';
 import 'package:safe/utils/constants/constants.util.dart';
@@ -69,6 +72,7 @@ class _CaptureState extends State<Capture> {
               ),
             ),
             CaptureControlBox(),
+            AnimatedCameraPreview(),
             MutableOverlay(
               controller: core.state.capture.overlayController,
               child: Center(
