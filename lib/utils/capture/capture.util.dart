@@ -17,7 +17,10 @@ import 'package:uuid/uuid.dart';
 
 class CaptureUtil {
   Core? _core;
+  // Used to tell the listening algorithms when to stop capturing
   bool isActive = false;
+  // Used to prevent an infinity loop of camera flips
+  bool initFlip = false;
 
   void initialize(Core core) {
     _core = core;
@@ -44,6 +47,7 @@ class CaptureUtil {
 
   void stop() async {
     isActive = false;
+
     _core!.state.capture.overlayController.show();
     _notifyContacts(MessageType.end);
 
@@ -55,6 +59,7 @@ class CaptureUtil {
 
     _core!.state.capture.overlayController.hide();
     _core!.state.capture.controller.close();
+    initFlip = false;
   }
 
   // ⬇️ STREAM / RECORDING
@@ -72,8 +77,9 @@ class CaptureUtil {
         },
         onLocalVideoStateChanged: (type, state, err) {
           // Triggers animation
-          if (state == LocalVideoStreamState.localVideoStreamStateCapturing) {
-            _core!.services.agora.flipCam(_core!.state.capture.engine!);
+          if (state == LocalVideoStreamState.localVideoStreamStateCapturing &&
+              !initFlip) {
+            initFlip = true;
             _core!.state.capture.hidePreview?.call();
           }
         },

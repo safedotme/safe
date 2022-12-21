@@ -24,9 +24,7 @@ class _CameraFeedState extends State<CameraFeed> with TickerProviderStateMixin {
     initAnimation();
 
     core.state.capture.setHidePreview(() {
-      Future.delayed(Duration(seconds: 1)).then((value) {
-        controller.forward(from: 0);
-      });
+      animateIn();
     });
 
     core.state.capture.setShowPreview(() {
@@ -34,6 +32,13 @@ class _CameraFeedState extends State<CameraFeed> with TickerProviderStateMixin {
         opacity = 1;
       });
     });
+  }
+
+  Future<void> animateIn() async {
+    await Future.delayed(Duration(seconds: 1));
+    await core.services.agora.flipCam(core.state.capture.engine!);
+    await Future.delayed(Duration(seconds: 1));
+    controller.forward(from: 0);
   }
 
   void initAnimation() {
