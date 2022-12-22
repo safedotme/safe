@@ -7,6 +7,20 @@ import 'package:safe/screens/capture/local_widgets/camera_feed.widget.dart';
 import 'package:safe/utils/constants/constants.util.dart';
 
 class AnimatedCameraPreview extends StatefulWidget {
+  /// ⬇️ ANIMATION HELPER METHODS
+  static double generateScaleCoeffcient(MediaQueryData query) {
+    double coeff = (query.size.width - (kSideScreenMargin * 2)) /
+        (kCameraPreviewWidthPercentage * query.size.width);
+    return coeff;
+  }
+
+  static double generatePosYCoefficient(MediaQueryData query) {
+    double box = kControlBoxBodyHeight * generateScaleCoeffcient(query);
+    double topMargin = 20; // Margin from top of preview to notch
+    double coeff = query.size.height - (query.padding.top + box + topMargin);
+    return coeff;
+  }
+
   @override
   State<AnimatedCameraPreview> createState() => _AnimatedCameraPreviewState();
 }
@@ -52,7 +66,7 @@ class _AnimatedCameraPreviewState extends State<AnimatedCameraPreview>
     ).animate(
       CurvedAnimation(
         parent: ticker,
-        curve: Curves.ease, // TODO: CHANGE ME
+        curve: Curves.ease,
       ),
     );
 
@@ -62,37 +76,25 @@ class _AnimatedCameraPreviewState extends State<AnimatedCameraPreview>
     ticker.removeListener(listener);
   }
 
-  double generateScaleCoeffcient() {
-    double coeff = (queryData.size.width - (kSideScreenMargin * 2)) /
-        (kCameraPreviewWidthPercentage * queryData.size.width);
-    return coeff;
-  }
-
-  double generatePosYCoefficient() {
-    double box = kControlBoxBodyHeight * generateScaleCoeffcient();
-    double topMargin = 20; // Margin from top of preview to notch
-    double coeff =
-        queryData.size.height - (queryData.padding.top + box + topMargin);
-    return coeff;
-  }
-
   /// ⬇️ ANIMATION METHODS
   Future<void> animateUpFromBase() async {
-    // Called on onLongPress - CHECK
     // Handle Scale - CHECK
     // Handle Blur
-    // Handle Position
     // FINAL: canDrag set to True
 
-    print(queryData.padding.top);
     await animate(
         begin: 0,
         end: 1,
         listener: () {
           setState(() {
-            scale = 1 + (diff(1, generateScaleCoeffcient()) * engine.value);
+            core.state.capture.setEnglargmentState(engine.value);
+
             bottom = kBottomScreenMargin +
-                (diff(kBottomScreenMargin, generatePosYCoefficient()) *
+                (diff(
+                        kBottomScreenMargin,
+                        AnimatedCameraPreview.generatePosYCoefficient(
+                          queryData,
+                        )) *
                     engine.value);
           });
         });

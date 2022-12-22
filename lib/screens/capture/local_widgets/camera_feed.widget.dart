@@ -2,6 +2,7 @@ import 'package:agora_rtc_engine/agora_rtc_engine.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
+import 'package:safe/screens/capture/local_widgets/animated_camera_preview.widget.dart';
 import 'package:safe/screens/capture/local_widgets/camera_feed_skeleton.widget.dart';
 import 'package:safe/services/agora/agora.service.dart';
 import 'package:safe/utils/constants/constants.util.dart';
@@ -63,12 +64,32 @@ class _CameraFeedState extends State<CameraFeed> with TickerProviderStateMixin {
     });
   }
 
+  double diff(double a, double b) => (a - b).abs();
+
+  double getWidth(MediaQueryData query, double state) {
+    double def = query.size.width * kCameraPreviewWidthPercentage;
+
+    return def +
+        diff(1, AnimatedCameraPreview.generateScaleCoeffcient(query)) *
+            def *
+            state;
+  }
+
+  double getHeight(MediaQueryData query, double state) {
+    double def = kControlBoxBodyHeight;
+
+    return def +
+        diff(1, AnimatedCameraPreview.generateScaleCoeffcient(query)) *
+            def *
+            state;
+  }
+
   @override
   Widget build(BuildContext context) {
     var query = MediaQuery.of(context);
     return SizedBox(
-      width: query.size.width * kCameraPreviewWidthPercentage,
-      height: kControlBoxBodyHeight,
+      width: getWidth(query, core.state.capture.enlargementState),
+      height: getHeight(query, core.state.capture.enlargementState),
       child: Stack(
         children: [
           Container(

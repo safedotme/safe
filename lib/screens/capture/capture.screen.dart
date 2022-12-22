@@ -53,7 +53,7 @@ class _CaptureState extends State<Capture> {
         core.state.capture.setHintTextIndex(0);
         canRepaint = true;
       },
-      //isOpen: true, // TODO: CHANGE WHEN DONE
+      isOpen: true, // TODO: CHANGE WHEN DONE
       isDismissable: false,
       controller: core.state.capture.controller,
       body: Container(

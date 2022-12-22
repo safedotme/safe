@@ -5,7 +5,10 @@ class CameraFeedSkeleton extends StatelessWidget {
   final bool darkened;
   final bool show;
 
-  CameraFeedSkeleton({this.darkened = false, this.show = true});
+  CameraFeedSkeleton({
+    this.darkened = false,
+    this.show = true,
+  });
 
   @override
   Widget build(BuildContext context) {
