@@ -282,6 +282,22 @@ mixin _$CaptureStore on _CaptureStore, Store {
     });
   }
 
+  late final _$enlargementStateAtom =
+      Atom(name: '_CaptureStore.enlargementState', context: context);
+
+  @override
+  double get enlargementState {
+    _$enlargementStateAtom.reportRead();
+    return super.enlargementState;
+  }
+
+  @override
+  set enlargementState(double value) {
+    _$enlargementStateAtom.reportWrite(value, super.enlargementState, () {
+      super.enlargementState = value;
+    });
+  }
+
   late final _$_CaptureStoreActionController =
       ActionController(name: '_CaptureStore', context: context);
 
@@ -418,6 +434,17 @@ mixin _$CaptureStore on _CaptureStore, Store {
   }
 
   @override
+  void setEnglargmentState(double e) {
+    final _$actionInfo = _$_CaptureStoreActionController.startAction(
+        name: '_CaptureStore.setEnglargmentState');
+    try {
+      return super.setEnglargmentState(e);
+    } finally {
+      _$_CaptureStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 controller: ${controller},
@@ -436,7 +463,8 @@ emergencyServicesNotified: ${emergencyServicesNotified},
 engine: ${engine},
 showPreview: ${showPreview},
 hidePreview: ${hidePreview},
-isBackCam: ${isBackCam}
+isBackCam: ${isBackCam},
+enlargementState: ${enlargementState}
     ''';
   }
 }

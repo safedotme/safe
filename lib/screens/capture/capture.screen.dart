@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
 import 'package:safe/screens/capture/local_widgets/animated_camera_preview.widget.dart';
-import 'package:safe/screens/capture/local_widgets/camera_feed.widget.dart';
 import 'package:safe/screens/capture/local_widgets/capture_control_box.widget.dart';
 import 'package:safe/screens/capture/local_widgets/capture_text_shimmer.widget.dart';
 import 'package:safe/utils/constants/constants.util.dart';
 import 'package:safe/widgets/mutable_loader/mutable_loader.widget.dart';
 import 'package:safe/widgets/mutable_overlay/mutable_overlay.widget.dart';
-import 'package:safe/widgets/mutable_screen_transition/mutable_screen_tranistion.widget.dart';
+import 'package:safe/widgets/mutable_screen_transition/mutable_screen_transition.widget.dart';
 
 class Capture extends StatefulWidget {
   @override
@@ -55,6 +53,7 @@ class _CaptureState extends State<Capture> {
         core.state.capture.setHintTextIndex(0);
         canRepaint = true;
       },
+      //isOpen: true, // TODO: CHANGE WHEN DONE
       isDismissable: false,
       controller: core.state.capture.controller,
       body: Container(
