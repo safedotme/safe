@@ -102,7 +102,7 @@ class _CaptureControlBoxState extends State<CaptureControlBox> {
                             height: double.infinity,
                             child: CameraFeedSkeleton(
                               darkened: true,
-                              show: false,
+                              show: core.state.capture.enlargementState != 0,
                             ),
                           ),
                           SizedBox(width: 10),

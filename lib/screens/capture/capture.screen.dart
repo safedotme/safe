@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
 import 'package:safe/screens/capture/local_widgets/animated_camera_preview.widget.dart';
 import 'package:safe/screens/capture/local_widgets/capture_control_box.widget.dart';
 import 'package:safe/screens/capture/local_widgets/capture_text_shimmer.widget.dart';
+import 'package:safe/screens/capture/local_widgets/enlargement_blur_background.widget.dart';
 import 'package:safe/utils/constants/constants.util.dart';
 import 'package:safe/widgets/mutable_loader/mutable_loader.widget.dart';
 import 'package:safe/widgets/mutable_overlay/mutable_overlay.widget.dart';
@@ -53,7 +55,7 @@ class _CaptureState extends State<Capture> {
         core.state.capture.setHintTextIndex(0);
         canRepaint = true;
       },
-      isOpen: true, // TODO: CHANGE WHEN DONE
+      // isOpen: true, // TODO: CHANGE WHEN DONE
       isDismissable: false,
       controller: core.state.capture.controller,
       body: Container(
@@ -71,6 +73,7 @@ class _CaptureState extends State<Capture> {
               ),
             ),
             CaptureControlBox(),
+            EnglargementBlurBackground(),
             AnimatedCameraPreview(),
             MutableOverlay(
               controller: core.state.capture.overlayController,

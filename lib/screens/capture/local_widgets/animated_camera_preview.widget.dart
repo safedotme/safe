@@ -39,6 +39,7 @@ class _AnimatedCameraPreviewState extends State<AnimatedCameraPreview>
 
   /// ⬇️ ANIMATION STATE
   bool canDrag = false;
+  bool isAnimating = false;
   double state = 0; // 0 is CLOSED | 1 is OPEN
   double bottom = kBottomScreenMargin;
   double scale = 1;
@@ -78,9 +79,9 @@ class _AnimatedCameraPreviewState extends State<AnimatedCameraPreview>
 
   /// ⬇️ ANIMATION METHODS
   Future<void> animateUpFromBase() async {
-    // Handle Scale - CHECK
-    // Handle Blur
-    // FINAL: canDrag set to True
+    setState(() {
+      isAnimating = true;
+    });
 
     await animate(
         begin: 0,
@@ -98,6 +99,10 @@ class _AnimatedCameraPreviewState extends State<AnimatedCameraPreview>
                     engine.value);
           });
         });
+
+    setState(() {
+      canDrag = true;
+    });
   }
 
   Future<void> animateUpFromPosition() async {
@@ -110,6 +115,10 @@ class _AnimatedCameraPreviewState extends State<AnimatedCameraPreview>
     // Handle Blur
     // Handle Position
     // FINAL: canDrag set to False
+
+    setState(() {
+      isAnimating = true;
+    });
   }
 
   Future<void> animateDrag() async {
@@ -127,17 +136,16 @@ class _AnimatedCameraPreviewState extends State<AnimatedCameraPreview>
     initButtonAnimation();
   }
 
-  void genBottomPosition(double panelPosition) {
+  double genBottomPosition(double panelPosition) {
     double def = kBottomScreenMargin;
 
+    if (isAnimating) return bottom;
+
     if (panelPosition != 0) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        setState(() {
-          bottom =
-              def - ((core.state.capture.panelHeight - 100) * panelPosition);
-        });
-      });
+      return def - ((core.state.capture.panelHeight - 100) * panelPosition);
     }
+
+    return def;
   }
 
   void initButtonAnimation() {
@@ -168,9 +176,9 @@ class _AnimatedCameraPreviewState extends State<AnimatedCameraPreview>
     queryData = MediaQuery.of(context);
     return Observer(
       builder: (context) {
-        genBottomPosition(((core.state.capture.offset - 1) * -1).abs());
         return Positioned(
-          bottom: bottom,
+          bottom:
+              genBottomPosition(((core.state.capture.offset - 1) * -1).abs()),
           left: kSideScreenMargin,
           child: Opacity(
             opacity: (core.state.capture.offset).abs(),
