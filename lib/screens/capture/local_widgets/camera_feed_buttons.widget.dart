@@ -15,13 +15,16 @@ class _CameraFeedButtonsState extends State<CameraFeedButtons> {
   late Core core;
   final List<MutableIcon> icons = [
     MutableIcon(
-      MutableIcons.gear,
+      MutableIcons.cancel,
+      size: Size(13, 13),
     ),
     MutableIcon(
-      MutableIcons.cameraFlip,
+      MutableIcons.cameraFlipFilled,
+      size: Size(22, 17),
     ),
     MutableIcon(
-      MutableIcons.gear,
+      MutableIcons.flashlightFilled,
+      size: Size(10, 20),
     )
   ];
 
@@ -48,11 +51,10 @@ class _CameraFeedButtonsState extends State<CameraFeedButtons> {
                   HapticFeedback.lightImpact();
                   print("tap");
                 },
-                isSmall: true,
                 darkened: true,
               ),
             );
-          }).toList(),
+          }).reversed.toList(),
         ),
       ),
     );

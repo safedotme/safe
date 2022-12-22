@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:safe/widgets/mutable_icon/local_widgets/camera_flip.icon.dart';
+import 'package:safe/widgets/mutable_icon/local_widgets/camera_flip_filled_icon.dart';
+import 'package:safe/widgets/mutable_icon/local_widgets/cancel.icon.dart';
 import 'package:safe/widgets/mutable_icon/local_widgets/caret_right.icon.dart';
 import 'package:safe/widgets/mutable_icon/local_widgets/checkmark.icon.dart';
+import 'package:safe/widgets/mutable_icon/local_widgets/flashlight.icon.dart';
 import 'package:safe/widgets/mutable_icon/local_widgets/gear.icon.dart';
 import 'package:safe/widgets/mutable_icon/local_widgets/key.icon.dart';
 import 'package:safe/widgets/mutable_icon/local_widgets/menu.icon.dart';
@@ -16,6 +19,9 @@ import 'package:safe/widgets/mutable_icon/local_widgets/stop_recording.icon.dart
 
 enum MutableIcons {
   phone,
+  cancel,
+  flashlightFilled,
+  cameraFlipFilled,
   profile,
   checkmark,
   caretRight,
@@ -50,6 +56,9 @@ class IconUtil {
       MutableIcons.caretRight: (c) => CaretRightIcon(c),
       MutableIcons.nextBorderless: (c) => NextBorderlessIcon(c),
       MutableIcons.next: (c) => NextIcon(c),
+      MutableIcons.cameraFlipFilled: (c) => CameraFlipFilledIcon(c),
+      MutableIcons.cancel: (c) => CancelIcon(c),
+      MutableIcons.flashlightFilled: (c) => FlashlightFilledIcon(c),
     };
   }
 }
