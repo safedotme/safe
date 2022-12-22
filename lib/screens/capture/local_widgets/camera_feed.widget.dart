@@ -2,6 +2,7 @@ import 'package:agora_rtc_engine/agora_rtc_engine.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
+import 'package:safe/screens/capture/local_widgets/camera_feed_skeleton.widget.dart';
 import 'package:safe/services/agora/agora.service.dart';
 import 'package:safe/utils/constants/constants.util.dart';
 import 'package:safe/widgets/mutable_shimmer/mutable_shimmer.widget.dart';
@@ -102,20 +103,7 @@ class _CameraFeedState extends State<CameraFeed> with TickerProviderStateMixin {
             child: MutableShimmer(
               active: opacity != 0,
               animateToColor: kBoxLoaderShimmerColor,
-              child: Container(
-                height: double.infinity,
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  border: Border.all(
-                    width: kBorderWidth,
-                    color: kColorMap[MutableColor.neutral7]!,
-                  ),
-                  color: kColorMap[MutableColor.neutral8],
-                  borderRadius: BorderRadius.circular(
-                    kCaptureControlBorderRadius,
-                  ),
-                ),
-              ),
+              child: CameraFeedSkeleton(),
             ),
           ),
         ],

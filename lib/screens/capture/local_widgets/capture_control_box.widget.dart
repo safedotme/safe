@@ -7,6 +7,7 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
 import 'package:safe/screens/capture/local_widgets/camera_feed.widget.dart';
+import 'package:safe/screens/capture/local_widgets/camera_feed_skeleton.widget.dart';
 import 'package:safe/screens/capture/local_widgets/capture_stop_alert_dialog.widget.dart';
 import 'package:safe/screens/capture/local_widgets/control_button.widget.dart';
 import 'package:safe/utils/constants/constants.util.dart';
@@ -98,6 +99,11 @@ class _CaptureControlBoxState extends State<CaptureControlBox> {
                           SizedBox(
                             width: query.size.width *
                                 kCameraPreviewWidthPercentage,
+                            height: double.infinity,
+                            child: CameraFeedSkeleton(
+                              darkened: true,
+                              show: false,
+                            ),
                           ),
                           SizedBox(width: 10),
                           Expanded(
