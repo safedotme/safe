@@ -30,7 +30,14 @@ class _EnglargementBlurBackgroundState
             sigmaX: 8.0 * core.state.capture.enlargementState,
             sigmaY: 8.0 * core.state.capture.enlargementState,
           ),
-          child: Container(),
+          child: GestureDetector(
+            onTap: () {
+              core.state.capture.unEnlargeCameraView?.call();
+            },
+            child: Container(
+              color: Colors.transparent,
+            ),
+          ),
         ),
       ),
     );

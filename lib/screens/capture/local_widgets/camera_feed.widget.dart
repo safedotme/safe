@@ -135,15 +135,32 @@ class _CameraFeedState extends State<CameraFeed> with TickerProviderStateMixin {
             ),
           ),
           Visibility(
-            visible: core.state.capture.enlargementState > 0.9,
-            //core.state.capture.engine != null,
+            visible: core.state.capture.enlargementState > 0.9 &&
+                core.state.capture.engine != null,
             child: Opacity(
               opacity: core.utils.animation.percentBetweenPoints(
                 lowerBound: 0.9,
                 upperBound: 1,
                 state: core.state.capture.enlargementState,
               ),
-              child: CameraFeedButtons(),
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(
+                    kCaptureControlBorderRadius,
+                  ),
+                  gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [
+                      Colors.black.withOpacity(0.7),
+                      Colors.transparent,
+                      Colors.transparent,
+                      Colors.transparent,
+                    ],
+                  ),
+                ),
+                child: CameraFeedButtons(),
+              ),
             ),
           ),
         ],
