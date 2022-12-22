@@ -108,7 +108,34 @@ class _AnimatedCameraPreviewState extends State<AnimatedCameraPreview>
     });
   }
 
-  Future<void> animateUpFromPosition() async {
+  Future<void> animateEnd() async {
+    setState(() {
+      canDrag = false;
+    });
+
+    await animate(
+        begin: 1,
+        end: 0,
+        listener: () {
+          setState(() {
+            core.state.capture.setEnglargmentState(engine.value);
+
+            bottom = kBottomScreenMargin +
+                (diff(
+                        kBottomScreenMargin,
+                        AnimatedCameraPreview.generatePosYCoefficient(
+                          queryData,
+                        )) *
+                    engine.value);
+          });
+        });
+
+    setState(() {
+      isAnimating = false;
+    });
+  }
+
+  Future<void> animateUpFromPos() async {
     double max = kBottomScreenMargin +
         diff(
             kBottomScreenMargin,
@@ -127,7 +154,7 @@ class _AnimatedCameraPreviewState extends State<AnimatedCameraPreview>
     );
   }
 
-  Future<void> animateEnd() async {
+  Future<void> animateEndFromPos() async {
     setState(() {
       canDrag = false;
     });
@@ -155,21 +182,23 @@ class _AnimatedCameraPreviewState extends State<AnimatedCameraPreview>
         setState(() {
           bottom = max * diff(engine.value, 1);
         });
+        double perc = core.utils.animation.percentBetweenPoints(
+          lowerBound: dragPercentage!,
+          upperBound: diff(minPercentage, 1),
+          state: engine.value,
+        );
+
+        // Animates scale and blur
+        core.state.capture.setEnglargmentState(diff(perc, 1));
       },
     );
-
-    // Will be handled from user position
-    // Handle Scale
-    // Handle Blur
-    // Handle Position
-    // FINAL: canDrag set to False
 
     setState(() {
       isAnimating = false;
     });
   }
 
-  void updateDrag(double position) {
+  Future<void> updateDrag(double position) async {
     // Will call functions above on VerticalDrag End
 
     // Starts drag pointer by initializing initial drag
@@ -194,9 +223,9 @@ class _AnimatedCameraPreviewState extends State<AnimatedCameraPreview>
       state: initialDrag! + kBottomScreenMargin,
     );
 
-    if (percentage >= diff(minPercentage, 1)) {
-      dragPercentage = diff(minPercentage, 1);
-      // Call drag end;
+    if (percentage >= diff(minPercentage, 1) - 0.1) {
+      dragPercentage = diff(minPercentage, 1) - 0.1;
+      await animateEndFromPos();
     } else {
       dragPercentage = percentage;
     }
@@ -217,9 +246,9 @@ class _AnimatedCameraPreviewState extends State<AnimatedCameraPreview>
     double minPercentage = 0.15;
 
     if (dragPercentage! >= 0.15) {
-      await animateEnd();
+      await animateEndFromPos();
     } else {
-      await animateUpFromPosition();
+      await animateUpFromPos();
     }
   }
 
@@ -292,7 +321,7 @@ class _AnimatedCameraPreviewState extends State<AnimatedCameraPreview>
                     controller.reverse();
 
                     if (!isAnimating) return animateUpFromBase();
-                    // return animateEnd();
+                    return animateEnd();
                   },
                   onVerticalDragUpdate: !canDrag
                       ? null
