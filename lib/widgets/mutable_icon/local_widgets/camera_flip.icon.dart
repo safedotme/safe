@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-class CameraIcon extends CustomPainter {
+class CameraFlipIcon extends CustomPainter {
   final Color color;
 
-  CameraIcon(this.color);
+  CameraFlipIcon(this.color);
 
   @override
   void paint(Canvas canvas, Size size) {

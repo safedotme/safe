@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:safe/widgets/mutable_icon/local_widgets/camera.icon.dart';
+import 'package:safe/widgets/mutable_icon/local_widgets/camera_flip.icon.dart';
 import 'package:safe/widgets/mutable_icon/local_widgets/caret_right.icon.dart';
 import 'package:safe/widgets/mutable_icon/local_widgets/checkmark.icon.dart';
 import 'package:safe/widgets/mutable_icon/local_widgets/gear.icon.dart';
@@ -25,7 +25,7 @@ enum MutableIcons {
   nextBorderless,
   next,
   shield,
-  camera,
+  cameraFlip,
   stopRecording,
   key,
   safe,
@@ -40,7 +40,7 @@ class IconUtil {
       MutableIcons.playLarge: (c) => PlayLargeIcon(c),
       MutableIcons.safe: (c) => SafeIcon(c),
       MutableIcons.shield: (c) => ShieldIcon(c),
-      MutableIcons.camera: (c) => CameraIcon(c),
+      MutableIcons.cameraFlip: (c) => CameraFlipIcon(c),
       MutableIcons.stopRecording: (c) => StopRecordingIcon(c),
       MutableIcons.menu: (c) => MenuIcon(c),
       MutableIcons.checkmark: (c) => CheckmarkIcon(c),

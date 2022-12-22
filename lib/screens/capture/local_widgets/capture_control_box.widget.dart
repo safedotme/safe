@@ -113,7 +113,7 @@ class _CaptureControlBoxState extends State<CaptureControlBox> {
                                   text: core.utils.language.langMap[core.state
                                           .preferences.language]!["capture"]
                                       ["controls"]["flip_camera"]["header"],
-                                  icon: MutableIcons.camera,
+                                  icon: MutableIcons.cameraFlip,
                                   iconSize: Size(20, 16),
                                   onTap: () {
                                     core.services.agora.flipCam(

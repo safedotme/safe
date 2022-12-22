@@ -334,7 +334,6 @@ class _AnimatedCameraPreviewState extends State<AnimatedCameraPreview>
                           await animateDrag();
                           initialDrag = null;
                         },
-                  onLongPressEnd: (details) {},
                   child: CameraFeed(),
                 ),
               ),
