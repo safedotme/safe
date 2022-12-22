@@ -27,6 +27,7 @@ class _CameraFeedButtonsState extends State<CameraFeedButtons> {
       size: Size(10, 20),
     )
   ];
+  bool flashOn = false;
 
   @override
   void initState() {
@@ -47,11 +48,41 @@ class _CameraFeedButtonsState extends State<CameraFeedButtons> {
               padding: EdgeInsets.only(left: 10),
               child: MutableOverlayButton(
                 icon: icons[i],
-                onTap: () {
+                animateBeforeVoidCallback: i == 0,
+                onTap: () async {
                   HapticFeedback.lightImpact();
-                  print("tap");
+
+                  // Ensures that preview is enlarged
+                  if (core.state.capture.enlargementState != 1) return;
+
+                  // ⬇️ Flashlight
+                  if (i == 2 && core.state.capture.engine != null) {
+                    setState(() {
+                      flashOn = !flashOn;
+                    });
+
+                    await core.services.agora.toggleFlash(
+                      core.state.capture.engine!,
+                      flashOn,
+                    );
+                  }
+
+                  // ⬇️ Flip Camera
+                  if (i == 1 && core.state.capture.engine != null) {
+                    await core.services.agora.flipCam(
+                      core.state.capture.engine!,
+                      core,
+                    );
+                  }
+
+                  // ⬇️ Escape
+                  if (i == 0 &&
+                      core.state.capture.unEnlargeCameraView != null) {
+                    core.state.capture.unEnlargeCameraView!();
+                  }
                 },
-                darkened: true,
+                isDarkened: true,
+                isActive: i == 2 && flashOn,
               ),
             );
           }).reversed.toList(),

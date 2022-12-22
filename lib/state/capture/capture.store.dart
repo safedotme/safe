@@ -108,4 +108,16 @@ abstract class _CaptureStore with Store {
 
   @action
   void setEnglargmentState(double e) => enlargementState = e;
+
+  @observable
+  Function? enlargeCameraView;
+
+  @observable
+  Function? unEnlargeCameraView;
+
+  @action
+  void setEnlargeFn(Function enlarge, Function unEnlarge) {
+    enlargeCameraView = enlarge;
+    unEnlargeCameraView = unEnlarge;
+  }
 }

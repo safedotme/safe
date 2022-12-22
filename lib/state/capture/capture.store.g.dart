@@ -298,6 +298,38 @@ mixin _$CaptureStore on _CaptureStore, Store {
     });
   }
 
+  late final _$enlargeCameraViewAtom =
+      Atom(name: '_CaptureStore.enlargeCameraView', context: context);
+
+  @override
+  Function? get enlargeCameraView {
+    _$enlargeCameraViewAtom.reportRead();
+    return super.enlargeCameraView;
+  }
+
+  @override
+  set enlargeCameraView(Function? value) {
+    _$enlargeCameraViewAtom.reportWrite(value, super.enlargeCameraView, () {
+      super.enlargeCameraView = value;
+    });
+  }
+
+  late final _$unEnlargeCameraViewAtom =
+      Atom(name: '_CaptureStore.unEnlargeCameraView', context: context);
+
+  @override
+  Function? get unEnlargeCameraView {
+    _$unEnlargeCameraViewAtom.reportRead();
+    return super.unEnlargeCameraView;
+  }
+
+  @override
+  set unEnlargeCameraView(Function? value) {
+    _$unEnlargeCameraViewAtom.reportWrite(value, super.unEnlargeCameraView, () {
+      super.unEnlargeCameraView = value;
+    });
+  }
+
   late final _$_CaptureStoreActionController =
       ActionController(name: '_CaptureStore', context: context);
 
@@ -445,6 +477,17 @@ mixin _$CaptureStore on _CaptureStore, Store {
   }
 
   @override
+  void setEnlargeFn(Function enlarge, Function unEnlarge) {
+    final _$actionInfo = _$_CaptureStoreActionController.startAction(
+        name: '_CaptureStore.setEnlargeFn');
+    try {
+      return super.setEnlargeFn(enlarge, unEnlarge);
+    } finally {
+      _$_CaptureStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 controller: ${controller},
@@ -464,7 +507,9 @@ engine: ${engine},
 showPreview: ${showPreview},
 hidePreview: ${hidePreview},
 isBackCam: ${isBackCam},
-enlargementState: ${enlargementState}
+enlargementState: ${enlargementState},
+enlargeCameraView: ${enlargeCameraView},
+unEnlargeCameraView: ${unEnlargeCameraView}
     ''';
   }
 }

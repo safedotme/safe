@@ -258,6 +258,10 @@ class _AnimatedCameraPreviewState extends State<AnimatedCameraPreview>
     core = Provider.of<Core>(context, listen: false);
     initAnimation();
     initButtonAnimation();
+    core.state.capture.setEnlargeFn(
+      animateUpFromBase,
+      animateEnd,
+    );
   }
 
   double genBottomPosition(double panelPosition) {

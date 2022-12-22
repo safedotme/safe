@@ -7,12 +7,14 @@ class MutableButton extends StatefulWidget {
   final Widget child;
   final Duration? duration;
   final void Function()? onSlide;
+  final bool animateBeforeVoidCallback;
 
   MutableButton({
     this.onTap,
     required this.child,
     this.onSlide,
     this.duration,
+    this.animateBeforeVoidCallback = false,
   });
 
   @override
@@ -49,7 +51,7 @@ class _MutableButtonState extends State<MutableButton>
     super.initState();
   }
 
-  void animate() async {
+  Future<void> animate() async {
     await controller.forward();
     await controller.reverse();
   }
@@ -57,11 +59,18 @@ class _MutableButtonState extends State<MutableButton>
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
+      onTap: () async {
+        if (widget.animateBeforeVoidCallback) {
+          await animate();
+        }
+
         if (widget.onTap != null) {
           widget.onTap!();
         }
-        animate();
+
+        if (!widget.animateBeforeVoidCallback) {
+          animate();
+        }
       },
       onVerticalDragStart: widget.onSlide != null
           ? (detail) {
