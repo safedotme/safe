@@ -330,6 +330,22 @@ mixin _$CaptureStore on _CaptureStore, Store {
     });
   }
 
+  late final _$isFlashOnAtom =
+      Atom(name: '_CaptureStore.isFlashOn', context: context);
+
+  @override
+  bool get isFlashOn {
+    _$isFlashOnAtom.reportRead();
+    return super.isFlashOn;
+  }
+
+  @override
+  set isFlashOn(bool value) {
+    _$isFlashOnAtom.reportWrite(value, super.isFlashOn, () {
+      super.isFlashOn = value;
+    });
+  }
+
   late final _$_CaptureStoreActionController =
       ActionController(name: '_CaptureStore', context: context);
 
@@ -488,6 +504,17 @@ mixin _$CaptureStore on _CaptureStore, Store {
   }
 
   @override
+  void setFlash() {
+    final _$actionInfo = _$_CaptureStoreActionController.startAction(
+        name: '_CaptureStore.setFlash');
+    try {
+      return super.setFlash();
+    } finally {
+      _$_CaptureStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 controller: ${controller},
@@ -509,7 +536,8 @@ hidePreview: ${hidePreview},
 isBackCam: ${isBackCam},
 enlargementState: ${enlargementState},
 enlargeCameraView: ${enlargeCameraView},
-unEnlargeCameraView: ${unEnlargeCameraView}
+unEnlargeCameraView: ${unEnlargeCameraView},
+isFlashOn: ${isFlashOn}
     ''';
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
 import 'package:safe/utils/icon/icon.util.dart';
@@ -41,51 +42,49 @@ class _CameraFeedButtonsState extends State<CameraFeedButtons> {
       alignment: Alignment.topCenter,
       child: Padding(
         padding: EdgeInsets.all(15),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: List.generate(3, (i) {
-            return Padding(
-              padding: EdgeInsets.only(left: 10),
-              child: MutableOverlayButton(
-                icon: icons[i],
-                animateBeforeVoidCallback: i == 0,
-                onTap: () async {
-                  HapticFeedback.lightImpact();
+        child: Observer(
+          builder: (context) => Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: List.generate(3, (i) {
+              return Padding(
+                padding: EdgeInsets.only(left: 10),
+                child: MutableOverlayButton(
+                  icon: icons[i],
+                  animateBeforeVoidCallback: i == 0,
+                  onTap: () async {
+                    HapticFeedback.lightImpact();
 
-                  // Ensures that preview is enlarged
-                  if (core.state.capture.enlargementState != 1) return;
+                    // Ensures that preview is enlarged
+                    if (core.state.capture.enlargementState != 1) return;
 
-                  // ⬇️ Flashlight
-                  if (i == 2 && core.state.capture.engine != null) {
-                    setState(() {
-                      flashOn = !flashOn;
-                    });
+                    // ⬇️ Flashlight
+                    if (i == 2 && core.state.capture.engine != null) {
+                      await core.services.agora.toggleFlash(
+                        core.state.capture.engine!,
+                        core,
+                      );
+                    }
 
-                    await core.services.agora.toggleFlash(
-                      core.state.capture.engine!,
-                      flashOn,
-                    );
-                  }
+                    // ⬇️ Flip Camera
+                    if (i == 1 && core.state.capture.engine != null) {
+                      await core.services.agora.flipCam(
+                        core.state.capture.engine!,
+                        core,
+                      );
+                    }
 
-                  // ⬇️ Flip Camera
-                  if (i == 1 && core.state.capture.engine != null) {
-                    await core.services.agora.flipCam(
-                      core.state.capture.engine!,
-                      core,
-                    );
-                  }
-
-                  // ⬇️ Escape
-                  if (i == 0 &&
-                      core.state.capture.unEnlargeCameraView != null) {
-                    core.state.capture.unEnlargeCameraView!();
-                  }
-                },
-                isDarkened: true,
-                isActive: i == 2 && flashOn,
-              ),
-            );
-          }).reversed.toList(),
+                    // ⬇️ Escape
+                    if (i == 0 &&
+                        core.state.capture.unEnlargeCameraView != null) {
+                      core.state.capture.unEnlargeCameraView!();
+                    }
+                  },
+                  isDarkened: true,
+                  isActive: i == 2 && core.state.capture.isFlashOn,
+                ),
+              );
+            }).reversed.toList(),
+          ),
         ),
       ),
     );

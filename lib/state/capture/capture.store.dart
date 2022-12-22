@@ -120,4 +120,10 @@ abstract class _CaptureStore with Store {
     enlargeCameraView = enlarge;
     unEnlargeCameraView = unEnlarge;
   }
+
+  @observable
+  bool isFlashOn = false;
+
+  @action
+  void setFlash() => isFlashOn = !isFlashOn;
 }

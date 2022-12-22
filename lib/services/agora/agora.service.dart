@@ -54,8 +54,9 @@ class AgoraService {
     await engine.muteAllRemoteAudioStreams(true);
   }
 
-  Future<void> toggleFlash(RtcEngine engine, bool isOn) async {
-    await engine.setCameraTorchOn(isOn);
+  Future<void> toggleFlash(RtcEngine engine, Core core) async {
+    await engine.setCameraTorchOn(!core.state.capture.isFlashOn);
+    core.state.capture.setFlash();
   }
 
   Future<void> stream(
