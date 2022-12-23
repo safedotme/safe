@@ -1,7 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
+import 'package:safe/models/admin/admin.model.dart';
 import 'package:safe/models/user/user.model.dart';
 import 'package:safe/screens/capture/capture.screen.dart';
 import 'package:safe/screens/incident_log/incident_log.screen.dart';

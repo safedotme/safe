@@ -47,14 +47,18 @@ class CaptureUtil {
 
   void stop() async {
     isActive = false;
+    await _uploadChanges(
+      _core!.state.capture.incident!.copyWith(
+        stopTime: DateTime.now(),
+      ),
+    );
 
     _core!.state.capture.overlayController.show();
-    _notifyContacts(MessageType.end);
+    await _notifyContacts(MessageType.end);
 
     // STREAM
-    _core!.services.agora.stop(_core!.state.capture.engine!);
-
-    await Future.delayed(Duration(seconds: 5));
+    await _core!.services.agora.stop(_core!.state.capture.engine!);
+    await await Future.delayed(Duration(seconds: 5));
     _core!.state.capture.showPreview?.call();
 
     _core!.state.capture.overlayController.hide();
@@ -164,7 +168,7 @@ class CaptureUtil {
     List<Location> log = [];
     String? adr;
 
-    _core!.services.location.initilaize();
+    await _core!.services.location.initilaize();
 
     while (isActive) {
       // Fetches location
@@ -208,7 +212,7 @@ class CaptureUtil {
   }
 
   // ⬇️ SMS
-  void _notifyContacts(MessageType type, {int? battery}) async {
+  Future<void> _notifyContacts(MessageType type, {int? battery}) async {
     var contacts = await _core!.services.server.contacts.readFromUserIdOnce(
       id: _core!.services.auth.currentUser!.uid,
     );

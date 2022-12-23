@@ -13,11 +13,11 @@ class AgoraService {
     ));
 
     await engine.setVideoEncoderConfiguration(VideoEncoderConfiguration(
-        // codecType: VideoCodecType.videoCodecH264,
-        // dimensions: VideoDimensions(width: 1280, height: 720),
-        // frameRate: 15,
-        // bitrate: 0,
-        ));
+      orientationMode: OrientationMode.orientationModeFixedPortrait,
+      dimensions: VideoDimensions(width: 1280, height: 720),
+      frameRate: 15,
+      bitrate: 0,
+    ));
 
     await engine.enableVideo();
 
