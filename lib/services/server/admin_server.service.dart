@@ -1,21 +1,16 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:safe/models/admin/admin.model.dart';
-import 'package:safe/models/user/user.model.dart';
 
-class UserServer {
+class AdminServer {
   final FirebaseFirestore _db;
   static String path = "admin_settings";
 
-  UserServer(this._db);
+  AdminServer(this._db);
 
   // -> READ
-  Stream<AdminSettings?> readLatest() {
-    return _db.collection(path).doc("prod").snapshots().map((doc) {
-      if (!doc.exists || doc.data() == null) {
-        return null;
-      } else {
-        return AdminSettings.fromJson(doc.data()!);
-      }
-    });
+  Future<AdminSettings> readLatest() async {
+    var doc = await _db.collection(path).doc("prod").get();
+
+    return AdminSettings.fromJson(doc.data());
   }
 }

@@ -3,6 +3,7 @@ import 'package:agora_rtc_engine/agora_rtc_engine.dart';
 import 'package:intl/intl.dart';
 import 'package:location/location.dart' as api;
 import 'package:safe/core.dart';
+import 'package:safe/models/admin/admin.model.dart';
 import 'package:safe/models/contact/contact.model.dart';
 import 'package:safe/models/incident/battery.model.dart';
 import 'package:battery_plus/battery_plus.dart' as api;
@@ -31,6 +32,19 @@ class CaptureUtil {
 
     // Will be used to start & stop incident
     isActive = true;
+
+    // ⬇️ FETCH ADMIN SETTINGS
+    await _fetchSettings();
+
+    int incidentNumber = _core!.state.incidentLog.incidents == null
+        ? 1
+        : _core!.state.incidentLog.incidents!.length + 1;
+
+    if (_core!.state.capture.settings.defaultIncidentCap == incidentNumber)
+      // ignore: curly_braces_in_flow_control_structures
+      return;
+
+    print("CRITICAL: INCIDENT LIMIT REACHED");
 
     // ⬇️ INCIDENT CREATE
     await _uploadChanges(null);
@@ -64,6 +78,13 @@ class CaptureUtil {
     _core!.state.capture.overlayController.hide();
     _core!.state.capture.controller.close();
     initFlip = false;
+  }
+
+  // ⬇️ FETCH SETTINGS
+  Future<void> _fetchSettings() async {
+    AdminSettings settings = await _core!.services.server.admin.readLatest();
+
+    _core!.state.capture.setSettings(settings);
   }
 
   // ⬇️ STREAM / RECORDING

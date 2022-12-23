@@ -34,8 +34,10 @@ class _MutableAuthWrapperState extends State<MutableAuthWrapper> {
     var gen = User(
       id: firebaseUser.uid,
       name: core.state.auth.name,
-      phone: core.state.auth.phoneNumber,
+      phone:
+          "${core.state.auth.countryDialCode} ${core.state.auth.phoneNumber}",
       picturePath: null,
+      credits: 1,
       joined: time,
     );
 

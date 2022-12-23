@@ -37,7 +37,7 @@ class _MutablePillState extends State<MutablePill> {
         gradient: LinearGradient(
           colors: kPrimaryGradientColors,
           begin: Alignment(-1.5, -1.2),
-          end: Alignment(1, 1),
+          end: Alignment(1, 3.5),
         ),
       ),
       child: Row(

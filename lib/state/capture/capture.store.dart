@@ -1,5 +1,6 @@
 import 'package:agora_rtc_engine/agora_rtc_engine.dart';
 import 'package:mobx/mobx.dart';
+import 'package:safe/models/admin/admin.model.dart';
 import 'package:safe/models/incident/battery.model.dart';
 import 'package:safe/models/incident/incident.model.dart';
 import 'package:safe/models/incident/location.model.dart';
@@ -126,4 +127,10 @@ abstract class _CaptureStore with Store {
 
   @action
   void setFlash() => isFlashOn = !isFlashOn;
+
+  @observable
+  late AdminSettings settings;
+
+  @action
+  void setSettings(AdminSettings s) => settings = s;
 }

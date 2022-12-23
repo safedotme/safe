@@ -346,6 +346,22 @@ mixin _$CaptureStore on _CaptureStore, Store {
     });
   }
 
+  late final _$settingsAtom =
+      Atom(name: '_CaptureStore.settings', context: context);
+
+  @override
+  AdminSettings get settings {
+    _$settingsAtom.reportRead();
+    return super.settings;
+  }
+
+  @override
+  set settings(AdminSettings value) {
+    _$settingsAtom.reportWrite(value, super.settings, () {
+      super.settings = value;
+    });
+  }
+
   late final _$_CaptureStoreActionController =
       ActionController(name: '_CaptureStore', context: context);
 
@@ -515,6 +531,17 @@ mixin _$CaptureStore on _CaptureStore, Store {
   }
 
   @override
+  void setSettings(AdminSettings s) {
+    final _$actionInfo = _$_CaptureStoreActionController.startAction(
+        name: '_CaptureStore.setSettings');
+    try {
+      return super.setSettings(s);
+    } finally {
+      _$_CaptureStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 controller: ${controller},
@@ -537,7 +564,8 @@ isBackCam: ${isBackCam},
 enlargementState: ${enlargementState},
 enlargeCameraView: ${enlargeCameraView},
 unEnlargeCameraView: ${unEnlargeCameraView},
-isFlashOn: ${isFlashOn}
+isFlashOn: ${isFlashOn},
+settings: ${settings}
     ''';
   }
 }
