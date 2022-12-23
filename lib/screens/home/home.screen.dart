@@ -7,7 +7,9 @@ import 'package:safe/models/admin/admin.model.dart';
 import 'package:safe/models/user/user.model.dart';
 import 'package:safe/screens/capture/capture.screen.dart';
 import 'package:safe/screens/incident_log/incident_log.screen.dart';
+import 'package:safe/utils/capture/capture.util.dart';
 import 'package:safe/utils/constants/constants.util.dart';
+import 'package:safe/utils/credit/credit.util.dart';
 import 'package:safe/widgets/mutable_safe_button/mutable_safe_button.widget.dart';
 import 'package:safe/widgets/mutable_scaffold/mutable_scaffold.widget.dart';
 import 'package:safe/widgets/mutable_text/mutable_text.widget.dart';
@@ -78,6 +80,17 @@ class _HomeScreenState extends State<HomeScreen> {
             child: MutableSafeButton(
               onTap: () async {
                 HapticFeedback.heavyImpact();
+
+                bool shouldCapture = await core.utils.credit.shouldCapture(
+                  TriggerIdentifier.primary,
+                  core,
+                );
+
+                if (!shouldCapture) {
+                  // ADD MAD HAPTIC FEEDBACK
+                  return;
+                }
+
                 core.utils.capture.start();
                 core.state.capture.controller.open();
               },

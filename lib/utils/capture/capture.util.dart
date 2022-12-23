@@ -33,19 +33,6 @@ class CaptureUtil {
     // Will be used to start & stop incident
     isActive = true;
 
-    // ⬇️ FETCH ADMIN SETTINGS
-    await _fetchSettings();
-
-    int incidentNumber = _core!.state.incidentLog.incidents == null
-        ? 1
-        : _core!.state.incidentLog.incidents!.length + 1;
-
-    if (_core!.state.capture.settings.defaultIncidentCap == incidentNumber)
-      // ignore: curly_braces_in_flow_control_structures
-      return;
-
-    print("CRITICAL: INCIDENT LIMIT REACHED");
-
     // ⬇️ INCIDENT CREATE
     await _uploadChanges(null);
 
@@ -78,13 +65,6 @@ class CaptureUtil {
     _core!.state.capture.overlayController.hide();
     _core!.state.capture.controller.close();
     initFlip = false;
-  }
-
-  // ⬇️ FETCH SETTINGS
-  Future<void> _fetchSettings() async {
-    AdminSettings settings = await _core!.services.server.admin.readLatest();
-
-    _core!.state.capture.setSettings(settings);
   }
 
   // ⬇️ STREAM / RECORDING

@@ -2,6 +2,7 @@ import 'package:logger/logger.dart';
 import 'package:safe/utils/animation/animation.util.dart';
 import 'package:safe/utils/capture/capture.util.dart';
 import 'package:safe/utils/color/color.util.dart';
+import 'package:safe/utils/credit/credit.util.dart';
 import 'package:safe/utils/flows/flows.dart';
 import 'package:safe/utils/geocoder/geocoder.util.dart';
 import 'package:safe/utils/icon/icon.util.dart';
@@ -14,14 +15,6 @@ import 'package:safe/utils/text/text.util.dart';
 
 class Utils {
   ColorUtils color = ColorUtils();
-  Logger log = Logger(
-    printer: PrettyPrinter(
-        lineLength: 50, // Width of the output
-        colors: true, // Colorful log messages
-        printEmojis: true, // Print an emoji for each log message
-        printTime: false // Should each log print contain a timestamp
-        ),
-  );
   LanguageUtil language = LanguageUtil()..initMap();
   Flows flows = Flows();
   IconUtil icons = IconUtil()..init();
@@ -31,6 +24,7 @@ class Utils {
   AnimationUtil animation = AnimationUtil();
   NameUtil name = NameUtil();
   CaptureUtil capture = CaptureUtil();
+  CreditUtil credit = CreditUtil();
   GeocoderUtil geocoder = GeocoderUtil();
   IncidentUtil incident = IncidentUtil();
 }

@@ -4,7 +4,9 @@ import 'package:flutter/services.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
+import 'package:safe/utils/capture/capture.util.dart';
 import 'package:safe/utils/constants/constants.util.dart';
+import 'package:safe/utils/credit/credit.util.dart';
 import 'package:safe/utils/icon/icon.util.dart';
 import 'package:safe/widgets/mutable_avatar/mutable_avatar.widget.dart';
 import 'package:safe/widgets/mutable_button/mutable_button.widget.dart';
@@ -176,7 +178,20 @@ class _IncidentLogNavBarState extends State<IncidentLogNavBar> {
                           SizedBox(width: 15),
                           MutableNavSafeButton(
                             onTap: () async {
-                              HapticFeedback.heavyImpact();
+                              HapticFeedback.lightImpact();
+
+                              // Checks if incident should be captured
+                              bool shouldCapture =
+                                  await core.utils.credit.shouldCapture(
+                                TriggerIdentifier.primary,
+                                core,
+                              );
+
+                              if (!shouldCapture) {
+                                // ADD MAD HAPTIC FEEDBACK
+                                return;
+                              }
+
                               core.utils.capture.start();
                               await core.state.capture.controller.open();
                               core.state.incidentLog.controller.close();
