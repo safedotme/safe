@@ -175,11 +175,11 @@ class _IncidentLogNavBarState extends State<IncidentLogNavBar> {
                           ),
                           SizedBox(width: 15),
                           MutableNavSafeButton(
-                            onTap: () {
+                            onTap: () async {
                               HapticFeedback.heavyImpact();
-                              // core.utils.capture.initialize(core);
-                              // core.utils.capture.start();
-                              core.state.capture.controller.open();
+                              core.utils.capture.start();
+                              await core.state.capture.controller.open();
+                              core.state.incidentLog.controller.close();
                             },
                           ),
                         ],

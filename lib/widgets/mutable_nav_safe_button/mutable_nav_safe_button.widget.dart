@@ -15,6 +15,7 @@ class MutableNavSafeButton extends StatelessWidget {
     Core core = Provider.of(context, listen: false);
     return MutableButton(
       onTap: onTap,
+      animateBeforeVoidCallback: true,
       child: Container(
         height: kNavButtonSize,
         width: kNavButtonSize,

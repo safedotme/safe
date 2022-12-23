@@ -5,7 +5,6 @@ import 'package:safe/core.dart';
 import 'package:safe/models/user/user.model.dart';
 import 'package:safe/screens/capture/capture.screen.dart';
 import 'package:safe/screens/incident_log/incident_log.screen.dart';
-import 'package:safe/services/token_server/token_server.service.dart';
 import 'package:safe/utils/constants/constants.util.dart';
 import 'package:safe/widgets/mutable_safe_button/mutable_safe_button.widget.dart';
 import 'package:safe/widgets/mutable_scaffold/mutable_scaffold.widget.dart';

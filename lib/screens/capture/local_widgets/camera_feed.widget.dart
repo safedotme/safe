@@ -1,8 +1,5 @@
 import 'package:agora_rtc_engine/agora_rtc_engine.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
 import 'package:safe/screens/capture/local_widgets/animated_camera_preview.widget.dart';
@@ -10,9 +7,6 @@ import 'package:safe/screens/capture/local_widgets/camera_feed_buttons.widget.da
 import 'package:safe/screens/capture/local_widgets/camera_feed_skeleton.widget.dart';
 import 'package:safe/services/agora/agora.service.dart';
 import 'package:safe/utils/constants/constants.util.dart';
-import 'package:safe/utils/icon/icon.util.dart';
-import 'package:safe/widgets/mutable_icon/mutable_icon.widget.dart';
-import 'package:safe/widgets/mutable_overlay_button/mutable_overlay_button.widget.dart';
 import 'package:safe/widgets/mutable_shimmer/mutable_shimmer.widget.dart';
 
 class CameraFeed extends StatefulWidget {
