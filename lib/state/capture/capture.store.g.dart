@@ -350,13 +350,13 @@ mixin _$CaptureStore on _CaptureStore, Store {
       Atom(name: '_CaptureStore.settings', context: context);
 
   @override
-  AdminSettings get settings {
+  AdminSettings? get settings {
     _$settingsAtom.reportRead();
     return super.settings;
   }
 
   @override
-  set settings(AdminSettings value) {
+  set settings(AdminSettings? value) {
     _$settingsAtom.reportWrite(value, super.settings, () {
       super.settings = value;
     });

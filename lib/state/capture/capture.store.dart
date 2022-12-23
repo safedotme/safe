@@ -129,7 +129,7 @@ abstract class _CaptureStore with Store {
   void setFlash() => isFlashOn = !isFlashOn;
 
   @observable
-  late AdminSettings settings;
+  AdminSettings? settings;
 
   @action
   void setSettings(AdminSettings s) => settings = s;

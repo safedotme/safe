@@ -261,6 +261,10 @@ enum AuthType {
 
 // HOME
 
+// -> Home Banner
+const double kHomeBannerIncidentPopupMargin = 20;
+const double kHomeBannerBorderRadius = 12;
+
 // -> SAFE BUTTON
 const double kSafeButtonSize = 165;
 const double kSafeButtonShadowOpacityScale = 0.1;
