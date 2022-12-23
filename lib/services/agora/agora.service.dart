@@ -6,7 +6,11 @@ enum CamType { front, back }
 
 class AgoraService {
   Future<void> initialize(
-      RtcEngine engine, RtcEngineEventHandler eventHandler) async {
+    RtcEngine engine,
+    RtcEngineEventHandler eventHandler, {
+    required VideoDimensions dimensions,
+    required int frameRate,
+  }) async {
     // Configure engine
     await engine.initialize(RtcEngineContext(
       appId: dotenv.env["AGORA_APP_ID"],
@@ -14,8 +18,8 @@ class AgoraService {
 
     await engine.setVideoEncoderConfiguration(VideoEncoderConfiguration(
       orientationMode: OrientationMode.orientationModeFixedPortrait,
-      dimensions: VideoDimensions(width: 1280, height: 720),
-      frameRate: 15,
+      dimensions: dimensions,
+      frameRate: frameRate,
       bitrate: 0,
     ));
 

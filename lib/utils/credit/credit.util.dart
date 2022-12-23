@@ -75,6 +75,7 @@ class CreditUtil {
     if (user == null) return;
 
     AdminSettings settings = await core.services.server.admin.readLatest();
+    core.state.capture.setSettings(settings);
 
     incidents ??= core.state.incidentLog.incidents?.length;
 

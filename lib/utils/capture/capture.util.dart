@@ -89,6 +89,11 @@ class CaptureUtil {
           }
         },
       ),
+      frameRate: _core!.state.capture.settings.frameRate,
+      dimensions: VideoDimensions(
+        width: _core!.state.capture.settings.dimensionWidth,
+        height: _core!.state.capture.settings.dimensionHeight,
+      ),
     );
   }
 

@@ -188,6 +188,7 @@ class _IncidentLogNavBarState extends State<IncidentLogNavBar> {
                               );
 
                               if (!shouldCapture) {
+                                core.state.incidentLog.controller.close();
                                 // ADD MAD HAPTIC FEEDBACK
                                 return;
                               }
