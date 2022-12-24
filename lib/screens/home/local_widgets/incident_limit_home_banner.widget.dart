@@ -52,7 +52,7 @@ class _IncidentLimitHomeBannerState extends State<IncidentLimitHomeBanner> {
             core.utils.capture.start();
             core.state.capture.controller.open();
           } else {
-            // TODO: Implement maxed out
+            core.state.incidentLog.controller.open();
           }
         },
         body: Padding(

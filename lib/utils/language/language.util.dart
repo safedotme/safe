@@ -152,7 +152,7 @@ class LanguageUtil {
       "incident_limit": {
         "header": "Incident Limit Reached",
         "body": "There is a two incident limit per Safe account.",
-        "button": ["Disable Limit", "Emergency Activate"]
+        "button": ["Delete an Incident", "Emergency Activate"]
       }
     },
     "incident_log": {
