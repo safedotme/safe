@@ -21,6 +21,7 @@ class MutableHomeBanner extends StatefulWidget {
   final void Function()? onClose;
   final Widget body;
   final MutableColor backgroundColor;
+  final bool dismissable;
   final MutableColor borderColor;
   final String header;
 
@@ -28,6 +29,7 @@ class MutableHomeBanner extends StatefulWidget {
     this.height = 124,
     this.controller,
     this.isShimmering = false,
+    this.dismissable = true,
     this.shimmerColor,
     this.body = const SizedBox(),
     this.header = "",
@@ -62,6 +64,7 @@ class _MutableHomeBannerState extends State<MutableHomeBanner> {
           (queryData.size.height * kIncidentLogMinPopupHeight),
       child: MutablePopup(
         onClosed: widget.onClose,
+        draggable: widget.dismissable,
         onSlide: (pos) {
           setState(() {
             scale = core.utils.animation.percentBetweenPoints(

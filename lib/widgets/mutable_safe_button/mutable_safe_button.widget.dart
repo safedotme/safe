@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart' hide BoxShadow, BoxDecoration;
 import 'package:flutter/services.dart';
 import 'package:flutter_inset_box_shadow/flutter_inset_box_shadow.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
 import 'package:safe/utils/constants/constants.util.dart';
@@ -96,76 +97,89 @@ class _MutableSafeButtonState extends State<MutableSafeButton>
 
   @override
   Widget build(BuildContext context) {
-    return Transform.scale(
-      scale: scaleAnimation.value + scaleTapAnimation.value,
-      child: GestureDetector(
-        onTap: () async {
-          controller.stop();
-          await animateTap();
-          controller.repeat(reverse: true);
-        },
-        child: Container(
-          height: kSafeButtonSize,
-          width: kSafeButtonSize,
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: kPrimaryGradientColors,
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-            ),
-            shape: BoxShape.circle,
-            boxShadow: [
-              // COLORS DROP SHADOWS
-              BoxShadow(
-                offset: Offset(4, 4),
-                blurRadius: genBlur(),
-                color: kColorMap[MutableColor.primaryPurple]!
-                    .withOpacity(genOpacity()),
-              ),
-              BoxShadow(
-                offset: Offset(4, -4),
-                blurRadius: genBlur(),
-                color: kColorMap[MutableColor.primaryRed]!
-                    .withOpacity(genOpacity()),
-              ),
-              BoxShadow(
-                offset: Offset(-4, -4),
-                blurRadius: genBlur(),
-                color: kColorMap[MutableColor.primaryYellow]!
-                    .withOpacity(genOpacity()),
-              ),
+    return Observer(
+        builder: (_) => Transform.scale(
+              scale: scaleTapAnimation.value +
+                  (core.state.capture.limErrState == null
+                      ? scaleAnimation.value
+                      : 1.0),
+              child: GestureDetector(
+                onTap: () async {
+                  controller.stop();
+                  await animateTap();
+                  controller.repeat(reverse: true);
+                },
+                child: Container(
+                  height: kSafeButtonSize,
+                  width: kSafeButtonSize,
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: core.state.capture.limErrState != null
+                          ? kDisabledGradientColors
+                          : kPrimaryGradientColors,
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                    ),
+                    shape: BoxShape.circle,
+                    boxShadow: [
+                      ...(core.state.capture.limErrState != null
+                          ? []
+                          : [
+                              // COLORS DROP SHADOWS
+                              BoxShadow(
+                                offset: Offset(4, 4),
+                                blurRadius: genBlur(),
+                                color: kColorMap[MutableColor.primaryPurple]!
+                                    .withOpacity(genOpacity()),
+                              ),
+                              BoxShadow(
+                                offset: Offset(4, -4),
+                                blurRadius: genBlur(),
+                                color: kColorMap[MutableColor.primaryRed]!
+                                    .withOpacity(genOpacity()),
+                              ),
+                              BoxShadow(
+                                offset: Offset(-4, -4),
+                                blurRadius: genBlur(),
+                                color: kColorMap[MutableColor.primaryYellow]!
+                                    .withOpacity(genOpacity()),
+                              ),
+                            ]),
 
-              // NEUTRAL INNER SHADOWS
-              BoxShadow(
-                offset: Offset(4, -4),
-                blurRadius: 20,
-                color: Colors.black.withOpacity(0.6),
-                inset: true,
+                      // NEUTRAL INNER SHADOWS
+                      BoxShadow(
+                        offset: Offset(4, -4),
+                        blurRadius: 20,
+                        color: Colors.black.withOpacity(
+                            core.state.capture.limErrState != null ? 0.2 : 0.6),
+                        inset: true,
+                      ),
+                      BoxShadow(
+                        offset: Offset(-3, 3),
+                        blurRadius: 30,
+                        spreadRadius: 1,
+                        color: Colors.white.withOpacity(
+                            core.state.capture.limErrState != null ? 0.1 : 0.4),
+                        inset: true,
+                      ),
+                      BoxShadow(
+                        offset: Offset(-2, 2),
+                        blurRadius: 1,
+                        spreadRadius: 0,
+                        color: Colors.white.withOpacity(
+                            core.state.capture.limErrState != null ? 0.2 : 0.6),
+                        inset: true,
+                      ),
+                    ],
+                  ),
+                  child: Center(
+                    child: Image.asset(
+                      "assets/images/${core.state.capture.limErrState == null ? "safe_logo_button" : "safe_disabled_logo_button"}.png",
+                      height: kSafeButtonSize * 0.65,
+                    ),
+                  ),
+                ),
               ),
-              BoxShadow(
-                offset: Offset(-3, 3),
-                blurRadius: 30,
-                spreadRadius: 1,
-                color: Colors.white.withOpacity(0.4),
-                inset: true,
-              ),
-              BoxShadow(
-                offset: Offset(-2, 2),
-                blurRadius: 1,
-                spreadRadius: 0,
-                color: Colors.white.withOpacity(0.6),
-                inset: true,
-              ),
-            ],
-          ),
-          child: Center(
-            child: Image.asset(
-              "assets/images/safe_logo_button.png",
-              height: kSafeButtonSize * 0.65,
-            ),
-          ),
-        ),
-      ),
-    );
+            ));
   }
 }

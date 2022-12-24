@@ -157,6 +157,11 @@ final List<Color> kPrimaryGradientColors = [
   kColorMap[MutableColor.primaryPurple]!,
 ];
 
+final List<Color> kDisabledGradientColors = [
+  Color(0xff1B191B),
+  Color(0xff090809),
+];
+
 final Alignment kPrimaryGradientAlignmentBegin = Alignment(-0.1, -2.5);
 final Alignment kPrimaryGradientAlignmentEnd = Alignment(0.1, 3);
 final Color kIconColorInGradientFill =

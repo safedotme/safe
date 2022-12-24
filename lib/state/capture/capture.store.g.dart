@@ -362,6 +362,74 @@ mixin _$CaptureStore on _CaptureStore, Store {
     });
   }
 
+  late final _$shouldFlashLimitBannerAtom =
+      Atom(name: '_CaptureStore.shouldFlashLimitBanner', context: context);
+
+  @override
+  bool get shouldFlashLimitBanner {
+    _$shouldFlashLimitBannerAtom.reportRead();
+    return super.shouldFlashLimitBanner;
+  }
+
+  @override
+  set shouldFlashLimitBanner(bool value) {
+    _$shouldFlashLimitBannerAtom
+        .reportWrite(value, super.shouldFlashLimitBanner, () {
+      super.shouldFlashLimitBanner = value;
+    });
+  }
+
+  late final _$limErrStateAtom =
+      Atom(name: '_CaptureStore.limErrState', context: context);
+
+  @override
+  LimitErrorState? get limErrState {
+    _$limErrStateAtom.reportRead();
+    return super.limErrState;
+  }
+
+  @override
+  set limErrState(LimitErrorState? value) {
+    _$limErrStateAtom.reportWrite(value, super.limErrState, () {
+      super.limErrState = value;
+    });
+  }
+
+  late final _$limErrorBannerControllerAtom =
+      Atom(name: '_CaptureStore.limErrorBannerController', context: context);
+
+  @override
+  PanelController get limErrorBannerController {
+    _$limErrorBannerControllerAtom.reportRead();
+    return super.limErrorBannerController;
+  }
+
+  @override
+  set limErrorBannerController(PanelController value) {
+    _$limErrorBannerControllerAtom
+        .reportWrite(value, super.limErrorBannerController, () {
+      super.limErrorBannerController = value;
+    });
+  }
+
+  late final _$incidentRecordedBannerPanelControllerAtom = Atom(
+      name: '_CaptureStore.incidentRecordedBannerPanelController',
+      context: context);
+
+  @override
+  PanelController get incidentRecordedBannerPanelController {
+    _$incidentRecordedBannerPanelControllerAtom.reportRead();
+    return super.incidentRecordedBannerPanelController;
+  }
+
+  @override
+  set incidentRecordedBannerPanelController(PanelController value) {
+    _$incidentRecordedBannerPanelControllerAtom
+        .reportWrite(value, super.incidentRecordedBannerPanelController, () {
+      super.incidentRecordedBannerPanelController = value;
+    });
+  }
+
   late final _$_CaptureStoreActionController =
       ActionController(name: '_CaptureStore', context: context);
 
@@ -542,6 +610,28 @@ mixin _$CaptureStore on _CaptureStore, Store {
   }
 
   @override
+  void setFlashLimitBanner(bool b) {
+    final _$actionInfo = _$_CaptureStoreActionController.startAction(
+        name: '_CaptureStore.setFlashLimitBanner');
+    try {
+      return super.setFlashLimitBanner(b);
+    } finally {
+      _$_CaptureStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void setLimErrState(LimitErrorState? s) {
+    final _$actionInfo = _$_CaptureStoreActionController.startAction(
+        name: '_CaptureStore.setLimErrState');
+    try {
+      return super.setLimErrState(s);
+    } finally {
+      _$_CaptureStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 controller: ${controller},
@@ -565,7 +655,11 @@ enlargementState: ${enlargementState},
 enlargeCameraView: ${enlargeCameraView},
 unEnlargeCameraView: ${unEnlargeCameraView},
 isFlashOn: ${isFlashOn},
-settings: ${settings}
+settings: ${settings},
+shouldFlashLimitBanner: ${shouldFlashLimitBanner},
+limErrState: ${limErrState},
+limErrorBannerController: ${limErrorBannerController},
+incidentRecordedBannerPanelController: ${incidentRecordedBannerPanelController}
     ''';
   }
 }

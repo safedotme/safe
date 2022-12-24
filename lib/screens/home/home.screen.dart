@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart' hide BoxShadow;
 import 'package:flutter/services.dart';
 import 'package:flutter_inset_box_shadow/flutter_inset_box_shadow.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
 import 'package:safe/models/user/user.model.dart';
@@ -40,9 +41,10 @@ class _HomeScreenState extends State<HomeScreen> {
     );
 
     stream.listen((event) {
-      WidgetsBinding.instance.addPersistentFrameCallback((timeStamp) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
         if (event != null) {
           core.state.incidentLog.setUser(event);
+          core.utils.credit.obtainState(core, user: event);
         }
       });
     });
@@ -65,11 +67,16 @@ class _HomeScreenState extends State<HomeScreen> {
                       kSafeButtonSize) +
                   (kHomeHeaderToButtonMargin * 2) -
                   40),
-          child: Center(
-            child: MutableText(
-              core.utils.language
-                  .langMap[core.state.preferences.language]!["home"]["header"],
-              style: TypeStyle.h2,
+          child: Observer(
+            builder: (_) => Center(
+              child: MutableText(
+                core.utils.language
+                        .langMap[core.state.preferences.language]!["home"][
+                    core.state.capture.limErrState != null
+                        ? "header_disabled"
+                        : "header"],
+                style: TypeStyle.h2,
+              ),
             ),
           ),
         ),
@@ -88,7 +95,14 @@ class _HomeScreenState extends State<HomeScreen> {
                 );
 
                 if (!shouldCapture) {
-                  // ADD MAD HAPTIC FEEDBACK
+                  // Flashes Incident Limit Banner
+                  if (core.state.capture.shouldFlashLimitBanner == false) {
+                    core.state.capture.setFlashLimitBanner(true);
+                    await Future.delayed(Duration(seconds: 8));
+                    core.state.capture.setFlashLimitBanner(false);
+                  }
+
+                  // Add haptic feedback
                   return;
                 }
 

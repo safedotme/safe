@@ -5,6 +5,7 @@ import 'package:safe/models/incident/battery.model.dart';
 import 'package:safe/models/incident/incident.model.dart';
 import 'package:safe/models/incident/location.model.dart';
 import 'package:safe/screens/capture/local_widgets/capture_text_shimmer.widget.dart';
+import 'package:safe/utils/credit/credit.util.dart';
 import 'package:safe/utils/incident/incident.util.dart';
 import 'package:safe/widgets/mutable_overlay/mutable_overlay.widget.dart';
 import 'package:safe/widgets/mutable_screen_transition/mutable_screen_transition.widget.dart';
@@ -133,4 +134,22 @@ abstract class _CaptureStore with Store {
 
   @action
   void setSettings(AdminSettings s) => settings = s;
+
+  @observable
+  bool shouldFlashLimitBanner = false;
+
+  @action
+  void setFlashLimitBanner(bool b) => shouldFlashLimitBanner = b;
+
+  @observable
+  LimitErrorState? limErrState;
+
+  @action
+  void setLimErrState(LimitErrorState? s) => limErrState = s;
+
+  @observable
+  PanelController limErrorBannerController = PanelController();
+
+  @observable
+  PanelController incidentRecordedBannerPanelController = PanelController();
 }

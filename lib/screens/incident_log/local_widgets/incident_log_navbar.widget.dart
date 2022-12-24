@@ -189,7 +189,16 @@ class _IncidentLogNavBarState extends State<IncidentLogNavBar> {
 
                               if (!shouldCapture) {
                                 core.state.incidentLog.controller.close();
-                                // ADD MAD HAPTIC FEEDBACK
+
+                                // Flashes Incident Limit Banner
+                                if (core.state.capture.shouldFlashLimitBanner ==
+                                    false) {
+                                  core.state.capture.setFlashLimitBanner(true);
+                                  await Future.delayed(Duration(seconds: 8));
+                                  core.state.capture.setFlashLimitBanner(false);
+                                }
+
+                                // Add Haptic Feedback
                                 return;
                               }
 

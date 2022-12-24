@@ -148,6 +148,12 @@ class LanguageUtil {
     },
     "home": {
       "header": "Tap to Safe",
+      "header_disabled": "Safe Disabled",
+      "incident_limit": {
+        "header": "Incident Limit Reached",
+        "body": "There is a two incident limit per Safe account.",
+        "button": ["Disable Limit", "Emergency Activate"]
+      }
     },
     "incident_log": {
       "header": "Incident Log",

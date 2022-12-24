@@ -34,6 +34,7 @@ class _IncidentLogState extends State<IncidentLog> {
     );
 
     incidentStream.listen((incidents) {
+      core.utils.credit.obtainState(core, incidents: incidents.length);
       core.state.incidentLog.setIncidents(incidents);
     });
   }

@@ -1,6 +1,13 @@
+import 'dart:async';
+
 import 'package:safe/core.dart';
 import 'package:safe/models/admin/admin.model.dart';
 import 'package:safe/models/user/user.model.dart';
+
+enum LimitErrorState {
+  maxed,
+  emergency,
+}
 
 enum TriggerIdentifier {
   primary, // Used for typical safe buttons
@@ -17,13 +24,21 @@ class CreditUtil {
   }) async {
     await _base(
       core,
-      onFirstIncident: () {},
-      onAnyIncident: () {},
+      onFirstIncident: () {
+        core.state.capture.setLimErrState(null);
+        core.state.capture.limErrorBannerController.close();
+      },
+      onAnyIncident: () {
+        core.state.capture.setLimErrState(null);
+        core.state.capture.limErrorBannerController.close();
+      },
       onLastIncident: () {
-        // Change state
+        core.state.capture.setLimErrState(LimitErrorState.emergency);
+        core.state.capture.limErrorBannerController.open();
       },
       onMaxedOut: () {
-        // Change state
+        core.state.capture.setLimErrState(LimitErrorState.maxed);
+        core.state.capture.limErrorBannerController.open();
       },
       incidents: incidents,
       user: user,
@@ -98,7 +113,7 @@ class CreditUtil {
       return;
     }
 
-    if (credits == incidents) {
+    if (credits <= incidents) {
       onMaxedOut();
       return;
     }
