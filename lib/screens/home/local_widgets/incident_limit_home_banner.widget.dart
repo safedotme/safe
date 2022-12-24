@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
@@ -40,8 +41,19 @@ class _IncidentLimitHomeBannerState extends State<IncidentLimitHomeBanner> {
             .toUpperCase(),
         backgroundColor: MutableColor.secondaryRed,
         borderColor: MutableColor.secondaryRed,
-        onTap: () {
-          // CHANGES
+        onTap: () async {
+          HapticFeedback.mediumImpact();
+          bool shouldCapture = await core.utils.credit.shouldCapture(
+            TriggerIdentifier.secondary,
+            core,
+          );
+
+          if (shouldCapture) {
+            core.utils.capture.start();
+            core.state.capture.controller.open();
+          } else {
+            // TODO: Implement maxed out
+          }
         },
         body: Padding(
           padding: EdgeInsets.only(top: 5),
