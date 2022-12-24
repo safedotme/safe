@@ -41,10 +41,10 @@ class _HomeScreenState extends State<HomeScreen> {
     );
 
     stream.listen((event) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
+      WidgetsBinding.instance.addPostFrameCallback((_) async {
         if (event != null) {
+          await core.utils.credit.obtainState(core, user: event);
           core.state.incidentLog.setUser(event);
-          core.utils.credit.obtainState(core, user: event);
         }
       });
     });
@@ -68,47 +68,59 @@ class _HomeScreenState extends State<HomeScreen> {
                   (kHomeHeaderToButtonMargin * 2) -
                   40),
           child: Observer(
-            builder: (_) => Center(
-              child: MutableText(
-                core.utils.language
-                        .langMap[core.state.preferences.language]!["home"][
-                    core.state.capture.limErrState != null
-                        ? "header_disabled"
-                        : "header"],
-                style: TypeStyle.h2,
+            builder: (_) => AnimatedOpacity(
+              curve: kFadeInCurve,
+              duration: kFadeInDuration,
+              opacity: core.state.incidentLog.user == null ? 0 : 1,
+              child: Center(
+                child: MutableText(
+                  core.utils.language
+                          .langMap[core.state.preferences.language]!["home"][
+                      core.state.capture.limErrState != null
+                          ? "header_disabled"
+                          : "header"],
+                  style: TypeStyle.h2,
+                ),
               ),
             ),
           ),
         ),
-        Padding(
-          padding: EdgeInsets.only(
-              bottom:
-                  (queryData.size.height * kIncidentLogMinPopupHeight) - 40),
-          child: Center(
-            child: MutableSafeButton(
-              onTap: () async {
-                HapticFeedback.heavyImpact();
+        Observer(
+          builder: (_) => Padding(
+            padding: EdgeInsets.only(
+                bottom:
+                    (queryData.size.height * kIncidentLogMinPopupHeight) - 40),
+            child: Center(
+              child: AnimatedOpacity(
+                curve: kFadeInCurve,
+                opacity: core.state.incidentLog.user == null ? 0 : 1,
+                duration: kFadeInDuration,
+                child: MutableSafeButton(
+                  onTap: () async {
+                    HapticFeedback.heavyImpact();
 
-                bool shouldCapture = await core.utils.credit.shouldCapture(
-                  TriggerIdentifier.primary,
-                  core,
-                );
+                    bool shouldCapture = await core.utils.credit.shouldCapture(
+                      TriggerIdentifier.primary,
+                      core,
+                    );
 
-                if (!shouldCapture) {
-                  // Flashes Incident Limit Banner
-                  if (core.state.capture.shouldFlashLimitBanner == false) {
-                    core.state.capture.setFlashLimitBanner(true);
-                    await Future.delayed(Duration(seconds: 8));
-                    core.state.capture.setFlashLimitBanner(false);
-                  }
+                    if (!shouldCapture) {
+                      // Flashes Incident Limit Banner
+                      if (core.state.capture.shouldFlashLimitBanner == false) {
+                        core.state.capture.setFlashLimitBanner(true);
+                        await Future.delayed(Duration(seconds: 8));
+                        core.state.capture.setFlashLimitBanner(false);
+                      }
 
-                  // Add haptic feedback
-                  return;
-                }
+                      // Add haptic feedback
+                      return;
+                    }
 
-                core.utils.capture.start();
-                core.state.capture.controller.open();
-              },
+                    core.utils.capture.start();
+                    core.state.capture.controller.open();
+                  },
+                ),
+              ),
             ),
           ),
         ),

@@ -277,6 +277,8 @@ const double kSafeButtonShadowBlurScale = 20;
 const double kSafeButtonTapScale = 0.04;
 const Duration kSafeButtonPulsateDuration = Duration(milliseconds: 1300);
 const double kSafeButtonPuslateScale = 1.05;
+const Duration kFadeInDuration = Duration(seconds: 3);
+const Curve kFadeInCurve = Curves.easeOutSine;
 
 // -> LAYOUT
 const double kIncidentLogMinPopupHeight = 0.18;
