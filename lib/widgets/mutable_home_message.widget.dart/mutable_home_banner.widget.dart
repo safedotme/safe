@@ -7,6 +7,7 @@ import 'package:safe/widgets/mutable_button/mutable_button.widget.dart';
 import 'package:safe/widgets/mutable_icon/mutable_icon.widget.dart';
 import 'package:safe/widgets/mutable_popup/local_widgets/mutable_popup_style.widget.dart';
 import 'package:safe/widgets/mutable_popup/mutable_popup.widget.dart';
+import 'package:safe/widgets/mutable_shimmer/mutable_shimmer.widget.dart';
 import 'package:safe/widgets/mutable_text/mutable_text.widget.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
@@ -15,15 +16,21 @@ class MutableHomeBanner extends StatefulWidget {
   final PanelController? controller;
   final PanelState state;
   final void Function()? onTap;
+  final bool isShimmering;
+  final Color? shimmerColor;
   final void Function()? onClose;
-  final Widget child;
+  final Widget body;
   final MutableColor backgroundColor;
   final MutableColor borderColor;
+  final String header;
 
   MutableHomeBanner({
     this.height = 124,
     this.controller,
-    this.child = const SizedBox(),
+    this.isShimmering = false,
+    this.shimmerColor,
+    this.body = const SizedBox(),
+    this.header = "",
     this.onClose,
     this.state = PanelState.OPEN,
     this.onTap,
@@ -84,47 +91,53 @@ class _MutableHomeBannerState extends State<MutableHomeBanner> {
           borderRadius: BorderRadius.zero,
           borderColor: Colors.transparent,
         ),
-        body: Align(
-          alignment: Alignment.topCenter,
-          child: Transform.scale(
-            scale: scale,
-            child: Opacity(
-              opacity: opacity,
-              child: MutableButton(
-                onTap: widget.onTap,
-                child: Container(
-                  height: widget.height,
-                  margin: EdgeInsets.symmetric(horizontal: kSideScreenMargin),
-                  padding: EdgeInsets.all(15),
-                  decoration: BoxDecoration(
-                    borderRadius:
-                        BorderRadius.circular(kHomeBannerBorderRadius),
-                    border: Border.all(
-                      width: kBorderWidth,
-                      color: kColorMap[widget.borderColor]!,
-                    ),
-                    color: kColorMap[widget.backgroundColor]!.withOpacity(0.1),
-                  ),
-                  child: Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          MutableText(
-                            "LAST INCIDENT".toUpperCase(),
-                            weight: TypeWeight.bold,
-                            size: 14,
-                          ),
-                          MutableIcon(
-                            MutableIcons.caretRight,
-                            size: Size(8, 12),
-                          ),
-                        ],
+        body: MutableButton(
+          onTap: widget.onTap,
+          child: MutableShimmer(
+            active: widget.isShimmering,
+            animateToColor: widget.shimmerColor,
+            child: Align(
+              alignment: Alignment.topCenter,
+              child: Transform.scale(
+                scale: scale,
+                child: Opacity(
+                  opacity: opacity,
+                  child: Container(
+                    height: widget.height,
+                    margin: EdgeInsets.symmetric(horizontal: kSideScreenMargin),
+                    padding: EdgeInsets.all(15),
+                    decoration: BoxDecoration(
+                      borderRadius:
+                          BorderRadius.circular(kHomeBannerBorderRadius),
+                      border: Border.all(
+                        width: kBorderWidth,
+                        color: kColorMap[widget.borderColor]!,
                       ),
-                      Expanded(
-                        child: widget.child,
-                      )
-                    ],
+                      color:
+                          kColorMap[widget.backgroundColor]!.withOpacity(0.1),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            MutableText(
+                              widget.header.toUpperCase(),
+                              weight: TypeWeight.bold,
+                              size: 14,
+                            ),
+                            MutableIcon(
+                              MutableIcons.caretRight,
+                              size: Size(8, 12),
+                            ),
+                          ],
+                        ),
+                        Expanded(
+                          child: widget.body,
+                        )
+                      ],
+                    ),
                   ),
                 ),
               ),

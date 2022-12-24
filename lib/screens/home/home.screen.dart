@@ -1,17 +1,16 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide BoxShadow;
 import 'package:flutter/services.dart';
+import 'package:flutter_inset_box_shadow/flutter_inset_box_shadow.dart';
 import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
-import 'package:safe/models/admin/admin.model.dart';
 import 'package:safe/models/user/user.model.dart';
 import 'package:safe/screens/capture/capture.screen.dart';
-import 'package:safe/screens/capture/local_widgets/emergency_services.widget.dart';
+import 'package:safe/screens/home/local_widgets/incident_limit_home_banner.widget.dart';
 import 'package:safe/screens/incident_log/incident_log.screen.dart';
-import 'package:safe/utils/capture/capture.util.dart';
 import 'package:safe/utils/constants/constants.util.dart';
 import 'package:safe/utils/credit/credit.util.dart';
 import 'package:safe/widgets/mutable_home_message.widget.dart/mutable_home_banner.widget.dart';
+import 'package:safe/widgets/mutable_pill/mutable_pill.widget.dart';
 import 'package:safe/widgets/mutable_safe_button/mutable_safe_button.widget.dart';
 import 'package:safe/widgets/mutable_scaffold/mutable_scaffold.widget.dart';
 import 'package:safe/widgets/mutable_text/mutable_text.widget.dart';
@@ -101,7 +100,7 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         Align(
           alignment: Alignment.bottomCenter,
-          child: MutableHomeBanner(),
+          child: IncidentLimitHomeBanner(),
         ),
       ],
       body: IncidentLog(),
