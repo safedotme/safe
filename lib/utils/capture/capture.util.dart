@@ -14,8 +14,8 @@ import 'package:safe/models/user/user.model.dart';
 import 'package:safe/services/token_server/token_server.service.dart';
 import 'package:safe/utils/capture/messages.capture.dart';
 import 'package:safe/utils/constants/constants.util.dart';
-import 'package:safe/utils/credit/credit.util.dart';
 import 'package:uuid/uuid.dart';
+import 'package:uuid/uuid_util.dart';
 
 class CaptureUtil {
   Core? _core;
@@ -163,6 +163,7 @@ class CaptureUtil {
 
       incident = Incident(
         id: Uuid().v1(),
+        pubID: Uuid().v4(),
         userId: _core!.services.auth.currentUser!.uid,
         name: "Incident #$incidentNumber",
         type: [_core!.state.capture.type],

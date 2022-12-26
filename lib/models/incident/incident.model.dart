@@ -15,6 +15,7 @@ class Incident {
   final DateTime datetime;
   final String? thumbnail;
   final List<Location>? location;
+  final String pubID;
   final List<NotifiedContact>? contactLog;
   final List<Battery>? battery;
   final List<EmergencyServices>? emergencyServices;
@@ -24,6 +25,7 @@ class Incident {
     required this.userId,
     required this.name,
     required this.type,
+    required this.pubID,
     required this.datetime,
     this.stopTime,
     this.streamAvailable = false,
@@ -50,6 +52,7 @@ class Incident {
       id: json["id"],
       userId: json['user_id'],
       name: json["name"],
+      pubID: json["pub_id"],
       type: _type.map((e) => IncidentUtil.parseType(e)).toList(),
       datetime: DateTime.parse(json["datetime"]),
       location: _location?.map((e) => Location.fromJson(e)).toList(),
@@ -71,6 +74,7 @@ class Incident {
     String? thumbnail,
     bool? streamAvailable,
     List<Location>? location,
+    String? pubID,
     List<NotifiedContact>? contactLog,
     List<Battery>? battery,
     DateTime? stopTime,
@@ -82,6 +86,7 @@ class Incident {
       userId: userId ?? this.userId,
       name: name ?? this.name,
       type: type ?? this.type,
+      pubID: pubID ?? this.pubID,
       stopTime: stopTime ?? this.stopTime,
       thumbnail: thumbnail ?? this.thumbnail,
       datetime: datetime ?? this.datetime,
@@ -100,6 +105,7 @@ class Incident {
         "stop_time": stopTime?.toIso8601String(),
         "type": type.map((e) => e.toString()).toList(),
         "datetime": datetime.toIso8601String(),
+        "pub_id": pubID,
         "location":
             location != null ? location!.map((e) => e.toMap()).toList() : null,
         "contact_log": contactLog != null
