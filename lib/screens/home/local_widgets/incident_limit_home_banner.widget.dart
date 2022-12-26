@@ -33,7 +33,7 @@ class _IncidentLimitHomeBannerState extends State<IncidentLimitHomeBanner> {
         isShimmering: core.state.capture.shouldFlashLimitBanner,
         shimmerColor: kColorMap[MutableColor.secondaryRed]!.withOpacity(0.75),
         controller: core.state.capture.limErrorBannerController,
-        height: 108,
+        height: 120,
         dismissable: false,
         header: (core.utils.language
                     .langMap[core.state.preferences.language]!["home"]

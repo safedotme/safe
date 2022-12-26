@@ -97,6 +97,7 @@ class _IncidentCardBodyState extends State<IncidentCardBody> {
           ),
           SizedBox(width: 10),
           MutablePill(
+            shadowPronouncement: 50,
             text: core.utils.language
                     .langMap[core.state.preferences.language]!["incident_card"]
                 ["secured"],

@@ -34,6 +34,11 @@ class CaptureUtil {
     // Will be used to start & stop incident
     isActive = true;
 
+    if (_core!
+        .state.capture.incidentRecordedBannerPanelController.isPanelOpen) {
+      _core!.state.capture.incidentRecordedBannerPanelController.close();
+    }
+
     // ⬇️ INCIDENT CREATE
     await _uploadChanges(null);
 

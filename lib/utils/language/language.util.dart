@@ -152,7 +152,8 @@ class LanguageUtil {
       "incident_recorded_header": "Last Incident",
       "incident_limit": {
         "header": "Incident Limit Reached",
-        "body": "There is a two incident limit per Safe account.",
+        "body":
+            "You have one incident credit left. Spare it for an emergency. Tap here to activate Safe.",
         "button": ["Delete an Incident", "Emergency Activate"]
       }
     },

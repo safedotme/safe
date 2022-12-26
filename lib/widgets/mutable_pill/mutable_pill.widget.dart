@@ -11,11 +11,13 @@ class MutablePill extends StatefulWidget {
   final String text;
   final MutableIcons? icon;
   final bool isButton;
+  final double shadowPronouncement;
   final MutableColor? color;
 
   MutablePill({
     required this.text,
     this.icon,
+    this.shadowPronouncement = 22,
     this.isButton = false,
     this.color,
   });
@@ -49,16 +51,17 @@ class _MutablePillState extends State<MutablePill> {
       decoration: BoxDecoration(
         boxShadow: [
           ...core.utils.color.applyGradientShadow(
-            22,
+            widget.shadowPronouncement,
             isColorful: widget.color == null,
           ),
           ...[
-            if (widget.isButton)
-              BoxShadow(
-                color: Colors.black.withOpacity(0.25),
-                offset: Offset(0, 4),
-                blurRadius: 4,
-              )
+            BoxShadow(
+              color: widget.isButton
+                  ? Colors.black.withOpacity(0.25)
+                  : Colors.black.withOpacity(0.4),
+              offset: Offset(0, 4),
+              blurRadius: 4,
+            )
           ]
         ],
         borderRadius: BorderRadius.circular(20),
