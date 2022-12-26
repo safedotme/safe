@@ -318,10 +318,9 @@ class _AnimatedCameraPreviewState extends State<AnimatedCameraPreview>
                 // Handles press effect scale
                 scale: scaleState,
                 child: GestureDetector(
-                  onLongPressStart: (details) async {
+                  onTap: () async {
                     HapticFeedback.mediumImpact();
                     await controller.forward();
-                    await Future.delayed(Duration(milliseconds: 200));
                     controller.reverse();
 
                     if (!isAnimating) return animateUpFromBase();

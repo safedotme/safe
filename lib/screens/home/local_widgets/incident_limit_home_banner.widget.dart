@@ -63,8 +63,11 @@ class _IncidentLimitHomeBannerState extends State<IncidentLimitHomeBanner> {
             children: [
               MutableText(
                 core.utils.language
-                        .langMap[core.state.preferences.language]!["home"]
-                    ["incident_limit"]["body"],
+                            .langMap[core.state.preferences.language]!["home"]
+                        ["incident_limit"][
+                    core.state.capture.limErrState == LimitErrorState.emergency
+                        ? "body"
+                        : "body_disabled"],
                 weight: TypeWeight.medium,
                 size: 13,
                 color: MutableColor.neutral2,

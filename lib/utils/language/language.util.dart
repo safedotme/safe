@@ -154,6 +154,8 @@ class LanguageUtil {
         "header": "Incident Limit Reached",
         "body":
             "You have one incident credit left. Spare it for an emergency. Tap here to activate Safe.",
+        "body_disabled":
+            "No worries, simply delete a previous incident to gain back the ability to capture one.",
         "button": ["Delete an Incident", "Emergency Activate"]
       }
     },
