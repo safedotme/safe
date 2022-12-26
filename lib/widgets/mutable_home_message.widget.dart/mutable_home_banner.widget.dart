@@ -26,7 +26,7 @@ class MutableHomeBanner extends StatefulWidget {
   final String header;
 
   MutableHomeBanner({
-    this.height = 124,
+    this.height = 100,
     this.controller,
     this.isShimmering = false,
     this.dismissable = true,
