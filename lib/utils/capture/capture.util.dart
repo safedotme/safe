@@ -14,6 +14,7 @@ import 'package:safe/models/user/user.model.dart';
 import 'package:safe/services/token_server/token_server.service.dart';
 import 'package:safe/utils/capture/messages.capture.dart';
 import 'package:safe/utils/constants/constants.util.dart';
+import 'package:safe/utils/credit/credit.util.dart';
 import 'package:uuid/uuid.dart';
 
 class CaptureUtil {
@@ -65,6 +66,10 @@ class CaptureUtil {
     _core!.state.capture.overlayController.hide();
     _core!.state.capture.controller.close();
     initFlip = false;
+
+    if (_core!.state.capture.limErrState == null) {
+      _core!.state.capture.incidentRecordedBannerPanelController.open();
+    }
   }
 
   // ⬇️ STREAM / RECORDING
