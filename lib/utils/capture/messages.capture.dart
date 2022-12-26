@@ -46,7 +46,7 @@ The emergency began at {TIME} and is listed as a {TYPE}.
 
 {NAME_POSESSIVE} last recorded location was {ADDRESS} ({LAT}° N, {LONG}° W).
 
-Watch a livestream of the incident from {NAME_POSESSIVE} phone: {LINK}
+Watch a livestream of the incident: {LINK}
 
 The app continues to record {NAME} camera and track {NAME_POSESSIVE} exact location. You will recieve a message when {NAME} stops capturing the incident.
 

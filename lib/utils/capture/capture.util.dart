@@ -262,7 +262,7 @@ class CaptureUtil {
       "{LONG}": incident.location![0].long!.toStringAsFixed(4),
       "{NAME_POSESSIVE}": _core!.utils.name.genFirstName(user.name, true),
       "{BATTERY}": battery.toString(),
-      "{LINK}": "https://joinsafe.me/incident", // TODO: CHANGE ME
+      "{LINK}": "https://live.joinsafe.me/${incident.pubID}",
     };
 
     for (String key in replacementMap.keys) {
