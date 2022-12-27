@@ -24,6 +24,11 @@ type ResourceId struct {
 	ID string `json:"resourceId"`
 }
 
+type StartResponse struct {
+	ID  string `json:"resourceId"`
+	SID string `json:"sid"`
+}
+
 func setEnv(id string, cert string) {
 	os.Setenv("APP_ID", id)
 	os.Setenv("APP_CERTIFICATE", cert)
@@ -63,6 +68,7 @@ func main() {
 	api.Use(nocache())
 	api.GET("rtc/:channelName/:role/:tokentype/:uid/:id/:cert/", getRtcToken)
 	api.GET("rid/:channelName/:customerKey/:customerSecret/:appId/:recordingId/", getResourceID)
+	api.GET("start/:appId/:channelName/:recordingId/:resourceId/:customerKey/:customerSecret/:token/:maxIdleTime/:bucketId/:bucketAccessKey/:bucketSecretKey/:userUid/:dir1/:dir2/", startRecording)
 	api.Run(":" + port) // listen and serve on localhost:8080
 }
 
@@ -89,7 +95,7 @@ func getResourceID(c *gin.Context) {
 		"uid": "<recordingId>",
 		"clientRequest":{
 		  "resourceExpiredHour": 24,
-		  "scene": 1
+		  "scene": 0
 	   }
 	  }
 	`
@@ -133,6 +139,98 @@ func getResourceID(c *gin.Context) {
 		"resource_id": decoded.ID,
 	})
 
+}
+
+func startRecording(c *gin.Context) {
+	log.Printf("\n\nStart Recording:\n")
+
+	appId, channelName, recordingId, resourceId, customerKey, customerSecret, token, maxIdleTime, bucketId, bucketAccessKey, bucketSecretKey, userUid, dir1, dir2 := parseStartParams(c)
+
+	endpoint := "<appId>/cloud_recording/resourceid/<resourceId>/mode/individual/start"
+	body := `
+	{
+		"cname":"<channelName>",
+		"uid":"<recordingId>",
+		"clientRequest":{
+			"token": "<token>",
+			"recordingConfig":{
+				"channelType":1,
+				"streamTypes":2,
+				"streamMode": "standard",
+				"videoStreamType": 0,
+				"maxIdleTime":<maxIdleTime>,
+				"subscribeVideoUids": ["<userUid>"],
+				"subscribeAudioUids": ["<userUid>"],
+				"subscribeUidGroup": 0
+			},
+			"storageConfig":{
+				"vendor":6,
+				"region":0,
+				"bucket":"<bucketId>",
+				"accessKey":"<bucketAccessKey>",
+				"secretKey":"<bucketSecretKey>",
+				"fileNamePrefix": [
+                	"<dir1>",
+                	"<dir2>"
+            	]
+			}	
+		}
+	}	
+	`
+
+	// Replace values in template
+
+	// Setup Endpoint
+	endpoint = strings.ReplaceAll(endpoint, `<appId>`, appId)
+	endpoint = strings.ReplaceAll(endpoint, `<resourceId>`, resourceId)
+
+	// Setup Body
+	body = strings.ReplaceAll(body, `<channelName>`, channelName)
+	body = strings.ReplaceAll(body, `<recordingId>`, recordingId)
+	body = strings.ReplaceAll(body, `<token>`, token)
+	body = strings.ReplaceAll(body, `<maxIdleTime>`, maxIdleTime)
+	body = strings.ReplaceAll(body, `<userUid>`, userUid)
+	body = strings.ReplaceAll(body, `<bucketAccessKey>`, bucketAccessKey)
+	body = strings.ReplaceAll(body, `<bucketId>`, bucketId)
+	body = strings.ReplaceAll(body, `<bucketSecretKey>`, bucketSecretKey)
+	body = strings.ReplaceAll(body, `<dir1>`, dir1)
+	body = strings.ReplaceAll(body, `<dir2>`, dir2)
+
+	res, err := request(customerKey, customerSecret, endpoint, body)
+
+	if err != nil {
+		log.Println(err) // Failed to start recording
+		c.Error(err)
+		errMsg := "Error Recording Session - " + err.Error()
+		c.AbortWithStatusJSON(400, gin.H{
+			"status": 400,
+			"error":  errMsg,
+		})
+
+		return
+	}
+
+	checkValid := json.Valid(res)
+
+	if !checkValid {
+		errMsg := "Error Recording Session - Invalid JSON"
+		log.Println(errMsg) // Failed to start recording
+		c.AbortWithStatusJSON(400, gin.H{
+			"status": 400,
+			"error":  errMsg,
+		})
+
+		return
+	}
+
+	var decoded StartResponse
+
+	json.Unmarshal(res, &decoded)
+
+	c.JSON(200, gin.H{
+		"resource_id": decoded.ID,
+		"sid":         decoded.SID,
+	})
 }
 
 func getRtcToken(c *gin.Context) {
@@ -220,8 +318,26 @@ func parseRidParams(c *gin.Context) (channelName, customerKey, customerSecret, a
 	return channelName, customerKey, customerSecret, appId, recordingId
 }
 
+func parseStartParams(c *gin.Context) (appId, channelName, recordingId, resourceId, customerKey, customerSecret, token, maxIdleTime, bucketId, bucketAccessKey, bucketSecretKey, userUid, dir1, dir2 string) {
+	appId = c.Param("appId")
+	channelName = c.Param("channelName")
+	recordingId = c.Param("recordingId")
+	resourceId = c.Param("resourceId")
+	customerKey = c.Param("customerKey")
+	customerSecret = c.Param("customerSecret")
+	token = c.Param("token")
+	maxIdleTime = c.Param("maxIdleTime")
+	bucketId = c.Param("bucketId")
+	bucketAccessKey = c.Param("bucketAccessKey")
+	bucketSecretKey = c.Param("bucketSecretKey")
+	userUid = c.Param("userUid")
+	dir1 = c.Param("dir1")
+	dir2 = c.Param("dir2")
+
+	return appId, channelName, recordingId, resourceId, customerKey, customerSecret, token, maxIdleTime, bucketId, bucketAccessKey, bucketSecretKey, userUid, dir1, dir2
+}
+
 func parseRtcParams(c *gin.Context) (id, cert, channelName, tokentype, uidStr string, role rtctokenbuilder.Role, expireTimestamp uint32, err error) {
-	// get param values
 
 	id = c.Param("id")
 	cert = c.Param("cert")
