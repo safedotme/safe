@@ -1,10 +1,15 @@
 package main
 
 import (
+	"encoding/base64"
+	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"log"
+	"net/http"
 	"os"
 	"strconv"
+	"strings"
 	"time"
 
 	"github.com/AgoraIO-Community/go-tokenbuilder/rtctokenbuilder"
@@ -14,6 +19,10 @@ import (
 
 var appID string
 var appCertificate string
+
+type ResourceId struct {
+	ID string `json:"resourceId"`
+}
 
 func setEnv(id string, cert string) {
 	os.Setenv("APP_ID", id)
@@ -53,6 +62,7 @@ func main() {
 
 	api.Use(nocache())
 	api.GET("rtc/:channelName/:role/:tokentype/:uid/:id/:cert/", getRtcToken)
+	api.GET("rid/:channelName/:customerKey/:customerSecret/:appId/:recordingId/", getResourceID)
 	api.Run(":" + port) // listen and serve on localhost:8080
 }
 
@@ -66,9 +76,68 @@ func nocache() gin.HandlerFunc {
 	}
 }
 
+func getResourceID(c *gin.Context) {
+	log.Printf("\n\nResource ID:\n")
+
+	// Get Parameters
+	channelName, customerKey, customerSecret, appId, recordingId := parseRidParams(c)
+
+	endpoint := "<appId>/cloud_recording/acquire"
+	body := `
+	{
+		"cname": "<channelName>",
+		"uid": "<recordingId>",
+		"clientRequest":{
+		  "resourceExpiredHour": 24,
+		  "scene": 1
+	   }
+	  }
+	`
+
+	body = strings.ReplaceAll(body, `<channelName>`, channelName)
+	body = strings.ReplaceAll(body, `<recordingId>`, recordingId)
+	endpoint = strings.ReplaceAll(endpoint, `<appId>`, appId)
+
+	res, err := request(customerKey, customerSecret, endpoint, body)
+
+	if err != nil {
+		log.Println(err) // token failed to generate
+		c.Error(err)
+		errMsg := "Error Generating RID - " + err.Error()
+		c.AbortWithStatusJSON(400, gin.H{
+			"status": 400,
+			"error":  errMsg,
+		})
+
+		return
+	}
+
+	checkValid := json.Valid(res)
+
+	if !checkValid {
+		errMsg := "Error Generating RID - Invalid JSON"
+		log.Println(errMsg) // token failed to generate
+		c.AbortWithStatusJSON(400, gin.H{
+			"status": 400,
+			"error":  errMsg,
+		})
+
+		return
+	}
+
+	var decoded ResourceId
+
+	json.Unmarshal(res, &decoded)
+
+	c.JSON(200, gin.H{
+		"resource_id": decoded.ID,
+	})
+
+}
+
 func getRtcToken(c *gin.Context) {
-	log.Printf("rtc token\n")
-	// get param values
+	log.Printf("\n\nRTC Token:\n")
+	// Get Parameters
 	id, cert, channelName, tokentype, uidStr, role, expireTimestamp, err := parseRtcParams(c)
 
 	setEnv(id, cert)
@@ -83,7 +152,6 @@ func getRtcToken(c *gin.Context) {
 		return
 	}
 
-	// ENV BEFORE THIS
 	rtcToken, tokenErr := generateRtcToken(channelName, uidStr, tokentype, role, expireTimestamp)
 
 	if tokenErr != nil {
@@ -100,6 +168,56 @@ func getRtcToken(c *gin.Context) {
 			"rtcToken": rtcToken,
 		})
 	}
+}
+
+func request(customerKey, customerSecret, endpoint, bodyBase string) (rid []byte, err error) {
+
+	// Concatenate customer key and customer secret and use base64 to encode the concatenated string
+	plainCredentials := customerKey + ":" + customerSecret
+	base64Credentials := base64.StdEncoding.EncodeToString([]byte(plainCredentials))
+
+	url := "https://api.agora.io/v1/apps/" + endpoint
+	method := "POST"
+
+	payload := strings.NewReader(bodyBase)
+
+	client := &http.Client{}
+	req, prob := http.NewRequest(method, url, payload)
+
+	if prob != nil {
+		fmt.Println(prob)
+		return nil, prob
+	}
+	// Add Authorization header
+	req.Header.Add("Authorization", "Basic "+base64Credentials)
+	req.Header.Add("Content-Type", "application/json")
+
+	// Send HTTP request
+	res, prob := client.Do(req)
+	if prob != nil {
+		fmt.Println(prob)
+		return nil, prob
+	}
+	defer res.Body.Close()
+
+	body, prob := ioutil.ReadAll(res.Body)
+	if prob != nil {
+		fmt.Println(prob)
+		return nil, prob
+	}
+
+	return body, prob
+}
+
+func parseRidParams(c *gin.Context) (channelName, customerKey, customerSecret, appId, recordingId string) {
+
+	channelName = c.Param("channelName")
+	customerKey = c.Param("customerKey")
+	customerSecret = c.Param("customerSecret")
+	appId = c.Param("appId")
+	recordingId = c.Param("recordingId")
+
+	return channelName, customerKey, customerSecret, appId, recordingId
 }
 
 func parseRtcParams(c *gin.Context) (id, cert, channelName, tokentype, uidStr string, role rtctokenbuilder.Role, expireTimestamp uint32, err error) {
