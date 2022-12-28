@@ -55,7 +55,7 @@ class MediaServer {
           env["MEDIA_ENDPOINT"]!,
         );
 
-    var json = await fetch(loaded);
+    var json = await _fetch(loaded);
 
     if (json == null) return null;
 
@@ -89,7 +89,7 @@ class MediaServer {
           _genCredentials(env),
         );
 
-    var json = await fetch(loaded);
+    var json = await _fetch(loaded);
 
     if (json == null) return null;
 
@@ -162,7 +162,7 @@ class MediaServer {
         .replaceAll("{endpoint}", env["MEDIA_ENDPOINT"]!)
         .replaceAll("{cred}", _genCredentials(env));
 
-    var json = await fetch(loaded);
+    var json = await _fetch(loaded);
 
     if (json == null) return null;
 
@@ -194,14 +194,14 @@ class MediaServer {
         .replaceAll("{credential}", _genCredentials(env));
 
     // Make Request
-    var json = await fetch(loaded);
+    var json = await _fetch(loaded);
 
     if (json == null) return null;
 
     return json["rtcToken"];
   }
 
-  Future<Map?> fetch(String url) async {
+  Future<Map?> _fetch(String url) async {
     http.Response response = await http.get(Uri.parse(url));
 
     Map<String, dynamic> json = jsonDecode(response.body);

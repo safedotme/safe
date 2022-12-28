@@ -10,6 +10,7 @@ import 'package:battery_plus/battery_plus.dart' as api;
 import 'package:safe/models/incident/incident.model.dart';
 import 'package:safe/models/incident/location.model.dart';
 import 'package:safe/models/incident/notified_contact.model.dart';
+import 'package:safe/models/media_server/start_recording_response.model.dart';
 import 'package:safe/models/user/user.model.dart';
 import 'package:safe/services/media_server/media_server.service.dart';
 import 'package:safe/utils/capture/messages.capture.dart';
@@ -33,6 +34,7 @@ class CaptureUtil {
     // Will be used to start & stop incident
     isActive = true;
 
+    // Prevents two banners from being open at same time
     if (_core!
         .state.capture.incidentRecordedBannerPanelController.isPanelOpen) {
       _core!.state.capture.incidentRecordedBannerPanelController.close();
@@ -52,31 +54,41 @@ class CaptureUtil {
   }
 
   void stop() async {
+    // Used to stop location and battery streams
     isActive = false;
+
+    // Uploads immediate time user pressed stop
     await _uploadChanges(
       _core!.state.capture.incident!.copyWith(
         stopTime: DateTime.now(),
       ),
     );
 
+    // UI
     _core!.state.capture.overlayController.show();
+
+    // Notifies contacts that incident has stopped
     await _notifyContacts(MessageType.end);
 
     // STREAM
+    await _saveStreamRecording();
     await _core!.services.agora.stop(_core!.state.capture.engine!);
-    await await Future.delayed(Duration(seconds: 5));
-    _core!.state.capture.showPreview?.call();
 
+    // UI
+    _core!.state.capture.showPreview?.call();
     _core!.state.capture.overlayController.hide();
     _core!.state.capture.controller.close();
     initFlip = false;
 
+    // Opens an error if user has reached credit limit
     if (_core!.state.capture.limErrState == null) {
       _core!.state.capture.incidentRecordedBannerPanelController.open();
     }
   }
 
   // ⬇️ STREAM / RECORDING
+
+  // Initializes streaming engine & prepares for streaming
   Future<void> _initEngine() async {
     if (_core!.state.capture.engine != null) return;
 
@@ -116,16 +128,65 @@ class CaptureUtil {
       uid: _core!.state.capture.incident!.stream.userId,
     );
 
-    _uploadChanges(_core!.state.capture.incident!.copyWith(
-      streamAvailable: token != null,
-    ));
+    if (token == null) {
+      _uploadChanges(_core!.state.capture.incident!.copyWith(
+        streamAvailable: false,
+      ));
+    }
 
-    _core!.services.agora.stream(
+    await _core!.services.agora.stream(
       _core!.state.capture.engine!,
       token: token ?? "",
       uid: _core!.state.capture.incident!.stream.userId,
       channelId: _core!.state.capture.incident!.id,
     );
+
+    if (token != null) _recordStream(token);
+  }
+
+  Future<void> _recordStream(String token) async {
+    // Fetch resourceId
+    String? resourceId = await _core!.services.mediaServer.getResourceID(
+      channelName: _core!.state.capture.incident!.id,
+      recordingId: _core!.state.capture.incident!.stream.recordingId,
+    );
+
+    if (resourceId == null) {
+      await _uploadChanges(_core!.state.capture.incident!.copyWith(
+        cloudRecordingAvailable: false,
+      ));
+
+      return;
+    }
+
+    // Start recording
+    StartRecordingResponse? response =
+        await _core!.services.mediaServer.startRecording(
+      dir1: _core!.state.capture.incident!.id,
+      dir2: "raw",
+      userUid: _core!.state.capture.incident!.stream.userId.toString(),
+      channelName: _core!.state.capture.incident!.id,
+      recordingId: _core!.state.capture.incident!.stream.recordingId,
+      resourceId: resourceId,
+      maxIdleTime: _core!.state.capture.settings!.maxIdleTime,
+      token: token,
+    );
+
+    if (response == null) {
+      await _uploadChanges(_core!.state.capture.incident!.copyWith(
+        cloudRecordingAvailable: false,
+      ));
+
+      return;
+    }
+
+    // Update Firebase values
+  }
+
+  Future<void> _saveStreamRecording() async {
+    // Call stop recording
+
+    // Update Firebase values
   }
 
   // ⬇️ LOCATION

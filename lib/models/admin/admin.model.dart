@@ -4,6 +4,7 @@ class AdminSettings {
   final int dimensionHeight;
   final int frameRate;
   final String id;
+  final int maxIdleTime;
 
   AdminSettings({
     required this.defaultIncidentCap,
@@ -11,6 +12,7 @@ class AdminSettings {
     required this.dimensionWidth,
     required this.frameRate,
     required this.id,
+    required this.maxIdleTime,
   });
 
   // In the case that settings do not load from firebase, these will be set
@@ -19,6 +21,7 @@ class AdminSettings {
     dimensionHeight: 720,
     dimensionWidth: 1280,
     frameRate: 15,
+    maxIdleTime: 1800,
     id: "prod",
   );
 
@@ -28,6 +31,7 @@ class AdminSettings {
         : AdminSettings(
             defaultIncidentCap: json["default_incident_cap"] ??
                 defaultSettings.defaultIncidentCap,
+            maxIdleTime: json["max_idle_time"] ?? defaultSettings.maxIdleTime,
             dimensionHeight:
                 json["dimension_height"] ?? defaultSettings.dimensionHeight,
             dimensionWidth:
@@ -41,6 +45,7 @@ class AdminSettings {
     return {
       "default_incident_cap": defaultIncidentCap,
       "dimension_height": dimensionHeight,
+      "max_idle_time": maxIdleTime,
       "dimension_width": dimensionWidth,
       "frame_rate": frameRate,
       "id": id,
