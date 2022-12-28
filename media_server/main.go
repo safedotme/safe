@@ -64,7 +64,6 @@ func readEnv() {
 		log.Fatal("FATAL ERROR: ENV not properly configured, check appID and appCertificate")
 	} else {
 		appID = appIDEnv
-		log.Println(appID)
 		appCertificate = appCertEnv
 	}
 }
@@ -76,6 +75,30 @@ func decode(c string) string {
 	}
 
 	return string(rawDecodedText)
+}
+
+func validate(userKey string) bool {
+	godotenv.Load()
+
+	// load .env file
+	err := godotenv.Load(".env")
+
+	if err != nil {
+		log.Fatalf("Error loading .env file")
+	}
+
+	keyEnv, keyExists := os.LookupEnv("KEY")
+	secretEnv, secretExists := os.LookupEnv("SECRET")
+
+	if !keyExists || !secretExists {
+		log.Fatal("FATAL ERROR: ENV not properly configured, check key and secret")
+		return false
+	}
+
+	plainCredentials := keyEnv + ":" + secretEnv
+	base64Credentials := base64.StdEncoding.EncodeToString([]byte(plainCredentials))
+
+	return base64Credentials == userKey
 }
 
 func main() {
@@ -98,8 +121,6 @@ func main() {
 	api.GET("start/:appId/:channelName/:recordingId/:resourceId/:customerKey/:customerSecret/:token/:maxIdleTime/:bucketId/:bucketAccessKey/:bucketSecretKey/:userUid/:dir1/:dir2/", startRecording)
 	api.GET("stop/:channelName/:customerKey/:customerSecret/:appId/:recordingId/:sid/:resourceId/", stopRecording)
 	api.Run(":" + port) // listen and serve on localhost:8080
-
-	// rtc/c2FmZQ==/cHVibGlzaGVy/dXNlckFjY291bnQ=/NTE0Nw==/NTNhZmMzYWExMWM4NGE5OWJkZDc0NDRlODE2ZDM5ZjM=/:cert/
 }
 
 func nocache() gin.HandlerFunc {
