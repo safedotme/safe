@@ -21,13 +21,41 @@ class MediaServer {
         "${env["MEDIA_KEY"]}:${env["MEDIA_SECRET"]}",
       );
 
-  Future<StopRecordingResponse?> stopRecording() async {
+  Future<StopRecordingResponse?> stopRecording({
+    required String channelName,
+    required int recordingId,
+    required String resourceId,
+    required String sid,
+  }) async {
     // Get URL parameters
     Map<String, String> env = dotenv.env;
 
     // URL endpoint
     String template =
-        "{endpoint}/rtc/{channel_name}/{role}/{type}/{uid}/{app_id}/{app_certificate}/";
+        "{endpoint}/stop/{channel_name}/{customer_key}/{customer_secret}/{app_id}/{recording_id}/{sid}/{resource_id}/{cred}/";
+
+    String loaded = template
+        .replaceAll("{channel_name}", channelName)
+        .replaceAll("{customer_key}", env["AGORA_CUSTOMER_KEY"]!)
+        .replaceAll("{customer_secret}", env["AGORA_CUSTOMER_SECRET"]!)
+        .replaceAll("{app_id}", env["AGORA_APP_ID"]!)
+        .replaceAll("{recording_id}", recordingId.toString())
+        .replaceAll("{sid}", sid)
+        .replaceAll("{resource_id}", resourceId)
+        .replaceAll(
+          "{cred}",
+          _genCredentials(env),
+        )
+        .replaceAll(
+          "{endpoint}",
+          env["MEDIA_ENDPOINT"]!,
+        );
+
+    var json = await fetch(loaded);
+
+    if (json != null) return null;
+
+    return StopRecordingResponse.fromJson(json!);
   }
 
   Future<String?> getResourceID() async {
@@ -36,7 +64,7 @@ class MediaServer {
 
     // URL endpoint
     String template =
-        "{endpoint}rid/{channel_name}/{customer_key}/{customer_secret}/{app_id}/{recording_id}/:cred/";
+        "{endpoint}/rid/{channel_name}/{customer_key}/{customer_secret}/{app_id}/{recording_id}/:cred/";
   }
 
   /// Takes recording options and begins recording a livestreaming session
