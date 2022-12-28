@@ -134,14 +134,14 @@ class CaptureUtil {
       ));
     }
 
-    // await _core!.services.agora.stream(
-    //   _core!.state.capture.engine!,
-    //   token: token ?? "",
-    //   uid: _core!.state.capture.incident!.stream.userId,
-    //   channelId: _core!.state.capture.incident!.id,
-    // );
+    await _core!.services.agora.stream(
+      _core!.state.capture.engine!,
+      token: token ?? "",
+      uid: _core!.state.capture.incident!.stream.userId,
+      channelId: _core!.state.capture.incident!.id,
+    );
 
-    // if (token != null) _recordStream(token);
+    if (token != null) _recordStream(token);
   }
 
   Future<void> _recordStream(String token) async {
@@ -151,30 +151,26 @@ class CaptureUtil {
       recordingId: _core!.state.capture.incident!.stream.recordingId,
     );
 
-    print(resourceId);
+    if (resourceId == null) return;
 
     // Start recording
-    // StartRecordingResponse? response =
-    //     await _core!.services.mediaServer.startRecording(
-    //   dir1: _core!.state.capture.incident!.id,
-    //   dir2: "raw",
-    //   userUid: _core!.state.capture.incident!.stream.userId.toString(),
-    //   channelName: _core!.state.capture.incident!.id,
-    //   recordingId: _core!.state.capture.incident!.stream.recordingId,
-    //   resourceId: resourceId,
-    //   maxIdleTime: _core!.state.capture.settings!.maxIdleTime,
-    //   token: token,
-    // );
+    StartRecordingResponse? response =
+        await _core!.services.mediaServer.startRecording(
+      dir1: _core!.state.capture.incident!.id,
+      dir2: "raw",
+      userUid: _core!.state.capture.incident!.stream.userId.toString(),
+      channelName: _core!.state.capture.incident!.id,
+      recordingId: _core!.state.capture.incident!.stream.recordingId,
+      resourceId: resourceId,
+      maxIdleTime: _core!.state.capture.settings!.maxIdleTime,
+      token: token,
+    );
 
-    // if (response == null) { // set to true
-    //   await _uploadChanges(_core!.state.capture.incident!.copyWith(
-    //     cloudRecordingAvailable: false,
-    //   ));
+    if (response == null) return;
 
-    //   return;
-    // }
-
-    // TODO: Update Firebase values
+    await _uploadChanges(_core!.state.capture.incident!.copyWith(
+      cloudRecordingAvailable: true,
+    ));
   }
 
   Future<void> _saveStreamRecording() async {

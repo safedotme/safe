@@ -127,7 +127,7 @@ class MediaServer {
     String recordingInfo = "{max_idle_time}";
 
     String template =
-        "{endpoint}/start/$basicInfo/$recordingInfo/$bucketInfo/{cred}/";
+        "{endpoint}/start/{basic_info}/{recording_info}/{bucket_info}/{cred}/";
 
     // Replace with encoded values
     bucketInfo = bucketInfo
@@ -157,15 +157,21 @@ class MediaServer {
           _encodeBase64(env["AGORA_CUSTOMER_KEY"]!),
         )
         .replaceAll(
-          "{resource_id}",
+          "{customer_secret}",
           _encodeBase64(env["AGORA_CUSTOMER_SECRET"]!),
         )
         .replaceAll("{token}", _encodeBase64(token));
 
-    recordingInfo = resourceId.replaceAll(
-        "{max_idle_time}", _encodeBase64(maxIdleTime.toString()));
+    recordingInfo = recordingInfo.replaceAll(
+      "{max_idle_time}",
+      _encodeBase64(maxIdleTime.toString()),
+    );
 
+    // Generate template
     String loaded = template
+        .replaceAll("{basic_info}", basicInfo)
+        .replaceAll("{recording_info}", recordingInfo)
+        .replaceAll("{bucket_info}", bucketInfo)
         .replaceAll("{endpoint}", env["MEDIA_ENDPOINT"]!)
         .replaceAll("{cred}", _genCredentials(env));
 
