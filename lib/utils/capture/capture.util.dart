@@ -3,7 +3,7 @@ import 'package:agora_rtc_engine/agora_rtc_engine.dart';
 import 'package:intl/intl.dart';
 import 'package:location/location.dart' as api;
 import 'package:safe/core.dart';
-import 'package:safe/models/admin/admin.model.dart';
+import 'package:safe/models/incident/stream.model.dart' as model;
 import 'package:safe/models/contact/contact.model.dart';
 import 'package:safe/models/incident/battery.model.dart';
 import 'package:battery_plus/battery_plus.dart' as api;
@@ -15,7 +15,6 @@ import 'package:safe/services/media_server/media_server.service.dart';
 import 'package:safe/utils/capture/messages.capture.dart';
 import 'package:safe/utils/constants/constants.util.dart';
 import 'package:uuid/uuid.dart';
-import 'package:uuid/uuid_util.dart';
 
 class CaptureUtil {
   Core? _core;
@@ -114,7 +113,7 @@ class CaptureUtil {
       channelName: _core!.state.capture.incident!.id,
       role: TokenRole.publisher,
       type: TokenType.userAccount,
-      uid: "283712", // CHANGE ME
+      uid: _core!.state.capture.incident!.stream.userId,
     );
 
     _uploadChanges(_core!.state.capture.incident!.copyWith(
@@ -124,7 +123,7 @@ class CaptureUtil {
     _core!.services.agora.stream(
       _core!.state.capture.engine!,
       token: token ?? "",
-      uid: 283712, // CHANGE
+      uid: _core!.state.capture.incident!.stream.userId,
       channelId: _core!.state.capture.incident!.id,
     );
   }
@@ -161,9 +160,15 @@ class CaptureUtil {
           ? 1
           : _core!.state.incidentLog.incidents!.length + 1;
 
+      var stream = model.Stream(
+        userId: 1111,
+        recordingId: 9999,
+      );
+
       incident = Incident(
         id: Uuid().v1(),
         pubID: Uuid().v4(),
+        stream: stream,
         userId: _core!.services.auth.currentUser!.uid,
         name: "Incident #$incidentNumber",
         type: [_core!.state.capture.type],

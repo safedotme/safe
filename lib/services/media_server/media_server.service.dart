@@ -174,7 +174,7 @@ class MediaServer {
     required String channelName,
     required TokenRole role,
     required TokenType type,
-    required String uid,
+    required int uid,
   }) async {
     // Get URL parameters
     Map<String, String> env = dotenv.env;
@@ -188,7 +188,7 @@ class MediaServer {
         .replaceAll("{channel_name}", _encodeBase64(channelName))
         .replaceAll("{role}", _encodeBase64(unpackTokenRole(role)))
         .replaceAll("{type}", _encodeBase64(unpackTokenType(type)))
-        .replaceAll("{uid}", _encodeBase64(uid))
+        .replaceAll("{uid}", _encodeBase64(uid.toString()))
         .replaceAll("{app_id}", _encodeBase64(env["AGORA_APP_ID"]!))
         .replaceAll("{app_certificate}", _encodeBase64(env["AGORA_CERT"]!))
         .replaceAll("{credential}", _genCredentials(env));
