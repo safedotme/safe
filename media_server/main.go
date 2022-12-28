@@ -116,10 +116,10 @@ func main() {
 	})
 
 	api.Use(nocache())
-	api.GET("rtc/:channelName/:role/:tokentype/:uid/:id/:cert/", getRtcToken)
-	api.GET("rid/:channelName/:customerKey/:customerSecret/:appId/:recordingId/", getResourceID)
-	api.GET("start/:appId/:channelName/:recordingId/:resourceId/:customerKey/:customerSecret/:token/:maxIdleTime/:bucketId/:bucketAccessKey/:bucketSecretKey/:userUid/:dir1/:dir2/", startRecording)
-	api.GET("stop/:channelName/:customerKey/:customerSecret/:appId/:recordingId/:sid/:resourceId/", stopRecording)
+	api.GET("rtc/:channelName/:role/:tokentype/:uid/:id/:cert/:cred/", getRtcToken)
+	api.GET("rid/:channelName/:customerKey/:customerSecret/:appId/:recordingId/:cred/", getResourceID)
+	api.GET("start/:appId/:channelName/:recordingId/:resourceId/:customerKey/:customerSecret/:token/:maxIdleTime/:bucketId/:bucketAccessKey/:bucketSecretKey/:userUid/:dir1/:dir2/:cred/", startRecording)
+	api.GET("stop/:channelName/:customerKey/:customerSecret/:appId/:recordingId/:sid/:resourceId/:cred/", stopRecording)
 	api.Run(":" + port) // listen and serve on localhost:8080
 }
 
@@ -136,7 +136,15 @@ func nocache() gin.HandlerFunc {
 func stopRecording(c *gin.Context) {
 	log.Printf("\n\nStop Recording:\n")
 
-	channelName, customerKey, customerSecret, appId, recordingId, sid, resourceId := parseStopParams(c)
+	channelName, customerKey, customerSecret, appId, recordingId, sid, resourceId, cred := parseStopParams(c)
+
+	if !validate(cred) {
+		c.AbortWithStatusJSON(401, gin.H{
+			"message": "Unauthorized",
+			"status":  401,
+		})
+		return
+	}
 
 	endpoint := "<appId>/cloud_recording/resourceid/<resourceId>/sid/<sid>/mode/individual/stop"
 	body := `
@@ -209,7 +217,15 @@ func getResourceID(c *gin.Context) {
 	log.Printf("\n\nResource ID:\n")
 
 	// Get Parameters
-	channelName, customerKey, customerSecret, appId, recordingId := parseRidParams(c)
+	channelName, customerKey, customerSecret, appId, recordingId, cred := parseRidParams(c)
+
+	if !validate(cred) {
+		c.AbortWithStatusJSON(401, gin.H{
+			"message": "Unauthorized",
+			"status":  401,
+		})
+		return
+	}
 
 	endpoint := "<appId>/cloud_recording/acquire"
 	body := `
@@ -266,7 +282,15 @@ func getResourceID(c *gin.Context) {
 func startRecording(c *gin.Context) {
 	log.Printf("\n\nStart Recording:\n")
 
-	appId, channelName, recordingId, resourceId, customerKey, customerSecret, token, maxIdleTime, bucketId, bucketAccessKey, bucketSecretKey, userUid, dir1, dir2 := parseStartParams(c)
+	appId, channelName, recordingId, resourceId, customerKey, customerSecret, token, maxIdleTime, bucketId, bucketAccessKey, bucketSecretKey, userUid, dir1, dir2, cred := parseStartParams(c)
+
+	if !validate(cred) {
+		c.AbortWithStatusJSON(401, gin.H{
+			"message": "Unauthorized",
+			"status":  401,
+		})
+		return
+	}
 
 	endpoint := "<appId>/cloud_recording/resourceid/<resourceId>/mode/individual/start"
 	body := `
@@ -358,7 +382,15 @@ func startRecording(c *gin.Context) {
 func getRtcToken(c *gin.Context) {
 	log.Printf("\n\nRTC Token:\n")
 	// Get Parameters
-	id, cert, channelName, tokentype, uidStr, role, expireTimestamp, err := parseRtcParams(c)
+	id, cert, channelName, tokentype, uidStr, cred, role, expireTimestamp, err := parseRtcParams(c)
+
+	if !validate(cred) {
+		c.AbortWithStatusJSON(401, gin.H{
+			"message": "Unauthorized",
+			"status":  401,
+		})
+		return
+	}
 
 	setEnv(id, cert)
 	readEnv()
@@ -429,7 +461,7 @@ func request(customerKey, customerSecret, endpoint, bodyBase string) (rid []byte
 	return body, prob
 }
 
-func parseStopParams(c *gin.Context) (channelName, customerKey, customerSecret, appId, recordingId, sid, resourceId string) {
+func parseStopParams(c *gin.Context) (channelName, customerKey, customerSecret, appId, recordingId, sid, resourceId, cred string) {
 	channelName = decode(c.Param("channelName"))
 	customerKey = decode(c.Param("customerKey"))
 	customerSecret = decode(c.Param("customerSecret"))
@@ -437,22 +469,24 @@ func parseStopParams(c *gin.Context) (channelName, customerKey, customerSecret, 
 	recordingId = decode(c.Param("recordingId"))
 	sid = decode(c.Param("sid"))
 	resourceId = decode(c.Param("resourceId"))
+	cred = c.Param("cred")
 
-	return channelName, customerKey, customerSecret, appId, recordingId, sid, resourceId
+	return channelName, customerKey, customerSecret, appId, recordingId, sid, resourceId, cred
 }
 
-func parseRidParams(c *gin.Context) (channelName, customerKey, customerSecret, appId, recordingId string) {
+func parseRidParams(c *gin.Context) (channelName, customerKey, customerSecret, appId, recordingId, cred string) {
 
 	channelName = decode(c.Param("channelName"))
 	customerKey = decode(c.Param("customerKey"))
 	customerSecret = decode(c.Param("customerSecret"))
 	appId = decode(c.Param("appId"))
 	recordingId = decode(c.Param("recordingId"))
+	cred = c.Param("cred")
 
-	return channelName, customerKey, customerSecret, appId, recordingId
+	return channelName, customerKey, customerSecret, appId, recordingId, cred
 }
 
-func parseStartParams(c *gin.Context) (appId, channelName, recordingId, resourceId, customerKey, customerSecret, token, maxIdleTime, bucketId, bucketAccessKey, bucketSecretKey, userUid, dir1, dir2 string) {
+func parseStartParams(c *gin.Context) (appId, channelName, recordingId, resourceId, customerKey, customerSecret, token, maxIdleTime, bucketId, bucketAccessKey, bucketSecretKey, userUid, dir1, dir2, cred string) {
 	appId = decode(c.Param("appId"))
 	channelName = decode(c.Param("channelName"))
 	recordingId = decode(c.Param("recordingId"))
@@ -461,23 +495,26 @@ func parseStartParams(c *gin.Context) (appId, channelName, recordingId, resource
 	customerSecret = decode(c.Param("customerSecret"))
 	token = decode(c.Param("token"))
 	maxIdleTime = decode(c.Param("maxIdleTime"))
+
 	bucketId = decode(c.Param("bucketId"))
 	bucketAccessKey = decode(c.Param("bucketAccessKey"))
 	bucketSecretKey = decode(c.Param("bucketSecretKey"))
 	userUid = decode(c.Param("userUid"))
 	dir1 = decode(c.Param("dir1"))
 	dir2 = decode(c.Param("dir2"))
+	cred = c.Param("cred")
 
-	return appId, channelName, recordingId, resourceId, customerKey, customerSecret, token, maxIdleTime, bucketId, bucketAccessKey, bucketSecretKey, userUid, dir1, dir2
+	return appId, channelName, recordingId, resourceId, customerKey, customerSecret, token, maxIdleTime, bucketId, bucketAccessKey, bucketSecretKey, userUid, dir1, dir2, cred
 }
 
-func parseRtcParams(c *gin.Context) (id, cert, channelName, tokentype, uidStr string, role rtctokenbuilder.Role, expireTimestamp uint32, err error) {
+func parseRtcParams(c *gin.Context) (id, cert, channelName, tokentype, uidStr, cred string, role rtctokenbuilder.Role, expireTimestamp uint32, err error) {
 
 	id = decode(c.Param("id"))
 	cert = decode(c.Param("cert"))
 	channelName = decode(c.Param("channelName"))
 	roleStr := decode(c.Param("role"))
 	tokentype = decode(c.Param("tokentype"))
+	cred = c.Param("cred")
 	uidStr = decode(c.Param("uid"))
 	expireTime := c.DefaultQuery("expiry", "3600")
 
@@ -498,7 +535,7 @@ func parseRtcParams(c *gin.Context) (id, cert, channelName, tokentype, uidStr st
 	currentTimestamp := uint32(time.Now().UTC().Unix())
 	expireTimestamp = currentTimestamp + expireTimeInSeconds
 
-	return id, cert, channelName, tokentype, uidStr, role, expireTimestamp, err
+	return id, cert, channelName, tokentype, uidStr, cred, role, expireTimestamp, err
 }
 
 func generateRtcToken(channelName, uidStr, tokentype string, role rtctokenbuilder.Role, expireTimestamp uint32) (rtcToken string, err error) {
