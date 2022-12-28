@@ -21,12 +21,28 @@ var appID string
 var appCertificate string
 
 type ResourceId struct {
-	ID string `json:"resourceId"`
+	ResourceID string `json:"resourceId"`
+}
+
+type StopResponse struct {
+	ResourceID string         `json:"resourceId"`
+	SID        string         `json:"sid"`
+	Response   ServerResponse `json:"serverResponse"`
+}
+
+type ServerResponse struct {
+	UploadingStatus string     `json:"uploadingStatus"`
+	Files           []FileList `json:"fileList"`
+}
+
+type FileList struct {
+	Filename       string `json:"fileName"`
+	SliceStartTime string `json:"sliceStartTime"`
 }
 
 type StartResponse struct {
-	ID  string `json:"resourceId"`
-	SID string `json:"sid"`
+	ResourceID string `json:"resourceId"`
+	SID        string `json:"sid"`
 }
 
 func setEnv(id string, cert string) {
@@ -69,6 +85,7 @@ func main() {
 	api.GET("rtc/:channelName/:role/:tokentype/:uid/:id/:cert/", getRtcToken)
 	api.GET("rid/:channelName/:customerKey/:customerSecret/:appId/:recordingId/", getResourceID)
 	api.GET("start/:appId/:channelName/:recordingId/:resourceId/:customerKey/:customerSecret/:token/:maxIdleTime/:bucketId/:bucketAccessKey/:bucketSecretKey/:userUid/:dir1/:dir2/", startRecording)
+	api.GET("stop/:channelName/:customerKey/:customerSecret/:appId/:recordingId/:sid/:resourceId/", stopRecording)
 	api.Run(":" + port) // listen and serve on localhost:8080
 }
 
@@ -80,6 +97,78 @@ func nocache() gin.HandlerFunc {
 		c.Header("Pragma", "no-cache")
 		c.Header("Access-Control-Allow-Origin", "*")
 	}
+}
+
+func stopRecording(c *gin.Context) {
+	log.Printf("\n\nStop Recording:\n")
+
+	channelName, customerKey, customerSecret, appId, recordingId, sid, resourceId := parseStopParams(c)
+
+	endpoint := "<appId>/cloud_recording/resourceid/<resourceId>/sid/<sid>/mode/individual/stop"
+	body := `
+	{
+		"cname": "<channelName>",
+		"uid": "<recordingId>",
+		"clientRequest":{}
+	}
+	`
+
+	endpoint = strings.ReplaceAll(endpoint, "<appId>", appId)
+	endpoint = strings.ReplaceAll(endpoint, "<resourceId>", resourceId)
+	endpoint = strings.ReplaceAll(endpoint, "<sid>", sid)
+	body = strings.ReplaceAll(body, "<channelName>", channelName)
+	body = strings.ReplaceAll(body, "<recordingId>", recordingId)
+
+	res, err := request(customerKey, customerSecret, endpoint, body)
+
+	if err != nil {
+		log.Println(err) // Failed to stop recording
+		c.Error(err)
+		errMsg := "Error stopping session recording - " + err.Error()
+		c.AbortWithStatusJSON(400, gin.H{
+			"status": 400,
+			"error":  errMsg,
+		})
+
+		return
+	}
+
+	checkValid := json.Valid(res)
+
+	if !checkValid {
+		errMsg := "Error stopping session recording - Invalid JSON"
+		log.Println(errMsg) // token failed to generate
+		c.AbortWithStatusJSON(400, gin.H{
+			"status": 400,
+			"error":  errMsg,
+		})
+
+		return
+	}
+
+	var decoded StopResponse
+
+	json.Unmarshal(res, &decoded)
+
+	if err != nil {
+		log.Println(err) // Failed to stop recording
+		c.Error(err)
+		errMsg := "Error stopping session recording - " + err.Error()
+		c.AbortWithStatusJSON(400, gin.H{
+			"status": 400,
+			"error":  errMsg,
+		})
+
+		return
+	}
+
+	c.JSON(200, gin.H{
+		"resource_id":      decoded.ResourceID,
+		"sid":              decoded.SID,
+		"uploading_status": decoded.Response.UploadingStatus,
+		"filename":         decoded.Response.Files[0].Filename,
+		"sliceStartTime":   decoded.Response.Files[0].SliceStartTime,
+	})
 }
 
 func getResourceID(c *gin.Context) {
@@ -136,9 +225,8 @@ func getResourceID(c *gin.Context) {
 	json.Unmarshal(res, &decoded)
 
 	c.JSON(200, gin.H{
-		"resource_id": decoded.ID,
+		"resource_id": decoded.ResourceID,
 	})
-
 }
 
 func startRecording(c *gin.Context) {
@@ -228,7 +316,7 @@ func startRecording(c *gin.Context) {
 	json.Unmarshal(res, &decoded)
 
 	c.JSON(200, gin.H{
-		"resource_id": decoded.ID,
+		"resource_id": decoded.ResourceID,
 		"sid":         decoded.SID,
 	})
 }
@@ -305,6 +393,18 @@ func request(customerKey, customerSecret, endpoint, bodyBase string) (rid []byte
 	}
 
 	return body, prob
+}
+
+func parseStopParams(c *gin.Context) (channelName, customerKey, customerSecret, appId, recordingId, sid, resourceId string) {
+	channelName = c.Param("channelName")
+	customerKey = c.Param("customerKey")
+	customerSecret = c.Param("customerSecret")
+	appId = c.Param("appId")
+	recordingId = c.Param("recordingId")
+	sid = c.Param("sid")
+	resourceId = c.Param("resourceId")
+
+	return channelName, customerKey, customerSecret, appId, recordingId, sid, resourceId
 }
 
 func parseRidParams(c *gin.Context) (channelName, customerKey, customerSecret, appId, recordingId string) {
