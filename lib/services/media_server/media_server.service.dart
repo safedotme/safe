@@ -46,7 +46,6 @@ class MediaServer {
         "{endpoint}rid/{channel_name}/{customer_key}/{customer_secret}/{app_id}/{recording_id}/:cred/";
   }
 
-  // TODO: Encode data in base 64 and pass credentials
   Future<String?> generateRTCToken({
     required String channelName,
     required TokenRole role,
@@ -62,12 +61,13 @@ class MediaServer {
 
     String loaded = template
         .replaceAll("{endpoint}", env["MEDIA_ENDPOINT"]!)
-        .replaceAll("{channel_name}", channelName)
-        .replaceAll("{role}", unpackTokenRole(role))
-        .replaceAll("{type}", unpackTokenType(type))
-        .replaceAll("{uid}", uid)
-        .replaceAll("{app_id}", env["AGORA_APP_ID"]!)
-        .replaceAll("{app_certificate}", env["AGORA_CERT"]!);
+        .replaceAll("{channel_name}", _encodeBase64(channelName))
+        .replaceAll("{role}", _encodeBase64(unpackTokenRole(role)))
+        .replaceAll("{type}", _encodeBase64(unpackTokenType(type)))
+        .replaceAll("{uid}", _encodeBase64(uid))
+        .replaceAll("{app_id}", _encodeBase64(env["AGORA_APP_ID"]!))
+        .replaceAll("{app_certificate}", _encodeBase64(env["AGORA_CERT"]!))
+        .replaceAll("{credential}", _genCredentials(env));
 
     // Make Request
     http.Response response = await http.get(Uri.parse(loaded));
