@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
+import 'package:safe/models/media_server/start_recording_response.model.dart';
 
 enum TokenRole { publisher }
 
@@ -28,7 +29,16 @@ class MediaServer {
         "{endpoint}/rtc/{channel_name}/{role}/{type}/{uid}/{app_id}/{app_certificate}/";
   }
 
-  Future<void> startRecording({
+  Future<void> getResourceID() async {
+    // Get URL parameters
+    Map<String, String> env = dotenv.env;
+
+    // URL endpoint
+    String template =
+        "{endpoint}rid/{channel_name}/{customer_key}/{customer_secret}/{app_id}/{recording_id}/:cred/";
+  }
+
+  Future<StartRecordingResponse?> startRecording({
     required String dir1,
     required String dir2,
     required String userUid,
@@ -89,20 +99,18 @@ class MediaServer {
     recordingInfo = resourceId.replaceAll(
         "{max_idle_time}", _encodeBase64(maxIdleTime.toString()));
 
-    template = template
+    String loaded = template
         .replaceAll("{endpoint}", env["MEDIA_ENDPOINT"]!)
         .replaceAll("{cred}", _genCredentials(env));
+
+    var json = await fetch(loaded);
+
+    if (json == null) return null;
+
+    return StartRecordingResponse.fromJson(json);
   }
 
-  Future<void> getResourceID() async {
-    // Get URL parameters
-    Map<String, String> env = dotenv.env;
-
-    // URL endpoint
-    String template =
-        "{endpoint}rid/{channel_name}/{customer_key}/{customer_secret}/{app_id}/{recording_id}/:cred/";
-  }
-
+  /// Generates token used to start a livestream & recording session
   Future<String?> generateRTCToken({
     required String channelName,
     required TokenRole role,
