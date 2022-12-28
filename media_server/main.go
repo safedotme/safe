@@ -207,7 +207,7 @@ func stopRecording(c *gin.Context) {
 		"sid":              decoded.SID,
 		"uploading_status": decoded.Response.UploadingStatus,
 		"filename":         decoded.Response.Files[0].Filename,
-		"sliceStartTime":   decoded.Response.Files[0].SliceStartTime,
+		"slice_start_time": decoded.Response.Files[0].SliceStartTime,
 	})
 }
 

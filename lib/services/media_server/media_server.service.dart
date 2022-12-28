@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'package:safe/models/media_server/start_recording_response.model.dart';
+import 'package:safe/models/media_server/stop_recording_response.model.dart';
 
 enum TokenRole { publisher }
 
@@ -20,7 +21,7 @@ class MediaServer {
         "${env["MEDIA_KEY"]}:${env["MEDIA_SECRET"]}",
       );
 
-  Future<void> stopRecording() async {
+  Future<StopRecordingResponse?> stopRecording() async {
     // Get URL parameters
     Map<String, String> env = dotenv.env;
 
@@ -29,7 +30,7 @@ class MediaServer {
         "{endpoint}/rtc/{channel_name}/{role}/{type}/{uid}/{app_id}/{app_certificate}/";
   }
 
-  Future<void> getResourceID() async {
+  Future<String?> getResourceID() async {
     // Get URL parameters
     Map<String, String> env = dotenv.env;
 
@@ -38,6 +39,7 @@ class MediaServer {
         "{endpoint}rid/{channel_name}/{customer_key}/{customer_secret}/{app_id}/{recording_id}/:cred/";
   }
 
+  /// Takes recording options and begins recording a livestreaming session
   Future<StartRecordingResponse?> startRecording({
     required String dir1,
     required String dir2,
