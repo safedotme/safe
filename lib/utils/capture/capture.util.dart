@@ -11,7 +11,7 @@ import 'package:safe/models/incident/incident.model.dart';
 import 'package:safe/models/incident/location.model.dart';
 import 'package:safe/models/incident/notified_contact.model.dart';
 import 'package:safe/models/user/user.model.dart';
-import 'package:safe/services/token_server/token_server.service.dart';
+import 'package:safe/services/media_server/media_server.service.dart';
 import 'package:safe/utils/capture/messages.capture.dart';
 import 'package:safe/utils/constants/constants.util.dart';
 import 'package:uuid/uuid.dart';
@@ -110,7 +110,7 @@ class CaptureUtil {
   Future<void> _stream() async {
     _initEngine();
 
-    String? token = await _core!.services.token.generate(
+    String? token = await _core!.services.mediaServer.generateRTCToken(
       channelName: _core!.state.capture.incident!.id,
       role: TokenRole.publisher,
       type: TokenType.userAccount,
