@@ -81,7 +81,7 @@ func validate(userKey string) bool {
 	godotenv.Load()
 
 	// load .env file
-	err := godotenv.Load(".env")
+	err := godotenv.Load()
 
 	if err != nil {
 		log.Fatalf("Error loading .env file")
