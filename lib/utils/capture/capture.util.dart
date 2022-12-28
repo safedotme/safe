@@ -114,7 +114,7 @@ class CaptureUtil {
       channelName: _core!.state.capture.incident!.id,
       role: TokenRole.publisher,
       type: TokenType.userAccount,
-      uid: "0",
+      uid: "283712", // CHANGE ME
     );
 
     _uploadChanges(_core!.state.capture.incident!.copyWith(
@@ -124,7 +124,7 @@ class CaptureUtil {
     _core!.services.agora.stream(
       _core!.state.capture.engine!,
       token: token ?? "",
-      uid: 0,
+      uid: 283712, // CHANGE
       channelId: _core!.state.capture.incident!.id,
     );
   }

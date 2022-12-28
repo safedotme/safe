@@ -45,6 +45,8 @@ type StartResponse struct {
 	SID        string `json:"sid"`
 }
 
+// UTILITY FUNCTIONS ⬇️
+
 func setEnv(id string, cert string) {
 	os.Setenv("APP_ID", id)
 	os.Setenv("APP_CERTIFICATE", cert)
@@ -67,6 +69,15 @@ func readEnv() {
 	}
 }
 
+func decode(c string) string {
+	rawDecodedText, err := base64.StdEncoding.DecodeString(c)
+	if err != nil {
+		panic(err)
+	}
+
+	return string(rawDecodedText)
+}
+
 func main() {
 	api := gin.Default()
 
@@ -87,6 +98,8 @@ func main() {
 	api.GET("start/:appId/:channelName/:recordingId/:resourceId/:customerKey/:customerSecret/:token/:maxIdleTime/:bucketId/:bucketAccessKey/:bucketSecretKey/:userUid/:dir1/:dir2/", startRecording)
 	api.GET("stop/:channelName/:customerKey/:customerSecret/:appId/:recordingId/:sid/:resourceId/", stopRecording)
 	api.Run(":" + port) // listen and serve on localhost:8080
+
+	// rtc/c2FmZQ==/cHVibGlzaGVy/dXNlckFjY291bnQ=/NTE0Nw==/NTNhZmMzYWExMWM4NGE5OWJkZDc0NDRlODE2ZDM5ZjM=/:cert/
 }
 
 func nocache() gin.HandlerFunc {
@@ -396,55 +409,55 @@ func request(customerKey, customerSecret, endpoint, bodyBase string) (rid []byte
 }
 
 func parseStopParams(c *gin.Context) (channelName, customerKey, customerSecret, appId, recordingId, sid, resourceId string) {
-	channelName = c.Param("channelName")
-	customerKey = c.Param("customerKey")
-	customerSecret = c.Param("customerSecret")
-	appId = c.Param("appId")
-	recordingId = c.Param("recordingId")
-	sid = c.Param("sid")
-	resourceId = c.Param("resourceId")
+	channelName = decode(c.Param("channelName"))
+	customerKey = decode(c.Param("customerKey"))
+	customerSecret = decode(c.Param("customerSecret"))
+	appId = decode(c.Param("appId"))
+	recordingId = decode(c.Param("recordingId"))
+	sid = decode(c.Param("sid"))
+	resourceId = decode(c.Param("resourceId"))
 
 	return channelName, customerKey, customerSecret, appId, recordingId, sid, resourceId
 }
 
 func parseRidParams(c *gin.Context) (channelName, customerKey, customerSecret, appId, recordingId string) {
 
-	channelName = c.Param("channelName")
-	customerKey = c.Param("customerKey")
-	customerSecret = c.Param("customerSecret")
-	appId = c.Param("appId")
-	recordingId = c.Param("recordingId")
+	channelName = decode(c.Param("channelName"))
+	customerKey = decode(c.Param("customerKey"))
+	customerSecret = decode(c.Param("customerSecret"))
+	appId = decode(c.Param("appId"))
+	recordingId = decode(c.Param("recordingId"))
 
 	return channelName, customerKey, customerSecret, appId, recordingId
 }
 
 func parseStartParams(c *gin.Context) (appId, channelName, recordingId, resourceId, customerKey, customerSecret, token, maxIdleTime, bucketId, bucketAccessKey, bucketSecretKey, userUid, dir1, dir2 string) {
-	appId = c.Param("appId")
-	channelName = c.Param("channelName")
-	recordingId = c.Param("recordingId")
-	resourceId = c.Param("resourceId")
-	customerKey = c.Param("customerKey")
-	customerSecret = c.Param("customerSecret")
-	token = c.Param("token")
-	maxIdleTime = c.Param("maxIdleTime")
-	bucketId = c.Param("bucketId")
-	bucketAccessKey = c.Param("bucketAccessKey")
-	bucketSecretKey = c.Param("bucketSecretKey")
-	userUid = c.Param("userUid")
-	dir1 = c.Param("dir1")
-	dir2 = c.Param("dir2")
+	appId = decode(c.Param("appId"))
+	channelName = decode(c.Param("channelName"))
+	recordingId = decode(c.Param("recordingId"))
+	resourceId = decode(c.Param("resourceId"))
+	customerKey = decode(c.Param("customerKey"))
+	customerSecret = decode(c.Param("customerSecret"))
+	token = decode(c.Param("token"))
+	maxIdleTime = decode(c.Param("maxIdleTime"))
+	bucketId = decode(c.Param("bucketId"))
+	bucketAccessKey = decode(c.Param("bucketAccessKey"))
+	bucketSecretKey = decode(c.Param("bucketSecretKey"))
+	userUid = decode(c.Param("userUid"))
+	dir1 = decode(c.Param("dir1"))
+	dir2 = decode(c.Param("dir2"))
 
 	return appId, channelName, recordingId, resourceId, customerKey, customerSecret, token, maxIdleTime, bucketId, bucketAccessKey, bucketSecretKey, userUid, dir1, dir2
 }
 
 func parseRtcParams(c *gin.Context) (id, cert, channelName, tokentype, uidStr string, role rtctokenbuilder.Role, expireTimestamp uint32, err error) {
 
-	id = c.Param("id")
-	cert = c.Param("cert")
-	channelName = c.Param("channelName")
-	roleStr := c.Param("role")
-	tokentype = c.Param("tokentype")
-	uidStr = c.Param("uid")
+	id = decode(c.Param("id"))
+	cert = decode(c.Param("cert"))
+	channelName = decode(c.Param("channelName"))
+	roleStr := decode(c.Param("role"))
+	tokentype = decode(c.Param("tokentype"))
+	uidStr = decode(c.Param("uid"))
 	expireTime := c.DefaultQuery("expiry", "3600")
 
 	if roleStr == "publisher" {
