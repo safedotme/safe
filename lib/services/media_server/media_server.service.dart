@@ -17,6 +17,7 @@ class MediaServer {
     return base64Str;
   }
 
+  /// Stops cloud recording in a livestreaming session
   String _genCredentials(Map<String, String> env) => _encodeBase64(
         "${env["MEDIA_KEY"]}:${env["MEDIA_SECRET"]}",
       );
@@ -35,13 +36,16 @@ class MediaServer {
         "{endpoint}/stop/{channel_name}/{customer_key}/{customer_secret}/{app_id}/{recording_id}/{sid}/{resource_id}/{cred}/";
 
     String loaded = template
-        .replaceAll("{channel_name}", channelName)
-        .replaceAll("{customer_key}", env["AGORA_CUSTOMER_KEY"]!)
-        .replaceAll("{customer_secret}", env["AGORA_CUSTOMER_SECRET"]!)
-        .replaceAll("{app_id}", env["AGORA_APP_ID"]!)
-        .replaceAll("{recording_id}", recordingId.toString())
-        .replaceAll("{sid}", sid)
-        .replaceAll("{resource_id}", resourceId)
+        .replaceAll("{channel_name}", _encodeBase64(channelName))
+        .replaceAll("{customer_key}", _encodeBase64(env["AGORA_CUSTOMER_KEY"]!))
+        .replaceAll(
+          "{customer_secret}",
+          _encodeBase64(env["AGORA_CUSTOMER_SECRET"]!),
+        )
+        .replaceAll("{app_id}", _encodeBase64(env["AGORA_APP_ID"]!))
+        .replaceAll("{recording_id}", _encodeBase64(recordingId.toString()))
+        .replaceAll("{sid}", _encodeBase64(sid))
+        .replaceAll("{resource_id}", _encodeBase64(resourceId))
         .replaceAll(
           "{cred}",
           _genCredentials(env),
@@ -53,18 +57,43 @@ class MediaServer {
 
     var json = await fetch(loaded);
 
-    if (json != null) return null;
+    if (json == null) return null;
 
-    return StopRecordingResponse.fromJson(json!);
+    return StopRecordingResponse.fromJson(json);
   }
 
-  Future<String?> getResourceID() async {
+  /// Fetches ID required for cloud recording
+  Future<String?> getResourceID({
+    required String channelName,
+    required int recordingId,
+  }) async {
     // Get URL parameters
     Map<String, String> env = dotenv.env;
 
     // URL endpoint
     String template =
-        "{endpoint}/rid/{channel_name}/{customer_key}/{customer_secret}/{app_id}/{recording_id}/:cred/";
+        "{endpoint}/rid/{channel_name}/{customer_key}/{customer_secret}/{app_id}/{recording_id}/{cred}/";
+
+    String loaded = template
+        .replaceAll("{endpoint}", env[""]!)
+        .replaceAll("{channel_name}", _encodeBase64(channelName))
+        .replaceAll("{customer_key}", _encodeBase64(env["AGORA_CUSTOMER_KEY"]!))
+        .replaceAll(
+          "{customer_secret}",
+          _encodeBase64(env["AGORA_CUSTOMER_SECRET"]!),
+        )
+        .replaceAll("{app_id}", _encodeBase64(env["AGORA_APP_ID"]!))
+        .replaceAll("{recording_id}", _encodeBase64(recordingId.toString()))
+        .replaceAll(
+          "{cred}",
+          _genCredentials(env),
+        );
+
+    var json = await fetch(loaded);
+
+    if (json == null) return null;
+
+    return json["resource_id"];
   }
 
   /// Takes recording options and begins recording a livestreaming session
