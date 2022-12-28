@@ -28,16 +28,73 @@ class MediaServer {
         "{endpoint}/rtc/{channel_name}/{role}/{type}/{uid}/{app_id}/{app_certificate}/";
   }
 
-  Future<void> startRecording() async {
+  Future<void> startRecording({
+    required String dir1,
+    required String dir2,
+    required String userUid,
+    required String channelName,
+    required int recordingId,
+    required String resourceId,
+    required int maxIdleTime,
+    required String token,
+  }) async {
     // Get URL parameters
     Map<String, String> env = dotenv.env;
 
     // URL endpoint
+    String bucketInfo =
+        "{bucket_id}/{bucket_access_key}/{bucket_secret_key}/{user_uid}/{dir1}/{dir2}";
+
+    String basicInfo =
+        "{app_id}/{channel_name}/{recording_id}/{resource_id}/{customer_key}/{customer_secret}/{token}";
+
+    String recordingInfo = "{max_idle_time}";
+
     String template =
-        "{endpoint}/rtc/{channel_name}/{role}/{type}/{uid}/{app_id}/{app_certificate}/";
+        "{endpoint}/start/$basicInfo/$recordingInfo/$bucketInfo/{cred}/";
+
+    // Replace with encoded values
+    bucketInfo = bucketInfo
+        .replaceAll(
+          "{bucket_id}",
+          _encodeBase64(env["BUCKET_ID"]!),
+        )
+        .replaceAll(
+          "{bucket_access_key}",
+          _encodeBase64(env["BUCKET_ACCESS_KEY"]!),
+        )
+        .replaceAll(
+          "{bucket_secret_key}",
+          _encodeBase64(env["BCUKET_SECRET_KEY"]!),
+        )
+        .replaceAll("{user_uid}", _encodeBase64(userUid))
+        .replaceAll("{dir1}", _encodeBase64(dir1))
+        .replaceAll("{dir2}", _encodeBase64(dir2));
+
+    basicInfo = basicInfo
+        .replaceAll("{app_id}", _encodeBase64(env["AGORA_APP_ID"]!))
+        .replaceAll("{channel_name}", _encodeBase64(channelName))
+        .replaceAll("{recording_id}", _encodeBase64(recordingId.toString()))
+        .replaceAll("{resource_id}", _encodeBase64(resourceId))
+        .replaceAll(
+          "{customer_key}",
+          _encodeBase64(env["AGORA_CUSTOMER_KEY"]!),
+        )
+        .replaceAll(
+          "{resource_id}",
+          _encodeBase64(env["AGORA_CUSTOMER_SECRET"]!),
+        )
+        .replaceAll("{token}", _encodeBase64(token));
+
+    recordingInfo = resourceId.replaceAll(
+        "{max_idle_time}", _encodeBase64(maxIdleTime.toString()));
+
+    template = template
+        .replaceAll("{endpoint}", env["MEDIA_ENDPOINT"]!)
+        .replaceAll("{cred}", _genCredentials(env));
   }
 
-  Future<void> _getResourceID() async {
+  Future<void> getResourceID() async {
     // Get URL parameters
     Map<String, String> env = dotenv.env;
 
@@ -70,7 +127,15 @@ class MediaServer {
         .replaceAll("{credential}", _genCredentials(env));
 
     // Make Request
-    http.Response response = await http.get(Uri.parse(loaded));
+    var json = await fetch(loaded);
+
+    if (json == null) return null;
+
+    return json["rtcToken"];
+  }
+
+  Future<Map?> fetch(String url) async {
+    http.Response response = await http.get(Uri.parse(url));
 
     Map<String, dynamic> json = jsonDecode(response.body);
 
@@ -79,7 +144,7 @@ class MediaServer {
       return null;
     }
 
-    return json["rtcToken"];
+    return json;
   }
 
   String unpackTokenType(TokenType type) {
