@@ -46,11 +46,11 @@ class CaptureUtil {
     // ⬇️ STREAM / RECORDING
     _stream();
 
-    // ⬇️ LOCATION + SMS
-    _locationListen();
+    // // ⬇️ LOCATION + SMS
+    // _locationListen();
 
-    // ⬇️ BATTERY
-    _batteryListen();
+    // // ⬇️ BATTERY
+    // _batteryListen();
   }
 
   void stop() async {
@@ -134,14 +134,14 @@ class CaptureUtil {
       ));
     }
 
-    await _core!.services.agora.stream(
-      _core!.state.capture.engine!,
-      token: token ?? "",
-      uid: _core!.state.capture.incident!.stream.userId,
-      channelId: _core!.state.capture.incident!.id,
-    );
+    // await _core!.services.agora.stream(
+    //   _core!.state.capture.engine!,
+    //   token: token ?? "",
+    //   uid: _core!.state.capture.incident!.stream.userId,
+    //   channelId: _core!.state.capture.incident!.id,
+    // );
 
-    if (token != null) _recordStream(token);
+    // if (token != null) _recordStream(token);
   }
 
   Future<void> _recordStream(String token) async {
@@ -151,36 +151,30 @@ class CaptureUtil {
       recordingId: _core!.state.capture.incident!.stream.recordingId,
     );
 
-    if (resourceId == null) {
-      await _uploadChanges(_core!.state.capture.incident!.copyWith(
-        cloudRecordingAvailable: false,
-      ));
-
-      return;
-    }
+    print(resourceId);
 
     // Start recording
-    StartRecordingResponse? response =
-        await _core!.services.mediaServer.startRecording(
-      dir1: _core!.state.capture.incident!.id,
-      dir2: "raw",
-      userUid: _core!.state.capture.incident!.stream.userId.toString(),
-      channelName: _core!.state.capture.incident!.id,
-      recordingId: _core!.state.capture.incident!.stream.recordingId,
-      resourceId: resourceId,
-      maxIdleTime: _core!.state.capture.settings!.maxIdleTime,
-      token: token,
-    );
+    // StartRecordingResponse? response =
+    //     await _core!.services.mediaServer.startRecording(
+    //   dir1: _core!.state.capture.incident!.id,
+    //   dir2: "raw",
+    //   userUid: _core!.state.capture.incident!.stream.userId.toString(),
+    //   channelName: _core!.state.capture.incident!.id,
+    //   recordingId: _core!.state.capture.incident!.stream.recordingId,
+    //   resourceId: resourceId,
+    //   maxIdleTime: _core!.state.capture.settings!.maxIdleTime,
+    //   token: token,
+    // );
 
-    if (response == null) {
-      await _uploadChanges(_core!.state.capture.incident!.copyWith(
-        cloudRecordingAvailable: false,
-      ));
+    // if (response == null) { // set to true
+    //   await _uploadChanges(_core!.state.capture.incident!.copyWith(
+    //     cloudRecordingAvailable: false,
+    //   ));
 
-      return;
-    }
+    //   return;
+    // }
 
-    // Update Firebase values
+    // TODO: Update Firebase values
   }
 
   Future<void> _saveStreamRecording() async {

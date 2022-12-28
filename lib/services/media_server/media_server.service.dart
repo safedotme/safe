@@ -7,6 +7,13 @@ import 'package:safe/models/media_server/stop_recording_response.model.dart';
 
 enum TokenRole { publisher }
 
+enum MediaAction {
+  getResourceID,
+  startRecording,
+  stopRecording,
+  getRTCToken,
+}
+
 enum TokenType { uid, userAccount }
 
 class MediaServer {
@@ -55,7 +62,7 @@ class MediaServer {
           env["MEDIA_ENDPOINT"]!,
         );
 
-    var json = await _fetch(loaded);
+    var json = await _fetch(loaded, MediaAction.stopRecording);
 
     if (json == null) return null;
 
@@ -75,7 +82,7 @@ class MediaServer {
         "{endpoint}/rid/{channel_name}/{customer_key}/{customer_secret}/{app_id}/{recording_id}/{cred}/";
 
     String loaded = template
-        .replaceAll("{endpoint}", env[""]!)
+        .replaceAll("{endpoint}", env["MEDIA_ENDPOINT"]!)
         .replaceAll("{channel_name}", _encodeBase64(channelName))
         .replaceAll("{customer_key}", _encodeBase64(env["AGORA_CUSTOMER_KEY"]!))
         .replaceAll(
@@ -89,7 +96,7 @@ class MediaServer {
           _genCredentials(env),
         );
 
-    var json = await _fetch(loaded);
+    var json = await _fetch(loaded, MediaAction.getResourceID);
 
     if (json == null) return null;
 
@@ -162,7 +169,7 @@ class MediaServer {
         .replaceAll("{endpoint}", env["MEDIA_ENDPOINT"]!)
         .replaceAll("{cred}", _genCredentials(env));
 
-    var json = await _fetch(loaded);
+    var json = await _fetch(loaded, MediaAction.startRecording);
 
     if (json == null) return null;
 
@@ -181,7 +188,7 @@ class MediaServer {
 
     // URL endpoint
     String template =
-        "{endpoint}/rtc/{channel_name}/{role}/{type}/{uid}/{app_id}/{app_certificate}/{credential}";
+        "{endpoint}/rtc/{channel_name}/{role}/{type}/{uid}/{app_id}/{app_certificate}/{credential}/";
 
     String loaded = template
         .replaceAll("{endpoint}", env["MEDIA_ENDPOINT"]!)
@@ -193,23 +200,23 @@ class MediaServer {
         .replaceAll("{app_certificate}", _encodeBase64(env["AGORA_CERT"]!))
         .replaceAll("{credential}", _genCredentials(env));
 
-    // Make Request
-    var json = await _fetch(loaded);
+    //Make Request
+    var json = await _fetch(loaded, MediaAction.getRTCToken);
 
     if (json == null) return null;
 
     return json["rtcToken"];
   }
 
-  Future<Map?> _fetch(String url) async {
+  Future<Map?> _fetch(String url, MediaAction action) async {
     http.Response response = await http.get(Uri.parse(url));
-
-    Map<String, dynamic> json = jsonDecode(response.body);
 
     if (response.statusCode != 200) {
       // TODO: handle error (LOG)
       return null;
     }
+
+    Map<String, dynamic> json = jsonDecode(response.body);
 
     return json;
   }
