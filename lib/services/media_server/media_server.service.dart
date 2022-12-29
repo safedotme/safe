@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -5,7 +6,7 @@ import 'package:http/http.dart' as http;
 import 'package:safe/models/media_server/start_recording_response.model.dart';
 import 'package:safe/models/media_server/stop_recording_response.model.dart';
 
-enum TokenRole { publisher }
+enum TokenRole { publisher, subscriber }
 
 enum MediaAction {
   getResourceID,
@@ -141,7 +142,7 @@ class MediaServer {
         )
         .replaceAll(
           "{bucket_secret_key}",
-          _encodeBase64(env["BCUKET_SECRET_KEY"]!),
+          _encodeBase64(env["BUCKET_SECRET_KEY"]!),
         )
         .replaceAll("{user_uid}", _encodeBase64(userUid))
         .replaceAll("{dir1}", _encodeBase64(dir1))
@@ -174,6 +175,8 @@ class MediaServer {
         .replaceAll("{bucket_info}", bucketInfo)
         .replaceAll("{endpoint}", env["MEDIA_ENDPOINT"]!)
         .replaceAll("{cred}", _genCredentials(env));
+
+    print(loaded);
 
     var json = await _fetch(loaded, MediaAction.startRecording);
 
@@ -208,6 +211,8 @@ class MediaServer {
 
     //Make Request
     var json = await _fetch(loaded, MediaAction.getRTCToken);
+
+    print(json);
 
     if (json == null) return null;
 

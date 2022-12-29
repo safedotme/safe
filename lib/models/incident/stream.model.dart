@@ -4,10 +4,12 @@ class Stream {
   final String? resourceId;
   final String? sid;
   final String? filePath;
+  final String channelName;
 
   Stream({
     required this.recordingId,
     required this.userId,
+    required this.channelName,
     this.resourceId,
     this.sid,
     this.filePath,
@@ -16,6 +18,7 @@ class Stream {
   factory Stream.fromJson(Map json) {
     return Stream(
       userId: json["user_id"],
+      channelName: json["channel_name"],
       recordingId: json["recording_id"],
       resourceId: json["resource_id"],
       sid: json["sid"],
@@ -28,9 +31,11 @@ class Stream {
     int? userId,
     String? resourceId,
     String? sid,
+    String? channelName,
     String? filePath,
   }) {
     return Stream(
+      channelName: channelName ?? this.channelName,
       recordingId: recordingId ?? this.recordingId,
       userId: userId ?? this.userId,
       resourceId: resourceId ?? this.resourceId,
@@ -45,6 +50,7 @@ class Stream {
       "recording_id": recordingId,
       "resource_id": resourceId,
       "sid": sid,
+      "channel_name": channelName,
       "file_path": filePath,
     };
   }

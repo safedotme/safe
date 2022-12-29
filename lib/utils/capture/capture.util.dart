@@ -106,7 +106,12 @@ class CaptureUtil {
           if (state == LocalVideoStreamState.localVideoStreamStateCapturing &&
               !initFlip) {
             initFlip = true;
+
+            // Hides camera preview to prevent UI bug
             _core!.state.capture.hidePreview?.call();
+
+            // Starts recording
+            _recordStream();
           }
         },
       ),
@@ -122,11 +127,13 @@ class CaptureUtil {
     _initEngine();
 
     String? token = await _core!.services.mediaServer.generateRTCToken(
-      channelName: _core!.state.capture.incident!.id,
+      channelName: _core!.state.capture.incident!.stream.channelName,
       role: TokenRole.publisher,
       type: TokenType.userAccount,
       uid: _core!.state.capture.incident!.stream.userId,
     );
+
+    _core!.state.capture.setToken(token);
 
     if (token == null) {
       _uploadChanges(_core!.state.capture.incident!.copyWith(
@@ -138,38 +145,42 @@ class CaptureUtil {
       _core!.state.capture.engine!,
       token: token ?? "",
       uid: _core!.state.capture.incident!.stream.userId,
-      channelId: _core!.state.capture.incident!.id,
+      channelId: _core!.state.capture.incident!.stream.channelName,
     );
-
-    if (token != null) _recordStream(token);
   }
 
-  Future<void> _recordStream(String token) async {
+  Future<void> _recordStream() async {
     // Fetch resourceId
     String? resourceId = await _core!.services.mediaServer.getResourceID(
-      channelName: _core!.state.capture.incident!.id,
+      channelName: _core!.state.capture.incident!.stream.channelName,
       recordingId: _core!.state.capture.incident!.stream.recordingId,
     );
 
     if (resourceId == null) return;
 
+    if (_core!.state.capture.token == null) return;
+
     // Start recording
     StartRecordingResponse? response =
         await _core!.services.mediaServer.startRecording(
-      dir1: _core!.state.capture.incident!.id,
+      dir1: "test2",
       dir2: "raw",
       userUid: _core!.state.capture.incident!.stream.userId.toString(),
-      channelName: _core!.state.capture.incident!.id,
+      channelName: _core!.state.capture.incident!.stream.channelName,
       recordingId: _core!.state.capture.incident!.stream.recordingId,
       resourceId: resourceId,
-      maxIdleTime: _core!.state.capture.settings!.maxIdleTime,
-      token: token,
+      maxIdleTime: 180,
+      token: _core!.state.capture.token!,
     );
 
     if (response == null) return;
 
     await _uploadChanges(_core!.state.capture.incident!.copyWith(
       cloudRecordingAvailable: true,
+      stream: _core!.state.capture.incident!.stream.copyWith(
+        resourceId: resourceId,
+        sid: response.sid,
+      ),
     ));
   }
 
@@ -212,6 +223,8 @@ class CaptureUtil {
           : _core!.state.incidentLog.incidents!.length + 1;
 
       var stream = model.Stream(
+        channelName:
+            "safe", // can only have numbers and characters (no symbols)
         userId: 1111,
         recordingId: 9999,
       );

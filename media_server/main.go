@@ -303,8 +303,6 @@ func startRecording(c *gin.Context) {
 				"streamMode": "standard",
 				"videoStreamType": 0,
 				"maxIdleTime":<maxIdleTime>,
-				"subscribeVideoUids": ["<userUid>"],
-				"subscribeAudioUids": ["<userUid>"],
 				"subscribeUidGroup": 0
 			},
 			"storageConfig":{
