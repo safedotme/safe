@@ -25,6 +25,9 @@ class MediaServer {
     return base64Str;
   }
 
+  String generateChannelName(String id) =>
+      _encodeBase64(id).replaceAll(RegExp("[^A-Za-z0-9]"), "");
+
   /// Stops cloud recording in a livestreaming session
   String _genCredentials(Map<String, String> env) => _encodeBase64(
         "${env["MEDIA_KEY"]}:${env["MEDIA_SECRET"]}",

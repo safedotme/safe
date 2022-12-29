@@ -221,10 +221,11 @@ class CaptureUtil {
       int incidentNumber = _core!.state.incidentLog.incidents == null
           ? 1
           : _core!.state.incidentLog.incidents!.length + 1;
-
       var stream = model.Stream(
-        channelName:
-            "safe", // can only have numbers and characters (no symbols)
+        // Encodes incident id in base 64 and removes all symbols (occational = sign)
+        channelName: _core!.services.mediaServer.generateChannelName(
+          _core!.state.capture.incident!.id,
+        ),
         userId: 1111,
         recordingId: 9999,
       );
