@@ -136,79 +136,88 @@ func stopRecording(c *gin.Context) {
 
 	channelName, customerKey, customerSecret, appId, recordingId, sid, resourceId, cred := parseStopParams(c)
 
-	if !validate(cred) {
-		c.AbortWithStatusJSON(401, gin.H{
-			"message": "Unauthorized",
-			"status":  401,
-		})
-		return
-	}
+	log.Printf(channelName)
+	log.Printf(customerKey)
+	log.Printf(customerSecret)
+	log.Printf(appId)
+	log.Printf(recordingId)
+	log.Printf(sid)
+	log.Printf(resourceId)
+	log.Printf(cred)
 
-	endpoint := "<appId>/cloud_recording/resourceid/<resourceId>/sid/<sid>/mode/individual/stop"
-	body := `
-	{
-		"cname": "<channelName>",
-		"uid": "<recordingId>",
-		"clientRequest":{}
-	}
-	`
+	// if !validate(cred) {
+	// 	c.AbortWithStatusJSON(401, gin.H{
+	// 		"message": "Unauthorized",
+	// 		"status":  401,
+	// 	})
+	// 	return
+	// }
 
-	endpoint = strings.ReplaceAll(endpoint, "<appId>", appId)
-	endpoint = strings.ReplaceAll(endpoint, "<resourceId>", resourceId)
-	endpoint = strings.ReplaceAll(endpoint, "<sid>", sid)
-	body = strings.ReplaceAll(body, "<channelName>", channelName)
-	body = strings.ReplaceAll(body, "<recordingId>", recordingId)
+	// endpoint := "<appId>/cloud_recording/resourceid/<resourceId>/sid/<sid>/mode/individual/stop"
+	// body := `
+	// {
+	// 	"cname": "<channelName>",
+	// 	"uid": "<recordingId>",
+	// 	"clientRequest":{}
+	// }
+	// `
 
-	res, err := request(customerKey, customerSecret, endpoint, body)
+	// endpoint = strings.ReplaceAll(endpoint, "<appId>", appId)
+	// endpoint = strings.ReplaceAll(endpoint, "<resourceId>", resourceId)
+	// endpoint = strings.ReplaceAll(endpoint, "<sid>", sid)
+	// body = strings.ReplaceAll(body, "<channelName>", channelName)
+	// body = strings.ReplaceAll(body, "<recordingId>", recordingId)
 
-	if err != nil {
-		log.Println(err) // Failed to stop recording
-		c.Error(err)
-		errMsg := "Error stopping session recording - " + err.Error()
-		c.AbortWithStatusJSON(400, gin.H{
-			"status": 400,
-			"error":  errMsg,
-		})
+	// res, err := request(customerKey, customerSecret, endpoint, body)
 
-		return
-	}
+	// if err != nil {
+	// 	log.Println(err) // Failed to stop recording
+	// 	c.Error(err)
+	// 	errMsg := "Error stopping session recording - " + err.Error()
+	// 	c.AbortWithStatusJSON(400, gin.H{
+	// 		"status": 400,
+	// 		"error":  errMsg,
+	// 	})
 
-	checkValid := json.Valid(res)
+	// 	return
+	// }
 
-	if !checkValid {
-		errMsg := "Error stopping session recording - Invalid JSON"
-		log.Println(errMsg) // token failed to generate
-		c.AbortWithStatusJSON(400, gin.H{
-			"status": 400,
-			"error":  errMsg,
-		})
+	// checkValid := json.Valid(res)
 
-		return
-	}
+	// if !checkValid {
+	// 	errMsg := "Error stopping session recording - Invalid JSON"
+	// 	log.Println(errMsg) // token failed to generate
+	// 	c.AbortWithStatusJSON(400, gin.H{
+	// 		"status": 400,
+	// 		"error":  errMsg,
+	// 	})
 
-	var decoded StopResponse
+	// 	return
+	// }
 
-	json.Unmarshal(res, &decoded)
+	// var decoded StopResponse
 
-	if err != nil {
-		log.Println(err) // Failed to stop recording
-		c.Error(err)
-		errMsg := "Error stopping session recording - " + err.Error()
-		c.AbortWithStatusJSON(400, gin.H{
-			"status": 400,
-			"error":  errMsg,
-		})
+	// json.Unmarshal(res, &decoded)
 
-		return
-	}
+	// if err != nil {
+	// 	log.Println(err) // Failed to stop recording
+	// 	c.Error(err)
+	// 	errMsg := "Error stopping session recording - " + err.Error()
+	// 	c.AbortWithStatusJSON(400, gin.H{
+	// 		"status": 400,
+	// 		"error":  errMsg,
+	// 	})
 
-	c.JSON(200, gin.H{
-		"resource_id":      decoded.ResourceID,
-		"sid":              decoded.SID,
-		"uploading_status": decoded.Response.UploadingStatus,
-		"filename":         decoded.Response.Files[0].Filename,
-		"slice_start_time": decoded.Response.Files[0].SliceStartTime,
-	})
+	// 	return
+	// }
+
+	// c.JSON(200, gin.H{
+	// 	"resource_id":      decoded.ResourceID,
+	// 	"sid":              decoded.SID,
+	// 	"uploading_status": decoded.Response.UploadingStatus,
+	// 	"filename":         decoded.Response.Files[0].Filename,
+	// 	"slice_start_time": decoded.Response.Files[0].SliceStartTime,
+	// })
 }
 
 func getResourceID(c *gin.Context) {

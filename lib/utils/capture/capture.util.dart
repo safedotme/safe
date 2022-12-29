@@ -11,6 +11,7 @@ import 'package:safe/models/incident/incident.model.dart';
 import 'package:safe/models/incident/location.model.dart';
 import 'package:safe/models/incident/notified_contact.model.dart';
 import 'package:safe/models/media_server/start_recording_response.model.dart';
+import 'package:safe/models/media_server/stop_recording_response.model.dart';
 import 'package:safe/models/user/user.model.dart';
 import 'package:safe/services/media_server/media_server.service.dart';
 import 'package:safe/utils/capture/messages.capture.dart';
@@ -68,11 +69,13 @@ class CaptureUtil {
     _core!.state.capture.overlayController.show();
 
     // Notifies contacts that incident has stopped
-    await _notifyContacts(MessageType.end);
+    // await _notifyContacts(MessageType.end);
 
     // STREAM
-    await _saveStreamRecording();
+
     await _core!.services.agora.stop(_core!.state.capture.engine!);
+    await _saveStreamRecording();
+    await Future.delayed(Duration(seconds: 1));
 
     // UI
     _core!.state.capture.showPreview?.call();
@@ -160,23 +163,30 @@ class CaptureUtil {
 
     if (_core!.state.capture.token == null) return;
 
+//     The prefix's length, including the slashes, should not exceed 128 characters. The string itself should not contain symbols such as slash, underscore, or parenthesis. The supported characters are as follows:
+
+// The 26 lowercase English letters: a to z
+// The 26 uppercase English letters: A to Z
+// The 10 numbers: 0 to 9
+
     // Start recording
     StartRecordingResponse? response =
         await _core!.services.mediaServer.startRecording(
-      dir1: "test2",
+      dir1: "test2", // WILL CAUSE A BREAK
       dir2: "raw",
       userUid: _core!.state.capture.incident!.stream.userId.toString(),
       channelName: _core!.state.capture.incident!.stream.channelName,
       recordingId: _core!.state.capture.incident!.stream.recordingId,
       resourceId: resourceId,
-      maxIdleTime: 180,
+      maxIdleTime: 180, // TODO: CHANGE ME
       token: _core!.state.capture.token!,
     );
 
     if (response == null) return;
 
+    print("SID: ${response.sid}");
+
     await _uploadChanges(_core!.state.capture.incident!.copyWith(
-      cloudRecordingAvailable: true,
       stream: _core!.state.capture.incident!.stream.copyWith(
         resourceId: resourceId,
         sid: response.sid,
@@ -185,9 +195,28 @@ class CaptureUtil {
   }
 
   Future<void> _saveStreamRecording() async {
-    // Call stop recording
+    if (_core!.state.capture.incident!.stream.resourceId == null) return;
 
-    // Update Firebase values
+    if (_core!.state.capture.incident!.stream.sid == null) return;
+
+    print("HERE");
+
+    // Call stop recording
+    await _core!.services.mediaServer.stopRecording(
+      channelName: _core!.state.capture.incident!.stream.channelName,
+      recordingId: _core!.state.capture.incident!.stream.recordingId,
+      resourceId: _core!.state.capture.incident!.stream.resourceId!,
+      sid: _core!.state.capture.incident!.stream.sid!,
+    );
+
+    // if (response == null) return;
+
+    // print("FILENAME: ${response.fileName}");
+
+    // // Update Firebase values
+    // await _uploadChanges(_core!.state.capture.incident!.copyWith(
+    //   cloudRecordingAvailable: true,
+    // ));
   }
 
   // ⬇️ LOCATION
@@ -221,17 +250,20 @@ class CaptureUtil {
       int incidentNumber = _core!.state.incidentLog.incidents == null
           ? 1
           : _core!.state.incidentLog.incidents!.length + 1;
+
+      String incidentId = Uuid().v1();
+
       var stream = model.Stream(
         // Encodes incident id in base 64 and removes all symbols (occational = sign)
         channelName: _core!.services.mediaServer.generateChannelName(
-          _core!.state.capture.incident!.id,
+          incidentId,
         ),
         userId: 1111,
         recordingId: 9999,
       );
 
       incident = Incident(
-        id: Uuid().v1(),
+        id: incidentId,
         pubID: Uuid().v4(),
         stream: stream,
         userId: _core!.services.auth.currentUser!.uid,

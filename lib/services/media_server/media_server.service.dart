@@ -28,6 +28,16 @@ class MediaServer {
   String generateChannelName(String id) =>
       _encodeBase64(id).replaceAll(RegExp("[^A-Za-z0-9]"), "");
 
+  String generateDirectory(String userId) {
+    String noSym = userId.replaceAll(RegExp("[^A-Za-z0-9]"), "");
+
+    if (!(noSym.length >= 125)) {
+      return noSym;
+    }
+
+    return noSym.substring(0, noSym.length - (noSym.length - 125).abs());
+  }
+
   /// Stops cloud recording in a livestreaming session
   String _genCredentials(Map<String, String> env) => _encodeBase64(
         "${env["MEDIA_KEY"]}:${env["MEDIA_SECRET"]}",
@@ -65,6 +75,8 @@ class MediaServer {
           "{endpoint}",
           env["MEDIA_ENDPOINT"]!,
         );
+
+    print(sid);
 
     var json = await _fetch(loaded, MediaAction.stopRecording);
 
@@ -226,6 +238,10 @@ class MediaServer {
     http.Response response = await http.get(Uri.parse(url));
 
     if (response.statusCode != 200) {
+      print(url);
+      print(
+          "RESPONSE: \n\tSTATUS: ${response.statusCode}\n\tBODY: ${response.body}");
+
       // TODO: handle error (LOG)
       return null;
     }
