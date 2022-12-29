@@ -136,88 +136,91 @@ func stopRecording(c *gin.Context) {
 
 	channelName, customerKey, customerSecret, appId, recordingId, sid, resourceId, cred := parseStopParams(c)
 
-	log.Printf(channelName)
-	log.Printf(customerKey)
-	log.Printf(customerSecret)
-	log.Printf(appId)
-	log.Printf(recordingId)
-	log.Printf(sid)
-	log.Printf(resourceId)
-	log.Printf(cred)
+	if !validate(cred) {
+		c.AbortWithStatusJSON(401, gin.H{
+			"message": "Unauthorized",
+			"status":  401,
+		})
+		return
+	}
 
-	// if !validate(cred) {
-	// 	c.AbortWithStatusJSON(401, gin.H{
-	// 		"message": "Unauthorized",
-	// 		"status":  401,
-	// 	})
-	// 	return
-	// }
+	endpoint := "<appId>/cloud_recording/resourceid/<resourceId>/sid/<sid>/mode/individual/stop"
+	body := `
+	{
+		"cname": "<channelName>",
+		"uid": "<recordingId>",
+		"clientRequest":{}
+	}
+	`
 
-	// endpoint := "<appId>/cloud_recording/resourceid/<resourceId>/sid/<sid>/mode/individual/stop"
-	// body := `
-	// {
-	// 	"cname": "<channelName>",
-	// 	"uid": "<recordingId>",
-	// 	"clientRequest":{}
-	// }
-	// `
+	endpoint = strings.ReplaceAll(endpoint, "<appId>", appId)
+	endpoint = strings.ReplaceAll(endpoint, "<resourceId>", resourceId)
+	endpoint = strings.ReplaceAll(endpoint, "<sid>", sid)
+	body = strings.ReplaceAll(body, "<channelName>", channelName)
+	body = strings.ReplaceAll(body, "<recordingId>", recordingId)
 
-	// endpoint = strings.ReplaceAll(endpoint, "<appId>", appId)
-	// endpoint = strings.ReplaceAll(endpoint, "<resourceId>", resourceId)
-	// endpoint = strings.ReplaceAll(endpoint, "<sid>", sid)
-	// body = strings.ReplaceAll(body, "<channelName>", channelName)
-	// body = strings.ReplaceAll(body, "<recordingId>", recordingId)
+	res, statusCode, err := request(customerKey, customerSecret, endpoint, body)
 
-	// res, err := request(customerKey, customerSecret, endpoint, body)
+	if err != nil {
+		log.Println(err) // Failed to stop recording
+		c.Error(err)
+		errMsg := "Error stopping session recording - " + err.Error()
+		c.AbortWithStatusJSON(400, gin.H{
+			"status": 400,
+			"error":  errMsg,
+		})
 
-	// if err != nil {
-	// 	log.Println(err) // Failed to stop recording
-	// 	c.Error(err)
-	// 	errMsg := "Error stopping session recording - " + err.Error()
-	// 	c.AbortWithStatusJSON(400, gin.H{
-	// 		"status": 400,
-	// 		"error":  errMsg,
-	// 	})
+		return
+	}
 
-	// 	return
-	// }
+	if statusCode != 200 {
+		log.Println("Response was not successful - returned ", statusCode) // Failed to stop recording
+		errMsg := "Response was not successful - returned " + strconv.Itoa(statusCode)
+		c.AbortWithStatusJSON(statusCode, gin.H{
+			"status":   statusCode,
+			"error":    errMsg,
+			"response": string(res),
+		})
 
-	// checkValid := json.Valid(res)
+		return
+	}
 
-	// if !checkValid {
-	// 	errMsg := "Error stopping session recording - Invalid JSON"
-	// 	log.Println(errMsg) // token failed to generate
-	// 	c.AbortWithStatusJSON(400, gin.H{
-	// 		"status": 400,
-	// 		"error":  errMsg,
-	// 	})
+	checkValid := json.Valid(res)
 
-	// 	return
-	// }
+	if !checkValid {
+		errMsg := "Error stopping session recording - Invalid JSON"
+		log.Println(errMsg) // token failed to generate
+		c.AbortWithStatusJSON(400, gin.H{
+			"status": 400,
+			"error":  errMsg,
+		})
 
-	// var decoded StopResponse
+		return
+	}
 
-	// json.Unmarshal(res, &decoded)
+	var decoded StopResponse
 
-	// if err != nil {
-	// 	log.Println(err) // Failed to stop recording
-	// 	c.Error(err)
-	// 	errMsg := "Error stopping session recording - " + err.Error()
-	// 	c.AbortWithStatusJSON(400, gin.H{
-	// 		"status": 400,
-	// 		"error":  errMsg,
-	// 	})
+	json.Unmarshal(res, &decoded)
 
-	// 	return
-	// }
+	if err != nil {
+		log.Println(err) // Failed to stop recording
+		c.Error(err)
+		errMsg := "Error stopping session recording - " + err.Error()
+		c.AbortWithStatusJSON(400, gin.H{
+			"status": 400,
+			"error":  errMsg,
+		})
 
-	// c.JSON(200, gin.H{
-	// 	"resource_id":      decoded.ResourceID,
-	// 	"sid":              decoded.SID,
-	// 	"uploading_status": decoded.Response.UploadingStatus,
-	// 	"filename":         decoded.Response.Files[0].Filename,
-	// 	"slice_start_time": decoded.Response.Files[0].SliceStartTime,
-	// })
+		return
+	}
+
+	c.JSON(200, gin.H{
+		"resource_id":      decoded.ResourceID,
+		"sid":              decoded.SID,
+		"uploading_status": decoded.Response.UploadingStatus,
+		"filename":         decoded.Response.Files[0].Filename,
+		"slice_start_time": decoded.Response.Files[0].SliceStartTime,
+	})
 }
 
 func getResourceID(c *gin.Context) {
@@ -250,7 +253,7 @@ func getResourceID(c *gin.Context) {
 	body = strings.ReplaceAll(body, `<recordingId>`, recordingId)
 	endpoint = strings.ReplaceAll(endpoint, `<appId>`, appId)
 
-	res, err := request(customerKey, customerSecret, endpoint, body)
+	res, statusCode, err := request(customerKey, customerSecret, endpoint, body)
 
 	if err != nil {
 		log.Println(err) // token failed to generate
@@ -259,6 +262,18 @@ func getResourceID(c *gin.Context) {
 		c.AbortWithStatusJSON(400, gin.H{
 			"status": 400,
 			"error":  errMsg,
+		})
+
+		return
+	}
+
+	if statusCode != 200 {
+		log.Println("Response was not successful - returned ", statusCode) // Failed to stop recording
+		errMsg := "Response was not successful - returned " + strconv.Itoa(statusCode)
+		c.AbortWithStatusJSON(statusCode, gin.H{
+			"status":   statusCode,
+			"error":    errMsg,
+			"response": string(res),
 		})
 
 		return
@@ -347,7 +362,7 @@ func startRecording(c *gin.Context) {
 	body = strings.ReplaceAll(body, `<dir1>`, dir1)
 	body = strings.ReplaceAll(body, `<dir2>`, dir2)
 
-	res, err := request(customerKey, customerSecret, endpoint, body)
+	res, statusCode, err := request(customerKey, customerSecret, endpoint, body)
 
 	if err != nil {
 		log.Println(err) // Failed to start recording
@@ -356,6 +371,18 @@ func startRecording(c *gin.Context) {
 		c.AbortWithStatusJSON(400, gin.H{
 			"status": 400,
 			"error":  errMsg,
+		})
+
+		return
+	}
+
+	if statusCode != 200 {
+		log.Println("Response was not successful - returned ", statusCode) // Failed to stop recording
+		errMsg := "Response was not successful - returned " + strconv.Itoa(statusCode)
+		c.AbortWithStatusJSON(statusCode, gin.H{
+			"status":   statusCode,
+			"error":    errMsg,
+			"response": string(res),
 		})
 
 		return
@@ -427,7 +454,7 @@ func getRtcToken(c *gin.Context) {
 	}
 }
 
-func request(customerKey, customerSecret, endpoint, bodyBase string) (rid []byte, err error) {
+func request(customerKey, customerSecret, endpoint, bodyBase string) (rid []byte, statusCode int, err error) {
 
 	// Concatenate customer key and customer secret and use base64 to encode the concatenated string
 	plainCredentials := customerKey + ":" + customerSecret
@@ -443,7 +470,7 @@ func request(customerKey, customerSecret, endpoint, bodyBase string) (rid []byte
 
 	if prob != nil {
 		fmt.Println(prob)
-		return nil, prob
+		return nil, 400, prob
 	}
 	// Add Authorization header
 	req.Header.Add("Authorization", "Basic "+base64Credentials)
@@ -453,17 +480,18 @@ func request(customerKey, customerSecret, endpoint, bodyBase string) (rid []byte
 	res, prob := client.Do(req)
 	if prob != nil {
 		fmt.Println(prob)
-		return nil, prob
+		return nil, 400, prob
 	}
 	defer res.Body.Close()
 
 	body, prob := ioutil.ReadAll(res.Body)
+
 	if prob != nil {
 		fmt.Println(prob)
-		return nil, prob
+		return nil, res.StatusCode, prob
 	}
 
-	return body, prob
+	return body, res.StatusCode, prob
 }
 
 func parseStopParams(c *gin.Context) (channelName, customerKey, customerSecret, appId, recordingId, sid, resourceId, cred string) {

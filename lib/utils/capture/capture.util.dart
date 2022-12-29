@@ -163,16 +163,11 @@ class CaptureUtil {
 
     if (_core!.state.capture.token == null) return;
 
-//     The prefix's length, including the slashes, should not exceed 128 characters. The string itself should not contain symbols such as slash, underscore, or parenthesis. The supported characters are as follows:
-
-// The 26 lowercase English letters: a to z
-// The 26 uppercase English letters: A to Z
-// The 10 numbers: 0 to 9
-
-    // Start recording
     StartRecordingResponse? response =
         await _core!.services.mediaServer.startRecording(
-      dir1: "test2", // WILL CAUSE A BREAK
+      dir1: _core!.services.mediaServer.generateDirectory(
+        _core!.state.capture.incident!.userId,
+      ),
       dir2: "raw",
       userUid: _core!.state.capture.incident!.stream.userId.toString(),
       channelName: _core!.state.capture.incident!.stream.channelName,
@@ -198,8 +193,6 @@ class CaptureUtil {
     if (_core!.state.capture.incident!.stream.resourceId == null) return;
 
     if (_core!.state.capture.incident!.stream.sid == null) return;
-
-    print("HERE");
 
     // Call stop recording
     await _core!.services.mediaServer.stopRecording(
