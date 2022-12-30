@@ -102,20 +102,19 @@ class CaptureUtil {
       _core!.state.capture.engine!,
       RtcEngineEventHandler(
         onError: (err, msg) {
+          // TODO: (LOG)
           print("$err: $msg");
         },
         onJoinChannelSuccess: (connection, elapsed) {
           _recordStream();
-        },
-        onLocalVideoStateChanged: (type, state, err) {
-          // Triggers animation
-          if (state == LocalVideoStreamState.localVideoStreamStateCapturing &&
-              !initFlip) {
-            initFlip = true;
 
-            // Hides camera preview to prevent UI bug
-            _core!.state.capture.hidePreview?.call();
-          }
+          // Triggers animation
+          if (initFlip) return;
+
+          initFlip = true;
+
+          // Hides camera preview to prevent UI bug
+          _core!.state.capture.hidePreview?.call();
         },
       ),
       frameRate: _core!.state.capture.settings!.frameRate,
@@ -184,8 +183,6 @@ class CaptureUtil {
     );
 
     if (response == null) return;
-
-    print("SID: ${response.sid}");
 
     await _uploadChanges(_core!.state.capture.incident!.copyWith(
       stream: _core!.state.capture.incident!.stream.copyWith(
