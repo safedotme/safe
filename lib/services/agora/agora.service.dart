@@ -43,7 +43,15 @@ class AgoraService {
   }
 
   Future<void> flipCam(RtcEngine engine, Core core, {CamType? type}) async {
+    // Called when the type is unknown, only want to flip camera
     if (type == null) {
+      if (core.state.capture.isFlashOn) {
+        core.state.capture.flashButtonController.setActive(
+          false,
+        );
+        core.state.capture.setFlash();
+      }
+
       core.state.capture.changeCam();
       return engine.switchCamera();
     }
