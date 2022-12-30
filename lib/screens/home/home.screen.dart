@@ -60,7 +60,6 @@ class _HomeScreenState extends State<HomeScreen> {
     return MutableScaffold(
       overlays: [
         Capture(),
-        //EmergencyServicesPopup(),
       ],
       underlays: [
         Padding(

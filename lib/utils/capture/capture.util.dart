@@ -198,21 +198,23 @@ class CaptureUtil {
     if (_core!.state.capture.incident!.stream.sid == null) return;
 
     // Call stop recording
-    await _core!.services.mediaServer.stopRecording(
+    StopRecordingResponse? response =
+        await _core!.services.mediaServer.stopRecording(
       channelName: _core!.state.capture.incident!.stream.channelName,
       recordingId: _core!.state.capture.incident!.stream.recordingId,
       resourceId: _core!.state.capture.incident!.stream.resourceId!,
       sid: _core!.state.capture.incident!.stream.sid!,
     );
 
-    // if (response == null) return;
+    if (response == null) return;
 
-    // print("FILENAME: ${response.fileName}");
-
-    // // Update Firebase values
-    // await _uploadChanges(_core!.state.capture.incident!.copyWith(
-    //   cloudRecordingAvailable: true,
-    // ));
+    // Update Firebase values
+    await _uploadChanges(_core!.state.capture.incident!.copyWith(
+      cloudRecordingAvailable: true,
+      stream: _core!.state.capture.incident!.stream.copyWith(
+        filePath: response.fileName,
+      ),
+    ));
   }
 
   // ⬇️ LOCATION

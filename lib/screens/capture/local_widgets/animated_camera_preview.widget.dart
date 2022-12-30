@@ -243,8 +243,6 @@ class _AnimatedCameraPreviewState extends State<AnimatedCameraPreview>
   }
 
   Future<void> animateDrag() async {
-    double minPercentage = 0.15;
-
     if (dragPercentage! >= 0.15) {
       await animateEndFromPos();
     } else {

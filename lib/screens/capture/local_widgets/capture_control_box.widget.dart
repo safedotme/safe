@@ -123,6 +123,33 @@ class _CaptureControlBoxState extends State<CaptureControlBox> {
                                   },
                                 ),
                                 SizedBox(height: 10),
+                                Observer(
+                                  builder: (_) => ControlButton(
+                                    controller: core
+                                        .state.capture.flashButtonController,
+                                    text: (core.utils.language.langMap[core
+                                                    .state
+                                                    .preferences
+                                                    .language]!["capture"]
+                                                ["controls"]["flash"]["header"]
+                                            as String)
+                                        .replaceAll(
+                                      "{STATE}",
+                                      core.state.capture.isFlashOn
+                                          ? "On"
+                                          : "Off",
+                                    ),
+                                    icon: MutableIcons.shield,
+                                    iconSize: Size(15, 17),
+                                    onTap: () async {
+                                      await core.services.agora.toggleFlash(
+                                        core.state.capture.engine!,
+                                        core,
+                                      );
+                                    },
+                                  ),
+                                ),
+                                SizedBox(height: 10),
                                 ControlButton(
                                   text: core.utils.language.langMap[core.state
                                           .preferences.language]!["capture"]
@@ -137,21 +164,6 @@ class _CaptureControlBoxState extends State<CaptureControlBox> {
                                       builder: (_) => CaptureStopAlertDialog(),
                                     );
                                   },
-                                ),
-                                SizedBox(height: 10),
-                                Observer(
-                                  builder: (_) => ControlButton(
-                                    active: core.state.capture
-                                        .emergencyServicesNotified,
-                                    text: core.utils.language.langMap[core.state
-                                            .preferences.language]!["capture"]
-                                        ["controls"]["911"]["header"],
-                                    icon: MutableIcons.shield,
-                                    iconSize: Size(15, 17),
-                                    onTap: () {
-                                      print("navigate to 911 popup");
-                                    },
-                                  ),
                                 ),
                               ],
                             ),

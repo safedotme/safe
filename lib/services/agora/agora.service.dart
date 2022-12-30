@@ -61,6 +61,9 @@ class AgoraService {
 
   Future<void> toggleFlash(RtcEngine engine, Core core) async {
     await engine.setCameraTorchOn(!core.state.capture.isFlashOn);
+    core.state.capture.flashButtonController.setActive(
+      !core.state.capture.isFlashOn,
+    );
     core.state.capture.setFlash();
   }
 

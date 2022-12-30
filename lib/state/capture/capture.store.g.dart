@@ -201,23 +201,6 @@ mixin _$CaptureStore on _CaptureStore, Store {
     });
   }
 
-  late final _$emergencyServicesNotifiedAtom =
-      Atom(name: '_CaptureStore.emergencyServicesNotified', context: context);
-
-  @override
-  bool get emergencyServicesNotified {
-    _$emergencyServicesNotifiedAtom.reportRead();
-    return super.emergencyServicesNotified;
-  }
-
-  @override
-  set emergencyServicesNotified(bool value) {
-    _$emergencyServicesNotifiedAtom
-        .reportWrite(value, super.emergencyServicesNotified, () {
-      super.emergencyServicesNotified = value;
-    });
-  }
-
   late final _$engineAtom =
       Atom(name: '_CaptureStore.engine', context: context);
 
@@ -430,6 +413,23 @@ mixin _$CaptureStore on _CaptureStore, Store {
     });
   }
 
+  late final _$flashButtonControllerAtom =
+      Atom(name: '_CaptureStore.flashButtonController', context: context);
+
+  @override
+  ControlButtonController get flashButtonController {
+    _$flashButtonControllerAtom.reportRead();
+    return super.flashButtonController;
+  }
+
+  @override
+  set flashButtonController(ControlButtonController value) {
+    _$flashButtonControllerAtom.reportWrite(value, super.flashButtonController,
+        () {
+      super.flashButtonController = value;
+    });
+  }
+
   late final _$_CaptureStoreActionController =
       ActionController(name: '_CaptureStore', context: context);
 
@@ -505,17 +505,6 @@ mixin _$CaptureStore on _CaptureStore, Store {
         name: '_CaptureStore.addToBattery');
     try {
       return super.addToBattery(b);
-    } finally {
-      _$_CaptureStoreActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
-  void setEmergencyServicesNotified(bool b) {
-    final _$actionInfo = _$_CaptureStoreActionController.startAction(
-        name: '_CaptureStore.setEmergencyServicesNotified');
-    try {
-      return super.setEmergencyServicesNotified(b);
     } finally {
       _$_CaptureStoreActionController.endAction(_$actionInfo);
     }
@@ -646,7 +635,6 @@ type: ${type},
 locationUpdates: ${locationUpdates},
 overlayController: ${overlayController},
 battery: ${battery},
-emergencyServicesNotified: ${emergencyServicesNotified},
 engine: ${engine},
 showPreview: ${showPreview},
 hidePreview: ${hidePreview},
@@ -659,7 +647,8 @@ settings: ${settings},
 shouldFlashLimitBanner: ${shouldFlashLimitBanner},
 limErrState: ${limErrState},
 limErrorBannerController: ${limErrorBannerController},
-incidentRecordedBannerPanelController: ${incidentRecordedBannerPanelController}
+incidentRecordedBannerPanelController: ${incidentRecordedBannerPanelController},
+flashButtonController: ${flashButtonController}
     ''';
   }
 }

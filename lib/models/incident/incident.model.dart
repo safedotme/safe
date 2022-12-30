@@ -1,6 +1,5 @@
 // ignore_for_file: no_leading_underscores_for_local_identifiers
 import 'package:safe/models/incident/battery.model.dart';
-import 'package:safe/models/incident/emergency_services.model.dart';
 import 'package:safe/models/incident/location.model.dart';
 import 'package:safe/models/incident/stream.model.dart';
 import 'package:safe/models/incident/notified_contact.model.dart';
@@ -21,7 +20,6 @@ class Incident {
   final String pubID;
   final List<NotifiedContact>? contactLog;
   final List<Battery>? battery;
-  final List<EmergencyServices>? emergencyServices;
 
   Incident({
     required this.id,
@@ -38,7 +36,6 @@ class Incident {
     this.contactLog,
     this.battery,
     this.thumbnail,
-    this.emergencyServices,
   });
 
   factory Incident.fromJson(Map<String, dynamic> json) {
@@ -87,7 +84,6 @@ class Incident {
     List<NotifiedContact>? contactLog,
     List<Battery>? battery,
     DateTime? stopTime,
-    List<EmergencyServices>? emergencyServices,
   }) {
     return Incident(
       id: id ?? this.id,
@@ -105,7 +101,6 @@ class Incident {
       location: location ?? this.location,
       contactLog: contactLog ?? this.contactLog,
       battery: battery ?? this.battery,
-      emergencyServices: emergencyServices ?? this.emergencyServices,
     );
   }
 

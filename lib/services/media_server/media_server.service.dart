@@ -82,9 +82,7 @@ class MediaServer {
 
     if (json["error"] != null) return null;
 
-    print(json["payload"]);
-    return null;
-    //return StopRecordingResponse.fromJson(json["payload"]);
+    return StopRecordingResponse.fromJson(json["payload"]);
   }
 
   /// Fetches ID required for cloud recording

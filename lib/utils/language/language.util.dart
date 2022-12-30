@@ -182,7 +182,7 @@ class LanguageUtil {
       ],
       "controls": {
         "flip_camera": {"header": "Flip Camera"},
-        "911": {"header": "Notify 911"},
+        "flash": {"header": "Flashlight {STATE}"},
         "stop": {"header": "Stop Recording"},
         "stop_alert": {
           "header": "Stop Recording",

@@ -5,6 +5,7 @@ import 'package:safe/models/incident/battery.model.dart';
 import 'package:safe/models/incident/incident.model.dart';
 import 'package:safe/models/incident/location.model.dart';
 import 'package:safe/screens/capture/local_widgets/capture_text_shimmer.widget.dart';
+import 'package:safe/screens/capture/local_widgets/control_button.widget.dart';
 import 'package:safe/utils/credit/credit.util.dart';
 import 'package:safe/utils/incident/incident.util.dart';
 import 'package:safe/widgets/mutable_overlay/mutable_overlay.widget.dart';
@@ -73,12 +74,6 @@ abstract class _CaptureStore with Store {
 
   @action
   void addToBattery(Battery b) => battery.add(b);
-
-  @observable
-  bool emergencyServicesNotified = false;
-
-  @action
-  void setEmergencyServicesNotified(bool b) => emergencyServicesNotified = b;
 
   // STREAM
   @observable
@@ -152,4 +147,7 @@ abstract class _CaptureStore with Store {
 
   @observable
   PanelController incidentRecordedBannerPanelController = PanelController();
+
+  @observable
+  ControlButtonController flashButtonController = ControlButtonController();
 }

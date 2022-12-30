@@ -55,6 +55,7 @@ class _CaptureState extends State<Capture> {
         canRepaint = true;
       },
       isDismissable: false,
+      isOpen: true,
       controller: core.state.capture.controller,
       body: Container(
         color: kColorMap[MutableColor.neutral10],

@@ -15,7 +15,7 @@ class StopRecordingResponse {
 
   factory StopRecordingResponse.fromJson(Map json) {
     return StopRecordingResponse(
-      resourceId: json["resourceId"],
+      resourceId: json["resource_id"],
       sid: json["sid"],
       uploadingStatus: json["uploading_status"],
       fileName: json["filename"],
