@@ -115,9 +115,6 @@ class CaptureUtil {
 
             // Hides camera preview to prevent UI bug
             _core!.state.capture.hidePreview?.call();
-
-            // Starts recording
-
           }
         },
       ),
@@ -138,8 +135,6 @@ class CaptureUtil {
       type: TokenType.userAccount,
       uid: _core!.state.capture.incident!.stream.userId,
     );
-
-    _core!.state.capture.setToken(token);
 
     if (token == null) {
       _uploadChanges(_core!.state.capture.incident!.copyWith(
@@ -164,12 +159,20 @@ class CaptureUtil {
 
     if (resourceId == null) return;
 
-    if (_core!.state.capture.token == null) return;
+    // New RTC token must be generated for recording worker
+    String? recordToken = await _core!.services.mediaServer.generateRTCToken(
+      channelName: _core!.state.capture.incident!.stream.channelName,
+      role: TokenRole.publisher,
+      type: TokenType.userAccount,
+      uid: _core!.state.capture.incident!.stream.recordingId,
+    );
+
+    if (recordToken == null) return;
 
     StartRecordingResponse? response =
         await _core!.services.mediaServer.startRecording(
       dir1: _core!.services.mediaServer.generateDirectory(
-        _core!.state.capture.incident!.userId,
+        _core!.state.capture.incident!.id,
       ),
       dir2: "raw",
       userUid: _core!.state.capture.incident!.stream.userId.toString(),
@@ -177,7 +180,7 @@ class CaptureUtil {
       recordingId: _core!.state.capture.incident!.stream.recordingId,
       resourceId: resourceId,
       maxIdleTime: 180, // TODO: CHANGE ME
-      token: _core!.state.capture.token!,
+      token: recordToken,
     );
 
     if (response == null) return;

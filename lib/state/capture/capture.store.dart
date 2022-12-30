@@ -152,10 +152,4 @@ abstract class _CaptureStore with Store {
 
   @observable
   PanelController incidentRecordedBannerPanelController = PanelController();
-
-  @observable
-  String? token;
-
-  @action
-  void setToken(String? t) => token = t;
 }

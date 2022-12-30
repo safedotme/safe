@@ -76,13 +76,13 @@ class MediaServer {
           env["MEDIA_ENDPOINT"]!,
         );
 
-    print(sid);
-
     var json = await _fetch(loaded, MediaAction.stopRecording);
 
     if (json == null) return null;
 
-    return StopRecordingResponse.fromJson(json);
+    if (json["error"] != null) return null;
+
+    return StopRecordingResponse.fromJson(json["payload"]);
   }
 
   /// Fetches ID required for cloud recording
@@ -116,7 +116,9 @@ class MediaServer {
 
     if (json == null) return null;
 
-    return json["resource_id"];
+    if (json["error"] != null) return null;
+
+    return json["payload"]["resource_id"];
   }
 
   /// Takes recording options and begins recording a livestreaming session
@@ -191,13 +193,13 @@ class MediaServer {
         .replaceAll("{endpoint}", env["MEDIA_ENDPOINT"]!)
         .replaceAll("{cred}", _genCredentials(env));
 
-    print(loaded);
-
     var json = await _fetch(loaded, MediaAction.startRecording);
 
     if (json == null) return null;
 
-    return StartRecordingResponse.fromJson(json);
+    if (json["error"] != null) return null;
+
+    return StartRecordingResponse.fromJson(json["payload"]);
   }
 
   /// Generates token used to start a livestream & recording session
@@ -227,28 +229,30 @@ class MediaServer {
     //Make Request
     var json = await _fetch(loaded, MediaAction.getRTCToken);
 
-    print(json);
-
     if (json == null) return null;
 
-    return json["rtcToken"];
+    if (json["error"] != null) return null;
+
+    return json["payload"]["rtcToken"];
   }
 
   Future<Map?> _fetch(String url, MediaAction action) async {
     http.Response response = await http.get(Uri.parse(url));
 
-    if (response.statusCode != 200) {
-      print(url);
-      print(
-          "RESPONSE: \n\tSTATUS: ${response.statusCode}\n\tBODY: ${response.body}");
-
-      // TODO: handle error (LOG)
-      return null;
-    }
-
     Map<String, dynamic> json = jsonDecode(response.body);
 
-    return json;
+    if (response.statusCode != 200) {
+      return {
+        "status": response.statusCode,
+        "error": json,
+      };
+    }
+
+    return {
+      "status": response.statusCode,
+      "error": null,
+      "payload": json,
+    };
   }
 
   String unpackTokenType(TokenType type) {
