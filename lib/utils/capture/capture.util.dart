@@ -104,6 +104,9 @@ class CaptureUtil {
         onError: (err, msg) {
           print("$err: $msg");
         },
+        onJoinChannelSuccess: (connection, elapsed) {
+          _recordStream();
+        },
         onLocalVideoStateChanged: (type, state, err) {
           // Triggers animation
           if (state == LocalVideoStreamState.localVideoStreamStateCapturing &&
@@ -114,7 +117,7 @@ class CaptureUtil {
             _core!.state.capture.hidePreview?.call();
 
             // Starts recording
-            _recordStream();
+
           }
         },
       ),
