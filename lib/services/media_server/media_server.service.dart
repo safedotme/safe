@@ -197,6 +197,8 @@ class MediaServer {
 
     if (json == null) return null;
 
+    print(json);
+
     if (json["error"] != null) return null;
 
     return StartRecordingResponse.fromJson(json["payload"]);

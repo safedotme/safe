@@ -178,7 +178,7 @@ class CaptureUtil {
       channelName: _core!.state.capture.incident!.stream.channelName,
       recordingId: _core!.state.capture.incident!.stream.recordingId,
       resourceId: resourceId,
-      maxIdleTime: 180, // TODO: CHANGE ME
+      maxIdleTime: _core!.state.capture.settings!.maxIdleTime,
       token: recordToken,
     );
 
