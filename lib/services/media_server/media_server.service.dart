@@ -43,6 +43,19 @@ class MediaServer {
         "${env["MEDIA_KEY"]}:${env["MEDIA_SECRET"]}",
       );
 
+  /// Handle "network jitter". Reference code 65 in Agora docs for more information https://docs.agora.io/en/cloud-recording/reference/common-errors#:~:text=65%3A%20Usually%20caused%20by%20network%20jitter.
+  Future<Map?> _handleNetworkJitter(
+    String url,
+    MediaAction action,
+    int timeFactr,
+  ) async {
+    // Increases from 3 to 9 (ie, 3, 6, 9)
+    await Future.delayed(Duration(
+      seconds: 3 * timeFactr,
+    ));
+    return _fetch(url, action);
+  }
+
   Future<StopRecordingResponse?> stopRecording({
     required String channelName,
     required int recordingId,
@@ -80,7 +93,17 @@ class MediaServer {
 
     if (json == null) return null;
 
-    if (json["error"] != null) return null;
+    if (json["error"] != null) {
+      Map? res = await _implementHandleNetworkJitter(
+        loaded,
+        MediaAction.stopRecording,
+        json,
+      );
+
+      if (res == null) return null;
+
+      return StopRecordingResponse.fromJson(json["payload"]);
+    }
 
     return StopRecordingResponse.fromJson(json["payload"]);
   }
@@ -116,7 +139,17 @@ class MediaServer {
 
     if (json == null) return null;
 
-    if (json["error"] != null) return null;
+    if (json["error"] != null) {
+      Map? res = await _implementHandleNetworkJitter(
+        loaded,
+        MediaAction.getResourceID,
+        json,
+      );
+
+      if (res == null) return null;
+
+      return json["payload"]["resource_id"];
+    }
 
     return json["payload"]["resource_id"];
   }
@@ -197,11 +230,70 @@ class MediaServer {
 
     if (json == null) return null;
 
-    print(json);
+    if (json["error"] != null) {
+      Map? res = await _implementHandleNetworkJitter(
+        loaded,
+        MediaAction.startRecording,
+        json,
+      );
 
-    if (json["error"] != null) return null;
+      if (res == null) return null;
+
+      return StartRecordingResponse.fromJson(json["payload"]);
+    }
 
     return StartRecordingResponse.fromJson(json["payload"]);
+  }
+
+  Future<Map?> _implementHandleNetworkJitter(
+    String url,
+    MediaAction action,
+    Map? response,
+  ) async {
+    bool check65Exists = false;
+
+    try {
+      check65Exists = (response?["error"]["response"] as String).contains(
+        ":65,",
+      );
+    } catch (e) {
+      print(e);
+    }
+
+    if (!check65Exists) return null;
+
+    bool shouldStop = false;
+    int jitterRetries = 0;
+    Map? json;
+
+    // Give network chance to respond
+    while (!shouldStop) {
+      jitterRetries++;
+
+      // Fetch
+      json = await _handleNetworkJitter(url, action, jitterRetries);
+
+      if (json?["status"] == 200) {
+        shouldStop = true;
+      }
+
+      // Determine if should continue
+      bool retriesUsed = jitterRetries == 2;
+      bool isJsonNull = json == null;
+      bool isError65 = true;
+
+      try {
+        isError65 = (json?["error"]["response"] as String).contains(":65,");
+      } catch (e) {
+        print(e);
+      }
+
+      shouldStop = retriesUsed || isJsonNull || !isError65;
+    }
+
+    if (json?["status"] != 200) return null;
+
+    return json;
   }
 
   /// Generates token used to start a livestream & recording session
@@ -233,7 +325,17 @@ class MediaServer {
 
     if (json == null) return null;
 
-    if (json["error"] != null) return null;
+    if (json["error"] != null) {
+      Map? res = await _implementHandleNetworkJitter(
+        loaded,
+        MediaAction.getRTCToken,
+        json,
+      );
+
+      if (res == null) return null;
+
+      return json["payload"]["rtcToken"];
+    }
 
     return json["payload"]["rtcToken"];
   }
