@@ -17,7 +17,15 @@ class GeocoderService {
         .replaceAll("{LAT}", lat.toString())
         .replaceAll("{LONG}", long.toString());
 
-    var response = await http.get(Uri.parse(loaded));
+    http.Response? response;
+
+    try {
+      response = await http.get(Uri.parse(loaded));
+    } catch (e) {
+      // (LOG) Not able to connect to GEOCODER
+    }
+
+    if (response == null) return null;
 
     Map<String, dynamic> json = jsonDecode(response.body);
 

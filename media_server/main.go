@@ -331,10 +331,6 @@ func startRecording(c *gin.Context) {
 				"subscribeVideoUids": ["<userUid>"],
 				"subscribeUidGroup": 0
 			},
-			"snapshotConfig": {
-				"captureInterval": 100,
-				"fileType": ["jpg"]
-			},
 			"storageConfig":{
 				"vendor":6,
 				"region":0,

@@ -341,7 +341,15 @@ class MediaServer {
   }
 
   Future<Map?> _fetch(String url, MediaAction action) async {
-    http.Response response = await http.get(Uri.parse(url));
+    http.Response? response;
+
+    try {
+      response = await http.get(Uri.parse(url));
+    } catch (e) {
+      // (LOG) NOT ABLE TO CONNECT TO MEDIA_SERVER
+    }
+
+    if (response == null) return null;
 
     Map<String, dynamic> json = jsonDecode(response.body);
 

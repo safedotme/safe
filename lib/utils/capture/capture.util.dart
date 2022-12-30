@@ -48,10 +48,10 @@ class CaptureUtil {
     _stream();
 
     // // ⬇️ LOCATION + SMS
-    // _locationListen();
+    _locationListen();
 
     // // ⬇️ BATTERY
-    // _batteryListen();
+    _batteryListen();
   }
 
   void stop() async {
@@ -69,7 +69,7 @@ class CaptureUtil {
     _core!.state.capture.overlayController.show();
 
     // Notifies contacts that incident has stopped
-    // await _notifyContacts(MessageType.end);
+    await _notifyContacts(MessageType.end);
 
     // STREAM
 
