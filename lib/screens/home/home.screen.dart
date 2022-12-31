@@ -55,7 +55,6 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     queryData = MediaQuery.of(context);
     Core core = Provider.of<Core>(context, listen: false);
-
     return MutableScaffold(
       overlays: [
         CaptureScreen(),

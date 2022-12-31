@@ -58,7 +58,14 @@ class _AuthOtpInputPanelState extends State<AuthOtpInputPanel> {
     String verificationId,
     String otp,
   ) async {
+    // Check if is in create account flow
+    if (core.state.auth.authType == AuthType.signup) {
+      // Trigger welcome banner
+      core.state.auth.setIsTutorialOpen(true);
+    }
+
     core.state.auth.overlayController.show();
+
     Map<String, dynamic> response = await core.services.auth.verifyOTP(
       otp,
       verificationId,
@@ -83,12 +90,6 @@ class _AuthOtpInputPanelState extends State<AuthOtpInputPanel> {
       core.state.auth.overlayController.hide();
       handleError("invalid-verification-code");
       return;
-    }
-
-    // Check if is in create account flow
-    if (core.state.auth.authType == AuthType.signup) {
-      // Trigger welcome banner
-      core.state.auth.tutorialController.open();
     }
   }
 

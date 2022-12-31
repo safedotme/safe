@@ -426,6 +426,22 @@ mixin _$AuthStore on _AuthStore, Store {
     });
   }
 
+  late final _$isTutorialOpenAtom =
+      Atom(name: '_AuthStore.isTutorialOpen', context: context);
+
+  @override
+  bool get isTutorialOpen {
+    _$isTutorialOpenAtom.reportRead();
+    return super.isTutorialOpen;
+  }
+
+  @override
+  set isTutorialOpen(bool value) {
+    _$isTutorialOpenAtom.reportWrite(value, super.isTutorialOpen, () {
+      super.isTutorialOpen = value;
+    });
+  }
+
   late final _$_AuthStoreActionController =
       ActionController(name: '_AuthStore', context: context);
 
@@ -628,6 +644,17 @@ mixin _$AuthStore on _AuthStore, Store {
   }
 
   @override
+  void setIsTutorialOpen(bool v) {
+    final _$actionInfo = _$_AuthStoreActionController.startAction(
+        name: '_AuthStore.setIsTutorialOpen');
+    try {
+      return super.setIsTutorialOpen(v);
+    } finally {
+      _$_AuthStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 authType: ${authType},
@@ -655,7 +682,8 @@ onPick: ${onPick},
 verificationId: ${verificationId},
 resendToken: ${resendToken},
 overlayController: ${overlayController},
-tutorialController: ${tutorialController}
+tutorialController: ${tutorialController},
+isTutorialOpen: ${isTutorialOpen}
     ''';
   }
 }

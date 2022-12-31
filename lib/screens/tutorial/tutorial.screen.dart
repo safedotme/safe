@@ -169,6 +169,7 @@ class _TutorialScreenState extends State<TutorialScreen> {
     return Observer(
       builder: (_) => MutableScreenTransition(
         controller: core.state.auth.tutorialController,
+        isOpen: core.state.auth.isTutorialOpen,
         onOpen: () {
           animate();
         },

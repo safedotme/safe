@@ -155,4 +155,10 @@ abstract class _AuthStore with Store {
 
   @observable
   ScreenTransitionController tutorialController = ScreenTransitionController();
+
+  @observable
+  bool isTutorialOpen = false;
+
+  @action
+  void setIsTutorialOpen(bool v) => isTutorialOpen = v;
 }
