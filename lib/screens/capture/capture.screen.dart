@@ -10,12 +10,12 @@ import 'package:safe/widgets/mutable_loader/mutable_loader.widget.dart';
 import 'package:safe/widgets/mutable_overlay/mutable_overlay.widget.dart';
 import 'package:safe/widgets/mutable_screen_transition/mutable_screen_transition.widget.dart';
 
-class Capture extends StatefulWidget {
+class CaptureScreen extends StatefulWidget {
   @override
-  State<Capture> createState() => _CaptureState();
+  State<CaptureScreen> createState() => _CaptureScreenState();
 }
 
-class _CaptureState extends State<Capture> {
+class _CaptureScreenState extends State<CaptureScreen> {
   late Core core;
   bool canRepaint = true;
 

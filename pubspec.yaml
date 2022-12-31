@@ -76,6 +76,7 @@ flutter:
     - assets/animations/bubbles.riv
     - assets/svgs/button.svg
     - assets/images/
+    - assets/images/welcome/
 
   fonts:
     # SF Pro Rounded

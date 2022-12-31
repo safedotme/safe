@@ -5,13 +5,12 @@ import 'package:flutter/services.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
-import 'package:safe/models/admin/admin.model.dart';
 import 'package:safe/models/user/user.model.dart';
 import 'package:safe/screens/capture/capture.screen.dart';
 import 'package:safe/screens/home/local_widgets/incident_limit_home_banner.widget.dart';
 import 'package:safe/screens/home/local_widgets/incident_recorded_home_banner.widget.dart';
 import 'package:safe/screens/incident_log/incident_log.screen.dart';
-import 'package:safe/services/server/admin_server.service.dart';
+import 'package:safe/screens/tutorial/tutorial.screen.dart';
 import 'package:safe/utils/constants/constants.util.dart';
 import 'package:safe/utils/credit/credit.util.dart';
 import 'package:safe/widgets/mutable_safe_button/mutable_safe_button.widget.dart';
@@ -59,7 +58,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
     return MutableScaffold(
       overlays: [
-        Capture(),
+        CaptureScreen(),
+        TutorialScreen(),
       ],
       underlays: [
         Padding(
