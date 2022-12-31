@@ -13,7 +13,7 @@ class _TutorialScreenState extends State<TutorialScreen> {
 
   // General
   final Duration duration = Duration(milliseconds: 300);
-  final Duration consumeDuration = Duration(seconds: 2);
+  final Duration consumeDuration = Duration(milliseconds: 3000);
   final List<Curve> curves = [Curves.easeOut, Curves.easeInOut];
 
   // Specific
@@ -110,7 +110,7 @@ class _TutorialScreenState extends State<TutorialScreen> {
       streamContactPosition = streamContactPositions[1];
       streamContactOpacity = 1;
     });
-    await Future.delayed(duration);
+    await Future.delayed(duration + duration);
 
     // Wait
     await Future.delayed(consumeDuration);
