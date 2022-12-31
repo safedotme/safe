@@ -11,12 +11,137 @@ class TutorialScreen extends StatefulWidget {
 class _TutorialScreenState extends State<TutorialScreen> {
   // ⬇️ CONSTANTS
 
+  // General
+  final Duration duration = Duration(milliseconds: 300);
+  final Duration consumeDuration = Duration(seconds: 2);
+  final List<Curve> curves = [Curves.easeOut, Curves.easeInOut];
+
+  // Specific
+  final List<double> headerPositions = [370 / 711, 180 / 711, 0];
+  final List<double> infoPositions = [275 / 711, 88 / 711];
+  final List<double> streamContactPositions = [400 / 711, 313 / 711];
+  final List<double> locationPositions = [500 / 711, 458 / 711];
+  final List<double> footerPositions = [650 / 711, 603 / 711];
+
   // ⬇️ STATE
-  double headerOpacity = 1;
+
+  // Header
+  double headerOpacity = 0;
   double headerPosition = 0;
+  int headerCurve = 0;
+
+  // Info
+  double infoOpacity = 0;
+  double infoPosition = 0;
+  int infoCurve = 0;
+
+  // Stream & Contact
+  double streamContactOpacity = 0;
+  double streamContactPosition = 0;
+  int streamContactCurve = 0;
+
+  // Location
+  double locationOpacity = 0;
+  double locationPosition = 0;
+  int locationCurve = 0;
+
+  // Footer
+  double footerOpacity = 0;
+  double footerPosition = 0;
+  int footerCurve = 0;
 
   // ⬇️ METHODS
-  Future<void> animate() async {}
+
+  // Used to ensure all values are default before animation begins
+  void resetValues() {
+    setState(() {
+      headerPosition = headerPositions[0];
+      headerOpacity = 0;
+      headerCurve = 0;
+
+      infoCurve = 0;
+      infoOpacity = 0;
+      infoPosition = infoPositions[0];
+
+      streamContactCurve = 0;
+      streamContactOpacity = 0;
+      streamContactPosition = streamContactPositions[0];
+
+      locationCurve = 0;
+      locationOpacity = 0;
+      locationPosition = locationPositions[0];
+
+      footerCurve = 0;
+      footerOpacity = 0;
+      footerPosition = footerPositions[0];
+    });
+  }
+
+  Future<void> animate() async {
+    resetValues();
+    // Bubbles
+    await Future.delayed(Duration(seconds: 1));
+
+    // Header
+    setState(() {
+      headerPosition = headerPositions[1];
+      headerOpacity = 1;
+    });
+    await Future.delayed(duration);
+
+    // Wait
+    await Future.delayed(consumeDuration);
+
+    // Header w/ Info
+    setState(() {
+      headerPosition = headerPositions[2];
+      headerCurve = 1;
+
+      infoPosition = infoPositions[1];
+      infoOpacity = 1;
+    });
+    await Future.delayed(duration);
+
+    // Wait
+    await Future.delayed(consumeDuration);
+
+    // Stream & Contacts
+    setState(() {
+      streamContactPosition = streamContactPositions[1];
+      streamContactOpacity = 1;
+    });
+    await Future.delayed(duration);
+
+    // Wait
+    await Future.delayed(consumeDuration);
+
+    // Location
+    setState(() {
+      locationPosition = locationPositions[1];
+      locationOpacity = 1;
+    });
+    await Future.delayed(duration);
+
+    // Wait
+    await Future.delayed(consumeDuration);
+
+    // Footer
+    setState(() {
+      footerPosition = footerPositions[1];
+      footerOpacity = 1;
+    });
+    await Future.delayed(duration);
+
+    // Wait
+    await Future.delayed(consumeDuration);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    animate();
+  }
 
   double genPosition(double percentage, double size, double margin) =>
       (size - margin) * percentage;
@@ -40,18 +165,88 @@ class _TutorialScreenState extends State<TutorialScreen> {
         ),
         child: Stack(
           children: [
-            // Header
+            // Header Box
             AnimatedPositioned(
               top: genPosition(
                 headerPosition,
                 query.size.height,
                 query.padding.top + kBottomScreenMargin,
               ),
-              duration: Duration(seconds: 1),
+              duration: duration,
+              curve: curves[headerCurve],
               child: AnimatedOpacity(
-                duration: Duration(seconds: 1),
+                duration: duration,
+                curve: curves[headerCurve],
                 opacity: headerOpacity,
                 child: TutorialComponent("header"),
+              ),
+            ),
+
+            // Info Box
+            AnimatedPositioned(
+              top: genPosition(
+                infoPosition,
+                query.size.height,
+                query.padding.top + kBottomScreenMargin,
+              ),
+              duration: duration,
+              curve: curves[headerCurve],
+              child: AnimatedOpacity(
+                duration: duration,
+                curve: curves[headerCurve],
+                opacity: infoOpacity,
+                child: TutorialComponent("info"),
+              ),
+            ),
+
+            // Stream & Contacts
+            AnimatedPositioned(
+              top: genPosition(
+                streamContactPosition,
+                query.size.height,
+                query.padding.top + kBottomScreenMargin,
+              ),
+              duration: duration,
+              curve: curves[streamContactCurve],
+              child: AnimatedOpacity(
+                duration: duration,
+                curve: curves[streamContactCurve],
+                opacity: streamContactOpacity,
+                child: TutorialComponent("stream_contacts"),
+              ),
+            ),
+
+            // Location
+            AnimatedPositioned(
+              top: genPosition(
+                locationPosition,
+                query.size.height,
+                query.padding.top + kBottomScreenMargin,
+              ),
+              duration: duration,
+              curve: curves[locationCurve],
+              child: AnimatedOpacity(
+                duration: duration,
+                curve: curves[locationCurve],
+                opacity: locationOpacity,
+                child: TutorialComponent("location"),
+              ),
+            ),
+
+            // Footer
+            AnimatedPositioned(
+              top: genPosition(
+                footerPosition,
+                query.size.height,
+                query.padding.top + kBottomScreenMargin,
+              ),
+              duration: duration,
+              curve: curves[footerCurve],
+              child: AnimatedOpacity(
+                duration: duration,
+                curve: curves[footerCurve],
+                opacity: footerOpacity,
+                child: TutorialComponent("footer"),
               ),
             ),
           ],
