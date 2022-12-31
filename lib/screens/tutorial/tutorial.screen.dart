@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:provider/provider.dart';
+import 'package:safe/core.dart';
 import 'package:safe/screens/tutorial/local_widgets/tutorial_component.widget.dart';
 import 'package:safe/utils/constants/constants.util.dart';
+import 'package:safe/widgets/mutable_large_button/mutable_large_button.widget.dart';
 import 'package:safe/widgets/mutable_screen_transition/mutable_screen_transition.widget.dart';
 
 class TutorialScreen extends StatefulWidget {
@@ -9,17 +13,19 @@ class TutorialScreen extends StatefulWidget {
 }
 
 class _TutorialScreenState extends State<TutorialScreen> {
+  late Core core;
   // ⬇️ CONSTANTS
 
   // General
   final Duration duration = Duration(milliseconds: 300);
   final Duration consumeDuration = Duration(milliseconds: 3000);
   final List<Curve> curves = [Curves.easeOut, Curves.easeInOut];
+  final Curve bubbleCurve = Curves.easeIn;
 
   // Specific
   final List<double> headerPositions = [370 / 711, 180 / 711, 0];
-  final List<double> infoPositions = [275 / 711, 88 / 711];
-  final List<double> streamContactPositions = [400 / 711, 313 / 711];
+  final List<double> infoPositions = [145 / 711, 88 / 711];
+  final List<double> streamContactPositions = [363 / 711, 313 / 711];
   final List<double> locationPositions = [500 / 711, 458 / 711];
   final List<double> footerPositions = [650 / 711, 603 / 711];
 
@@ -50,6 +56,9 @@ class _TutorialScreenState extends State<TutorialScreen> {
   double footerPosition = 0;
   int footerCurve = 0;
 
+  // Button
+  double buttonOpacity = 0;
+
   // ⬇️ METHODS
 
   // Used to ensure all values are default before animation begins
@@ -74,6 +83,8 @@ class _TutorialScreenState extends State<TutorialScreen> {
       footerCurve = 0;
       footerOpacity = 0;
       footerPosition = footerPositions[0];
+
+      buttonOpacity = 0;
     });
   }
 
@@ -134,122 +145,155 @@ class _TutorialScreenState extends State<TutorialScreen> {
 
     // Wait
     await Future.delayed(consumeDuration);
-  }
 
-  @override
-  void initState() {
-    super.initState();
-
-    animate();
+    setState(() {
+      buttonOpacity = 1;
+    });
+    await Future.delayed(duration);
   }
 
   double genPosition(double percentage, double size, double margin) =>
       (size - margin) * percentage;
 
   @override
+  void initState() {
+    core = Provider.of(context, listen: false);
+
+    super.initState();
+    animate();
+  }
+
+  @override
   Widget build(BuildContext context) {
     var query = MediaQuery.of(context);
-    return MutableScreenTransition(
-      isOpen: true,
-      onOpen: () {
-        animate();
-      },
-      isDismissable: false,
-      backgroundColor: kColorMap[MutableColor.neutral10],
-      body: Padding(
-        padding: EdgeInsets.fromLTRB(
-          kSideScreenMargin,
-          query.padding.top,
-          kSideScreenMargin,
-          kBottomScreenMargin,
-        ),
-        child: Stack(
-          children: [
-            // Header Box
-            AnimatedPositioned(
-              top: genPosition(
-                headerPosition,
-                query.size.height,
-                query.padding.top + kBottomScreenMargin,
-              ),
-              duration: duration,
-              curve: curves[headerCurve],
-              child: AnimatedOpacity(
+    return Observer(
+      builder: (_) => MutableScreenTransition(
+        controller: core.state.auth.tutorialController,
+        onOpen: () {
+          animate();
+        },
+        onClose: () {
+          resetValues();
+        },
+        isDismissable: false,
+        backgroundColor: kColorMap[MutableColor.neutral10],
+        body: Padding(
+          padding: EdgeInsets.fromLTRB(
+            kSideScreenMargin,
+            query.padding.top,
+            kSideScreenMargin,
+            kBottomScreenMargin,
+          ),
+          child: Stack(
+            children: [
+              // Header Box
+              AnimatedPositioned(
+                top: genPosition(
+                  headerPosition,
+                  query.size.height,
+                  query.padding.top + kBottomScreenMargin,
+                ),
                 duration: duration,
                 curve: curves[headerCurve],
-                opacity: headerOpacity,
-                child: TutorialComponent("header"),
+                child: AnimatedOpacity(
+                  duration: duration,
+                  curve: curves[headerCurve],
+                  opacity: headerOpacity,
+                  child: TutorialComponent("header"),
+                ),
               ),
-            ),
 
-            // Info Box
-            AnimatedPositioned(
-              top: genPosition(
-                infoPosition,
-                query.size.height,
-                query.padding.top + kBottomScreenMargin,
-              ),
-              duration: duration,
-              curve: curves[headerCurve],
-              child: AnimatedOpacity(
+              // Info Box
+              AnimatedPositioned(
+                top: genPosition(
+                  infoPosition,
+                  query.size.height,
+                  query.padding.top + kBottomScreenMargin,
+                ),
                 duration: duration,
                 curve: curves[headerCurve],
-                opacity: infoOpacity,
-                child: TutorialComponent("info"),
+                child: AnimatedOpacity(
+                  duration: duration,
+                  curve: curves[headerCurve],
+                  opacity: infoOpacity,
+                  child: TutorialComponent("info"),
+                ),
               ),
-            ),
 
-            // Stream & Contacts
-            AnimatedPositioned(
-              top: genPosition(
-                streamContactPosition,
-                query.size.height,
-                query.padding.top + kBottomScreenMargin,
-              ),
-              duration: duration,
-              curve: curves[streamContactCurve],
-              child: AnimatedOpacity(
+              // Stream & Contacts
+              AnimatedPositioned(
+                top: genPosition(
+                  streamContactPosition,
+                  query.size.height,
+                  query.padding.top + kBottomScreenMargin,
+                ),
                 duration: duration,
                 curve: curves[streamContactCurve],
-                opacity: streamContactOpacity,
-                child: TutorialComponent("stream_contacts"),
+                child: AnimatedOpacity(
+                  duration: duration,
+                  curve: curves[streamContactCurve],
+                  opacity: streamContactOpacity,
+                  child: TutorialComponent("stream_contacts"),
+                ),
               ),
-            ),
 
-            // Location
-            AnimatedPositioned(
-              top: genPosition(
-                locationPosition,
-                query.size.height,
-                query.padding.top + kBottomScreenMargin,
-              ),
-              duration: duration,
-              curve: curves[locationCurve],
-              child: AnimatedOpacity(
+              // Location
+              AnimatedPositioned(
+                top: genPosition(
+                  locationPosition,
+                  query.size.height,
+                  query.padding.top + kBottomScreenMargin,
+                ),
                 duration: duration,
                 curve: curves[locationCurve],
-                opacity: locationOpacity,
-                child: TutorialComponent("location"),
+                child: AnimatedOpacity(
+                  duration: duration,
+                  curve: curves[locationCurve],
+                  opacity: locationOpacity,
+                  child: TutorialComponent("location"),
+                ),
               ),
-            ),
 
-            // Footer
-            AnimatedPositioned(
-              top: genPosition(
-                footerPosition,
-                query.size.height,
-                query.padding.top + kBottomScreenMargin,
-              ),
-              duration: duration,
-              curve: curves[footerCurve],
-              child: AnimatedOpacity(
+              // Footer
+              AnimatedPositioned(
+                top: genPosition(
+                  footerPosition,
+                  query.size.height,
+                  query.padding.top + kBottomScreenMargin,
+                ),
                 duration: duration,
                 curve: curves[footerCurve],
-                opacity: footerOpacity,
-                child: TutorialComponent("footer"),
+                child: AnimatedOpacity(
+                  duration: duration,
+                  curve: curves[footerCurve],
+                  opacity: footerOpacity,
+                  child: TutorialComponent("footer"),
+                ),
               ),
-            ),
-          ],
+
+              // CTA Button
+              Align(
+                alignment: Alignment.bottomCenter,
+                child: AnimatedOpacity(
+                  opacity: buttonOpacity,
+                  duration: duration,
+                  child: MutableLargeButton(
+                    textSize: 16,
+                    height: 44,
+                    borderRadius: 15,
+                    animateBeforeVoidCallback: true,
+                    onTap: () {
+                      core.state.auth.tutorialController.close();
+
+                      // TODO: Implement with contact flow
+                    },
+                    text: core.utils.language.langMap[
+                        core.state.preferences.language]!["tutorial"]["button"],
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

@@ -410,6 +410,22 @@ mixin _$AuthStore on _AuthStore, Store {
     });
   }
 
+  late final _$tutorialControllerAtom =
+      Atom(name: '_AuthStore.tutorialController', context: context);
+
+  @override
+  ScreenTransitionController get tutorialController {
+    _$tutorialControllerAtom.reportRead();
+    return super.tutorialController;
+  }
+
+  @override
+  set tutorialController(ScreenTransitionController value) {
+    _$tutorialControllerAtom.reportWrite(value, super.tutorialController, () {
+      super.tutorialController = value;
+    });
+  }
+
   late final _$_AuthStoreActionController =
       ActionController(name: '_AuthStore', context: context);
 
@@ -638,7 +654,8 @@ countryCode: ${countryCode},
 onPick: ${onPick},
 verificationId: ${verificationId},
 resendToken: ${resendToken},
-overlayController: ${overlayController}
+overlayController: ${overlayController},
+tutorialController: ${tutorialController}
     ''';
   }
 }

@@ -27,8 +27,7 @@ class LanguageUtil {
         },
         "invalid-verification-code": {
           "header": "Hold up! The verification code you entered is invalid",
-          "desc":
-              "Check your messages for the latest code and try entering it again"
+          "desc": "Check your messages for the latest OTP code"
         },
         "user_disabled": {
           "header": "Your account has been desabled",
@@ -159,6 +158,7 @@ class LanguageUtil {
         "button": ["Delete an Incident", "Emergency Activate"]
       }
     },
+    "tutorial": {"button": "Add a Contact"},
     "incident_log": {
       "header": "Incident Log",
       "counter": "{count} Incidents",

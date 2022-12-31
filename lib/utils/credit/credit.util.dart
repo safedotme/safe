@@ -101,7 +101,6 @@ class CreditUtil {
       onFirstIncident();
       return;
     }
-    ; // First incident
 
     if (credits > incidents + 1) {
       onAnyIncident();
