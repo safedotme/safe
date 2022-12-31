@@ -431,6 +431,9 @@ class CaptureUtil {
         _notifyContacts(MessageType.batteryCrit, battery: current);
       }
 
+      // Stops stream if battery is at critical level (under 5%)
+      _criticalStop(current);
+
       Battery bat = Battery(
         percentage: current / 100,
         datetime: DateTime.now(),
@@ -441,6 +444,18 @@ class CaptureUtil {
 
       await Future.delayed(kCaptureStreamTimeout);
     }
+  }
+
+  /// Stops stream if battery is at critical level (under 5%)
+  void _criticalStop(int battery) {
+    // Ensures incident has been recording for at least 60 seconds
+    int timeElapsedInSec = DateTime.now()
+        .difference(_core!.state.capture.incident!.datetime)
+        .inSeconds;
+
+    if (timeElapsedInSec < 60 || battery > 5) return;
+
+    stop();
   }
 
   Future<void> _uploadBattery(List<Battery> log) async {
