@@ -187,7 +187,11 @@ class _IncidentLogNavBarState extends State<IncidentLogNavBar> {
                                 core,
                               );
 
-                              if (!shouldCapture) {
+                              bool missingContacts =
+                                  core.state.capture.limErrState ==
+                                      LimitErrorState.missingContacts;
+
+                              if (!shouldCapture || missingContacts) {
                                 core.state.incidentLog.controller.close();
 
                                 // Flashes Incident Limit Banner

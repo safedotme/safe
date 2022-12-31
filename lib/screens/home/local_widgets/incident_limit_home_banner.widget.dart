@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
@@ -36,23 +37,31 @@ class _IncidentLimitHomeBannerState extends State<IncidentLimitHomeBanner> {
         height: 120,
         dismissable: false,
         header: (core.utils.language
-                    .langMap[core.state.preferences.language]!["home"]
-                ["incident_limit"]["header"] as String)
+                        .langMap[core.state.preferences.language]!["home"]
+                    ["incident_limit"]["header"][core.state.capture.limErrState]
+                as String)
             .toUpperCase(),
         backgroundColor: MutableColor.secondaryRed,
         borderColor: MutableColor.secondaryRed,
         onTap: () async {
           HapticFeedback.mediumImpact();
-          bool shouldCapture = await core.utils.credit.shouldCapture(
-            TriggerIdentifier.secondary,
-            core,
-          );
 
-          if (shouldCapture) {
+          if (core.state.capture.limErrState ==
+              LimitErrorState.missingContacts) {
+            print("GO TO CONTACTS");
+            // TODO: Implement Add contact
+            return;
+          }
+
+          if (core.state.capture.limErrState == LimitErrorState.emergency) {
             core.utils.capture.start();
             core.state.capture.controller.open();
-          } else {
+            return;
+          }
+
+          if (core.state.capture.limErrState == LimitErrorState.maxed) {
             core.state.incidentLog.controller.open();
+            return;
           }
         },
         body: Padding(
@@ -63,11 +72,8 @@ class _IncidentLimitHomeBannerState extends State<IncidentLimitHomeBanner> {
             children: [
               MutableText(
                 core.utils.language
-                            .langMap[core.state.preferences.language]!["home"]
-                        ["incident_limit"][
-                    core.state.capture.limErrState == LimitErrorState.emergency
-                        ? "body"
-                        : "body_disabled"],
+                        .langMap[core.state.preferences.language]!["home"]
+                    ["incident_limit"]["body"][core.state.capture.limErrState],
                 weight: TypeWeight.medium,
                 size: 13,
                 color: MutableColor.neutral2,
@@ -77,12 +83,9 @@ class _IncidentLimitHomeBannerState extends State<IncidentLimitHomeBanner> {
                   MutablePill(
                     isButton: true,
                     text: (core.utils.language.langMap[core.state.preferences
-                                .language]!["home"]["incident_limit"]["button"][
-                            core.state.capture.limErrState ==
-                                    LimitErrorState.emergency
-                                ? 1
-                                : 0] as String)
-                        .toUpperCase(), // CHANGES
+                                .language]!["home"]["incident_limit"]["button"]
+                            [core.state.capture.limErrState] as String)
+                        .toUpperCase(),
                     color: MutableColor.secondaryRed,
                   ),
                 ],

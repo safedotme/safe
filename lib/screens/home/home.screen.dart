@@ -1,10 +1,9 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart' hide BoxShadow;
 import 'package:flutter/services.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
+import 'package:safe/models/contact/contact.model.dart';
 import 'package:safe/models/user/user.model.dart';
 import 'package:safe/screens/capture/capture.screen.dart';
 import 'package:safe/screens/home/local_widgets/incident_limit_home_banner.widget.dart';
@@ -34,6 +33,22 @@ class _HomeScreenState extends State<HomeScreen> {
 
     core = Provider.of<Core>(context, listen: false);
     userSubscribe();
+    contactSubscribe();
+  }
+
+  void contactSubscribe() {
+    Stream<List<Contact>> stream = core.services.server.contacts.readFromUserId(
+      userId: core.services.auth.currentUser!.uid,
+    );
+
+    stream.listen(
+      (event) {
+        WidgetsBinding.instance.addPostFrameCallback((_) async {
+          await core.utils.credit.obtainState(core, contacts: event.length);
+          core.state.contact.setContacts(event);
+        });
+      },
+    );
   }
 
   void userSubscribe() {
@@ -104,7 +119,10 @@ class _HomeScreenState extends State<HomeScreen> {
                       core,
                     );
 
-                    if (!shouldCapture) {
+                    bool missingContacts = core.state.capture.limErrState ==
+                        LimitErrorState.missingContacts;
+
+                    if (!shouldCapture || missingContacts) {
                       // Flashes Incident Limit Banner
                       if (core.state.capture.shouldFlashLimitBanner == false) {
                         core.state.capture.setFlashLimitBanner(true);

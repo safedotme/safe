@@ -1,3 +1,4 @@
+import 'package:safe/utils/credit/credit.util.dart';
 import 'package:safe/widgets/mutable_permission_card/mutable_permission_card.widget.dart';
 
 enum Languages {
@@ -150,12 +151,27 @@ class LanguageUtil {
       "header_disabled": "Safe Disabled",
       "incident_recorded_header": "Last Incident",
       "incident_limit": {
-        "header": "Incident Limit Reached",
-        "body":
-            "You have one incident credit left. Spare it for an emergency. Tap here to activate Safe.",
-        "body_disabled":
-            "No worries, simply delete a previous incident to gain back the ability to capture one.",
-        "button": ["Delete an Incident", "Emergency Activate"]
+        "header": {
+          LimitErrorState.emergency: "Incident Limit Reached",
+          LimitErrorState.maxed: "Incident Limit Reached",
+          LimitErrorState.missingContacts: "Missing Contacts",
+          null: "",
+        },
+        "body": {
+          LimitErrorState.emergency:
+              "You have one incident credit left. Spare it for an emergency. Tap here to activate Safe.",
+          LimitErrorState.maxed:
+              "No worries, simply delete a previous incident to gain back the ability to capture one.",
+          LimitErrorState.missingContacts:
+              "Without contacts, no one will be notified when you activate Safe. It's as easy as selecting from your existing contacts.",
+          null: ""
+        },
+        "button": {
+          LimitErrorState.emergency: "Emergency Activate",
+          LimitErrorState.maxed: "Delete an Incident",
+          LimitErrorState.missingContacts: "Add Contacts",
+          null: ""
+        },
       }
     },
     "tutorial": {"button": "Add a Contact"},

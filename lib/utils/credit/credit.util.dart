@@ -7,6 +7,7 @@ import 'package:safe/models/user/user.model.dart';
 enum LimitErrorState {
   maxed,
   emergency,
+  missingContacts,
 }
 
 enum TriggerIdentifier {
@@ -21,9 +22,11 @@ class CreditUtil {
     Core core, {
     User? user,
     int? incidents,
+    int? contacts,
   }) async {
     await _base(
       core,
+      contacts: contacts,
       onFirstIncident: () {
         core.state.capture.setLimErrState(null);
         core.state.capture.limErrorBannerController.close();
@@ -31,6 +34,10 @@ class CreditUtil {
       onAnyIncident: () {
         core.state.capture.setLimErrState(null);
         core.state.capture.limErrorBannerController.close();
+      },
+      onMissingContacts: () {
+        core.state.capture.setLimErrState(LimitErrorState.missingContacts);
+        core.state.capture.limErrorBannerController.open();
       },
       onLastIncident: () {
         core.state.capture.setLimErrState(LimitErrorState.emergency);
@@ -65,7 +72,12 @@ class CreditUtil {
           capture = true;
         }
       },
-      onMaxedOut: () {},
+      onMissingContacts: () {
+        capture = false;
+      },
+      onMaxedOut: () {
+        capture = false;
+      },
       incidents: incidents,
       user: user,
     );
@@ -79,7 +91,9 @@ class CreditUtil {
     required Function onAnyIncident,
     required Function onLastIncident,
     required Function onMaxedOut,
+    required Function onMissingContacts,
     User? user,
+    int? contacts,
     int? incidents,
   }) async {
     // Load all credits
@@ -96,6 +110,11 @@ class CreditUtil {
 
     // All Credits
     int credits = user.credits + settings.defaultIncidentCap;
+
+    if (contacts == 0) {
+      onMissingContacts();
+      return;
+    }
 
     if (incidents == null) {
       onFirstIncident();
