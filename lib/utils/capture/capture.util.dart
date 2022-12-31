@@ -432,7 +432,7 @@ class CaptureUtil {
       }
 
       // Stops stream if battery is at critical level (under 5%)
-      _criticalStop(current);
+      _criticalStop(battery);
 
       Battery bat = Battery(
         percentage: current / 100,
@@ -447,13 +447,18 @@ class CaptureUtil {
   }
 
   /// Stops stream if battery is at critical level (under 5%)
-  void _criticalStop(int battery) {
+  Future<void> _criticalStop(api.Battery battery) async {
+    int level = await battery.batteryLevel;
+    api.BatteryState state = await battery.batteryState;
+
     // Ensures incident has been recording for at least 60 seconds
     int timeElapsedInSec = DateTime.now()
         .difference(_core!.state.capture.incident!.datetime)
         .inSeconds;
 
-    if (timeElapsedInSec < 60 || battery > 5) return;
+    if (timeElapsedInSec < 60 ||
+        level > 5 ||
+        state == api.BatteryState.charging) return;
 
     stop();
   }
