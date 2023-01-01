@@ -1,0 +1,3 @@
+*.swift linguist-vendored
+*.kotlin linguist-vendored
+*.ruby linguist-vendored
