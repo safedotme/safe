@@ -6,6 +6,7 @@ import 'package:safe/screens/tutorial/local_widgets/tutorial_component.widget.da
 import 'package:safe/utils/constants/constants.util.dart';
 import 'package:safe/widgets/mutable_large_button/mutable_large_button.widget.dart';
 import 'package:safe/widgets/mutable_screen_transition/mutable_screen_transition.widget.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class TutorialScreen extends StatefulWidget {
   @override
@@ -267,7 +268,13 @@ class _TutorialScreenState extends State<TutorialScreen> {
                   duration: duration,
                   curve: curves[footerCurve],
                   opacity: footerOpacity,
-                  child: TutorialComponent("footer"),
+                  child: TutorialComponent(
+                    "footer",
+                    onTap: () {
+                      // LOG (someone visited your twitter acc thru safe)
+                      launchUrl(Uri.parse("https://twitter.com/markmusic27"));
+                    },
+                  ),
                 ),
               ),
 

@@ -11,6 +11,7 @@ class TutorialComponent extends StatelessWidget {
   Widget build(BuildContext context) {
     var query = MediaQuery.of(context);
     return MutableButton(
+      onTap: onTap,
       child: SizedBox(
         width: query.size.width - kSideScreenMargin * 2,
         child: Image.asset("assets/images/welcome/$image.png"),
