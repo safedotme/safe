@@ -1,7 +1,7 @@
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
 import 'package:safe/utils/constants/constants.util.dart';
@@ -24,6 +24,46 @@ class _IncidentLimitHomeBannerState extends State<IncidentLimitHomeBanner> {
   void initState() {
     super.initState();
     core = Provider.of<Core>(context, listen: false);
+  }
+
+  String parsePermissions(List<Permission> p) {
+    String template = "{p} permission";
+
+    List<String> parsed = [];
+
+    for (Permission permission in p) {
+      parsed.add(
+          permission.toString().substring(11, permission.toString().length));
+    }
+
+    if (parsed.length == 1) {
+      return template.replaceAll("{p}", parsed.first);
+    }
+
+    String last = parsed.removeLast();
+
+    String raw = parsed.toString();
+
+    template += "s";
+
+    String listed = "${raw.replaceAll("[", "").replaceAll("]", "")}, and $last";
+
+    return template.replaceAll("{p}", listed);
+  }
+
+  String handlePermissionError() {
+    String base =
+        core.utils.language.langMap[core.state.preferences.language]!["home"]
+            ["incident_limit"]["body"][core.state.capture.limErrState];
+
+    if (core.state.capture.limErrState != LimitErrorState.permissions) {
+      return base;
+    }
+
+    return base.replaceAll(
+      "{permission}",
+      parsePermissions(core.state.preferences.disabledPermissions),
+    );
   }
 
   @override
@@ -71,9 +111,7 @@ class _IncidentLimitHomeBannerState extends State<IncidentLimitHomeBanner> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               MutableText(
-                core.utils.language
-                        .langMap[core.state.preferences.language]!["home"]
-                    ["incident_limit"]["body"][core.state.capture.limErrState],
+                handlePermissionError(),
                 weight: TypeWeight.medium,
                 size: 13,
                 color: MutableColor.neutral2,

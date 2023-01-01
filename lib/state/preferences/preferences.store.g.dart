@@ -25,19 +25,19 @@ mixin _$PreferencesStore on _PreferencesStore, Store {
     });
   }
 
-  late final _$cameraResolutionAtom =
-      Atom(name: '_PreferencesStore.cameraResolution', context: context);
+  late final _$disabledPermissionsAtom =
+      Atom(name: '_PreferencesStore.disabledPermissions', context: context);
 
   @override
-  ResolutionPreset get cameraResolution {
-    _$cameraResolutionAtom.reportRead();
-    return super.cameraResolution;
+  List<Permission> get disabledPermissions {
+    _$disabledPermissionsAtom.reportRead();
+    return super.disabledPermissions;
   }
 
   @override
-  set cameraResolution(ResolutionPreset value) {
-    _$cameraResolutionAtom.reportWrite(value, super.cameraResolution, () {
-      super.cameraResolution = value;
+  set disabledPermissions(List<Permission> value) {
+    _$disabledPermissionsAtom.reportWrite(value, super.disabledPermissions, () {
+      super.disabledPermissions = value;
     });
   }
 
@@ -56,11 +56,11 @@ mixin _$PreferencesStore on _PreferencesStore, Store {
   }
 
   @override
-  void setCameraResolution(ResolutionPreset p) {
+  void setDisabledPermissions(List<Permission> p) {
     final _$actionInfo = _$_PreferencesStoreActionController.startAction(
-        name: '_PreferencesStore.setCameraResolution');
+        name: '_PreferencesStore.setDisabledPermissions');
     try {
-      return super.setCameraResolution(p);
+      return super.setDisabledPermissions(p);
     } finally {
       _$_PreferencesStoreActionController.endAction(_$actionInfo);
     }
@@ -70,7 +70,7 @@ mixin _$PreferencesStore on _PreferencesStore, Store {
   String toString() {
     return '''
 language: ${language},
-cameraResolution: ${cameraResolution}
+disabledPermissions: ${disabledPermissions}
     ''';
   }
 }

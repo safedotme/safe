@@ -153,6 +153,7 @@ class LanguageUtil {
       "incident_limit": {
         "header": {
           LimitErrorState.emergency: "Incident Limit Reached",
+          LimitErrorState.permissions: "Missing Permissions",
           LimitErrorState.maxed: "Incident Limit Reached",
           LimitErrorState.missingContacts: "Missing Contacts",
           null: "",
@@ -164,12 +165,15 @@ class LanguageUtil {
               "No worries, simply delete a previous incident to gain back the ability to capture one.",
           LimitErrorState.missingContacts:
               "Without contacts, no one will be notified when you activate Safe. It's as easy as selecting from your existing contacts.",
+          LimitErrorState.permissions:
+              "Enable the {permission} in Settings. Without them, we won't be able to capture incidents.",
           null: ""
         },
         "button": {
           LimitErrorState.emergency: "Emergency Activate",
           LimitErrorState.maxed: "Delete an Incident",
           LimitErrorState.missingContacts: "Add Contacts",
+          LimitErrorState.permissions: "Go to Settings",
           null: ""
         },
       }

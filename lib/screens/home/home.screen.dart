@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart' hide BoxShadow;
 import 'package:flutter/services.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
 import 'package:safe/models/contact/contact.model.dart';
@@ -12,6 +13,7 @@ import 'package:safe/screens/incident_log/incident_log.screen.dart';
 import 'package:safe/screens/tutorial/tutorial.screen.dart';
 import 'package:safe/utils/constants/constants.util.dart';
 import 'package:safe/utils/credit/credit.util.dart';
+import 'package:safe/widgets/mutable_permission_card/mutable_permission_card.widget.dart';
 import 'package:safe/widgets/mutable_safe_button/mutable_safe_button.widget.dart';
 import 'package:safe/widgets/mutable_scaffold/mutable_scaffold.widget.dart';
 import 'package:safe/widgets/mutable_text/mutable_text.widget.dart';
@@ -34,6 +36,7 @@ class _HomeScreenState extends State<HomeScreen> {
     core = Provider.of<Core>(context, listen: false);
     userSubscribe();
     contactSubscribe();
+    permissionSubscribe();
   }
 
   void contactSubscribe() {
@@ -49,6 +52,12 @@ class _HomeScreenState extends State<HomeScreen> {
         });
       },
     );
+  }
+
+  void permissionSubscribe() async {
+    var disabled = await core.services.permissions.getDisabledPermissions(core);
+    core.state.preferences.setDisabledPermissions(disabled);
+    await core.utils.credit.obtainState(core);
   }
 
   void userSubscribe() {

@@ -8,6 +8,7 @@ enum LimitErrorState {
   maxed,
   emergency,
   missingContacts,
+  permissions,
 }
 
 enum TriggerIdentifier {
@@ -37,6 +38,10 @@ class CreditUtil {
       },
       onMissingContacts: () {
         core.state.capture.setLimErrState(LimitErrorState.missingContacts);
+        core.state.capture.limErrorBannerController.open();
+      },
+      onDisabledPermissions: () {
+        core.state.capture.setLimErrState(LimitErrorState.permissions);
         core.state.capture.limErrorBannerController.open();
       },
       onLastIncident: () {
@@ -75,6 +80,9 @@ class CreditUtil {
       onMissingContacts: () {
         capture = false;
       },
+      onDisabledPermissions: () {
+        capture = false;
+      },
       onMaxedOut: () {
         capture = false;
       },
@@ -92,6 +100,7 @@ class CreditUtil {
     required Function onLastIncident,
     required Function onMaxedOut,
     required Function onMissingContacts,
+    required Function onDisabledPermissions,
     User? user,
     int? contacts,
     int? incidents,
@@ -110,6 +119,13 @@ class CreditUtil {
 
     // All Credits
     int credits = user.credits + settings.defaultIncidentCap;
+
+    int disabledPermissions = core.state.preferences.disabledPermissions.length;
+
+    if (disabledPermissions != 0) {
+      onDisabledPermissions();
+      return;
+    }
 
     if (contacts == 0) {
       onMissingContacts();

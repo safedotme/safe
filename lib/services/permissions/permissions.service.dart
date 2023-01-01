@@ -4,6 +4,24 @@ import 'package:safe/widgets/mutable_banner/mutable_banner.widget.dart';
 import 'package:safe/widgets/mutable_permission_card/mutable_permission_card.widget.dart';
 
 class PermissionsService {
+  Future<List<Permission>> getDisabledPermissions(Core core) async {
+    Map<Permission, PermissionStatus> statuses = await [
+      Permission.location,
+      Permission.camera,
+      Permission.microphone,
+    ].request();
+
+    List<Permission> disabled = [];
+
+    for (Permission key in statuses.keys) {
+      if (statuses[key] != PermissionStatus.granted) {
+        disabled.add(key);
+      }
+    }
+
+    return disabled;
+  }
+
   bool checkPermissions(Core core, {required bool sendError}) {
     List<PermissionType> errors = [];
     Map<PermissionType, PermissionData> permissions =

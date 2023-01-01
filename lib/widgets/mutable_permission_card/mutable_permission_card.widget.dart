@@ -79,7 +79,7 @@ class _MutablePermissionCardState extends State<MutablePermissionCard> {
     PermissionData data = PermissionData(
       isEnabled: response["status"],
       type: widget.type,
-      error: response["error"], // Error is here
+      error: response["error"],
     );
 
     core.state.auth.setPermission(widget.type, data);
