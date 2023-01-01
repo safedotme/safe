@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
 import 'package:safe/models/user/user.model.dart';
+import 'package:safe/services/analytics/helper_classes/analytics_log_model.service.dart';
 
 class MutableAuthWrapper extends StatefulWidget {
   final Widget initial;
@@ -27,6 +28,20 @@ class _MutableAuthWrapperState extends State<MutableAuthWrapper> {
     core = Provider.of<Core>(context, listen: false);
   }
 
+  void logAnalytics(User user) {
+    // core.services.analytics.log(
+    //   AnalyticsLog(
+    //     channel: AnalyticsChannel.userRegister,
+    //     event: "create_account",
+    //     icon: "⭐️",
+    //     description: "${user.name} has created an account!",
+    //     tags: [
+    //       {"id": user.id},
+    //     ],
+    //   ),
+    // );
+  }
+
   void genUser(User? user, Firebase.User firebaseUser) async {
     if (user != null) return;
     DateTime time = DateTime.now();
@@ -41,6 +56,7 @@ class _MutableAuthWrapperState extends State<MutableAuthWrapper> {
       joined: time,
     );
 
+    logAnalytics(gen);
     core.services.server.user.upsert(gen);
   }
 

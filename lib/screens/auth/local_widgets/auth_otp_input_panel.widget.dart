@@ -62,6 +62,8 @@ class _AuthOtpInputPanelState extends State<AuthOtpInputPanel> {
     if (core.state.auth.authType == AuthType.signup) {
       // Trigger welcome banner
       core.state.auth.setIsTutorialOpen(true);
+
+      // Trigger Analytics
     }
 
     core.state.auth.overlayController.show();

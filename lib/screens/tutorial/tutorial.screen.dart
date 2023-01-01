@@ -161,6 +161,7 @@ class _TutorialScreenState extends State<TutorialScreen> {
     core = Provider.of(context, listen: false);
 
     super.initState();
+    animate();
   }
 
   @override

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart' hide BoxShadow;
 import 'package:flutter/services.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
 import 'package:safe/models/contact/contact.model.dart';
@@ -11,9 +11,10 @@ import 'package:safe/screens/home/local_widgets/incident_limit_home_banner.widge
 import 'package:safe/screens/home/local_widgets/incident_recorded_home_banner.widget.dart';
 import 'package:safe/screens/incident_log/incident_log.screen.dart';
 import 'package:safe/screens/tutorial/tutorial.screen.dart';
+import 'package:safe/services/analytics/helper_classes/analytics_insight.model.dart';
+import 'package:safe/services/analytics/helper_classes/analytics_log_model.service.dart';
 import 'package:safe/utils/constants/constants.util.dart';
 import 'package:safe/utils/credit/credit.util.dart';
-import 'package:safe/widgets/mutable_permission_card/mutable_permission_card.widget.dart';
 import 'package:safe/widgets/mutable_safe_button/mutable_safe_button.widget.dart';
 import 'package:safe/widgets/mutable_scaffold/mutable_scaffold.widget.dart';
 import 'package:safe/widgets/mutable_text/mutable_text.widget.dart';
@@ -75,10 +76,25 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
+  void logAnalytics() {
+    core.services.analytics.log(
+      AnalyticsLog(
+        channel: "user-register",
+        event: "create_account",
+        icon: "⭐️",
+        description: "Mark Music has created an account!",
+        tags: [
+          {"id": "jksdlfkslkdfuiashdfiuaof29832e8"},
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     queryData = MediaQuery.of(context);
     Core core = Provider.of<Core>(context, listen: false);
+    logAnalytics();
     return MutableScaffold(
       overlays: [
         CaptureScreen(),
@@ -139,7 +155,6 @@ class _HomeScreenState extends State<HomeScreen> {
                         core.state.capture.setFlashLimitBanner(false);
                       }
 
-                      // Add haptic feedback
                       return;
                     }
 

@@ -1,12 +1,8 @@
-import 'package:agora_rtc_engine/agora_rtc_engine.dart';
-import 'package:camera/camera.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
-import 'package:safe/screens/capture/local_widgets/camera_feed.widget.dart';
 import 'package:safe/screens/capture/local_widgets/camera_feed_skeleton.widget.dart';
 import 'package:safe/screens/capture/local_widgets/capture_stop_alert_dialog.widget.dart';
 import 'package:safe/screens/capture/local_widgets/control_button.widget.dart';
@@ -139,8 +135,8 @@ class _CaptureControlBoxState extends State<CaptureControlBox> {
                                           ? "On"
                                           : "Off",
                                     ),
-                                    icon: MutableIcons.shield,
-                                    iconSize: Size(15, 17),
+                                    icon: MutableIcons.flashlightFilled,
+                                    iconSize: Size(9, 18),
                                     onTap: () async {
                                       await core.services.agora.toggleFlash(
                                         core.state.capture.engine!,
