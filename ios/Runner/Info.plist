@@ -32,6 +32,14 @@
 				<string>app-1-791756568006-ios-32368447ad39628d95eec7</string>
 			</array>
 		</dict>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>com.googleusercontent.apps.962398910362-4lggb9420t7r4n2ip4g2iu85vq31qe3f</string>
+			</array>
+		</dict>
 	</array>
 	<key>CFBundleVersion</key>
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
@@ -69,6 +77,10 @@
 	<string>speech</string>
 	<key>NSUserTrackingUsageDescription</key>
 	<string>appTrackingTransparency</string>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>remote-notification</string>
+	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>

@@ -15,11 +15,19 @@ class MutableLargeButton extends StatelessWidget {
   final bool isActive;
   final String text;
   final bool shimmer;
+  final bool animateBeforeVoidCallback;
+  final double height;
+  final double borderRadius;
+  final double? textSize;
 
   MutableLargeButton({
     this.onTap,
+    this.height = kLargeButtonHeight,
+    this.borderRadius = kLargeButtonBorderRadius,
+    this.textSize,
     this.isActive = true,
     this.text = "",
+    this.animateBeforeVoidCallback = false,
     this.shimmer = false,
   });
 
@@ -38,10 +46,11 @@ class MutableLargeButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return MutableButton(
       onTap: onTap,
+      animateBeforeVoidCallback: animateBeforeVoidCallback,
       child: MutableShimmer(
         active: shimmer,
         child: Container(
-          height: kLargeButtonHeight,
+          height: height,
           decoration: BoxDecoration(
             color: !isActive ? kColorMap[MutableColor.neutral7]! : null,
             border: !isActive
@@ -50,7 +59,7 @@ class MutableLargeButton extends StatelessWidget {
                     width: kBorderWidth,
                   )
                 : null,
-            borderRadius: BorderRadius.circular(kLargeButtonBorderRadius),
+            borderRadius: BorderRadius.circular(borderRadius),
             gradient: isActive
                 ? LinearGradient(
                     colors: kPrimaryGradientColors
@@ -66,6 +75,7 @@ class MutableLargeButton extends StatelessWidget {
             child: Center(
               child: MutableText(
                 text,
+                size: textSize,
                 style: TypeStyle.h4,
                 weight: TypeWeight.bold,
                 color:

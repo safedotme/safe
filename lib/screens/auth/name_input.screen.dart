@@ -8,6 +8,7 @@ import 'package:safe/utils/icon/icon.util.dart';
 import 'package:safe/widgets/mutable_banner/mutable_banner.widget.dart';
 import 'package:safe/widgets/mutable_input_panel/mutable_input_panel.widget.dart';
 import 'package:safe/widgets/mutable_popup/mutable_popup.widget.dart';
+import 'package:safe/widgets/mutable_submit_textfield_button/mutable_submit_textfield_button.widget.dart';
 import 'package:safe/widgets/mutable_text_field/mutable_text_field.widget.dart';
 
 class NameInputScreen extends StatefulWidget {
@@ -27,7 +28,7 @@ class _NameInputScreenState extends State<NameInputScreen>
   bool dismissDetector = false;
 
   // Animation stuff
-  double topMargin = kTopMargin;
+  double? topMargin;
   void initializeAnimation() {
     controller = AnimationController(
       vsync: this,
@@ -36,7 +37,7 @@ class _NameInputScreenState extends State<NameInputScreen>
 
     // Initialize tween
     Animation tween =
-        Tween<double>(begin: 42, end: kMutableBannerHeight + 20).animate(
+        Tween<double>(begin: topMargin, end: kMutableBannerHeight + 20).animate(
       CurvedAnimation(parent: controller, curve: Curves.ease),
     );
 
@@ -52,7 +53,7 @@ class _NameInputScreenState extends State<NameInputScreen>
     super.initState();
 
     core = Provider.of<Core>(context, listen: false);
-    initializeAnimation();
+
     hintName = generateRandomName();
 
     // Sync forward & reverse functionality with banner
@@ -111,6 +112,7 @@ class _NameInputScreenState extends State<NameInputScreen>
     core.state.auth.setNameError(error);
 
     if (!error) {
+      node.unfocus();
       // Navigate
       bool hasPermissions = core.services.permissions.checkPermissions(
         core,
@@ -125,7 +127,7 @@ class _NameInputScreenState extends State<NameInputScreen>
             : core.state.auth.permissionsController,
         controller,
       );
-    } else {
+    } else if (!node.hasFocus) {
       node.nextFocus();
     }
   }
@@ -168,9 +170,15 @@ class _NameInputScreenState extends State<NameInputScreen>
   @override
   Widget build(BuildContext context) {
     queryData = MediaQuery.of(context);
+
+    if (topMargin == null) {
+      topMargin = queryData.padding.top;
+      initializeAnimation();
+    }
+
     return MutablePopup(
       minHeight: 0,
-      maxHeight: queryData.size.height - topMargin,
+      maxHeight: queryData.size.height - topMargin!,
       controller: core.state.auth.nameInputController,
       onFreezeInteraction: dismissDetector
           ? () {
@@ -185,6 +193,7 @@ class _NameInputScreenState extends State<NameInputScreen>
         builder: (_) => MutableInputPanel(
           body: MutableTextField(
             controller: fieldController,
+            leadingRight: MutableSubmitTextFieldButton(submit),
             type: TextInputType.name,
             focusNode: node,
             onChange: handleInput,

@@ -4,8 +4,8 @@ import 'package:safe/models/incident/location.model.dart';
 class LocationService {
   final location = api.Location();
 
-  void initilaize() {
-    location.requestPermission();
+  Future<void> initilaize() async {
+    await location.requestPermission();
   }
 
   Stream<Location> get stream => location.onLocationChanged.map((e) {

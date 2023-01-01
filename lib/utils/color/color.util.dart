@@ -8,40 +8,47 @@ class ColorUtils {
         kTransparencyMap[tspcy]!,
       );
 
-  List<BoxShadow> applyGradientShadow(double size) {
+  List<BoxShadow> applyGradientShadow(
+    double size, {
+    bool isColorful = true,
+    double opacity = 1,
+  }) {
     double blurRad = (20 / 64) * size;
     double neutralOffset = (2 / 64) * size;
     double colorOffset = (4 / 64) * size;
     double lineRad = (1 / 64) * size;
 
+    List<BoxShadow> colors = isColorful
+        ? List.generate(
+            3,
+            (i) => BoxShadow(
+              color: kPrimaryGradientColors[2 * i].withOpacity(0.1),
+              blurRadius: blurRad,
+              offset: Offset(
+                (i.isEven ? -1 : 1) * colorOffset,
+                colorOffset * (i > 1 ? -1 : 1),
+              ),
+            ),
+          )
+        : [];
+
     return [
-// Color Shadows
-      ...List.generate(
-        3,
-        (i) => BoxShadow(
-          color: kPrimaryGradientColors[2 * i].withOpacity(0.1),
-          blurRadius: blurRad,
-          offset: Offset(
-            (i.isEven ? -1 : 1) * colorOffset,
-            colorOffset * (i > 1 ? -1 : 1),
-          ),
-        ),
-      ),
+      ...colors,
       BoxShadow(
         offset: Offset(neutralOffset, -neutralOffset),
-        color: Colors.black.withOpacity(0.6),
+        color: Colors.black.withOpacity(0.6 * opacity),
         blurRadius: blurRad,
         inset: true,
       ),
       BoxShadow(
         offset: Offset(neutralOffset, neutralOffset),
         blurRadius: blurRad,
-        color: Colors.white.withOpacity(0.4),
+        color: Colors.white.withOpacity(0.4 * opacity),
         inset: true,
       ),
       BoxShadow(
         offset: Offset(0, neutralOffset),
-        color: Colors.white.withOpacity(0.7),
+        color: Colors.white.withOpacity(0.7 * opacity),
         blurRadius: lineRad,
         inset: true,
       ),

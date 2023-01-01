@@ -14,6 +14,8 @@ Future<void> main() async {
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   await dotenv.load(fileName: ".env");
   Paint.enableDithering = true;
+
+  // Load Firebase
   await Firebase.initializeApp();
 
   runApp(Safe());
@@ -30,7 +32,6 @@ class Safe extends StatelessWidget {
         title: "Safe",
         debugShowCheckedModeBanner: false,
         themeMode: ThemeMode.dark,
-        theme: ThemeData(brightness: Brightness.dark),
         routes: {
           WelcomeScreen.id: (_) => WelcomeScreen(),
           HomeScreen.id: (_) => HomeScreen(),

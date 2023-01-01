@@ -410,6 +410,38 @@ mixin _$AuthStore on _AuthStore, Store {
     });
   }
 
+  late final _$tutorialControllerAtom =
+      Atom(name: '_AuthStore.tutorialController', context: context);
+
+  @override
+  ScreenTransitionController get tutorialController {
+    _$tutorialControllerAtom.reportRead();
+    return super.tutorialController;
+  }
+
+  @override
+  set tutorialController(ScreenTransitionController value) {
+    _$tutorialControllerAtom.reportWrite(value, super.tutorialController, () {
+      super.tutorialController = value;
+    });
+  }
+
+  late final _$isTutorialOpenAtom =
+      Atom(name: '_AuthStore.isTutorialOpen', context: context);
+
+  @override
+  bool get isTutorialOpen {
+    _$isTutorialOpenAtom.reportRead();
+    return super.isTutorialOpen;
+  }
+
+  @override
+  set isTutorialOpen(bool value) {
+    _$isTutorialOpenAtom.reportWrite(value, super.isTutorialOpen, () {
+      super.isTutorialOpen = value;
+    });
+  }
+
   late final _$_AuthStoreActionController =
       ActionController(name: '_AuthStore', context: context);
 
@@ -612,6 +644,17 @@ mixin _$AuthStore on _AuthStore, Store {
   }
 
   @override
+  void setIsTutorialOpen(bool v) {
+    final _$actionInfo = _$_AuthStoreActionController.startAction(
+        name: '_AuthStore.setIsTutorialOpen');
+    try {
+      return super.setIsTutorialOpen(v);
+    } finally {
+      _$_AuthStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 authType: ${authType},
@@ -638,7 +681,9 @@ countryCode: ${countryCode},
 onPick: ${onPick},
 verificationId: ${verificationId},
 resendToken: ${resendToken},
-overlayController: ${overlayController}
+overlayController: ${overlayController},
+tutorialController: ${tutorialController},
+isTutorialOpen: ${isTutorialOpen}
     ''';
   }
 }

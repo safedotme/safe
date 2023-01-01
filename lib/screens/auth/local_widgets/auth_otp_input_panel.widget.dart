@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
+import 'package:safe/utils/constants/constants.util.dart';
 import 'package:safe/widgets/mutable_banner/mutable_banner.widget.dart';
 import 'package:safe/widgets/mutable_otp_input_panel/mutable_otp_input_panel.widget.dart';
 
@@ -57,11 +58,21 @@ class _AuthOtpInputPanelState extends State<AuthOtpInputPanel> {
     String verificationId,
     String otp,
   ) async {
+    // Check if is in create account flow
+    if (core.state.auth.authType == AuthType.signup) {
+      // Trigger welcome banner
+      core.state.auth.setIsTutorialOpen(true);
+    }
+
     core.state.auth.overlayController.show();
+
     Map<String, dynamic> response = await core.services.auth.verifyOTP(
       otp,
       verificationId,
     );
+
+    // Waits to provide better UX
+    await Future.delayed(Duration(seconds: 1));
 
     if (core.services.auth.currentUser != null) {
       // Update in cloud firestore
@@ -75,7 +86,11 @@ class _AuthOtpInputPanelState extends State<AuthOtpInputPanel> {
       return;
     }
 
-    // Add error handling (banner, close panel, navigate)
+    if (!response["status"]) {
+      core.state.auth.overlayController.hide();
+      handleError("invalid-verification-code");
+      return;
+    }
   }
 
   @override

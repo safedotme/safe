@@ -22,7 +22,7 @@ class _PermissionsScreenState extends State<PermissionsScreen>
   bool areEnabled = true;
 
   // Animation stuff
-  double topMargin = kTopMargin;
+  double? topMargin;
   void initializeAnimation() {
     controller = AnimationController(
       vsync: this,
@@ -31,7 +31,7 @@ class _PermissionsScreenState extends State<PermissionsScreen>
 
     // Initialize tween
     Animation tween =
-        Tween<double>(begin: kTopMargin, end: kMutableBannerHeight + 20)
+        Tween<double>(begin: topMargin, end: kMutableBannerHeight + 20)
             // 20 is the margin between the banner and the popup
             .animate(
       CurvedAnimation(parent: controller, curve: Curves.ease),
@@ -49,7 +49,6 @@ class _PermissionsScreenState extends State<PermissionsScreen>
     super.initState();
 
     core = Provider.of<Core>(context, listen: false);
-    initializeAnimation();
 
     // Sync forward & reverse functionality with banner
     core.state.auth.setOnBannerForward(() {
@@ -96,9 +95,15 @@ class _PermissionsScreenState extends State<PermissionsScreen>
   @override
   Widget build(BuildContext context) {
     queryData = MediaQuery.of(context);
+
+    if (topMargin == null){
+      topMargin = queryData.padding.top;
+      initializeAnimation();
+    }
+
     return MutablePopup(
       minHeight: 0,
-      maxHeight: queryData.size.height - topMargin,
+      maxHeight: queryData.size.height - topMargin!,
       controller: core.state.auth.permissionsController,
       onClosed: () {
         core.state.auth.bannerController.dismiss();

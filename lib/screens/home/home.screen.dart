@@ -1,11 +1,19 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide BoxShadow;
 import 'package:flutter/services.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
+import 'package:safe/models/contact/contact.model.dart';
 import 'package:safe/models/user/user.model.dart';
 import 'package:safe/screens/capture/capture.screen.dart';
+import 'package:safe/screens/home/local_widgets/incident_limit_home_banner.widget.dart';
+import 'package:safe/screens/home/local_widgets/incident_recorded_home_banner.widget.dart';
 import 'package:safe/screens/incident_log/incident_log.screen.dart';
+import 'package:safe/screens/tutorial/tutorial.screen.dart';
 import 'package:safe/utils/constants/constants.util.dart';
+import 'package:safe/utils/credit/credit.util.dart';
+import 'package:safe/widgets/mutable_permission_card/mutable_permission_card.widget.dart';
 import 'package:safe/widgets/mutable_safe_button/mutable_safe_button.widget.dart';
 import 'package:safe/widgets/mutable_scaffold/mutable_scaffold.widget.dart';
 import 'package:safe/widgets/mutable_text/mutable_text.widget.dart';
@@ -27,16 +35,42 @@ class _HomeScreenState extends State<HomeScreen> {
 
     core = Provider.of<Core>(context, listen: false);
     userSubscribe();
+    contactSubscribe();
+    permissionSubscribe();
+  }
+
+  void contactSubscribe() {
+    Stream<List<Contact>> stream = core.services.server.contacts.readFromUserId(
+      userId: core.services.auth.currentUser!.uid,
+    );
+
+    stream.listen(
+      (event) {
+        WidgetsBinding.instance.addPostFrameCallback((_) async {
+          await core.utils.credit.obtainState(core, contacts: event.length);
+          core.state.contact.setContacts(event);
+        });
+      },
+    );
+  }
+
+  void permissionSubscribe() async {
+    var disabled = await core.services.permissions.getDisabledPermissions(core);
+    core.state.preferences.setDisabledPermissions(disabled);
+    await core.utils.credit.obtainState(core);
   }
 
   void userSubscribe() {
-    Stream<User> stream = core.services.server.user.readFromId(
+    Stream<User?> stream = core.services.server.user.readFromId(
       id: core.services.auth.currentUser!.uid,
     );
 
     stream.listen((event) {
-      WidgetsBinding.instance.addPersistentFrameCallback((timeStamp) {
-        core.state.incidentLog.setUser(event);
+      WidgetsBinding.instance.addPostFrameCallback((_) async {
+        if (event != null) {
+          await core.utils.credit.obtainState(core, user: event);
+          core.state.incidentLog.setUser(event);
+        }
       });
     });
   }
@@ -47,7 +81,8 @@ class _HomeScreenState extends State<HomeScreen> {
     Core core = Provider.of<Core>(context, listen: false);
     return MutableScaffold(
       overlays: [
-        Capture(),
+        CaptureScreen(),
+        TutorialScreen(),
       ],
       underlays: [
         Padding(
@@ -56,28 +91,73 @@ class _HomeScreenState extends State<HomeScreen> {
                       kSafeButtonSize) +
                   (kHomeHeaderToButtonMargin * 2) -
                   40),
-          child: Center(
-            child: MutableText(
-              core.utils.language
-                  .langMap[core.state.preferences.language]!["home"]["header"],
-              style: TypeStyle.h2,
+          child: Observer(
+            builder: (_) => AnimatedOpacity(
+              curve: kFadeInCurve,
+              duration: kFadeInDuration,
+              opacity: core.state.incidentLog.user == null ? 0 : 1,
+              child: Center(
+                child: MutableText(
+                  core.utils.language
+                          .langMap[core.state.preferences.language]!["home"][
+                      core.state.capture.limErrState != null
+                          ? "header_disabled"
+                          : "header"],
+                  style: TypeStyle.h2,
+                ),
+              ),
             ),
           ),
         ),
-        Padding(
-          padding: EdgeInsets.only(
-              bottom:
-                  (queryData.size.height * kIncidentLogMinPopupHeight) - 40),
-          child: Center(
-            child: MutableSafeButton(
-              onTap: () async {
-                HapticFeedback.heavyImpact();
-                core.utils.capture.initialize(core);
-                core.utils.capture.start();
-                core.state.capture.controller.open();
-              },
+        Observer(
+          builder: (_) => Padding(
+            padding: EdgeInsets.only(
+                bottom:
+                    (queryData.size.height * kIncidentLogMinPopupHeight) - 40),
+            child: Center(
+              child: AnimatedOpacity(
+                curve: kFadeInCurve,
+                opacity: core.state.incidentLog.user == null ? 0 : 1,
+                duration: kFadeInDuration,
+                child: MutableSafeButton(
+                  onTap: () async {
+                    HapticFeedback.heavyImpact();
+
+                    bool shouldCapture = await core.utils.credit.shouldCapture(
+                      TriggerIdentifier.primary,
+                      core,
+                    );
+
+                    bool missingContacts = core.state.capture.limErrState ==
+                        LimitErrorState.missingContacts;
+
+                    if (!shouldCapture || missingContacts) {
+                      // Flashes Incident Limit Banner
+                      if (core.state.capture.shouldFlashLimitBanner == false) {
+                        core.state.capture.setFlashLimitBanner(true);
+                        await Future.delayed(Duration(seconds: 8));
+                        core.state.capture.setFlashLimitBanner(false);
+                      }
+
+                      // Add haptic feedback
+                      return;
+                    }
+
+                    core.utils.capture.start();
+                    core.state.capture.controller.open();
+                  },
+                ),
+              ),
             ),
           ),
+        ),
+        Align(
+          alignment: Alignment.bottomCenter,
+          child: IncidentLimitHomeBanner(),
+        ),
+        Align(
+          alignment: Alignment.bottomCenter,
+          child: IncidentRecordedHomeBanner(),
         ),
       ],
       body: IncidentLog(),

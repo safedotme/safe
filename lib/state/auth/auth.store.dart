@@ -3,6 +3,7 @@ import 'package:safe/utils/constants/constants.util.dart';
 import 'package:safe/widgets/mutable_banner/mutable_banner.widget.dart';
 import 'package:safe/widgets/mutable_overlay/mutable_overlay.widget.dart';
 import 'package:safe/widgets/mutable_permission_card/mutable_permission_card.widget.dart';
+import 'package:safe/widgets/mutable_screen_transition/mutable_screen_transition.widget.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 part 'auth.store.g.dart';
@@ -151,4 +152,13 @@ abstract class _AuthStore with Store {
   // OVERLAY
   @observable
   OverlayController overlayController = OverlayController();
+
+  @observable
+  ScreenTransitionController tutorialController = ScreenTransitionController();
+
+  @observable
+  bool isTutorialOpen = false;
+
+  @action
+  void setIsTutorialOpen(bool v) => isTutorialOpen = v;
 }

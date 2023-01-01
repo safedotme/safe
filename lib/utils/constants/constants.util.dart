@@ -157,6 +157,11 @@ final List<Color> kPrimaryGradientColors = [
   kColorMap[MutableColor.primaryPurple]!,
 ];
 
+final List<Color> kDisabledGradientColors = [
+  Color(0xff1B191B),
+  Color(0xff090809),
+];
+
 final Alignment kPrimaryGradientAlignmentBegin = Alignment(-0.1, -2.5);
 final Alignment kPrimaryGradientAlignmentEnd = Alignment(0.1, 3);
 final Color kIconColorInGradientFill =
@@ -203,7 +208,7 @@ const double kCornerSmoothing = 0.6;
 // POPUPS
 const double kSideMarginPreviewPopup = 11;
 const double kBottomMarginPreviewPopup = 34;
-const double kTopMargin = 42;
+const double kDefaultTopMargin = 42;
 const double kHandleTopMargin = 6;
 const double kPanelHandleToHeader = 7;
 
@@ -217,6 +222,10 @@ const double kBorderWidth = 1.5;
 // LARGE BUTTON
 const double kLargeButtonHeight = 50;
 const double kLargeButtonBorderRadius = kLargeButtonHeight / 2;
+
+// BUTTONS
+const double kScaleDownButtonPercentage = 0.97;
+const Duration kScaleDownButtonTime = Duration(milliseconds: 125);
 
 // NAVIGATION BUTTON
 const double kNavButtonSize = 40;
@@ -257,6 +266,10 @@ enum AuthType {
 
 // HOME
 
+// -> Home Banner
+const double kHomeBannerIncidentPopupMargin = 20;
+const double kHomeBannerBorderRadius = 12;
+
 // -> SAFE BUTTON
 const double kSafeButtonSize = 165;
 const double kSafeButtonShadowOpacityScale = 0.1;
@@ -264,6 +277,8 @@ const double kSafeButtonShadowBlurScale = 20;
 const double kSafeButtonTapScale = 0.04;
 const Duration kSafeButtonPulsateDuration = Duration(milliseconds: 1300);
 const double kSafeButtonPuslateScale = 1.05;
+const Duration kFadeInDuration = Duration(seconds: 3);
+const Curve kFadeInCurve = Curves.easeOutSine;
 
 // -> LAYOUT
 const double kIncidentLogMinPopupHeight = 0.18;
@@ -302,8 +317,10 @@ const double kCaptureControlBorderRadius = 8;
 const double kCameraPreviewWidthPercentage = 0.3;
 const double kControlBoxBodyHeight = 150;
 
+// -> CAMERA PREVIEW
+
 // -> LOCATION TIMEOUT
-const Duration kLocationStreamTimeout = Duration(seconds: 10);
+const Duration kCaptureStreamTimeout = Duration(seconds: 20);
 
 // SHIMMER
 final Color kBoxLoaderShimmerColor = kShimmerAnimationColor.withOpacity(0.05);

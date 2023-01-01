@@ -1,3 +1,4 @@
+import 'package:safe/utils/credit/credit.util.dart';
 import 'package:safe/widgets/mutable_permission_card/mutable_permission_card.widget.dart';
 
 enum Languages {
@@ -27,8 +28,7 @@ class LanguageUtil {
         },
         "invalid-verification-code": {
           "header": "Hold up! The verification code you entered is invalid",
-          "desc":
-              "Check your messages for the latest code and try entering it again"
+          "desc": "Check your messages for the latest OTP code"
         },
         "user_disabled": {
           "header": "Your account has been desabled",
@@ -51,10 +51,9 @@ class LanguageUtil {
           "Elle Woods",
           "Regina George",
           "Merideth Grey",
-          "Joe Goldberg",
           "Derek Shepard",
           "Daenerys Targaryen",
-          "Erlich Bachman"
+          "Erlich Bachman",
         ],
         "title": "What should we call you?",
         "desc":
@@ -149,7 +148,37 @@ class LanguageUtil {
     },
     "home": {
       "header": "Tap to Safe",
+      "header_disabled": "Safe Disabled",
+      "incident_recorded_header": "Last Incident",
+      "incident_limit": {
+        "header": {
+          LimitErrorState.emergency: "Incident Limit Reached",
+          LimitErrorState.permissions: "Missing Permissions",
+          LimitErrorState.maxed: "Incident Limit Reached",
+          LimitErrorState.missingContacts: "Missing Contacts",
+          null: "",
+        },
+        "body": {
+          LimitErrorState.emergency:
+              "You have one incident credit left. Spare it for an emergency. Tap here to activate Safe.",
+          LimitErrorState.maxed:
+              "No worries, simply delete a previous incident to gain back the ability to capture one.",
+          LimitErrorState.missingContacts:
+              "Without contacts, no one will be notified when you activate Safe. It's as easy as selecting from your existing contacts.",
+          LimitErrorState.permissions:
+              "Enable the {permission} in Settings. Without them, we won't be able to capture incidents.",
+          null: ""
+        },
+        "button": {
+          LimitErrorState.emergency: "Emergency Activate",
+          LimitErrorState.maxed: "Delete an Incident",
+          LimitErrorState.missingContacts: "Add Contacts",
+          LimitErrorState.permissions: "Go to Settings",
+          null: ""
+        },
+      }
     },
+    "tutorial": {"button": "Add a Contact"},
     "incident_log": {
       "header": "Incident Log",
       "counter": "{count} Incidents",
@@ -173,7 +202,7 @@ class LanguageUtil {
       ],
       "controls": {
         "flip_camera": {"header": "Flip Camera"},
-        "911": {"header": "Notify 911"},
+        "flash": {"header": "Flashlight {STATE}"},
         "stop": {"header": "Stop Recording"},
         "stop_alert": {
           "header": "Stop Recording",

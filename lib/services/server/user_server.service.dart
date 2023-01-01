@@ -8,10 +8,14 @@ class UserServer {
   UserServer(this._db);
 
   // -> READ
-  Stream<User> readFromId({required String id}) {
-    return _db.collection(path).doc(id).snapshots().map(
-          (doc) => User.fromJson(doc.data()!), // Handle null value
-        );
+  Stream<User?> readFromId({required String id}) {
+    return _db.collection(path).doc(id).snapshots().map((doc) {
+      if (!doc.exists || doc.data() == null) {
+        return null;
+      } else {
+        return User.fromJson(doc.data()!);
+      }
+    });
   }
 
   Future<User?> readFromIdOnce({required String id}) async {

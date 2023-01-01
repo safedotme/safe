@@ -18,6 +18,7 @@ class MutableBanner extends StatefulWidget {
   final BannerController? controller;
   final Duration? duration;
   final String description;
+  final void Function()? onSlideUp;
   final void Function()? onTap;
   final void Function()? onForward;
   final void Function()? onReverse;
@@ -25,6 +26,7 @@ class MutableBanner extends StatefulWidget {
   MutableBanner({
     this.type = MessageType.success,
     this.controller,
+    this.onSlideUp,
     this.duration,
     this.title = "",
     this.description = "",
@@ -142,6 +144,12 @@ class _MutableBannerState extends State<MutableBanner>
                 dismiss();
                 if (widget.onTap != null) {
                   widget.onTap!();
+                }
+              },
+              onSlide: () {
+                dismiss();
+                if (widget.onSlideUp != null) {
+                  widget.onSlideUp!();
                 }
               },
               child: Container(

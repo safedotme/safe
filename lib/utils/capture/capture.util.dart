@@ -1,52 +1,220 @@
 import 'dart:async';
+import 'package:agora_rtc_engine/agora_rtc_engine.dart';
 import 'package:intl/intl.dart';
+import 'package:location/location.dart' as api;
 import 'package:safe/core.dart';
+import 'package:safe/models/incident/stream.model.dart' as model;
 import 'package:safe/models/contact/contact.model.dart';
 import 'package:safe/models/incident/battery.model.dart';
 import 'package:battery_plus/battery_plus.dart' as api;
 import 'package:safe/models/incident/incident.model.dart';
 import 'package:safe/models/incident/location.model.dart';
-import 'package:safe/models/incident/notified_contacts.model.dart';
+import 'package:safe/models/incident/notified_contact.model.dart';
+import 'package:safe/models/media_server/start_recording_response.model.dart';
+import 'package:safe/models/media_server/stop_recording_response.model.dart';
 import 'package:safe/models/user/user.model.dart';
-import 'package:safe/neuances.dart';
+import 'package:safe/services/media_server/media_server.service.dart';
+import 'package:safe/utils/capture/messages.capture.dart';
 import 'package:safe/utils/constants/constants.util.dart';
 import 'package:uuid/uuid.dart';
 
 class CaptureUtil {
   Core? _core;
-  StreamSubscription<Location>? locationSubscription;
-  Timer? batteryTimer;
-  api.Battery? battery;
+  // Used to tell the listening algorithms when to stop capturing
+  bool isActive = false;
+  // Used to prevent an infinity loop of camera flips
+  bool initFlip = false;
 
   void initialize(Core core) {
     _core = core;
   }
 
-  void start() {
+  void start() async {
     assert(_core != null, "CaptureUtil must be initialized");
 
-    // ⬇️ INCIDENT CREATE
-    _uploadChanges(null);
+    // Will be used to start & stop incident
+    isActive = true;
 
-    // ⬇️ LOCATION + SMS
+    // Prevents two banners from being open at same time
+    if (_core!
+        .state.capture.incidentRecordedBannerPanelController.isPanelOpen) {
+      _core!.state.capture.incidentRecordedBannerPanelController.close();
+    }
+
+    // ⬇️ INCIDENT CREATE
+    await _uploadChanges(null);
+
+    // ⬇️ STREAM / RECORDING
+    _stream();
+
+    // // ⬇️ LOCATION + SMS
     _locationListen();
 
-    // ⬇️ BATTERY
+    // // ⬇️ BATTERY
     _batteryListen();
-
-    // ⬇️ WEBRTC
-    _initStream();
   }
 
   void stop() async {
-    // Stops sharding -> Will complete ongoing systems
-    _core!.utils.engine.stop();
+    // Used to stop location and battery streams
+    isActive = false;
+
+    // Uploads immediate time user pressed stop
+    await _uploadChanges(
+      _core!.state.capture.incident!.copyWith(
+        stopTime: DateTime.now(),
+      ),
+    );
+
+    // UI
     _core!.state.capture.overlayController.show();
-    _core!.state.engine.setOnStop(true);
-    // CALL STOP WHEN NECESSARY
-    if (locationSubscription != null) {
-      await locationSubscription!.cancel();
+
+    // Notifies contacts that incident has stopped
+    await _notifyContacts(MessageType.end);
+
+    // STREAM
+
+    await _core!.services.agora.stop(_core!.state.capture.engine!);
+    await _saveStreamRecording();
+    await Future.delayed(Duration(seconds: 1));
+
+    // UI
+    _core!.state.capture.showPreview?.call();
+    _core!.state.capture.overlayController.hide();
+    _core!.state.capture.controller.close();
+    initFlip = false;
+
+    // Opens an error if user has reached credit limit
+    if (_core!.state.capture.limErrState == null) {
+      _core!.state.capture.incidentRecordedBannerPanelController.open();
     }
+  }
+
+  // ⬇️ STREAM / RECORDING
+
+  // Initializes streaming engine & prepares for streaming
+  Future<void> _initEngine() async {
+    if (_core!.state.capture.engine != null) return;
+
+    _core!.state.capture.setEngine(createAgoraRtcEngine());
+
+    // Initializes engine and sets event handler
+    await _core!.services.agora.initialize(
+      _core!.state.capture.engine!,
+      RtcEngineEventHandler(
+        onError: (err, msg) {
+          // TODO: (LOG)
+          print("$err: $msg");
+        },
+        onJoinChannelSuccess: (connection, elapsed) {
+          _recordStream();
+
+          // Triggers animation
+          if (initFlip) return;
+
+          initFlip = true;
+
+          // Hides camera preview to prevent UI bug
+          _core!.state.capture.hidePreview?.call();
+        },
+      ),
+      frameRate: _core!.state.capture.settings!.frameRate,
+      dimensions: VideoDimensions(
+        width: _core!.state.capture.settings!.dimensionWidth,
+        height: _core!.state.capture.settings!.dimensionHeight,
+      ),
+    );
+  }
+
+  Future<void> _stream() async {
+    _initEngine();
+
+    String? token = await _core!.services.mediaServer.generateRTCToken(
+      channelName: _core!.state.capture.incident!.stream.channelName,
+      role: TokenRole.publisher,
+      type: TokenType.userAccount,
+      uid: _core!.state.capture.incident!.stream.userId,
+    );
+
+    if (token == null) {
+      _uploadChanges(_core!.state.capture.incident!.copyWith(
+        streamAvailable: false,
+      ));
+    }
+
+    await _core!.services.agora.stream(
+      _core!.state.capture.engine!,
+      token: token ?? "",
+      uid: _core!.state.capture.incident!.stream.userId,
+      channelId: _core!.state.capture.incident!.stream.channelName,
+    );
+  }
+
+  Future<void> _recordStream() async {
+    // Fetch resourceId
+    String? resourceId = await _core!.services.mediaServer.getResourceID(
+      channelName: _core!.state.capture.incident!.stream.channelName,
+      recordingId: _core!.state.capture.incident!.stream.recordingId,
+    );
+
+    if (resourceId == null) return;
+
+    // New RTC token must be generated for recording worker
+    String? recordToken = await _core!.services.mediaServer.generateRTCToken(
+      channelName: _core!.state.capture.incident!.stream.channelName,
+      role: TokenRole.publisher,
+      type: TokenType.userAccount,
+      uid: _core!.state.capture.incident!.stream.recordingId,
+    );
+
+    if (recordToken == null) return;
+
+    StartRecordingResponse? response =
+        await _core!.services.mediaServer.startRecording(
+      dir1: _core!.services.mediaServer.generateDirectory(
+        _core!.state.capture.incident!.id,
+      ),
+      dir2: "raw",
+      userUid: _core!.state.capture.incident!.stream.userId.toString(),
+      channelName: _core!.state.capture.incident!.stream.channelName,
+      recordingId: _core!.state.capture.incident!.stream.recordingId,
+      resourceId: resourceId,
+      maxIdleTime: _core!.state.capture.settings!.maxIdleTime,
+      token: recordToken,
+    );
+
+    if (response == null) return;
+
+    await _uploadChanges(_core!.state.capture.incident!.copyWith(
+      stream: _core!.state.capture.incident!.stream.copyWith(
+        resourceId: resourceId,
+        sid: response.sid,
+      ),
+    ));
+  }
+
+  Future<void> _saveStreamRecording() async {
+    if (_core!.state.capture.incident!.stream.resourceId == null) return;
+
+    if (_core!.state.capture.incident!.stream.sid == null) return;
+
+    // Call stop recording
+    StopRecordingResponse? response =
+        await _core!.services.mediaServer.stopRecording(
+      channelName: _core!.state.capture.incident!.stream.channelName,
+      recordingId: _core!.state.capture.incident!.stream.recordingId,
+      resourceId: _core!.state.capture.incident!.stream.resourceId!,
+      sid: _core!.state.capture.incident!.stream.sid!,
+    );
+
+    if (response == null) return;
+
+    // Update Firebase values
+    await _uploadChanges(_core!.state.capture.incident!.copyWith(
+      cloudRecordingAvailable: true,
+      stream: _core!.state.capture.incident!.stream.copyWith(
+        filePath: response.fileName,
+      ),
+    ));
   }
 
   // ⬇️ LOCATION
@@ -72,7 +240,7 @@ class CaptureUtil {
   }
 
   // Initializes incident and sends primitives to backend
-  Future<void> _uploadChanges(Incident? i) async {
+  Future<void> _uploadChanges(Incident? i, {bool shouldMerge = true}) async {
     Incident? incident;
     // If incident does not exist, create it
     if (i == null) {
@@ -81,8 +249,21 @@ class CaptureUtil {
           ? 1
           : _core!.state.incidentLog.incidents!.length + 1;
 
+      String incidentId = Uuid().v1();
+
+      var stream = model.Stream(
+        // Encodes incident id in base 64 and removes all symbols (occational = sign)
+        channelName: _core!.services.mediaServer.generateChannelName(
+          incidentId,
+        ),
+        userId: 1111,
+        recordingId: 9999,
+      );
+
       incident = Incident(
-        id: Uuid().v1(),
+        id: incidentId,
+        pubID: Uuid().v4(),
+        stream: stream,
         userId: _core!.services.auth.currentUser!.uid,
         name: "Incident #$incidentNumber",
         type: [_core!.state.capture.type],
@@ -93,68 +274,79 @@ class CaptureUtil {
     incident ??= i;
 
     _core!.state.capture.setIncident(incident!);
-    return _core!.services.server.incidents.upsert(incident);
+    return _core!.services.server.incidents.upsert(
+      incident,
+      shouldMerge: shouldMerge,
+    );
   }
 
   // Updates location as user moves
   void _locationListen() async {
-    List<Location>? log;
-    bool shouldUpsert = true;
+    List<Location> log = [];
+    String? adr;
 
-    _core!.services.location.initilaize();
-    locationSubscription =
-        _core!.services.location.stream.listen((location) async {
-      // Check if log is null | this will be the first time
-      if (log == null) {
-        _generateAddress(location).then((address) async {
-          await _sendLocation([location.copyWith(address: address)]);
+    await _core!.services.location.initilaize();
 
-          // Notifies contact after address is generated and incident is complete
-          _notifyContacts();
-        });
+    while (isActive) {
+      // Fetches location
+      api.LocationData data =
+          await _core!.services.location.location.getLocation();
 
-        log = [];
-        return;
+      Location loc = Location(
+        lat: data.latitude,
+        long: data.longitude,
+        alt: data.altitude,
+        speed: data.speed,
+        accuracy: data.accuracy,
+        datetime: DateTime.now(),
+      );
+
+      if (log.isEmpty) {
+        adr = await _generateAddress(loc);
+
+        log.add(
+          loc.copyWith(address: adr),
+        );
+
+        await _sendLocation(log);
+
+        _notifyContacts(MessageType.start);
+      } else {
+        log.add(
+          loc.copyWith(address: adr),
+        );
+        await _sendLocation(log);
       }
 
-      log!.add(location);
-      if (!shouldUpsert) {
-        return;
-      }
-
-      shouldUpsert = false;
-      await Future.delayed(kLocationStreamTimeout);
-      _sendLocation(log!);
-      log = [];
-      shouldUpsert = true;
-    });
+      await Future.delayed(kCaptureStreamTimeout);
+    }
   }
 
   Future<void> _sendLocation(List<Location> location) async {
-    var incident = _core!.state.capture.incident!;
+    var incident = _core!.state.capture.incident!.copyWith(location: location);
 
-    _uploadChanges(
-      incident.copyWith(
-        location: [...incident.location ?? [], ...location],
-      ),
-    );
+    _uploadChanges(incident, shouldMerge: false);
   }
 
   // ⬇️ SMS
-  void _notifyContacts() async {
+  Future<void> _notifyContacts(MessageType type, {int? battery}) async {
     var contacts = await _core!.services.server.contacts.readFromUserIdOnce(
       id: _core!.services.auth.currentUser!.uid,
     );
 
-    print("");
-
     for (Contact contact in contacts) {
-      await message(contact);
+      await message(contact, type, battery: battery);
     }
   }
 
-  String _generateMessage(Contact contact, User user, Incident incident) {
-    String message = kContactMessageTemplate;
+  String _generateMessage(
+    Contact contact,
+    User user,
+    Incident incident,
+    MessageType type, {
+    int? battery,
+  }) {
+    String message = EmergencyMessages.messageMap[type]!;
 
     final Map<String, String> replacementMap = {
       "{FULL_NAME}": user.name,
@@ -162,13 +354,15 @@ class CaptureUtil {
       "{FULL_CONTACT_NAME}": contact.name,
       "{TIME}": DateFormat.jm().format(incident.datetime),
       "{TYPE}": _core!.utils.incident.generateType(incident.type[0])!,
+      "{TIME_END}": DateFormat.jm().format(DateTime.now()),
       "{ADDRESS}": _core!.utils.geocoder.removeTag(
         incident.location![0].address!,
       ),
       "{LAT}": incident.location![0].lat!.toStringAsFixed(4),
       "{LONG}": incident.location![0].long!.toStringAsFixed(4),
       "{NAME_POSESSIVE}": _core!.utils.name.genFirstName(user.name, true),
-      "{LINK}": "https://joinsafe.me/incident", // CHANGE ME
+      "{BATTERY}": battery.toString(),
+      "{LINK}": "https://live.joinsafe.me/${incident.pubID}",
     };
 
     for (String key in replacementMap.keys) {
@@ -178,35 +372,38 @@ class CaptureUtil {
     return message;
   }
 
-  Future<void> message(Contact contact) async {
+  Future<void> message(Contact contact, MessageType type,
+      {int? battery}) async {
     var incident = _core!.state.capture.incident!;
 
     var user = await _core!.services.server.user.readFromIdOnce(
       id: _core!.services.auth.currentUser!.uid,
     );
 
-    var message = _generateMessage(contact, user!, incident);
+    var message =
+        _generateMessage(contact, user!, incident, type, battery: battery);
 
     await _core!.services.twilio.messageSMS(
       phone: contact.phone,
       message: message,
     );
 
-    print("CAPTURE: Notified ${contact.name}");
+    print("CAPTURE ($type): Notified ${contact.name}");
 
     var notified = NotifiedContact(
       id: contact.id,
       name: contact.name,
       phone: contact.phone,
       messageSent: message,
+      type: type,
       datetime: DateTime.now(),
     );
 
     incident = incident.copyWith(
-      notifiedContacts: incident.notifiedContacts == null
+      contactLog: incident.contactLog == null
           ? [notified]
           : [
-              ...incident.notifiedContacts!,
+              ...incident.contactLog!,
               notified,
             ],
     );
@@ -218,40 +415,57 @@ class CaptureUtil {
   // ⬇️ BATTERY
 
   void _batteryListen() async {
-    battery = api.Battery();
+    List<Battery> log = [];
+    var battery = api.Battery();
+    bool critMsg = false;
 
-    // Gets battery immediately
-    await uploadBattery();
+    while (isActive) {
+      // Fetches location
+      var current = await battery.batteryLevel;
 
-    // Set timer
-    batteryTimer = Timer.periodic(Duration(seconds: 10), (_) async {
-      await uploadBattery();
-    });
+      // Checks if battery, if message has already been sent, and if address has been generated
+      if (current <= 20 &&
+          !critMsg &&
+          _core!.state.capture.incident!.location != null) {
+        critMsg = true;
+        _notifyContacts(MessageType.batteryCrit, battery: current);
+      }
+
+      // Stops stream if battery is at critical level (under 5%)
+      _criticalStop(battery);
+
+      Battery bat = Battery(
+        percentage: current / 100,
+        datetime: DateTime.now(),
+      );
+
+      log.add(bat);
+      await _uploadBattery(log);
+
+      await Future.delayed(kCaptureStreamTimeout);
+    }
   }
 
-  Future<void> uploadBattery() async {
-    // Get battery level
-    var current = await battery!.batteryLevel;
+  /// Stops stream if battery is at critical level (under 5%)
+  Future<void> _criticalStop(api.Battery battery) async {
+    int level = await battery.batteryLevel;
+    api.BatteryState state = await battery.batteryState;
 
-    // Set local state
-    _core!.state.capture.addToBattery(Battery(
-      percentage: current / 100,
-      datetime: DateTime.now(),
-    ));
+    // Ensures incident has been recording for at least 60 seconds
+    int timeElapsedInSec = DateTime.now()
+        .difference(_core!.state.capture.incident!.datetime)
+        .inSeconds;
 
-    // Upload to server
-    var incident = _core!.state.capture.incident!.copyWith(
-      battery: _core!.state.capture.battery,
-    );
+    if (timeElapsedInSec < 60 ||
+        level > 5 ||
+        state == api.BatteryState.charging) return;
 
-    _core!.state.capture.setIncident(incident);
-    _core!.services.server.incidents.upsert(incident);
+    stop();
   }
 
-  // ⬇️ WEBRTC
-  void _initStream() async {
-    _core!.services.signaling.init(_core!);
-    await _core!.services.signaling.openLocalMedia();
-    await _core!.services.signaling.createSession();
+  Future<void> _uploadBattery(List<Battery> log) async {
+    var incident = _core!.state.capture.incident!.copyWith(battery: log);
+
+    _uploadChanges(incident, shouldMerge: false);
   }
 }

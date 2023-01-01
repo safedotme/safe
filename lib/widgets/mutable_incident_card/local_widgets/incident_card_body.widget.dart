@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
 import 'package:safe/models/incident/incident.model.dart';
 import 'package:safe/utils/constants/constants.util.dart';
+import 'package:safe/utils/contacts/contacts.util.dart';
 import 'package:safe/utils/icon/icon.util.dart';
 import 'package:safe/widgets/mutable_emergency_contact_avatar/mutable_emergency_contact_avatar.widget.dart';
 import 'package:safe/widgets/mutable_pill/mutable_pill.widget.dart';
@@ -68,20 +69,25 @@ class _IncidentCardBodyState extends State<IncidentCardBody> {
                   maxLines: 2,
                 ),
                 SizedBox(height: kIncidentBodyVerticalSpacing),
-                widget.incident.notifiedContacts == null
+                widget.incident.contactLog == null
                     ? SizedBox()
                     : Row(
                         children: List.generate(
-                          widget.incident.notifiedContacts!.length,
+                          ContactsUtil.formatContactList(
+                                  widget.incident.contactLog)!
+                              .length,
                           (i) => Padding(
                             padding: EdgeInsets.only(
                               right: i + 1 ==
-                                      widget.incident.notifiedContacts!.length
+                                      ContactsUtil.formatContactList(
+                                              widget.incident.contactLog)!
+                                          .length
                                   ? 0
                                   : kEmergencyContactAvatarSpacing,
                             ),
                             child: MutableEmergencyContactAvatar(
-                              widget.incident.notifiedContacts![i],
+                              ContactsUtil.formatContactList(
+                                  widget.incident.contactLog)![i],
                             ),
                           ),
                         ),
@@ -91,6 +97,7 @@ class _IncidentCardBodyState extends State<IncidentCardBody> {
           ),
           SizedBox(width: 10),
           MutablePill(
+            shadowPronouncement: 50,
             text: core.utils.language
                     .langMap[core.state.preferences.language]!["incident_card"]
                 ["secured"],

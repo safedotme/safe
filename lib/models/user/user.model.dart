@@ -6,6 +6,7 @@ class User {
   final String? picturePath;
   final String phone;
   final DateTime joined;
+  final int credits;
 
   User({
     required this.id,
@@ -13,11 +14,13 @@ class User {
     required this.phone,
     required this.picturePath,
     required this.joined,
+    required this.credits,
   });
 
   factory User.fromJson(Map<String, dynamic> json) {
     return User(
       id: json["id"],
+      credits: json["credits"],
       name: json["name"],
       picturePath: json["picture_path"],
       phone: json["phone"],
@@ -30,6 +33,7 @@ class User {
         "name": name,
         "picture_path": picturePath,
         "phone": phone,
+        "credits": credits,
         "joined": joined.toIso8601String(),
       };
 }

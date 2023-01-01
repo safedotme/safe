@@ -1,14 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:pin_code_fields/pin_code_fields.dart';
+import 'package:safe/utils/constants/constants.util.dart';
 
 class MutableButton extends StatefulWidget {
   final void Function()? onTap;
   final Widget child;
   final Duration? duration;
+  final void Function()? onSlide;
+  final bool animateBeforeVoidCallback;
 
   MutableButton({
     this.onTap,
     required this.child,
+    this.onSlide,
     this.duration,
+    this.animateBeforeVoidCallback = false,
   });
 
   @override
@@ -25,10 +31,11 @@ class _MutableButtonState extends State<MutableButton>
     controller = AnimationController(
       vsync: this,
       // Duration to reach the midpoint
-      duration: Duration(milliseconds: 125),
+      duration: kScaleDownButtonTime,
     );
 
-    Animation animation = Tween(begin: 1, end: 0.97).animate(
+    Animation animation =
+        Tween(begin: 1, end: kScaleDownButtonPercentage).animate(
       CurvedAnimation(
         parent: controller,
         curve: Curves.decelerate,
@@ -44,7 +51,7 @@ class _MutableButtonState extends State<MutableButton>
     super.initState();
   }
 
-  void animate() async {
+  Future<void> animate() async {
     await controller.forward();
     await controller.reverse();
   }
@@ -52,12 +59,25 @@ class _MutableButtonState extends State<MutableButton>
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
+      onTap: () async {
+        if (widget.animateBeforeVoidCallback) {
+          await animate();
+        }
+
         if (widget.onTap != null) {
           widget.onTap!();
         }
-        animate();
+
+        if (!widget.animateBeforeVoidCallback) {
+          animate();
+        }
       },
+      onVerticalDragStart: widget.onSlide != null
+          ? (detail) {
+              widget.onSlide!();
+              animate();
+            }
+          : null,
       child: Transform.scale(
         scale: currentState,
         child: widget.child,

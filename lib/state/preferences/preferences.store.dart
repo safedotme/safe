@@ -1,5 +1,6 @@
 import 'package:camera/camera.dart';
 import 'package:mobx/mobx.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:safe/utils/language/language.util.dart';
 
 part 'preferences.store.g.dart';
@@ -14,8 +15,8 @@ abstract class _PreferencesStore with Store {
   void setLanguage(Languages l) => language = l;
 
   @observable
-  ResolutionPreset cameraResolution = ResolutionPreset.high;
+  List<Permission> disabledPermissions = [];
 
   @action
-  void setCameraResolution(ResolutionPreset p) => cameraResolution = p;
+  void setDisabledPermissions(List<Permission> p) => disabledPermissions = p;
 }

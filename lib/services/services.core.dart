@@ -1,21 +1,21 @@
+import 'package:safe/services/agora/agora.service.dart';
+import 'package:safe/services/analytics/analytics.service.dart';
 import 'package:safe/services/auth/auth.service.dart';
-import 'package:safe/services/camera/camera.service.dart';
 import 'package:safe/services/geocoder/geocoder.service.dart';
 import 'package:safe/services/location/location.service.dart';
-import 'package:safe/services/permissions/permisions.service.dart';
+import 'package:safe/services/media_server/media_server.service.dart';
+import 'package:safe/services/permissions/permissions.service.dart';
 import 'package:safe/services/server/server.service.dart';
-import 'package:safe/services/signaling/signaling.service.dart';
-import 'package:safe/services/storage/storage.service.dart';
 import 'package:safe/services/twilio/twilio.service.dart';
 
 class Services {
   AuthService auth = AuthService();
   PermissionsService permissions = PermissionsService();
   ServerService server = ServerService()..init();
-  CameraService cam = CameraService();
-  StorageService storage = StorageService();
   LocationService location = LocationService();
   GeocoderService geocoder = GeocoderService();
+  AnalyticsService analytics = AnalyticsService();
   TwilioService twilio = TwilioService();
-  SignalingService signaling = SignalingService();
+  MediaServer mediaServer = MediaServer();
+  AgoraService agora = AgoraService();
 }

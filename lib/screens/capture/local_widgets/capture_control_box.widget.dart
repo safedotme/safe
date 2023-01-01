@@ -1,10 +1,13 @@
+import 'package:agora_rtc_engine/agora_rtc_engine.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
-import 'package:safe/screens/capture/local_widgets/camera_preview.widget.dart';
+import 'package:safe/screens/capture/local_widgets/camera_feed.widget.dart';
+import 'package:safe/screens/capture/local_widgets/camera_feed_skeleton.widget.dart';
 import 'package:safe/screens/capture/local_widgets/capture_stop_alert_dialog.widget.dart';
 import 'package:safe/screens/capture/local_widgets/control_button.widget.dart';
 import 'package:safe/utils/constants/constants.util.dart';
@@ -44,6 +47,7 @@ class _CaptureControlBoxState extends State<CaptureControlBox> {
 
   @override
   Widget build(BuildContext context) {
+    var query = MediaQuery.of(context);
     getSize();
     return Observer(
       builder: (_) => MutablePopup(
@@ -92,9 +96,14 @@ class _CaptureControlBoxState extends State<CaptureControlBox> {
                       height: kControlBoxBodyHeight,
                       child: Row(
                         children: [
-                          CameraPreviewControl(
-                            controller:
-                                core.state.capture.cameraPreviewController,
+                          SizedBox(
+                            width: query.size.width *
+                                kCameraPreviewWidthPercentage,
+                            height: double.infinity,
+                            child: CameraFeedSkeleton(
+                              darkened: true,
+                              show: core.state.capture.enlargementState != 0,
+                            ),
                           ),
                           SizedBox(width: 10),
                           Expanded(
@@ -104,23 +113,41 @@ class _CaptureControlBoxState extends State<CaptureControlBox> {
                                   text: core.utils.language.langMap[core.state
                                           .preferences.language]!["capture"]
                                       ["controls"]["flip_camera"]["header"],
-                                  icon: MutableIcons.camera,
+                                  icon: MutableIcons.cameraFlip,
                                   iconSize: Size(20, 16),
                                   onTap: () {
-                                    core.state.capture.cameraPreviewController
-                                        .flipCamera();
+                                    core.services.agora.flipCam(
+                                      core.state.capture.engine!,
+                                      core,
+                                    );
                                   },
                                 ),
                                 SizedBox(height: 10),
-                                ControlButton(
-                                  text: core.utils.language.langMap[core.state
-                                          .preferences.language]!["capture"]
-                                      ["controls"]["911"]["header"],
-                                  icon: MutableIcons.shield,
-                                  iconSize: Size(15, 17),
-                                  onTap: () {
-                                    print("navigate to 911 popup");
-                                  },
+                                Observer(
+                                  builder: (_) => ControlButton(
+                                    controller: core
+                                        .state.capture.flashButtonController,
+                                    text: (core.utils.language.langMap[core
+                                                    .state
+                                                    .preferences
+                                                    .language]!["capture"]
+                                                ["controls"]["flash"]["header"]
+                                            as String)
+                                        .replaceAll(
+                                      "{STATE}",
+                                      core.state.capture.isFlashOn
+                                          ? "On"
+                                          : "Off",
+                                    ),
+                                    icon: MutableIcons.shield,
+                                    iconSize: Size(15, 17),
+                                    onTap: () async {
+                                      await core.services.agora.toggleFlash(
+                                        core.state.capture.engine!,
+                                        core,
+                                      );
+                                    },
+                                  ),
                                 ),
                                 SizedBox(height: 10),
                                 ControlButton(
@@ -130,6 +157,7 @@ class _CaptureControlBoxState extends State<CaptureControlBox> {
                                   icon: MutableIcons.stopRecording,
                                   iconSize: Size(17, 17),
                                   onTap: () {
+                                    HapticFeedback.lightImpact();
                                     showCupertinoDialog(
                                       context: context,
                                       barrierDismissible: true,

@@ -4,7 +4,9 @@ import 'package:flutter/services.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
+import 'package:safe/utils/capture/capture.util.dart';
 import 'package:safe/utils/constants/constants.util.dart';
+import 'package:safe/utils/credit/credit.util.dart';
 import 'package:safe/utils/icon/icon.util.dart';
 import 'package:safe/widgets/mutable_avatar/mutable_avatar.widget.dart';
 import 'package:safe/widgets/mutable_button/mutable_button.widget.dart';
@@ -175,11 +177,38 @@ class _IncidentLogNavBarState extends State<IncidentLogNavBar> {
                           ),
                           SizedBox(width: 15),
                           MutableNavSafeButton(
-                            onTap: () {
-                              HapticFeedback.heavyImpact();
-                              core.utils.capture.initialize(core);
+                            onTap: () async {
+                              HapticFeedback.lightImpact();
+
+                              // Checks if incident should be captured
+                              bool shouldCapture =
+                                  await core.utils.credit.shouldCapture(
+                                TriggerIdentifier.primary,
+                                core,
+                              );
+
+                              bool missingContacts =
+                                  core.state.capture.limErrState ==
+                                      LimitErrorState.missingContacts;
+
+                              if (!shouldCapture || missingContacts) {
+                                core.state.incidentLog.controller.close();
+
+                                // Flashes Incident Limit Banner
+                                if (core.state.capture.shouldFlashLimitBanner ==
+                                    false) {
+                                  core.state.capture.setFlashLimitBanner(true);
+                                  await Future.delayed(Duration(seconds: 8));
+                                  core.state.capture.setFlashLimitBanner(false);
+                                }
+
+                                // Add Haptic Feedback
+                                return;
+                              }
+
                               core.utils.capture.start();
-                              core.state.capture.controller.open();
+                              await core.state.capture.controller.open();
+                              core.state.incidentLog.controller.close();
                             },
                           ),
                         ],

@@ -1,9 +1,8 @@
 // ignore_for_file: no_leading_underscores_for_local_identifiers
 import 'package:safe/models/incident/battery.model.dart';
-import 'package:safe/models/incident/emergency_services.model.dart';
 import 'package:safe/models/incident/location.model.dart';
-import 'package:safe/models/incident/notified_contacts.model.dart';
-import 'package:safe/models/incident/shard.model.dart';
+import 'package:safe/models/incident/stream.model.dart';
+import 'package:safe/models/incident/notified_contact.model.dart';
 import 'package:safe/utils/incident/incident.util.dart';
 
 class Incident {
@@ -11,64 +10,62 @@ class Incident {
   final String userId;
   final String name;
   final List<IncidentType> type;
-  final List<Map<String, dynamic>>? rtcCandidates;
-  final Map<String, dynamic>? rtcOffer;
+  final Stream stream;
+  final bool streamAvailable;
+  final bool cloudRecordingAvailable;
+  final DateTime? stopTime;
   final DateTime datetime;
   final String? thumbnail;
   final List<Location>? location;
-  final List<NotifiedContact>? notifiedContacts;
+  final String pubID;
+  final List<NotifiedContact>? contactLog;
   final List<Battery>? battery;
-  final List<Shard>? shards;
-  final List<EmergencyServices>? emergencyServices;
 
   Incident({
     required this.id,
     required this.userId,
     required this.name,
     required this.type,
+    required this.stream,
+    required this.pubID,
     required this.datetime,
+    this.streamAvailable = false,
+    this.cloudRecordingAvailable = false,
+    this.stopTime,
     this.location,
-    this.rtcCandidates,
-    this.rtcOffer,
-    this.notifiedContacts,
+    this.contactLog,
     this.battery,
-    this.shards,
     this.thumbnail,
-    this.emergencyServices,
   });
 
   factory Incident.fromJson(Map<String, dynamic> json) {
     List<Map<String, dynamic>>? _location = json["location"] == null
         ? null
         : List<Map<String, dynamic>>.from(json["location"]);
-    List<Map<String, dynamic>>? _contacts = json["notified_contacts"] == null
+    List<Map<String, dynamic>>? _contacts = json["contact_log"] == null
         ? null
-        : List<Map<String, dynamic>>.from(json["notified_contacts"]);
+        : List<Map<String, dynamic>>.from(json["contact_log"]);
     List<Map<String, dynamic>>? _battery = json["battery"] == null
         ? null
         : List<Map<String, dynamic>>.from(json["battery"]);
-    List<Map<String, dynamic>>? _shards = json["shards"] == null
-        ? null
-        : List<Map<String, dynamic>>.from(json["shards"]);
     List<String> _type = List<String>.from(json["type"]);
-    List<Map<String, dynamic>>? _candidates = json["rtc_candidates"] == null
-        ? null
-        : List<Map<String, dynamic>>.from(json["rtc_candidates"]);
 
     return Incident(
       id: json["id"],
       userId: json['user_id'],
-      rtcOffer: json["rtc_offer"],
-      rtcCandidates: _candidates,
       name: json["name"],
+      stream: Stream.fromJson(json["stream"]),
+      pubID: json["pub_id"],
       type: _type.map((e) => IncidentUtil.parseType(e)).toList(),
       datetime: DateTime.parse(json["datetime"]),
       location: _location?.map((e) => Location.fromJson(e)).toList(),
-      notifiedContacts:
-          _contacts?.map((e) => NotifiedContact.fromJson(e)).toList(),
+      contactLog: _contacts?.map((e) => NotifiedContact.fromJson(e)).toList(),
       battery: _battery?.map((e) => Battery.fromJson(e)).toList(),
       thumbnail: json["thumbnail"],
-      shards: _shards?.map((e) => Shard.fromJson(e)).toList(),
+      stopTime:
+          json["stop_time"] == null ? null : DateTime.parse(json["stop_time"]),
+      streamAvailable: json["stream_available"],
+      cloudRecordingAvailable: json["cloud_recording_available"],
     );
   }
 
@@ -79,48 +76,52 @@ class Incident {
     List<IncidentType>? type,
     DateTime? datetime,
     String? thumbnail,
-    Map<String, dynamic>? rtcOffer,
-    List<Map<String, dynamic>>? rtcCandidates,
+    bool? streamAvailable,
+    bool? cloudRecordingAvailable,
+    Stream? stream,
     List<Location>? location,
-    List<NotifiedContact>? notifiedContacts,
+    String? pubID,
+    List<NotifiedContact>? contactLog,
     List<Battery>? battery,
-    List<Shard>? shards,
-    List<EmergencyServices>? emergencyServices,
+    DateTime? stopTime,
   }) {
     return Incident(
       id: id ?? this.id,
+      streamAvailable: streamAvailable ?? this.streamAvailable,
+      cloudRecordingAvailable:
+          cloudRecordingAvailable ?? this.cloudRecordingAvailable,
       userId: userId ?? this.userId,
-      rtcOffer: rtcOffer ?? this.rtcOffer,
-      rtcCandidates: rtcCandidates ?? this.rtcCandidates,
       name: name ?? this.name,
       type: type ?? this.type,
+      pubID: pubID ?? this.pubID,
+      stream: stream ?? this.stream,
+      stopTime: stopTime ?? this.stopTime,
       thumbnail: thumbnail ?? this.thumbnail,
       datetime: datetime ?? this.datetime,
       location: location ?? this.location,
-      notifiedContacts: notifiedContacts ?? this.notifiedContacts,
+      contactLog: contactLog ?? this.contactLog,
       battery: battery ?? this.battery,
-      shards: shards ?? this.shards,
-      emergencyServices: emergencyServices ?? this.emergencyServices,
     );
   }
 
   Map<String, dynamic> toMap() => {
         "id": id,
         "user_id": userId,
-        "rtc_offer": rtcOffer,
-        "rtc_candidates": rtcCandidates,
         "name": name,
+        "stream_available": streamAvailable,
+        "stop_time": stopTime?.toIso8601String(),
+        "stream": stream.toMap(),
         "type": type.map((e) => e.toString()).toList(),
         "datetime": datetime.toIso8601String(),
+        "pub_id": pubID,
+        "cloud_recording_available": cloudRecordingAvailable,
         "location":
             location != null ? location!.map((e) => e.toMap()).toList() : null,
-        "notified_contacts": notifiedContacts != null
-            ? notifiedContacts!.map((e) => e.toMap()).toList()
+        "contact_log": contactLog != null
+            ? contactLog!.map((e) => e.toMap()).toList()
             : null,
         "battery":
             battery != null ? battery!.map((e) => e.toMap()).toList() : null,
         "thumbnail": thumbnail,
-        "shards":
-            shards != null ? shards!.map((e) => e.toMap()).toList() : null,
       };
 }

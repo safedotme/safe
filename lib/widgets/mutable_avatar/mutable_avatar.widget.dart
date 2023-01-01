@@ -60,7 +60,7 @@ class MutableAvatar extends StatelessWidget {
           child: handleResponse(
             pfp: ClipRRect(
               borderRadius: BorderRadius.circular(kNavButtonSize / 2),
-              child: CachedNetworkImage(imageUrl: user!.picturePath ?? ""),
+              child: CachedNetworkImage(imageUrl: user?.picturePath ?? ""),
             ),
             initials: Center(
               child: ShaderMask(
@@ -70,7 +70,7 @@ class MutableAvatar extends StatelessWidget {
                   end: Alignment(1.7, 0),
                 ).createShader(rect),
                 child: MutableText(
-                  core.utils.name.genInitials(user!.name),
+                  core.utils.name.genInitials(user?.name ?? ""),
                   style: TypeStyle.h5,
                   weight: TypeWeight.black,
                 ),
