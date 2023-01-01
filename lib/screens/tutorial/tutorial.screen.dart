@@ -3,6 +3,7 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
 import 'package:safe/screens/tutorial/local_widgets/tutorial_component.widget.dart';
+import 'package:safe/services/analytics/helper_classes/analytics_log_model.service.dart';
 import 'package:safe/utils/constants/constants.util.dart';
 import 'package:safe/widgets/mutable_large_button/mutable_large_button.widget.dart';
 import 'package:safe/widgets/mutable_screen_transition/mutable_screen_transition.widget.dart';
@@ -286,6 +287,19 @@ class _TutorialScreenState extends State<TutorialScreen> {
                     borderRadius: 15,
                     animateBeforeVoidCallback: true,
                     onTap: () async {
+                      // Log
+                      core.services.analytics.log(AnalyticsLog(
+                        channel: "user-register",
+                        event: "tutorial-finished",
+                        description: "User has finished their tutorial.",
+                        icon: "📘",
+                        tags: {
+                          "id": core.services.auth.currentUser!.uid,
+                          "datetime": DateTime.now().toIso8601String(),
+                        },
+                      ));
+
+                      // Close tutorial
                       await core.state.auth.tutorialController.close();
                       core.state.auth.setIsTutorialOpen(false);
 

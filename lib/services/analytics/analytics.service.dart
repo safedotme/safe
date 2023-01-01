@@ -20,9 +20,7 @@ class AnalyticsService {
         "Authorization": "Bearer ${env["LOG_SNAG_TOKEN"]}",
         "Content-Type": "application/json",
       },
-      body: jsonEncode(
-        body,
-      ),
+      body: jsonEncode(body),
     );
   }
 }

@@ -35,9 +35,7 @@ class _MutableAuthWrapperState extends State<MutableAuthWrapper> {
         event: "create_account",
         icon: "⭐️",
         description: "${user.name} has created an account!",
-        tags: [
-          {"id": user.id},
-        ],
+        tags: {"id": user.id},
       ),
     );
   }

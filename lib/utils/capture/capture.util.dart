@@ -13,6 +13,7 @@ import 'package:safe/models/incident/notified_contact.model.dart';
 import 'package:safe/models/media_server/start_recording_response.model.dart';
 import 'package:safe/models/media_server/stop_recording_response.model.dart';
 import 'package:safe/models/user/user.model.dart';
+import 'package:safe/services/analytics/helper_classes/analytics_log_model.service.dart';
 import 'package:safe/services/media_server/media_server.service.dart';
 import 'package:safe/utils/capture/messages.capture.dart';
 import 'package:safe/utils/constants/constants.util.dart';
@@ -43,6 +44,7 @@ class CaptureUtil {
 
     // ⬇️ INCIDENT CREATE
     await _uploadChanges(null);
+    _logIncident(_core!.state.capture.incident!, false);
 
     // ⬇️ STREAM / RECORDING
     _stream();
@@ -57,6 +59,9 @@ class CaptureUtil {
   void stop() async {
     // Used to stop location and battery streams
     isActive = false;
+
+    // Log Incident
+    _logIncident(_core!.state.capture.incident!, true);
 
     // Uploads immediate time user pressed stop
     await _uploadChanges(
@@ -89,6 +94,51 @@ class CaptureUtil {
     }
   }
 
+  // ⬇️ ANALYTICS
+  Future<void> _logIncident(Incident i, bool stopped) {
+    return _core!.services.analytics.log(AnalyticsLog(
+      channel: "capture-incident",
+      event: "capture-${stopped ? "stopped" : "started"}",
+      description:
+          "User has begun ${stopped ? "stopped" : "started"} capturing the incident.",
+      icon: stopped ? "☁️" : "📸",
+      tags: {
+        "id": i.id,
+        "userid": i.userId,
+      },
+    ));
+  }
+
+  Future<void> _logError({
+    required String event,
+    required String error,
+  }) async {
+    String body = """
+**ERROR**
+```
+$error
+```
+
+**INFORMATION**
+```
+ID: ${_core!.state.capture.incident!.id}
+DATETIME: ${DateTime.now().toIso8601String()}
+USER ID: ${_core!.state.capture.incident!.userId}
+```
+""";
+
+    await _core!.services.analytics.log(AnalyticsLog(
+      channel: "error",
+      event: event,
+      description: body,
+      icon: "🚨",
+      tags: {
+        "incidentid": _core!.state.capture.incident!.id,
+        "id": _core!.state.capture.incident!.userId,
+      },
+    ));
+  }
+
   // ⬇️ STREAM / RECORDING
 
   // Initializes streaming engine & prepares for streaming
@@ -102,8 +152,10 @@ class CaptureUtil {
       _core!.state.capture.engine!,
       RtcEngineEventHandler(
         onError: (err, msg) {
-          // TODO: (LOG)
-          print("$err: $msg");
+          _logError(
+            event: "rtc-failed",
+            error: {"error": err, "message": msg}.toString(),
+          );
         },
         onJoinChannelSuccess: (connection, elapsed) {
           _recordStream();
@@ -129,11 +181,13 @@ class CaptureUtil {
     _initEngine();
 
     String? token = await _core!.services.mediaServer.generateRTCToken(
-      channelName: _core!.state.capture.incident!.stream.channelName,
-      role: TokenRole.publisher,
-      type: TokenType.userAccount,
-      uid: _core!.state.capture.incident!.stream.userId,
-    );
+        channelName: _core!.state.capture.incident!.stream.channelName,
+        role: TokenRole.publisher,
+        type: TokenType.userAccount,
+        uid: _core!.state.capture.incident!.stream.userId,
+        onError: (e) {
+          _logError(event: "media_server_failed", error: e);
+        });
 
     if (token == null) {
       _uploadChanges(_core!.state.capture.incident!.copyWith(
@@ -154,6 +208,9 @@ class CaptureUtil {
     String? resourceId = await _core!.services.mediaServer.getResourceID(
       channelName: _core!.state.capture.incident!.stream.channelName,
       recordingId: _core!.state.capture.incident!.stream.recordingId,
+      onError: (e) {
+        _logError(event: "media_server_failed", error: e);
+      },
     );
 
     if (resourceId == null) return;
@@ -164,6 +221,9 @@ class CaptureUtil {
       role: TokenRole.publisher,
       type: TokenType.userAccount,
       uid: _core!.state.capture.incident!.stream.recordingId,
+      onError: (e) {
+        _logError(event: "media_server_failed", error: e);
+      },
     );
 
     if (recordToken == null) return;
@@ -180,6 +240,9 @@ class CaptureUtil {
       resourceId: resourceId,
       maxIdleTime: _core!.state.capture.settings!.maxIdleTime,
       token: recordToken,
+      onError: (e) {
+        _logError(event: "media_server_failed", error: e);
+      },
     );
 
     if (response == null) return;
@@ -204,6 +267,9 @@ class CaptureUtil {
       recordingId: _core!.state.capture.incident!.stream.recordingId,
       resourceId: _core!.state.capture.incident!.stream.resourceId!,
       sid: _core!.state.capture.incident!.stream.sid!,
+      onError: (e) {
+        _logError(event: "media_server_failed", error: e);
+      },
     );
 
     if (response == null) return;
@@ -230,6 +296,12 @@ class CaptureUtil {
     var response = await _core!.services.geocoder.fetchAddress(
       lat: location.lat!,
       long: location.long!,
+      onError: (e) {
+        _logError(
+          event: "geocoder_failed",
+          error: e.toString(),
+        );
+      },
     );
 
     if (response == null) {

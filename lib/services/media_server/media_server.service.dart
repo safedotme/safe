@@ -48,12 +48,13 @@ class MediaServer {
     String url,
     MediaAction action,
     int timeFactr,
+    Function(String e) onError,
   ) async {
     // Increases from 3 to 9 (ie, 3, 6, 9)
     await Future.delayed(Duration(
       seconds: 3 * timeFactr,
     ));
-    return _fetch(url, action);
+    return _fetch(url, action, onError);
   }
 
   Future<StopRecordingResponse?> stopRecording({
@@ -61,6 +62,7 @@ class MediaServer {
     required int recordingId,
     required String resourceId,
     required String sid,
+    required Function(String e) onError,
   }) async {
     // Get URL parameters
     Map<String, String> env = dotenv.env;
@@ -89,7 +91,11 @@ class MediaServer {
           env["MEDIA_ENDPOINT"]!,
         );
 
-    var json = await _fetch(loaded, MediaAction.stopRecording);
+    var json = await _fetch(
+      loaded,
+      MediaAction.stopRecording,
+      onError,
+    );
 
     if (json == null) return null;
 
@@ -98,6 +104,7 @@ class MediaServer {
         loaded,
         MediaAction.stopRecording,
         json,
+        onError,
       );
 
       if (res == null) return null;
@@ -112,6 +119,7 @@ class MediaServer {
   Future<String?> getResourceID({
     required String channelName,
     required int recordingId,
+    required Function(String e) onError,
   }) async {
     // Get URL parameters
     Map<String, String> env = dotenv.env;
@@ -135,7 +143,11 @@ class MediaServer {
           _genCredentials(env),
         );
 
-    var json = await _fetch(loaded, MediaAction.getResourceID);
+    var json = await _fetch(
+      loaded,
+      MediaAction.getResourceID,
+      onError,
+    );
 
     if (json == null) return null;
 
@@ -144,6 +156,7 @@ class MediaServer {
         loaded,
         MediaAction.getResourceID,
         json,
+        onError,
       );
 
       if (res == null) return null;
@@ -164,6 +177,7 @@ class MediaServer {
     required String resourceId,
     required int maxIdleTime,
     required String token,
+    required Function(String e) onError,
   }) async {
     // Get URL parameters
     Map<String, String> env = dotenv.env;
@@ -226,7 +240,11 @@ class MediaServer {
         .replaceAll("{endpoint}", env["MEDIA_ENDPOINT"]!)
         .replaceAll("{cred}", _genCredentials(env));
 
-    var json = await _fetch(loaded, MediaAction.startRecording);
+    var json = await _fetch(
+      loaded,
+      MediaAction.startRecording,
+      onError,
+    );
 
     if (json == null) return null;
 
@@ -235,6 +253,7 @@ class MediaServer {
         loaded,
         MediaAction.startRecording,
         json,
+        onError,
       );
 
       if (res == null) return null;
@@ -249,6 +268,7 @@ class MediaServer {
     String url,
     MediaAction action,
     Map? response,
+    Function(String e) onError,
   ) async {
     bool check65Exists = false;
 
@@ -271,7 +291,12 @@ class MediaServer {
       jitterRetries++;
 
       // Fetch
-      json = await _handleNetworkJitter(url, action, jitterRetries);
+      json = await _handleNetworkJitter(
+        url,
+        action,
+        jitterRetries,
+        onError,
+      );
 
       if (json?["status"] == 200) {
         shouldStop = true;
@@ -302,6 +327,7 @@ class MediaServer {
     required TokenRole role,
     required TokenType type,
     required int uid,
+    required Function(String e) onError,
   }) async {
     // Get URL parameters
     Map<String, String> env = dotenv.env;
@@ -321,7 +347,11 @@ class MediaServer {
         .replaceAll("{credential}", _genCredentials(env));
 
     //Make Request
-    var json = await _fetch(loaded, MediaAction.getRTCToken);
+    var json = await _fetch(
+      loaded,
+      MediaAction.getRTCToken,
+      onError,
+    );
 
     if (json == null) return null;
 
@@ -330,6 +360,7 @@ class MediaServer {
         loaded,
         MediaAction.getRTCToken,
         json,
+        onError,
       );
 
       if (res == null) return null;
@@ -340,13 +371,14 @@ class MediaServer {
     return json["payload"]["rtcToken"];
   }
 
-  Future<Map?> _fetch(String url, MediaAction action) async {
+  Future<Map?> _fetch(
+      String url, MediaAction action, Function(String e) onError) async {
     http.Response? response;
 
     try {
       response = await http.get(Uri.parse(url));
     } catch (e) {
-      // (LOG) NOT ABLE TO CONNECT TO MEDIA_SERVER
+      onError(e.toString());
     }
 
     if (response == null) return null;
@@ -354,10 +386,14 @@ class MediaServer {
     Map<String, dynamic> json = jsonDecode(response.body);
 
     if (response.statusCode != 200) {
-      return {
+      var res = {
         "status": response.statusCode,
         "error": json,
       };
+
+      onError(res.toString());
+
+      return res;
     }
 
     return {

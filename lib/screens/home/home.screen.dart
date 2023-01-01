@@ -11,8 +11,6 @@ import 'package:safe/screens/home/local_widgets/incident_limit_home_banner.widge
 import 'package:safe/screens/home/local_widgets/incident_recorded_home_banner.widget.dart';
 import 'package:safe/screens/incident_log/incident_log.screen.dart';
 import 'package:safe/screens/tutorial/tutorial.screen.dart';
-import 'package:safe/services/analytics/helper_classes/analytics_insight.model.dart';
-import 'package:safe/services/analytics/helper_classes/analytics_log_model.service.dart';
 import 'package:safe/utils/constants/constants.util.dart';
 import 'package:safe/utils/credit/credit.util.dart';
 import 'package:safe/widgets/mutable_safe_button/mutable_safe_button.widget.dart';
@@ -80,6 +78,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     queryData = MediaQuery.of(context);
     Core core = Provider.of<Core>(context, listen: false);
+
     return MutableScaffold(
       overlays: [
         CaptureScreen(),
