@@ -6,7 +6,6 @@ import 'package:safe/screens/tutorial/local_widgets/tutorial_component.widget.da
 import 'package:safe/utils/constants/constants.util.dart';
 import 'package:safe/widgets/mutable_large_button/mutable_large_button.widget.dart';
 import 'package:safe/widgets/mutable_screen_transition/mutable_screen_transition.widget.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class TutorialScreen extends StatefulWidget {
   @override
@@ -161,7 +160,9 @@ class _TutorialScreenState extends State<TutorialScreen> {
     core = Provider.of(context, listen: false);
 
     super.initState();
-    animate();
+    if (core.state.auth.isTutorialOpen) {
+      animate();
+    }
   }
 
   @override
@@ -269,13 +270,7 @@ class _TutorialScreenState extends State<TutorialScreen> {
                   duration: duration,
                   curve: curves[footerCurve],
                   opacity: footerOpacity,
-                  child: TutorialComponent(
-                    "footer",
-                    onTap: () {
-                      // LOG (someone visited your twitter acc thru safe)
-                      launchUrl(Uri.parse("https://twitter.com/markmusic27"));
-                    },
-                  ),
+                  child: TutorialComponent("footer"),
                 ),
               ),
 
@@ -290,8 +285,9 @@ class _TutorialScreenState extends State<TutorialScreen> {
                     height: 44,
                     borderRadius: 15,
                     animateBeforeVoidCallback: true,
-                    onTap: () {
-                      core.state.auth.tutorialController.close();
+                    onTap: () async {
+                      await core.state.auth.tutorialController.close();
+                      core.state.auth.setIsTutorialOpen(false);
 
                       // TODO: Implement with contact flow
                     },

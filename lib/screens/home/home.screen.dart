@@ -76,25 +76,10 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
-  void logAnalytics() {
-    core.services.analytics.log(
-      AnalyticsLog(
-        channel: "user-register",
-        event: "create_account",
-        icon: "⭐️",
-        description: "Mark Music has created an account!",
-        tags: [
-          {"id": "jksdlfkslkdfuiashdfiuaof29832e8"},
-        ],
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     queryData = MediaQuery.of(context);
     Core core = Provider.of<Core>(context, listen: false);
-    logAnalytics();
     return MutableScaffold(
       overlays: [
         CaptureScreen(),

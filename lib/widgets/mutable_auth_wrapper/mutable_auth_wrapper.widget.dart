@@ -29,21 +29,22 @@ class _MutableAuthWrapperState extends State<MutableAuthWrapper> {
   }
 
   void logAnalytics(User user) {
-    // core.services.analytics.log(
-    //   AnalyticsLog(
-    //     channel: AnalyticsChannel.userRegister,
-    //     event: "create_account",
-    //     icon: "⭐️",
-    //     description: "${user.name} has created an account!",
-    //     tags: [
-    //       {"id": user.id},
-    //     ],
-    //   ),
-    // );
+    core.services.analytics.log(
+      AnalyticsLog(
+        channel: "user-register",
+        event: "create_account",
+        icon: "⭐️",
+        description: "${user.name} has created an account!",
+        tags: [
+          {"id": user.id},
+        ],
+      ),
+    );
   }
 
   void genUser(User? user, Firebase.User firebaseUser) async {
     if (user != null) return;
+
     DateTime time = DateTime.now();
 
     var gen = User(

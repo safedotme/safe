@@ -7,11 +7,7 @@ import 'dart:convert';
 class AnalyticsService {
   final String endpoint = "https://api.logsnag.com/v1/";
 
-  Future<void> log(AnalyticsLog log) async {
-    var res = await _request(log.toMap(), "log");
-
-    print(res.body);
-  }
+  Future<void> log(AnalyticsLog log) => _request(log.toMap(), "log");
 
   Future<void> insight(AnalyticsInsight insight) =>
       _request(insight.toMap(), "insight");
