@@ -2,7 +2,7 @@ enum AnalyticsChannel {
   userRegister,
 }
 
-class AnalyticsRequest {
+class AnalyticsLog {
   final String _project = "safe";
   final String _parser = "markdown";
 
@@ -13,7 +13,7 @@ class AnalyticsRequest {
   final bool notify;
   final List<Map<String, String>> tags;
 
-  AnalyticsRequest({
+  AnalyticsLog({
     required this.channel,
     required this.event,
     required this.description,
@@ -31,7 +31,7 @@ class AnalyticsRequest {
     return {
       "project": _project,
       "parser": _parser,
-      "channel": AnalyticsRequest.parseChannel(channel),
+      "channel": AnalyticsLog.parseChannel(channel),
       "event": event,
       "description": description,
       "icon": icon,
