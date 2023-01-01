@@ -93,6 +93,11 @@ class _IncidentLimitHomeBannerState extends State<IncidentLimitHomeBanner> {
             return;
           }
 
+          if (core.state.capture.limErrState == LimitErrorState.permissions) {
+            openAppSettings();
+            return;
+          }
+
           if (core.state.capture.limErrState == LimitErrorState.emergency) {
             core.utils.capture.start();
             core.state.capture.controller.open();
