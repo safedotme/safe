@@ -106,7 +106,9 @@ class _IncidentHeaderBoxState extends State<IncidentHeaderBox> {
               controller: core.state.incident.menuController,
               items: [
                 ContextMenuItem(
-                  text: "Play Timeline",
+                  text: core.utils.language
+                          .langMap[core.state.preferences.language]!["incident"]
+                      ["play_button"]["timeline"],
                   icon: MutableIcon(
                     MutableIcons.film,
                     size: Size(20.8, 16.4),
@@ -114,7 +116,9 @@ class _IncidentHeaderBoxState extends State<IncidentHeaderBox> {
                   onTap: () {},
                 ),
                 ContextMenuItem(
-                  text: "Play Video",
+                  text: core.utils.language
+                          .langMap[core.state.preferences.language]!["incident"]
+                      ["play_button"]["video"],
                   icon: MutableIcon(
                     MutableIcons.camera,
                     size: Size(22, 18),
@@ -122,7 +126,9 @@ class _IncidentHeaderBoxState extends State<IncidentHeaderBox> {
                   onTap: () {},
                 ),
                 ContextMenuItem(
-                  text: "Play Map View",
+                  text: core.utils.language
+                          .langMap[core.state.preferences.language]!["incident"]
+                      ["play_button"]["map_view"],
                   icon: MutableIcon(
                     MutableIcons.map,
                     size: Size(20, 18),

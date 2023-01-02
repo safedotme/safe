@@ -194,6 +194,13 @@ class LanguageUtil {
     "incident_card": {
       "secured": "Secured",
     },
+    "incident": {
+      "play_button": {
+        "timeline": "Play Timeline",
+        "video": "Play Video",
+        "map_view": "Play Map View",
+      }
+    },
     "capture": {
       "hint": [
         "Swipe down to hide the controls",
