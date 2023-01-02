@@ -65,37 +65,35 @@ class _IncidentHeaderState extends State<IncidentHeader> {
                     color: MutableColor.neutral2,
                   ),
                   SizedBox(height: 6),
-                  Padding(
-                    padding: EdgeInsets.only(left: 10),
-                    child: Transform.scale(
-                      scale: 1.1,
-                      child: core.state.incident.incident!.contactLog == null
-                          ? SizedBox()
-                          : Row(
-                              children: List.generate(
-                                ContactsUtil.formatContactList(
-                                  core.state.incident.incident!.contactLog,
-                                )!
-                                    .length,
-                                (i) => Padding(
-                                  padding: EdgeInsets.only(
-                                    right: i + 1 ==
-                                            ContactsUtil.formatContactList(
-                                              core.state.incident.incident!
-                                                  .contactLog,
-                                            )!
-                                                .length
-                                        ? 0
-                                        : kEmergencyContactAvatarSpacing,
-                                  ),
-                                  child: MutableEmergencyContactAvatar(
-                                    ContactsUtil.formatContactList(core.state
-                                        .incident.incident!.contactLog)![i],
-                                  ),
+                  Transform.scale(
+                    alignment: Alignment.centerLeft,
+                    scale: 1.1,
+                    child: core.state.incident.incident!.contactLog == null
+                        ? SizedBox()
+                        : Row(
+                            children: List.generate(
+                              ContactsUtil.formatContactList(
+                                core.state.incident.incident!.contactLog,
+                              )!
+                                  .length,
+                              (i) => Padding(
+                                padding: EdgeInsets.only(
+                                  right: i + 1 ==
+                                          ContactsUtil.formatContactList(
+                                            core.state.incident.incident!
+                                                .contactLog,
+                                          )!
+                                              .length
+                                      ? 0
+                                      : kEmergencyContactAvatarSpacing,
+                                ),
+                                child: MutableEmergencyContactAvatar(
+                                  ContactsUtil.formatContactList(core
+                                      .state.incident.incident!.contactLog)![i],
                                 ),
                               ),
                             ),
-                    ),
+                          ),
                   ),
                 ],
               ),

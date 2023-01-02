@@ -18,6 +18,7 @@ class IncidentHeaderBox extends StatefulWidget {
 
 class _IncidentHeaderBoxState extends State<IncidentHeaderBox> {
   late Core core;
+  ContextMenuController controller = ContextMenuController();
 
   @override
   void initState() {
@@ -103,6 +104,7 @@ class _IncidentHeaderBoxState extends State<IncidentHeaderBox> {
             top: 50,
             right: 20,
             child: MutableContextMenu(
+              controller: controller,
               items: [
                 ContextMenuItem(
                   text: "Play Timeline",
