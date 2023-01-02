@@ -27,7 +27,8 @@ class MutableOverlayButton extends StatelessWidget {
     return MutableButton(
       onTap: onTap,
       animateBeforeVoidCallback: animateBeforeVoidCallback,
-      child: ClipRect(
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(20),
         child: BackdropFilter(
           filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
           child: Container(

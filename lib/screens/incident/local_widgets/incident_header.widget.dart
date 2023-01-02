@@ -5,6 +5,7 @@ import 'package:safe/models/incident/incident.model.dart';
 import 'package:safe/utils/constants/constants.util.dart';
 import 'package:safe/utils/contacts/contacts.util.dart';
 import 'package:safe/widgets/mutable_emergency_contact_avatar/mutable_emergency_contact_avatar.widget.dart';
+import 'package:safe/widgets/mutable_play_button/mutable_play_button.widget.dart';
 import 'package:safe/widgets/mutable_text/mutable_text.widget.dart';
 
 class IncidentHeader extends StatefulWidget {
@@ -100,10 +101,8 @@ class _IncidentHeaderState extends State<IncidentHeader> {
               ),
             ),
             SizedBox(width: 46),
-            Container(
-              height: 60,
-              width: 60,
-              color: Colors.red,
+            MutablePlayButton(
+              onTap: () {},
             ),
           ],
         ),

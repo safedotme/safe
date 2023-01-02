@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:safe/utils/constants/constants.util.dart';
 
 class MutableButton extends StatefulWidget {
@@ -56,21 +55,21 @@ class _MutableButtonState extends State<MutableButton>
     await controller.reverse();
   }
 
+  void handleTap(Function? f) => f?.call();
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () async {
         if (widget.animateBeforeVoidCallback) {
-          await animate();
+          controller.forward();
+
+          handleTap(widget.onTap);
+          return;
         }
 
-        if (widget.onTap != null) {
-          widget.onTap!();
-        }
-
-        if (!widget.animateBeforeVoidCallback) {
-          animate();
-        }
+        handleTap(widget.onTap);
+        await animate();
       },
       onVerticalDragStart: widget.onSlide != null
           ? (detail) {

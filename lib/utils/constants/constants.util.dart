@@ -118,6 +118,7 @@ enum MutableColor {
   secondaryRed,
   secondaryYellow,
   iosGrey,
+  iosDarkGrey,
 }
 
 const Map<MutableColor, Color> kColorMap = {
@@ -135,6 +136,7 @@ const Map<MutableColor, Color> kColorMap = {
 
   // -> OS SPECIFIC
   MutableColor.iosGrey: Color(0xff1E1920),
+  MutableColor.iosDarkGrey: Color(0xff252525),
 
   // -> PRIMARY
   MutableColor.primaryYellow: Color(0xffF8D849),
@@ -226,6 +228,10 @@ const double kLargeButtonBorderRadius = kLargeButtonHeight / 2;
 // BUTTONS
 const double kScaleDownButtonPercentage = 0.97;
 const Duration kScaleDownButtonTime = Duration(milliseconds: 125);
+
+// CONTEXT MENU
+const double kContextMenuWidth = 254;
+const double kContextMenuBorderRadius = 12;
 
 // NAVIGATION BUTTON
 const double kNavButtonSize = 40;
