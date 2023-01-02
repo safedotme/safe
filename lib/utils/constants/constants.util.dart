@@ -123,7 +123,7 @@ enum MutableColor {
 const Map<MutableColor, Color> kColorMap = {
   // -> NEUTRAL
   MutableColor.neutral1: Colors.white,
-  MutableColor.neutral2: Color(0xffB4B5B9),
+  MutableColor.neutral2: Color(0xffC7C7C7),
   MutableColor.neutral3: Color(0xff656565),
   MutableColor.neutral4: Color(0xff484848),
   MutableColor.neutral5: Color(0xff242424),

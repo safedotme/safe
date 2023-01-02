@@ -40,6 +40,9 @@ class _IncidentLogState extends State<IncidentLog> {
         contacts: core.state.contact.contacts.length,
       );
       core.state.incidentLog.setIncidents(incidents);
+
+      // TODO: Remove line below
+      core.state.incident.setIncident(incidents[0]);
     });
   }
 

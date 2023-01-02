@@ -1,6 +1,8 @@
+import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
+import 'package:safe/screens/incident/local_widgets/incident_header.widget.dart';
 import 'package:safe/utils/constants/constants.util.dart';
 import 'package:safe/utils/icon/icon.util.dart';
 import 'package:safe/widgets/mutable_cached_image/mutable_cached_image.widget.dart';
@@ -91,28 +93,14 @@ class _IncidentHeaderBoxState extends State<IncidentHeaderBox> {
                       core.state.incident.controller.close();
                     },
                   ),
-                  Spacer(),
-                  MutableOverlayButton(
-                    padding: EdgeInsets.only(bottom: 3),
-                    icon: MutableIcon(
-                      MutableIcons.share,
-                      size: Size(21, 18),
-                    ),
-                    onTap: () {},
-                  ),
-                  SizedBox(width: 15),
-                  MutableOverlayButton(
-                    padding: EdgeInsets.only(top: 1.5),
-                    icon: MutableIcon(
-                      MutableIcons.menu,
-                      size: Size(14, 24),
-                    ),
-                    onTap: () {},
-                  ),
                 ],
               ),
             ),
-          )
+          ),
+          Positioned(
+            bottom: 0,
+            child: IncidentHeader(),
+          ),
         ],
       ),
     );

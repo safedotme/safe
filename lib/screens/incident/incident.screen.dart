@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
 import 'package:safe/screens/incident/local_widgets/incident_header_box.widget.dart';
 import 'package:safe/utils/constants/constants.util.dart';
+import 'package:safe/widgets/mutable_loader/mutable_loader.widget.dart';
 import 'package:safe/widgets/mutable_screen_transition/mutable_screen_transition.widget.dart';
 
 class IncidentScreen extends StatefulWidget {
@@ -21,16 +23,24 @@ class _IncidentInstanState extends State<IncidentScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return MutableScreenTransition(
-      isOpen: true,
-      isDismissable: false,
-      controller: core.state.incident.controller,
-      body: Container(
-        color: kColorMap[MutableColor.neutral10],
-        child: SingleChildScrollView(
-          child: Column(
-            children: [IncidentHeaderBox()],
-          ),
+    return Observer(
+      builder: (_) => MutableScreenTransition(
+        isOpen: true,
+        isDismissable: false,
+        controller: core.state.incident.controller,
+        body: Container(
+          color: kColorMap[MutableColor.neutral10],
+          child: core.state.incident.incident == null
+              ? Center(
+                  child: MutableLoader(
+                    text: "Loading incident",
+                  ),
+                )
+              : SingleChildScrollView(
+                  child: Column(
+                    children: [IncidentHeaderBox()],
+                  ),
+                ),
         ),
       ),
     );
