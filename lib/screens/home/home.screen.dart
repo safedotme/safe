@@ -9,6 +9,7 @@ import 'package:safe/models/user/user.model.dart';
 import 'package:safe/screens/capture/capture.screen.dart';
 import 'package:safe/screens/home/local_widgets/incident_limit_home_banner.widget.dart';
 import 'package:safe/screens/home/local_widgets/incident_recorded_home_banner.widget.dart';
+import 'package:safe/screens/incident/incident.screen.dart';
 import 'package:safe/screens/incident_log/incident_log.screen.dart';
 import 'package:safe/screens/tutorial/tutorial.screen.dart';
 import 'package:safe/utils/constants/constants.util.dart';
@@ -83,6 +84,7 @@ class _HomeScreenState extends State<HomeScreen> {
       overlays: [
         CaptureScreen(),
         TutorialScreen(),
+        IncidentScreen(),
       ],
       underlays: [
         Padding(

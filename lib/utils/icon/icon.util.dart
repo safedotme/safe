@@ -14,6 +14,7 @@ import 'package:safe/widgets/mutable_icon/local_widgets/phone.icon.dart';
 import 'package:safe/widgets/mutable_icon/local_widgets/play_large.icon.dart';
 import 'package:safe/widgets/mutable_icon/local_widgets/profile.icon.dart';
 import 'package:safe/widgets/mutable_icon/local_widgets/safe.icon.dart';
+import 'package:safe/widgets/mutable_icon/local_widgets/share.icon.dart';
 import 'package:safe/widgets/mutable_icon/local_widgets/shield.icon.dart';
 import 'package:safe/widgets/mutable_icon/local_widgets/stop_recording.icon.dart';
 
@@ -28,6 +29,7 @@ enum MutableIcons {
   gear,
   playLarge,
   menu,
+  share,
   nextBorderless,
   next,
   shield,
@@ -50,6 +52,7 @@ class IconUtil {
       MutableIcons.stopRecording: (c) => StopRecordingIcon(c),
       MutableIcons.menu: (c) => MenuIcon(c),
       MutableIcons.checkmark: (c) => CheckmarkIcon(c),
+      MutableIcons.share: (c) => ShareIcon(c),
       MutableIcons.key: (c) => KeyIcon(c),
       MutableIcons.gear: (c) => GearIcon(c),
       MutableIcons.phone: (c) => PhoneIcon(c),

@@ -164,7 +164,7 @@ class LanguageUtil {
           LimitErrorState.maxed:
               "No worries, simply delete a previous incident to gain back the ability to capture one.",
           LimitErrorState.missingContacts:
-              "Without contacts, no one will be notified when you activate Safe. It's as easy as selecting from your existing contacts.",
+              "Without contacts, no one will be notified when you activate Safe.",
           LimitErrorState.permissions:
               "Enable the {permission} in Settings. Without them, we won't be able to capture incidents.",
           null: ""
