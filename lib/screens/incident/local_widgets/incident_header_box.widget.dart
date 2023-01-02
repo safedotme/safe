@@ -18,7 +18,6 @@ class IncidentHeaderBox extends StatefulWidget {
 
 class _IncidentHeaderBoxState extends State<IncidentHeaderBox> {
   late Core core;
-  ContextMenuController controller = ContextMenuController();
 
   @override
   void initState() {
@@ -101,24 +100,33 @@ class _IncidentHeaderBoxState extends State<IncidentHeaderBox> {
             ),
           ),
           Positioned(
-            top: 50,
-            right: 20,
+            bottom: 125,
+            right: 8,
             child: MutableContextMenu(
-              controller: controller,
+              controller: core.state.incident.menuController,
               items: [
                 ContextMenuItem(
                   text: "Play Timeline",
-                  icon: MutableIcon(MutableIcons.checkmark),
+                  icon: MutableIcon(
+                    MutableIcons.film,
+                    size: Size(20.8, 16.4),
+                  ),
                   onTap: () {},
                 ),
                 ContextMenuItem(
                   text: "Play Video",
-                  icon: MutableIcon(MutableIcons.checkmark),
+                  icon: MutableIcon(
+                    MutableIcons.camera,
+                    size: Size(22, 18),
+                  ),
                   onTap: () {},
                 ),
                 ContextMenuItem(
                   text: "Play Map View",
-                  icon: MutableIcon(MutableIcons.checkmark),
+                  icon: MutableIcon(
+                    MutableIcons.map,
+                    size: Size(20, 18),
+                  ),
                   onTap: () {},
                 ),
               ],

@@ -41,6 +41,22 @@ mixin _$IncidentStore on _IncidentStore, Store {
     });
   }
 
+  late final _$menuControllerAtom =
+      Atom(name: '_IncidentStore.menuController', context: context);
+
+  @override
+  ContextMenuController get menuController {
+    _$menuControllerAtom.reportRead();
+    return super.menuController;
+  }
+
+  @override
+  set menuController(ContextMenuController value) {
+    _$menuControllerAtom.reportWrite(value, super.menuController, () {
+      super.menuController = value;
+    });
+  }
+
   late final _$_IncidentStoreActionController =
       ActionController(name: '_IncidentStore', context: context);
 
@@ -59,7 +75,8 @@ mixin _$IncidentStore on _IncidentStore, Store {
   String toString() {
     return '''
 incident: ${incident},
-controller: ${controller}
+controller: ${controller},
+menuController: ${menuController}
     ''';
   }
 }

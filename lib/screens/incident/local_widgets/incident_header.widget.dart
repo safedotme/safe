@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
 import 'package:safe/models/incident/incident.model.dart';
@@ -100,7 +101,10 @@ class _IncidentHeaderState extends State<IncidentHeader> {
             ),
             SizedBox(width: 46),
             MutablePlayButton(
-              onTap: () {},
+              onTap: () {
+                HapticFeedback.lightImpact();
+                core.state.incident.menuController.toggle();
+              },
             ),
           ],
         ),

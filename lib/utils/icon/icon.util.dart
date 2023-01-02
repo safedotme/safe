@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:safe/widgets/mutable_icon/local_widgets/camera.icon.dart';
 import 'package:safe/widgets/mutable_icon/local_widgets/camera_flip.icon.dart';
 import 'package:safe/widgets/mutable_icon/local_widgets/camera_flip_filled_icon.dart';
 import 'package:safe/widgets/mutable_icon/local_widgets/cancel.icon.dart';
 import 'package:safe/widgets/mutable_icon/local_widgets/caret_right.icon.dart';
 import 'package:safe/widgets/mutable_icon/local_widgets/checkmark.icon.dart';
+import 'package:safe/widgets/mutable_icon/local_widgets/film.icon.dart';
 import 'package:safe/widgets/mutable_icon/local_widgets/flashlight.icon.dart';
 import 'package:safe/widgets/mutable_icon/local_widgets/gear.icon.dart';
 import 'package:safe/widgets/mutable_icon/local_widgets/key.icon.dart';
+import 'package:safe/widgets/mutable_icon/local_widgets/map.icon.dart';
 import 'package:safe/widgets/mutable_icon/local_widgets/menu.icon.dart';
 import 'package:safe/widgets/mutable_icon/local_widgets/next.icon.dart';
 import 'package:safe/widgets/mutable_icon/local_widgets/next_borderless.icon.dart';
@@ -24,6 +27,9 @@ enum MutableIcons {
   flashlightFilled,
   cameraFlipFilled,
   profile,
+  camera,
+  film,
+  map,
   checkmark,
   caretRight,
   gear,
@@ -55,6 +61,9 @@ class IconUtil {
       MutableIcons.share: (c) => ShareIcon(c),
       MutableIcons.key: (c) => KeyIcon(c),
       MutableIcons.gear: (c) => GearIcon(c),
+      MutableIcons.map: (c) => MapIcon(c),
+      MutableIcons.camera: (c) => CameraIcon(c),
+      MutableIcons.film: (c) => FilmIcon(c),
       MutableIcons.phone: (c) => PhoneIcon(c),
       MutableIcons.caretRight: (c) => CaretRightIcon(c),
       MutableIcons.nextBorderless: (c) => NextBorderlessIcon(c),
