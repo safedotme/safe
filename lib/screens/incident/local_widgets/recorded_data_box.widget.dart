@@ -33,13 +33,47 @@ class _RecordedDataBoxState extends State<RecordedDataBox> {
               color: kColorMap[MutableColor.neutral3]!,
             ),
             keyText: "LOCATION",
-            onTap: () {},
+            onTap: () {
+              // TODO: Open map view
+            },
             sideWidget: Container(
               height: 84,
               width: 115,
               color: Colors.red,
             ),
-          )
+          ),
+          SizedBox(height: 14),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                child: DataPointBox(
+                  header: "10:31 - 11:05",
+                  subheader: "June 19, 2022 (EST)",
+                  keyIcon: MutableIcon(
+                    MutableIcons.gear,
+                    size: Size(12, 12),
+                    color: kColorMap[MutableColor.neutral3]!,
+                  ),
+                  keyText: "DATE & TIME",
+                ),
+              ),
+              SizedBox(width: 14),
+              Expanded(
+                child: DataPointBox(
+                  header: "Fully Secure",
+                  subheader: "Powered by Google",
+                  keyIcon: MutableIcon(
+                    MutableIcons.gear,
+                    size: Size(12, 12),
+                    color: kColorMap[MutableColor.neutral3]!,
+                  ),
+                  keyText: "BACKUPS",
+                ),
+              ),
+            ],
+          ),
+          SizedBox(height: 100)
         ],
       ),
     );
