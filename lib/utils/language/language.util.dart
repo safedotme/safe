@@ -199,7 +199,17 @@ class LanguageUtil {
         "timeline": "Play Timeline",
         "video": "Play Video",
         "map_view": "Play Map View",
-      }
+      },
+      "recorded_data": {
+        "header": "Recorded Data",
+        "location": {"key": "Location"},
+        "date": {"key": "Date & Time"},
+        "backup": {
+          "key": "BACKUPS",
+          "header": "Fully Secure",
+          "subheader": "Powered by Google"
+        },
+      },
     },
     "capture": {
       "hint": [

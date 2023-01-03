@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:safe/core.dart';
 import 'package:safe/screens/incident/local_widgets/data_point_box.widget.dart';
 import 'package:safe/utils/constants/constants.util.dart';
 import 'package:safe/utils/icon/icon.util.dart';
@@ -11,6 +13,14 @@ class RecordedDataBox extends StatefulWidget {
 }
 
 class _RecordedDataBoxState extends State<RecordedDataBox> {
+  late Core core;
+
+  @override
+  void initState() {
+    super.initState();
+    core = Provider.of<Core>(context, listen: false);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -19,7 +29,12 @@ class _RecordedDataBoxState extends State<RecordedDataBox> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           MutableText(
-            "Recorded Data".toUpperCase(),
+            core
+                .utils
+                .language
+                .langMap[core.state.preferences.language]!["incident"]
+                    ["recorded_data"]["header"]
+                .toUpperCase(),
             align: TextAlign.left,
             weight: TypeWeight.heavy,
           ),
@@ -32,7 +47,9 @@ class _RecordedDataBoxState extends State<RecordedDataBox> {
               size: Size(12, 12),
               color: kColorMap[MutableColor.neutral3]!,
             ),
-            keyText: "LOCATION",
+            keyText: core.utils.language
+                    .langMap[core.state.preferences.language]!["incident"]
+                ["recorded_data"]["location"]["key"],
             onTap: () {
               // TODO: Open map view
             },
@@ -55,20 +72,28 @@ class _RecordedDataBoxState extends State<RecordedDataBox> {
                     size: Size(12, 12),
                     color: kColorMap[MutableColor.neutral3]!,
                   ),
-                  keyText: "DATE & TIME",
+                  keyText: core.utils.language
+                          .langMap[core.state.preferences.language]!["incident"]
+                      ["recorded_data"]["date"]["key"],
                 ),
               ),
               SizedBox(width: 14),
               Expanded(
                 child: DataPointBox(
-                  header: "Fully Secure",
-                  subheader: "Powered by Google",
+                  header: core.utils.language
+                          .langMap[core.state.preferences.language]!["incident"]
+                      ["recorded_data"]["backup"]["header"],
+                  subheader: core.utils.language
+                          .langMap[core.state.preferences.language]!["incident"]
+                      ["recorded_data"]["backup"]["subheader"],
                   keyIcon: MutableIcon(
                     MutableIcons.gear,
                     size: Size(12, 12),
                     color: kColorMap[MutableColor.neutral3]!,
                   ),
-                  keyText: "BACKUPS",
+                  keyText: core.utils.language
+                          .langMap[core.state.preferences.language]!["incident"]
+                      ["recorded_data"]["backup"]["key"],
                 ),
               ),
             ],
