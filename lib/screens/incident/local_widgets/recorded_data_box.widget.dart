@@ -43,7 +43,7 @@ class _RecordedDataBoxState extends State<RecordedDataBox> {
             header: "One Apple Park Way",
             subheader: "37°20 5″N 122°0 32″W",
             keyIcon: MutableIcon(
-              MutableIcons.gear,
+              MutableIcons.location,
               size: Size(12, 12),
               color: kColorMap[MutableColor.neutral3]!,
             ),
@@ -68,8 +68,8 @@ class _RecordedDataBoxState extends State<RecordedDataBox> {
                   header: "10:31 - 11:05",
                   subheader: "June 19, 2022 (EST)",
                   keyIcon: MutableIcon(
-                    MutableIcons.gear,
-                    size: Size(12, 12),
+                    MutableIcons.calendar,
+                    size: Size(12, 11),
                     color: kColorMap[MutableColor.neutral3]!,
                   ),
                   keyText: core.utils.language
@@ -87,8 +87,8 @@ class _RecordedDataBoxState extends State<RecordedDataBox> {
                           .langMap[core.state.preferences.language]!["incident"]
                       ["recorded_data"]["backup"]["subheader"],
                   keyIcon: MutableIcon(
-                    MutableIcons.gear,
-                    size: Size(12, 12),
+                    MutableIcons.cloud,
+                    size: Size(16, 11),
                     color: kColorMap[MutableColor.neutral3]!,
                   ),
                   keyText: core.utils.language
