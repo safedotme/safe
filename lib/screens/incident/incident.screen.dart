@@ -3,9 +3,11 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
 import 'package:safe/screens/incident/local_widgets/incident_header_box.widget.dart';
+import 'package:safe/screens/incident/local_widgets/recorded_data_box.widget.dart';
 import 'package:safe/utils/constants/constants.util.dart';
 import 'package:safe/widgets/mutable_loader/mutable_loader.widget.dart';
 import 'package:safe/widgets/mutable_screen_transition/mutable_screen_transition.widget.dart';
+import 'package:safe/widgets/mutable_text/mutable_text.widget.dart';
 
 class IncidentScreen extends StatefulWidget {
   @override
@@ -38,7 +40,11 @@ class _IncidentInstanState extends State<IncidentScreen> {
                 )
               : SingleChildScrollView(
                   child: Column(
-                    children: [IncidentHeaderBox()],
+                    children: [
+                      IncidentHeaderBox(),
+                      SizedBox(height: 32),
+                      RecordedDataBox()
+                    ],
                   ),
                 ),
         ),
