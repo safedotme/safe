@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
 import 'package:safe/screens/incident/local_widgets/data_point_box.widget.dart';
@@ -19,6 +20,21 @@ class _RecordedDataBoxState extends State<RecordedDataBox> {
   void initState() {
     super.initState();
     core = Provider.of<Core>(context, listen: false);
+  }
+
+  String genDate(DateTime d) {
+    return "${DateFormat.yMMMd().format(d)} (${d.timeZoneName})";
+  }
+
+  String genTime(DateTime s, DateTime? e) {
+    String raw = "";
+
+    raw += DateFormat.Hm().format(s);
+
+    if (e != null) {
+      raw += " - ${DateFormat.Hm().format(e)}";
+    }
+    return raw;
   }
 
   @override
@@ -65,8 +81,11 @@ class _RecordedDataBoxState extends State<RecordedDataBox> {
             children: [
               Expanded(
                 child: DataPointBox(
-                  header: "10:31 - 11:05",
-                  subheader: "June 19, 2022 (EST)",
+                  header: genTime(
+                    core.state.incident.incident!.datetime,
+                    core.state.incident.incident!.stopTime,
+                  ),
+                  subheader: genDate(core.state.incident.incident!.datetime),
                   keyIcon: MutableIcon(
                     MutableIcons.calendar,
                     size: Size(12, 11),

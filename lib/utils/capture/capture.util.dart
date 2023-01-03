@@ -420,6 +420,8 @@ USER ID: ${_core!.state.capture.incident!.userId}
   }) {
     String message = EmergencyMessages.messageMap[type]!;
 
+    // TODO: Location null error
+
     final Map<String, String> replacementMap = {
       "{FULL_NAME}": user.name,
       "{NAME}": _core!.utils.name.genFirstName(user.name, false),
