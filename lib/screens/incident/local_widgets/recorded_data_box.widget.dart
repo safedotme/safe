@@ -8,6 +8,7 @@ import 'package:safe/core.dart';
 import 'package:safe/models/incident/incident.model.dart';
 import 'package:safe/models/incident/location.model.dart';
 import 'package:safe/screens/incident/local_widgets/data_point_box.widget.dart';
+import 'package:safe/screens/incident/local_widgets/map_incident_preview.widget.dart';
 import 'package:safe/utils/constants/constants.util.dart';
 import 'package:safe/utils/icon/icon.util.dart';
 import 'package:safe/widgets/mutable_context_menu/local_widgets/context_menu_body.widget.dart';
@@ -96,6 +97,15 @@ class _RecordedDataBoxState extends State<RecordedDataBox> {
         .replaceAll("{LONG}", long.abs().toString());
   }
 
+  bool shoudDisplayMap(Incident? i) {
+    if (i == null) return false;
+    if (i.location == null) return false;
+    if (i.location!.isEmpty) return false;
+    if (i.location![0].lat == null || i.location![0].long == null) return false;
+
+    return true;
+  }
+
   String genLocationClipboard(Incident? i) {
     String template = "Address: {address}\nLatitude: {lat}\nLongitude:{long}";
 
@@ -170,24 +180,9 @@ class _RecordedDataBoxState extends State<RecordedDataBox> {
               },
               sideWidget: ClipRRect(
                 borderRadius: BorderRadius.circular(8),
-                child: SizedBox(
-                  height: 84,
-                  width: 115,
-                  child: GoogleMap(
-                    initialCameraPosition: CameraPosition(
-                      target: LatLng(37.3346 + 0.007, -122.0090 + 0.001),
-                      zoom: 13.5,
-                    ),
-                    padding: EdgeInsets.only(bottom: 100, left: 15),
-                    // ignore: prefer_collection_literals
-                    markers: [
-                      Marker(
-                        markerId: MarkerId("test"),
-                        position: LatLng(37.3346, -122.0090),
-                      ),
-                    ].toSet(),
-                  ),
-                ),
+                child: shoudDisplayMap(core.state.incident.incident)
+                    ? MapIncidentPreview()
+                    : SizedBox(),
               ),
             ),
           ),
