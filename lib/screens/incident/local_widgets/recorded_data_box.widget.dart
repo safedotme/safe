@@ -1,12 +1,16 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
 import 'package:safe/models/incident/incident.model.dart';
+import 'package:safe/models/incident/location.model.dart';
 import 'package:safe/screens/incident/local_widgets/data_point_box.widget.dart';
 import 'package:safe/utils/constants/constants.util.dart';
 import 'package:safe/utils/icon/icon.util.dart';
+import 'package:safe/widgets/mutable_context_menu/local_widgets/context_menu_body.widget.dart';
+import 'package:safe/widgets/mutable_context_menu/local_widgets/context_menu_item.widget.dart';
 import 'package:safe/widgets/mutable_icon/mutable_icon.widget.dart';
 import 'package:safe/widgets/mutable_text/mutable_text.widget.dart';
 
@@ -54,15 +58,23 @@ class _RecordedDataBoxState extends State<RecordedDataBox> {
     return base;
   }
 
+  Location? checkLocationAvailable(Incident? i) {
+    if (i == null) return null;
+    if (i.location == null) return null;
+    if (i.location!.isEmpty) return null;
+
+    return i.location![0];
+  }
+
   String genLatLng(Incident? i) {
     String base = "";
 
-    if (i == null) return base;
-    if (i.location == null) return base;
-    if (i.location!.isEmpty) return base;
+    var location = checkLocationAvailable(i);
 
-    double? lat = i.location![0].lat;
-    double? long = i.location![0].long;
+    if (location == null) return base;
+
+    double? lat = location.lat;
+    double? long = location.long;
 
     if (lat == null || long == null) return base;
 
@@ -81,6 +93,23 @@ class _RecordedDataBoxState extends State<RecordedDataBox> {
     return base
         .replaceAll("{LAT}", lat.abs().toString())
         .replaceAll("{LONG}", long.abs().toString());
+  }
+
+  String genLocationClipboard(Incident? i) {
+    String template = "Address: {address}\nLatitude: {lat}\nLongitude:{long}";
+
+    var l = checkLocationAvailable(i);
+
+    if (l == null) return "";
+
+    for (var element in [l.address, l.lat, l.long]) {
+      if (element == null) return "";
+    }
+
+    return template
+        .replaceAll("{address}", core.utils.geocoder.removeTag(l.address!))
+        .replaceAll("{lat}", l.lat.toString())
+        .replaceAll("{long}", l.long.toString());
   }
 
   @override
@@ -102,7 +131,28 @@ class _RecordedDataBoxState extends State<RecordedDataBox> {
           ),
           SizedBox(height: 20),
           CupertinoContextMenu(
-            actions: [Container()],
+            actions: [
+              ContextMenuBody(
+                items: [
+                  ContextMenuItem(
+                    onTap: () {
+                      Clipboard.setData(
+                        ClipboardData(
+                            text: genLocationClipboard(
+                          core.state.incident.incident,
+                        )),
+                      );
+                    },
+                    text: "Copy",
+                    icon: MutableIcon(
+                      MutableIcons.link,
+                      color: Colors.white,
+                      size: Size(18, 18),
+                    ),
+                  ),
+                ],
+              ),
+            ],
             child: DataPointBox(
               header: genAddress(core.state.incident.incident),
               subheader: genLatLng(core.state.incident.incident),

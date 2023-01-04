@@ -80,6 +80,7 @@ class _ContextMenuItemState extends State<ContextMenuItem>
             MutableText(
               widget.text,
               size: 17,
+              decoration: TextDecoration.none,
               weight: TypeWeight.regular,
             ),
             widget.icon,

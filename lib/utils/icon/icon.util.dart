@@ -11,6 +11,7 @@ import 'package:safe/widgets/mutable_icon/local_widgets/film.icon.dart';
 import 'package:safe/widgets/mutable_icon/local_widgets/flashlight.icon.dart';
 import 'package:safe/widgets/mutable_icon/local_widgets/gear.icon.dart';
 import 'package:safe/widgets/mutable_icon/local_widgets/key.icon.dart';
+import 'package:safe/widgets/mutable_icon/local_widgets/link.icon.dart';
 import 'package:safe/widgets/mutable_icon/local_widgets/location.icon.dart';
 import 'package:safe/widgets/mutable_icon/local_widgets/map.icon.dart';
 import 'package:safe/widgets/mutable_icon/local_widgets/menu.icon.dart';
@@ -49,6 +50,7 @@ enum MutableIcons {
   stopRecording,
   key,
   safe,
+  link,
 }
 
 class IconUtil {
@@ -60,6 +62,7 @@ class IconUtil {
       MutableIcons.playLarge: (c) => PlayLargeIcon(c),
       MutableIcons.safe: (c) => SafeIcon(c),
       MutableIcons.shield: (c) => ShieldIcon(c),
+      MutableIcons.link: (c) => LinkIcon(c),
       MutableIcons.cameraFlip: (c) => CameraFlipIcon(c),
       MutableIcons.stopRecording: (c) => StopRecordingIcon(c),
       MutableIcons.menu: (c) => MenuIcon(c),
