@@ -200,6 +200,7 @@ class LanguageUtil {
         "video": "Play Video",
         "map_view": "Play Map View",
       },
+      "location_opt": {"copy": "Copy"},
       "recorded_data": {
         "header": "Recorded Data",
         "location": {"key": "Location"},

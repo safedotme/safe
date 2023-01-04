@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
@@ -154,7 +153,8 @@ class _RecordedDataBoxState extends State<RecordedDataBox> {
                         )),
                       );
                     },
-                    text: "Copy",
+                    text: core.utils.language.langMap[core.state.preferences
+                        .language]!["incident"]["location_opt"]["copy"],
                     icon: MutableIcon(
                       MutableIcons.link,
                       color: Colors.white,
