@@ -7,6 +7,8 @@ import 'package:safe/core.dart';
 import 'package:safe/models/incident/incident.model.dart';
 import 'package:safe/models/incident/location.model.dart';
 import 'package:safe/screens/incident/local_widgets/data_point_box.widget.dart';
+import 'package:safe/screens/incident/local_widgets/data_point_wrapper.widget.dart';
+import 'package:safe/screens/incident/local_widgets/incident_download_box.widget.dart';
 import 'package:safe/screens/incident/local_widgets/map_incident_preview.widget.dart';
 import 'package:safe/utils/constants/constants.util.dart';
 import 'package:safe/utils/icon/icon.util.dart';
@@ -228,7 +230,9 @@ class _RecordedDataBoxState extends State<RecordedDataBox> {
               ),
             ],
           ),
-          SizedBox(height: 100)
+          SizedBox(height: 15),
+          IncidentDownloadBox(),
+          SizedBox(height: 500)
         ],
       ),
     );
