@@ -37,8 +37,11 @@ class _MapIncidentPreviewState extends State<MapIncidentPreview> {
 
     var data = BitmapDescriptor.fromBytes(bytes);
 
-    setState(() {
-      marker = data;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      setState(() {
+        marker = data;
+      });
     });
   }
 
@@ -49,6 +52,7 @@ class _MapIncidentPreviewState extends State<MapIncidentPreview> {
       width: 115,
       child: GoogleMap(
         compassEnabled: false,
+        mapType: MapType.normal,
         zoomControlsEnabled: false,
         onMapCreated: (c) {
           c.setMapStyle(style);
@@ -59,10 +63,10 @@ class _MapIncidentPreviewState extends State<MapIncidentPreview> {
         tiltGesturesEnabled: false,
         initialCameraPosition: CameraPosition(
           target: LatLng(
-            core.state.incident.incident!.location![0].lat! + kLatAddition,
-            core.state.incident.incident!.location![0].long! + kLongAddition,
+            core.state.incident.incident!.location![0].lat! + 0.0013,
+            core.state.incident.incident!.location![0].long! + 0.0001,
           ),
-          zoom: kMapZoom,
+          zoom: 16,
         ),
         padding: kMapPadding,
         // ignore: prefer_collection_literals

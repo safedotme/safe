@@ -312,10 +312,7 @@ const double kEmergencyContactAvatarSize = 24;
 const double kEmergencyContactAvatarSpacing = 3;
 
 // MAP
-const double kMapZoom = 13.5;
 const EdgeInsets kMapPadding = EdgeInsets.only(bottom: 100, left: 15);
-const double kLatAddition = 0.007;
-const double kLongAddition = 0.001;
 
 // TRANSITIONS
 const double kScreenTransitionBounds = 400;
