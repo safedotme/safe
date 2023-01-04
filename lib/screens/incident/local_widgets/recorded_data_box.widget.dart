@@ -1,7 +1,9 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
+import 'package:safe/models/incident/incident.model.dart';
 import 'package:safe/screens/incident/local_widgets/data_point_box.widget.dart';
 import 'package:safe/utils/constants/constants.util.dart';
 import 'package:safe/utils/icon/icon.util.dart';
@@ -37,6 +39,50 @@ class _RecordedDataBoxState extends State<RecordedDataBox> {
     return raw;
   }
 
+  String genAddress(Incident? i) {
+    String base = "";
+
+    if (i == null) return base;
+    if (i.location == null) return base;
+    if (i.location!.isEmpty) return base;
+    if (i.location![0].address == null) return base;
+
+    String address = core.utils.geocoder.removeTag(i.location![0].address!);
+
+    base = address.substring(0, address.indexOf(","));
+
+    return base;
+  }
+
+  String genLatLng(Incident? i) {
+    String base = "";
+
+    if (i == null) return base;
+    if (i.location == null) return base;
+    if (i.location!.isEmpty) return base;
+
+    double? lat = i.location![0].lat;
+    double? long = i.location![0].long;
+
+    if (lat == null || long == null) return base;
+
+    base = "{LAT}°N, {LONG}°E";
+    lat = double.parse(lat.toStringAsFixed(5));
+    long = double.parse(long.toStringAsFixed(5));
+
+    if (lat.isNegative) {
+      base = base.replaceAll("N", "S");
+    }
+
+    if (long.isNegative) {
+      base = base.replaceAll("E", "W");
+    }
+
+    return base
+        .replaceAll("{LAT}", lat.abs().toString())
+        .replaceAll("{LONG}", long.abs().toString());
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -55,24 +101,29 @@ class _RecordedDataBoxState extends State<RecordedDataBox> {
             weight: TypeWeight.heavy,
           ),
           SizedBox(height: 20),
-          DataPointBox(
-            header: "One Apple Park Way",
-            subheader: "37°20 5″N 122°0 32″W",
-            keyIcon: MutableIcon(
-              MutableIcons.location,
-              size: Size(12, 12),
-              color: kColorMap[MutableColor.neutral3]!,
-            ),
-            keyText: core.utils.language
-                    .langMap[core.state.preferences.language]!["incident"]
-                ["recorded_data"]["location"]["key"],
-            onTap: () {
-              // TODO: Open map view
-            },
-            sideWidget: Container(
-              height: 84,
-              width: 115,
-              color: Colors.red,
+          CupertinoContextMenu(
+            actions: [Container()],
+            child: DataPointBox(
+              header: genAddress(core.state.incident.incident),
+              subheader: genLatLng(core.state.incident.incident),
+              keyIcon: MutableIcon(
+                MutableIcons.location,
+                size: Size(12, 12),
+                color: kColorMap[MutableColor.neutral3]!,
+              ),
+              keyText: core.utils.language
+                      .langMap[core.state.preferences.language]!["incident"]
+                  ["recorded_data"]["location"]["key"],
+              onTap: () {
+                // TODO: Open map view
+              },
+              sideWidget: Expanded(
+                flex: 3,
+                child: Container(
+                  height: 84,
+                  color: Colors.red,
+                ),
+              ),
             ),
           ),
           SizedBox(height: 14),

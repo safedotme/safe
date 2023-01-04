@@ -37,31 +37,32 @@ class DataPointBox extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      DataPointKey(keyIcon, keyText),
-                      SizedBox(height: 10),
-                      MutableText(
-                        header,
-                        weight: TypeWeight.bold,
-                        size: 18,
-                      ),
-                      SizedBox(height: 5),
-                      MutableText(
-                        subheader,
-                        size: 14,
-                        color: MutableColor.neutral2,
-                      ),
-                    ],
+                  flex: 5,
+                  child: SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        DataPointKey(keyIcon, keyText),
+                        SizedBox(height: 10),
+                        MutableText(
+                          header,
+                          weight: TypeWeight.bold,
+                          decoration: TextDecoration.none,
+                          size: 18,
+                        ),
+                        SizedBox(height: 5),
+                        MutableText(
+                          subheader,
+                          size: 14,
+                          color: MutableColor.neutral2,
+                          decoration: TextDecoration.none,
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-                sideWidget == null
-                    ? SizedBox()
-                    : Padding(
-                        padding: EdgeInsets.only(left: 10),
-                        child: sideWidget,
-                      ),
+                SizedBox(width: sideWidget == null ? 0 : 10),
+                sideWidget == null ? SizedBox() : sideWidget!,
               ],
             ),
           ),

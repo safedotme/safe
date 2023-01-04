@@ -18,6 +18,7 @@ class DataPointKey extends StatelessWidget {
         MutableText(
           text.toUpperCase(),
           size: 14,
+          decoration: TextDecoration.none,
           weight: TypeWeight.semiBold,
           color: MutableColor.neutral3,
         ),
