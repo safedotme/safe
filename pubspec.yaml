@@ -78,7 +78,8 @@ flutter:
     - assets/svgs/button.svg
     - assets/images/
     - assets/images/welcome/
-    - assets/map/style.txt
+    - assets/map/style_labeled.txt
+    - assets/map/style_unlabeled.txt
 
   fonts:
     # SF Pro Rounded

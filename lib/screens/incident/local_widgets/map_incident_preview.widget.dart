@@ -13,14 +13,32 @@ class MapIncidentPreview extends StatefulWidget {
 class _MapIncidentPreviewState extends State<MapIncidentPreview> {
   late Core core;
   late String style;
+  BitmapDescriptor? marker;
 
   @override
   void initState() {
     super.initState();
     core = Provider.of<Core>(context, listen: false);
 
-    rootBundle.loadString('assets/map/style.txt').then((string) {
+    rootBundle.loadString('assets/map/style_unlabeled.txt').then((string) {
       style = string;
+    });
+
+    setCustomMarker();
+  }
+
+  Future<void> setCustomMarker() async {
+    var bytes = await core.utils.map.getBytesFromAsset(
+      "assets/images/marker.png",
+      80,
+    );
+
+    if (bytes == null) return;
+
+    var data = BitmapDescriptor.fromBytes(bytes);
+
+    setState(() {
+      marker = data;
     });
   }
 
@@ -50,7 +68,8 @@ class _MapIncidentPreviewState extends State<MapIncidentPreview> {
         // ignore: prefer_collection_literals
         markers: [
           Marker(
-            markerId: MarkerId("test"),
+            markerId: MarkerId("user"),
+            icon: marker ?? BitmapDescriptor.defaultMarker,
             position: LatLng(
               core.state.incident.incident!.location![0].lat!,
               core.state.incident.incident!.location![0].long!,
