@@ -27,6 +27,7 @@ Flutter/flutter_export_environment.sh
 ServiceDefinitions.json
 Runner/GeneratedPluginRegistrant.*
 Runner/GoogleService-Info.plist
+Runner/AppDelegate.swift
 
 # Exceptions to above rules.
 !default.mode1v3
