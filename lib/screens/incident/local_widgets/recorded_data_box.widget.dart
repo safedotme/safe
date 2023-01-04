@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
@@ -167,11 +168,25 @@ class _RecordedDataBoxState extends State<RecordedDataBox> {
               onTap: () {
                 // TODO: Open map view
               },
-              sideWidget: Expanded(
-                flex: 3,
-                child: Container(
+              sideWidget: ClipRRect(
+                borderRadius: BorderRadius.circular(8),
+                child: SizedBox(
                   height: 84,
-                  color: Colors.red,
+                  width: 115,
+                  child: GoogleMap(
+                    initialCameraPosition: CameraPosition(
+                      target: LatLng(37.3346 + 0.007, -122.0090 + 0.001),
+                      zoom: 13.5,
+                    ),
+                    padding: EdgeInsets.only(bottom: 100, left: 15),
+                    // ignore: prefer_collection_literals
+                    markers: [
+                      Marker(
+                        markerId: MarkerId("test"),
+                        position: LatLng(37.3346, -122.0090),
+                      ),
+                    ].toSet(),
+                  ),
                 ),
               ),
             ),
