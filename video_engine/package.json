@@ -5,7 +5,8 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "build": "tsc"
+    "build": "tsc",
+    "start": "tsc && node dist/index.js"
   },
   "keywords": [],
   "author": "",
@@ -13,5 +14,9 @@
   "devDependencies": {
     "@types/node": "^18.11.18",
     "typescript": "^4.9.4"
+  },
+  "dependencies": {
+    "dotenv": "^16.0.3",
+    "firebase": "^9.15.0"
   }
 }
