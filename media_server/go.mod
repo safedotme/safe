@@ -1,4 +1,4 @@
-module agora-token-server
+module media-server
 
 go 1.18
 
