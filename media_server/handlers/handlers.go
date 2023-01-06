@@ -293,6 +293,52 @@ import (
 // 	})
 // }
 
+// ⬇️ START
+
+func StartRecording(c *gin.Context) {
+
+}
+
+// ⬇️ STOP
+
+func StopRecording(c *gin.Context) {
+	log.Printf("\n\nStop Recording Request:\n")
+
+	// Will handle response
+	authorized := utils.AuthorizeRequest(c)
+
+	if !authorized {
+		return
+	}
+
+	body, err := utils.ParseStopBody(c)
+
+	if err != nil {
+		return
+	}
+
+	// Generate ResourceID through Agora
+
+	// 	endpoint := "<appId>/cloud_recording/resourceid/<resourceId>/sid/<sid>/mode/individual/stop"
+	// 	body := `
+	// 	{
+	// 		"cname": "<channelName>",
+	// 		"uid": "<recordingId>",
+	// 		"clientRequest":{}
+	// 	}
+	// 	`
+
+	// 	endpoint = strings.ReplaceAll(endpoint, "<appId>", appId)
+	// 	endpoint = strings.ReplaceAll(endpoint, "<resourceId>", resourceId)
+	// 	endpoint = strings.ReplaceAll(endpoint, "<sid>", sid)
+	// 	body = strings.ReplaceAll(body, "<channelName>", channelName)
+	// 	body = strings.ReplaceAll(body, "<recordingId>", recordingId)
+
+	// res, statusCode, err := utils.Request(customerKey, customerSecret, endpoint, body)
+}
+
+// ⬇️ RTC
+
 func GetRTCToken(c *gin.Context) {
 	log.Printf("\n\nRTC Token Request:\n")
 
@@ -350,8 +396,10 @@ func GetRTCToken(c *gin.Context) {
 
 }
 
+// ⬇️ RID
+
 func GetResourceID(c *gin.Context) {
-	log.Printf("\n\nRTC Token Request:\n")
+	log.Printf("\n\nResource ID Request:\n")
 
 	// Will handle response
 	authorized := utils.AuthorizeRequest(c)
