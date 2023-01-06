@@ -5,5 +5,6 @@ type RTCBody struct {
 	TokenType      string `json:"tokenType"`
 	UserID         string `json:"uid"`
 	AppID          string `json:"appId"`
+	ChannelName    string `json:"channelName"`
 	AppCertificate string `json:"appCertificate"`
 }

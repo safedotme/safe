@@ -6,33 +6,12 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
-	"os"
 	"strconv"
 	"strings"
+	"time"
 
 	"github.com/AgoraIO-Community/go-tokenbuilder/rtctokenbuilder"
-	"github.com/joho/godotenv"
 )
-
-func SetEnv(id string, cert string) {
-	os.Setenv("APP_ID", id)
-	os.Setenv("APP_CERTIFICATE", cert)
-	// loads values from .env into the system
-	if err := godotenv.Load(); err != nil {
-		log.Print("No .env file found")
-	}
-}
-
-func ReadEnv() (appID, appCertificate string) {
-	appIDEnv, appIDExists := os.LookupEnv("APP_ID")
-	appCertEnv, appCertExists := os.LookupEnv("APP_CERTIFICATE")
-
-	if !appIDExists || !appCertExists {
-		log.Fatal("FATAL ERROR: ENV not properly configured, check appID and appCertificate")
-	}
-
-	return appIDEnv, appCertEnv
-}
 
 func Decode(c string) string {
 	// rawDecodedText, err := base64.StdEncoding.DecodeString(c)
@@ -90,6 +69,24 @@ func Request(customerKey, customerSecret, endpoint, bodyBase string) (rid []byte
 	}
 
 	return body, res.StatusCode, prob
+}
+
+func GetExpireTimestamp(expireTime string) (timestamp uint32, err error) {
+
+	expireTime64, parseErr := strconv.ParseUint(expireTime, 10, 64)
+
+	if parseErr != nil {
+		// If string conversion fails return an error
+		err = fmt.Errorf("failed to parse expireTime: %s, causing error: %s", expireTime, parseErr)
+		return 0, err
+	}
+
+	// Set timestamps
+	expireTimeInSeconds := uint32(expireTime64)
+	currentTimestamp := uint32(time.Now().UTC().Unix())
+	timestamp = currentTimestamp + expireTimeInSeconds
+
+	return timestamp, nil
 }
 
 func GenerateRtcToken(appID, appCertificate, channelName, uidStr, tokentype string, role rtctokenbuilder.Role, expireTimestamp uint32) (rtcToken string, err error) {

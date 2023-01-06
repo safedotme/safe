@@ -4,6 +4,7 @@ import (
 	"log"
 	"media-server/utils"
 
+	"github.com/AgoraIO-Community/go-tokenbuilder/rtctokenbuilder"
 	"github.com/gin-gonic/gin"
 )
 
@@ -299,9 +300,50 @@ func GetRTCToken(c *gin.Context) {
 		return
 	}
 
-	body := utils.ParseRTCBody(c)
+	body, err := utils.ParseRTCBody(c)
 
-	log.Printf(body.TokenType)
+	if err != nil {
+		return
+	}
+
+	var role rtctokenbuilder.Role
+
+	if body.Role == "publisher" {
+		role = rtctokenbuilder.RolePublisher
+	} else {
+		role = rtctokenbuilder.RoleSubscriber
+	}
+
+	timestamp, err := utils.GetExpireTimestamp(c.DefaultQuery("expiry", "3600"))
+
+	if err != nil {
+		// Handle err
+		c.AbortWithStatusJSON(400, gin.H{
+			"status":  400,
+			"message": "Failed to generate timestamp. " + err.Error(),
+		})
+
+		return
+	}
+
+	// Generates token
+	token, err := utils.GenerateRtcToken(body.AppID, body.AppCertificate, body.ChannelName, body.UserID, body.TokenType, role, timestamp)
+
+	if err != nil {
+		// Handle err
+		c.AbortWithStatusJSON(400, gin.H{
+			"status":  400,
+			"message": "Failed to generate token. " + err.Error(),
+		})
+
+		return
+	}
+
+	// Request succeeded
+	c.JSON(200, gin.H{
+		"status": 200,
+		"token":  token,
+	})
 
 }
 

@@ -2,6 +2,7 @@ package utils
 
 import (
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"media-server/models"
 
@@ -63,7 +64,7 @@ import (
 // 	tokentype = Decode(c.Param("tokentype"))
 // 	cred = c.Param("cred")
 // 	uidStr = Decode(c.Param("uid"))
-// 	expireTime := c.DefaultQuery("expiry", "3600")
+// expireTime := c.DefaultQuery("expiry", "3600")
 
 // 	if roleStr == "publisher" {
 // 		role = rtctokenbuilder.RolePublisher
@@ -85,52 +86,59 @@ import (
 // 	return id, cert, channelName, tokentype, uidStr, cred, role, expireTimestamp, err
 // }
 
-func ParseRTCBody(c *gin.Context) (data models.RTCBody) {
+func ParseRTCBody(c *gin.Context) (data models.RTCBody, err error) {
 	body, err := ioutil.ReadAll(c.Request.Body)
+	var decoded models.RTCBody
 
 	if err != nil {
 		// Handle error
+		err := fmt.Errorf("ensure that json body is valid")
+
 		c.AbortWithStatusJSON(400, gin.H{
 			"status":  400,
-			"message": "Failed to read body reqest. Ensure that JSON body is valid.",
+			"message": "Failed to read body request. " + err.Error(),
 		})
-		return
+		return decoded, err
 	}
 
 	isValid := json.Valid(body)
 
 	if !isValid {
 		// Handle error
+		err := fmt.Errorf("ensure that json body is valid")
+
 		c.AbortWithStatusJSON(400, gin.H{
 			"status":  400,
-			"message": "Failed to parse JSON body. Ensure that JSON body is valid.",
+			"message": "Failed to parse body request. " + err.Error(),
 		})
-		return
+		return decoded, err
 	}
-
-	var decoded models.RTCBody
 
 	err = json.Unmarshal(body, &decoded)
 
 	if err != nil {
 		// Handle error
+		err := fmt.Errorf("ensure that json body is valid")
+
 		c.AbortWithStatusJSON(400, gin.H{
 			"status":  400,
-			"message": "Failed to parse body reqest. Ensure that JSON body is valid.",
+			"message": "Failed to parse body request. " + err.Error(),
 		})
-		return
+		return decoded, err
 	}
 
-	isEmpty := ContainsEmpty(decoded.Role, decoded.UserID, decoded.AppCertificate, decoded.AppID, decoded.TokenType)
+	isEmpty := ContainsEmpty(decoded.Role, decoded.UserID, decoded.AppCertificate, decoded.AppID, decoded.TokenType, decoded.ChannelName)
 
 	if isEmpty {
 		// Handle error
+		err := fmt.Errorf("required body parameters are empty")
+
 		c.AbortWithStatusJSON(400, gin.H{
 			"status":  400,
-			"message": "Failed to parse body request. Required body parameters are empty.",
+			"message": "Failed to parse body request. " + err.Error(),
 		})
-		return
+		return decoded, err
 	}
 
-	return decoded
+	return decoded, nil
 }
