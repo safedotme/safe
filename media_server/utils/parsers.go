@@ -3,7 +3,6 @@ package utils
 import (
 	"encoding/json"
 	"io/ioutil"
-	"log"
 	"media-server/models"
 
 	"github.com/gin-gonic/gin"
@@ -91,7 +90,10 @@ func ParseRTCBody(c *gin.Context) (data models.RTCBody) {
 
 	if err != nil {
 		// Handle error
-		log.Printf("error: reading body")
+		c.AbortWithStatusJSON(400, gin.H{
+			"status":  400,
+			"message": "Failed to read body reqest. Ensure that JSON body is valid.",
+		})
 		return
 	}
 
@@ -99,7 +101,10 @@ func ParseRTCBody(c *gin.Context) (data models.RTCBody) {
 
 	if !isValid {
 		// Handle error
-		log.Printf("error: json not valid")
+		c.AbortWithStatusJSON(400, gin.H{
+			"status":  400,
+			"message": "Failed to parse JSON body. Ensure that JSON body is valid.",
+		})
 		return
 	}
 
@@ -109,7 +114,10 @@ func ParseRTCBody(c *gin.Context) (data models.RTCBody) {
 
 	if err != nil {
 		// Handle error
-		log.Printf("error: decoding info")
+		c.AbortWithStatusJSON(400, gin.H{
+			"status":  400,
+			"message": "Failed to parse body reqest. Ensure that JSON body is valid.",
+		})
 		return
 	}
 
@@ -117,7 +125,10 @@ func ParseRTCBody(c *gin.Context) (data models.RTCBody) {
 
 	if isEmpty {
 		// Handle error
-		log.Printf("error: decoding info")
+		c.AbortWithStatusJSON(400, gin.H{
+			"status":  400,
+			"message": "Failed to parse body request. Required body parameters are empty.",
+		})
 		return
 	}
 
