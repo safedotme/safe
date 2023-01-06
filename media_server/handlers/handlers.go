@@ -1,8 +1,11 @@
 package handlers
 
 import (
+	"encoding/json"
 	"log"
+	"media-server/models"
 	"media-server/utils"
+	"strings"
 
 	"github.com/AgoraIO-Community/go-tokenbuilder/rtctokenbuilder"
 	"github.com/gin-gonic/gin"
@@ -357,11 +360,69 @@ func GetResourceID(c *gin.Context) {
 		return
 	}
 
-	body, err := utils.ParseRTCBody(c)
+	body, err := utils.ParseRIDBody(c)
 
 	if err != nil {
 		return
 	}
 
-	log.Printf(body.AppCertificate)
+	// Generate ResourceID through Agora
+
+	endpoint := "<appId>/cloud_recording/acquire"
+	bodyRequest := `
+	{
+		"cname": "<channelName>",
+		"uid": "<recordingId>",
+		"clientRequest":{
+		  "resourceExpiredHour": 24,
+		  "scene": 0
+	   }
+	  }
+	`
+
+	bodyRequest = strings.ReplaceAll(bodyRequest, `<channelName>`, body.ChannelName)
+	bodyRequest = strings.ReplaceAll(bodyRequest, `<recordingId>`, body.RecordingID)
+	endpoint = strings.ReplaceAll(endpoint, `<appId>`, body.AppID)
+
+	res, code, err := utils.Request(body.CustomerKey, body.CustomerSecret, endpoint, bodyRequest)
+
+	if err != nil {
+		c.AbortWithStatusJSON(code, gin.H{
+			"status":  code,
+			"message": "Failed to generate ResourceID. " + err.Error() + "\n Server Response: " + string(res),
+		})
+
+		return
+	}
+
+	// Evaluate server response
+
+	isValid := json.Valid(res)
+
+	if !isValid {
+		c.AbortWithStatusJSON(400, gin.H{
+			"status":  400,
+			"message": "Agora response was invalid. Failed  parse body.",
+		})
+
+		return
+	}
+
+	var decoded models.ResourceId
+
+	err = json.Unmarshal(res, &decoded)
+
+	if err != nil {
+		c.AbortWithStatusJSON(code, gin.H{
+			"status":  code,
+			"message": "Failed to generate ResourceID. " + err.Error(),
+		})
+
+		return
+	}
+
+	c.JSON(200, gin.H{
+		"status":      200,
+		"resource_id": decoded.ResourceID,
+	})
 }

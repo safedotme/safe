@@ -55,40 +55,10 @@ import (
 // 	return appId, channelName, recordingId, resourceId, customerKey, customerSecret, token, maxIdleTime, bucketId, bucketAccessKey, bucketSecretKey, userUid, dir1, dir2, cred
 // }
 
-// func ParseRtcParams(c *gin.Context) (id, cert, channelName, tokentype, uidStr, cred string, role rtctokenbuilder.Role, expireTimestamp uint32, err error) {
+// ⬇️ RID
 
-// 	id = Decode(c.Param("id"))
-// 	cert = Decode(c.Param("cert"))
-// 	channelName = Decode(c.Param("channelName"))
-// 	roleStr := Decode(c.Param("role"))
-// 	tokentype = Decode(c.Param("tokentype"))
-// 	cred = c.Param("cred")
-// 	uidStr = Decode(c.Param("uid"))
-// expireTime := c.DefaultQuery("expiry", "3600")
-
-// 	if roleStr == "publisher" {
-// 		role = rtctokenbuilder.RolePublisher
-// 	} else {
-// 		role = rtctokenbuilder.RoleSubscriber
-// 	}
-
-// 	expireTime64, parseErr := strconv.ParseUint(expireTime, 10, 64)
-// 	if parseErr != nil {
-// 		// if string conversion fails return an error
-// 		err = fmt.Errorf("failed to parse expireTime: %s, causing error: %s", expireTime, parseErr)
-// 	}
-
-// 	// set timestamps
-// 	expireTimeInSeconds := uint32(expireTime64)
-// 	currentTimestamp := uint32(time.Now().UTC().Unix())
-// 	expireTimestamp = currentTimestamp + expireTimeInSeconds
-
-// 	return id, cert, channelName, tokentype, uidStr, cred, role, expireTimestamp, err
-// }
-
-func ParseRTCBody(c *gin.Context) (data models.RTCBody, err error) {
-	body, err := ioutil.ReadAll(c.Request.Body)
-	var decoded models.RTCBody
+func ParseRIDBody(c *gin.Context) (data models.RIDBody, err error) {
+	raw, err := ioutil.ReadAll(c.Request.Body)
 
 	if err != nil {
 		// Handle error
@@ -98,10 +68,10 @@ func ParseRTCBody(c *gin.Context) (data models.RTCBody, err error) {
 			"status":  400,
 			"message": "Failed to read body request. " + err.Error(),
 		})
-		return decoded, err
+		return data, err
 	}
 
-	isValid := json.Valid(body)
+	isValid := json.Valid(raw)
 
 	if !isValid {
 		// Handle error
@@ -111,10 +81,10 @@ func ParseRTCBody(c *gin.Context) (data models.RTCBody, err error) {
 			"status":  400,
 			"message": "Failed to parse body request. " + err.Error(),
 		})
-		return decoded, err
+		return data, err
 	}
 
-	err = json.Unmarshal(body, &decoded)
+	err = json.Unmarshal(raw, &data)
 
 	if err != nil {
 		// Handle error
@@ -124,10 +94,10 @@ func ParseRTCBody(c *gin.Context) (data models.RTCBody, err error) {
 			"status":  400,
 			"message": "Failed to parse body request. " + err.Error(),
 		})
-		return decoded, err
+		return data, err
 	}
 
-	isEmpty := ContainsEmpty(decoded.Role, decoded.UserID, decoded.AppCertificate, decoded.AppID, decoded.TokenType, decoded.ChannelName)
+	isEmpty := ContainsEmpty(data.AppID, data.ChannelName, data.CustomerKey, data.CustomerSecret, data.RecordingID)
 
 	if isEmpty {
 		// Handle error
@@ -137,8 +107,66 @@ func ParseRTCBody(c *gin.Context) (data models.RTCBody, err error) {
 			"status":  400,
 			"message": "Failed to parse body request. " + err.Error(),
 		})
-		return decoded, err
+		return data, err
 	}
 
-	return decoded, nil
+	return data, nil
+}
+
+// ⬇️ RTC
+
+func ParseRTCBody(c *gin.Context) (data models.RTCBody, err error) {
+	raw, err := ioutil.ReadAll(c.Request.Body)
+
+	if err != nil {
+		// Handle error
+		err := fmt.Errorf("ensure that json body is valid")
+
+		c.AbortWithStatusJSON(400, gin.H{
+			"status":  400,
+			"message": "Failed to read body request. " + err.Error(),
+		})
+		return data, err
+	}
+
+	isValid := json.Valid(raw)
+
+	if !isValid {
+		// Handle error
+		err := fmt.Errorf("ensure that json body is valid")
+
+		c.AbortWithStatusJSON(400, gin.H{
+			"status":  400,
+			"message": "Failed to parse body request. " + err.Error(),
+		})
+		return data, err
+	}
+
+	err = json.Unmarshal(raw, &data)
+
+	if err != nil {
+		// Handle error
+		err := fmt.Errorf("ensure that json body is valid")
+
+		c.AbortWithStatusJSON(400, gin.H{
+			"status":  400,
+			"message": "Failed to parse body request. " + err.Error(),
+		})
+		return data, err
+	}
+
+	isEmpty := ContainsEmpty(data.Role, data.UserID, data.AppCertificate, data.AppID, data.TokenType, data.ChannelName)
+
+	if isEmpty {
+		// Handle error
+		err := fmt.Errorf("required body parameters are empty")
+
+		c.AbortWithStatusJSON(400, gin.H{
+			"status":  400,
+			"message": "Failed to parse body request. " + err.Error(),
+		})
+		return data, err
+	}
+
+	return data, nil
 }
