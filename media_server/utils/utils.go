@@ -13,15 +13,6 @@ import (
 	"github.com/AgoraIO-Community/go-tokenbuilder/rtctokenbuilder"
 )
 
-func Decode(c string) string {
-	// rawDecodedText, err := base64.StdEncoding.DecodeString(c)
-	// if err != nil {
-	// 	panic(err)
-	// }
-
-	return c
-}
-
 func ContainsEmpty(ss ...string) bool {
 	for _, s := range ss {
 		if s == "" {

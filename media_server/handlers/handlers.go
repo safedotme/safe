@@ -347,46 +347,21 @@ func GetRTCToken(c *gin.Context) {
 
 }
 
-// // OLD
-// func GetRtcToken(c *gin.Context) {
-// 	log.Printf("\n\nRTC Token:\n")
-// 	// Get Parameters
-// 	id, cert, channelName, tokentype, uidStr, cred, role, expireTimestamp, err := utils.ParseRtcParams(c)
+func GetResourceID(c *gin.Context) {
+	log.Printf("\n\nRTC Token Request:\n")
 
-// 	if !utils.Validate(cred) {
-// 		c.AbortWithStatusJSON(401, gin.H{
-// 			"message": "Unauthorized",
-// 			"status":  401,
-// 		})
-// 		return
-// 	}
+	// Will handle response
+	authorized := utils.AuthorizeRequest(c)
 
-// 	utils.SetEnv(id, cert)
-// 	appID, appCertificate := utils.ReadEnv()
+	if !authorized {
+		return
+	}
 
-// 	if err != nil {
-// 		c.Error(err)
-// 		c.AbortWithStatusJSON(400, gin.H{
-// 			"message": "Error Generating RTC token: " + err.Error(),
-// 			"status":  400,
-// 		})
-// 		return
-// 	}
+	body, err := utils.ParseRTCBody(c)
 
-// 	rtcToken, tokenErr := utils.GenerateRtcToken(appID, appCertificate, channelName, uidStr, tokentype, role, expireTimestamp)
+	if err != nil {
+		return
+	}
 
-// 	if tokenErr != nil {
-// 		log.Println(tokenErr) // token failed to generate
-// 		c.Error(tokenErr)
-// 		errMsg := "Error Generating RTC token - " + tokenErr.Error()
-// 		c.AbortWithStatusJSON(400, gin.H{
-// 			"status": 400,
-// 			"error":  errMsg,
-// 		})
-// 	} else {
-// 		log.Println("RTC Token generated")
-// 		c.JSON(200, gin.H{
-// 			"rtcToken": rtcToken,
-// 		})
-// 	}
-// }
+	log.Printf(body.AppCertificate)
+}

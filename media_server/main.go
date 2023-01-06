@@ -22,10 +22,10 @@ func main() {
 	})
 
 	api.Use(nocache())
-	// api.GET("rtc/:channelName/:role/:tokentype/:uid/:id/:cert/:cred/", handlers.GetRtcToken)
 	// api.GET("rid/:channelName/:customerKey/:customerSecret/:appId/:recordingId/:cred/", handlers.GetResourceID)
 	// api.GET("start/:appId/:channelName/:recordingId/:resourceId/:customerKey/:customerSecret/:token/:maxIdleTime/:bucketId/:bucketAccessKey/:bucketSecretKey/:userUid/:dir1/:dir2/:cred/", handlers.StartRecording)
 	// api.GET("stop/:channelName/:customerKey/:customerSecret/:appId/:recordingId/:sid/:resourceId/:cred/", handlers.StopRecording)
+	api.GET("rid", handlers.GetResourceID)
 	api.GET("rtc", handlers.GetRTCToken)
 	api.Run(":" + port)
 }
