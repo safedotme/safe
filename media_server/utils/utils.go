@@ -43,26 +43,13 @@ func Decode(c string) string {
 	return c
 }
 
-func Validate(userKey string) bool {
-	// Load .env file
-	err := godotenv.Load(".env")
-
-	if err != nil {
-		log.Fatalf("Error loading .env file")
+func ContainsEmpty(ss ...string) bool {
+	for _, s := range ss {
+		if s == "" {
+			return true
+		}
 	}
-
-	keyEnv, keyExists := os.LookupEnv("KEY")
-	secretEnv, secretExists := os.LookupEnv("SECRET")
-
-	if !keyExists || !secretExists {
-		log.Fatal("FATAL ERROR: ENV not properly configured, check key and secret")
-		return false
-	}
-
-	plainCredentials := keyEnv + ":" + secretEnv
-	base64Credentials := base64.StdEncoding.EncodeToString([]byte(plainCredentials))
-
-	return base64Credentials == userKey
+	return false
 }
 
 func Request(customerKey, customerSecret, endpoint, bodyBase string) (rid []byte, statusCode int, err error) {

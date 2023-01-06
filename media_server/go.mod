@@ -1,6 +1,6 @@
 module media-server
 
-go 1.18
+go 1.19
 
 require (
 	github.com/AgoraIO-Community/go-tokenbuilder v1.0.0
