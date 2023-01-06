@@ -16,8 +16,7 @@ type ServerResponse struct {
 }
 
 type FileList struct {
-	Filename       string `json:"fileName"`
-	SliceStartTime string `json:"sliceStartTime"`
+	Filename string `json:"fileName"`
 }
 
 type StartResponse struct {
