@@ -29,8 +29,8 @@ func main() {
 	})
 
 	api.Use(nocache())
-	api.GET("rid", handlers.GetResourceID)
-	api.GET("rtc", handlers.GetRTCToken)
+	api.POST("rid", handlers.GetResourceID)
+	api.POST("rtc", handlers.GetRTCToken)
 	api.POST("start", handlers.StartRecording)
 	api.POST("stop", handlers.StopRecording)
 	api.POST("process", handlers.Process)
