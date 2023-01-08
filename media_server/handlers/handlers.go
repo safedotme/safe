@@ -5,6 +5,7 @@ import (
 	"log"
 	"media-server/models"
 	"media-server/utils"
+	"os"
 	"strings"
 
 	"github.com/AgoraIO-Community/go-tokenbuilder/rtctokenbuilder"
@@ -356,5 +357,53 @@ func GetResourceID(c *gin.Context) {
 	c.JSON(200, gin.H{
 		"status":      200,
 		"resource_id": decoded.ResourceID,
+	})
+}
+
+func Process(c *gin.Context) {
+	log.Printf("\n\nProcessing Video:\n")
+
+	// Will handle response
+	authorized := utils.AuthorizeRequest(c)
+
+	if !authorized {
+		return
+	}
+
+	body, err := utils.ParseProcessResponse(c)
+
+	if err != nil {
+		return
+	}
+
+	err = utils.Process(body.Path, body.OutputFilename, body.WatermarkFilename, body.ThumbnailFilename, body.BucketID)
+
+	if err != nil {
+		// Terminates directory either way
+		rootDir, ok := os.LookupEnv("MEDIA_ROOTDIR")
+
+		if !ok {
+			c.AbortWithStatusJSON(400, gin.H{
+				"status":  400,
+				"message": "Failed to process footage. unable to load root directory env. env not found",
+			})
+
+			return
+		}
+
+		utils.TerminateDirectory(rootDir, body.Path)
+
+		// Aborts with error
+		c.AbortWithStatusJSON(400, gin.H{
+			"status":  400,
+			"message": "Failed to process footage. " + err.Error(),
+		})
+
+		return
+	}
+
+	c.JSON(200, gin.H{
+		"status":  200,
+		"process": "complete",
 	})
 }

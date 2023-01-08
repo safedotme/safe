@@ -127,6 +127,6 @@ app.*.symbols
 !/packages/flutter_tools/test/data/dart_dependencies_test/**/.packages
 !/dev/ci/**/Gemfile.lock
 
-video_engine/node_modules/
-video_engine/dist/
-video_engine/src/firebaseConfig.ts
+# Media Server
+media_server/serviceAccount.json
+media_server/keys.json

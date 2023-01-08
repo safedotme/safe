@@ -6,7 +6,6 @@ import (
 	"os"
 
 	"github.com/gin-gonic/gin"
-	"github.com/joho/godotenv"
 )
 
 func AuthorizeRequest(c *gin.Context) (authorized bool) {
@@ -32,15 +31,8 @@ func AuthorizeRequest(c *gin.Context) (authorized bool) {
 }
 
 func Validate(userKey string) bool {
-	// Load .env file
-	err := godotenv.Load(".env")
-
-	if err != nil {
-		log.Fatalf("Error loading .env file")
-	}
-
-	keyEnv, keyExists := os.LookupEnv("KEY")
-	secretEnv, secretExists := os.LookupEnv("SECRET")
+	keyEnv, keyExists := os.LookupEnv("MEDIA_KEY")
+	secretEnv, secretExists := os.LookupEnv("MEDIA_SECRET")
 
 	if !keyExists || !secretExists {
 		log.Fatal("FATAL ERROR: ENV not properly configured, check key and secret")

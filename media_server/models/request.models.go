@@ -1,5 +1,14 @@
 package models
 
+// ⬇️ PROCESS
+type ProcessBody struct {
+	Path              string `json:"path"`
+	OutputFilename    string `json:"outputFilename"`
+	WatermarkFilename string `json:"watermarkFilename"`
+	ThumbnailFilename string `json:"thumbnailFilename"`
+	BucketID          string `json:"bucketId"`
+}
+
 // ⬇️ RTC
 type RTCBody struct {
 	Role           string `json:"role"`

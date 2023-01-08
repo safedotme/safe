@@ -1,16 +1,23 @@
 package main
 
 import (
-	// Standard Packages
-
-	// Local Packages
+	"log"
 	"media-server/handlers"
+	"media-server/utils"
 
-	// Third-Party Packages
 	"github.com/gin-gonic/gin"
 )
 
 func main() {
+	// Set ENVs
+	err := utils.SetEnv(true)
+
+	if err != nil {
+		log.Fatal("Error loading envs: " + err.Error())
+		return
+	}
+
+	// Initialize Server
 	api := gin.Default()
 
 	var port = "8080"
@@ -26,6 +33,7 @@ func main() {
 	api.GET("rtc", handlers.GetRTCToken)
 	api.POST("start", handlers.StartRecording)
 	api.POST("stop", handlers.StopRecording)
+	api.POST("process", handlers.Process)
 	api.Run(":" + port)
 }
 
