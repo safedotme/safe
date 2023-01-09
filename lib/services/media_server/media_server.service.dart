@@ -111,6 +111,48 @@ class MediaServer {
     return StopRecordingResponse.fromJson(json["payload"]["response"]);
   }
 
+  // Triggers server to merge files, create a thumbnail, and add a watermark to the sharable video
+  Future<bool> processFootage({
+    required String channelName,
+    required Function(String e) onError,
+  }) async {
+    // Get fetch parameters
+    Map<String, String> env = dotenv.env;
+
+    // Body
+    Map<String, String> body = {
+      "path": channelName,
+      "outputFilename": "output",
+      "thumbnailFilename": "thumbnail",
+      "watermarkFilename": "watermarked",
+      "bucketId": env["BUCKET_ID"]!,
+    };
+
+    // Fetch
+    var json = await _fetch(
+      MediaAction.process,
+      body,
+      onError,
+    );
+
+    if (json == null) return false;
+
+    if (json["error"] != null) {
+      Map? res = await _implementHandleNetworkJitter(
+        body,
+        MediaAction.process,
+        json,
+        onError,
+      );
+
+      if (res == null) return false;
+
+      return json["payload"]["process"] == "complete";
+    }
+
+    return json["payload"]["process"] == "complete";
+  }
+
   /// Fetches ID required for cloud recording
   Future<String?> getResourceID({
     required String channelName,
