@@ -8,7 +8,7 @@ class ContactStore extends _ContactStore with _$ContactStore {}
 
 abstract class _ContactStore with Store {
   @observable
-  List<Contact> contacts = [];
+  List<Contact>? contacts;
 
   @action
   void setContacts(List<Contact> c) => contacts = c;

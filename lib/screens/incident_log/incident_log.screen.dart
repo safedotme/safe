@@ -37,12 +37,11 @@ class _IncidentLogState extends State<IncidentLog> {
       core.utils.credit.obtainState(
         core,
         incidents: incidents.length,
-        contacts: core.state.contact.contacts.length,
+        contacts: core.state.contact.contacts != null
+            ? core.state.contact.contacts!.length
+            : null,
       );
       core.state.incidentLog.setIncidents(incidents);
-
-      // TODO: Remove line below
-      core.state.incident.setIncident(incidents[0]);
     });
   }
 

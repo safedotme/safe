@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'dart:convert';
+import 'dart:convert' as conv;
 
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
@@ -13,14 +13,23 @@ enum MediaAction {
   startRecording,
   stopRecording,
   getRTCToken,
+  process,
 }
 
 enum TokenType { uid, userAccount }
 
 class MediaServer {
+  static const Map<MediaAction, String> actionMap = {
+    MediaAction.getRTCToken: "rtc",
+    MediaAction.getResourceID: "rid",
+    MediaAction.process: "process",
+    MediaAction.startRecording: "start",
+    MediaAction.stopRecording: "stop",
+  };
+
   String _encodeBase64(String raw) {
-    final bytes = utf8.encode(raw);
-    final base64Str = base64.encode(bytes);
+    final bytes = conv.utf8.encode(raw);
+    final base64Str = conv.base64.encode(bytes);
 
     return base64Str;
   }
@@ -45,7 +54,7 @@ class MediaServer {
 
   /// Handle "network jitter". Reference code 65 in Agora docs for more information https://docs.agora.io/en/cloud-recording/reference/common-errors#:~:text=65%3A%20Usually%20caused%20by%20network%20jitter.
   Future<Map?> _handleNetworkJitter(
-    String url,
+    Map<String, dynamic> body,
     MediaAction action,
     int timeFactr,
     Function(String e) onError,
@@ -54,7 +63,7 @@ class MediaServer {
     await Future.delayed(Duration(
       seconds: 3 * timeFactr,
     ));
-    return _fetch(url, action, onError);
+    return _fetch(action, body, onError);
   }
 
   Future<StopRecordingResponse?> stopRecording({
@@ -68,32 +77,19 @@ class MediaServer {
     Map<String, String> env = dotenv.env;
 
     // URL endpoint
-    String template =
-        "{endpoint}/stop/{channel_name}/{customer_key}/{customer_secret}/{app_id}/{recording_id}/{sid}/{resource_id}/{cred}/";
-
-    String loaded = template
-        .replaceAll("{channel_name}", _encodeBase64(channelName))
-        .replaceAll("{customer_key}", _encodeBase64(env["AGORA_CUSTOMER_KEY"]!))
-        .replaceAll(
-          "{customer_secret}",
-          _encodeBase64(env["AGORA_CUSTOMER_SECRET"]!),
-        )
-        .replaceAll("{app_id}", _encodeBase64(env["AGORA_APP_ID"]!))
-        .replaceAll("{recording_id}", _encodeBase64(recordingId.toString()))
-        .replaceAll("{sid}", _encodeBase64(sid))
-        .replaceAll("{resource_id}", _encodeBase64(resourceId))
-        .replaceAll(
-          "{cred}",
-          _genCredentials(env),
-        )
-        .replaceAll(
-          "{endpoint}",
-          env["MEDIA_ENDPOINT"]!,
-        );
+    Map<String, String> body = {
+      "appId": env["AGORA_APP_ID"]!,
+      "customerKey": env["AGORA_CUSTOMER_KEY"]!,
+      "customerSecret": env["AGORA_CUSTOMER_SECRET"]!,
+      "recordingId": recordingId.toString(),
+      "sid": sid,
+      "resourceId": resourceId,
+      "channelName": channelName,
+    };
 
     var json = await _fetch(
-      loaded,
       MediaAction.stopRecording,
+      body,
       onError,
     );
 
@@ -101,7 +97,7 @@ class MediaServer {
 
     if (json["error"] != null) {
       Map? res = await _implementHandleNetworkJitter(
-        loaded,
+        body,
         MediaAction.stopRecording,
         json,
         onError,
@@ -109,10 +105,10 @@ class MediaServer {
 
       if (res == null) return null;
 
-      return StopRecordingResponse.fromJson(json["payload"]);
+      return StopRecordingResponse.fromJson(json["payload"]["response"]);
     }
 
-    return StopRecordingResponse.fromJson(json["payload"]);
+    return StopRecordingResponse.fromJson(json["payload"]["response"]);
   }
 
   /// Fetches ID required for cloud recording
@@ -125,27 +121,17 @@ class MediaServer {
     Map<String, String> env = dotenv.env;
 
     // URL endpoint
-    String template =
-        "{endpoint}/rid/{channel_name}/{customer_key}/{customer_secret}/{app_id}/{recording_id}/{cred}/";
-
-    String loaded = template
-        .replaceAll("{endpoint}", env["MEDIA_ENDPOINT"]!)
-        .replaceAll("{channel_name}", _encodeBase64(channelName))
-        .replaceAll("{customer_key}", _encodeBase64(env["AGORA_CUSTOMER_KEY"]!))
-        .replaceAll(
-          "{customer_secret}",
-          _encodeBase64(env["AGORA_CUSTOMER_SECRET"]!),
-        )
-        .replaceAll("{app_id}", _encodeBase64(env["AGORA_APP_ID"]!))
-        .replaceAll("{recording_id}", _encodeBase64(recordingId.toString()))
-        .replaceAll(
-          "{cred}",
-          _genCredentials(env),
-        );
+    Map<String, String> body = {
+      "appId": env["AGORA_APP_ID"]!,
+      "customerKey": env["AGORA_CUSTOMER_KEY"]!,
+      "customerSecret": env["AGORA_CUSTOMER_SECRET"]!,
+      "recordingId": recordingId.toString(),
+      "channelName": channelName,
+    };
 
     var json = await _fetch(
-      loaded,
       MediaAction.getResourceID,
+      body,
       onError,
     );
 
@@ -153,7 +139,7 @@ class MediaServer {
 
     if (json["error"] != null) {
       Map? res = await _implementHandleNetworkJitter(
-        loaded,
+        body,
         MediaAction.getResourceID,
         json,
         onError,
@@ -183,66 +169,28 @@ class MediaServer {
     Map<String, String> env = dotenv.env;
 
     // URL endpoint
-    String bucketInfo =
-        "{bucket_id}/{bucket_access_key}/{bucket_secret_key}/{user_uid}/{dir1}/{dir2}";
-
-    String basicInfo =
-        "{app_id}/{channel_name}/{recording_id}/{resource_id}/{customer_key}/{customer_secret}/{token}";
-
-    String recordingInfo = "{max_idle_time}";
-
-    String template =
-        "{endpoint}/start/{basic_info}/{recording_info}/{bucket_info}/{cred}/";
-
-    // Replace with encoded values
-    bucketInfo = bucketInfo
-        .replaceAll(
-          "{bucket_id}",
-          _encodeBase64(env["BUCKET_ID"]!),
-        )
-        .replaceAll(
-          "{bucket_access_key}",
-          _encodeBase64(env["BUCKET_ACCESS_KEY"]!),
-        )
-        .replaceAll(
-          "{bucket_secret_key}",
-          _encodeBase64(env["BUCKET_SECRET_KEY"]!),
-        )
-        .replaceAll("{user_uid}", _encodeBase64(userUid))
-        .replaceAll("{dir1}", _encodeBase64(dir1))
-        .replaceAll("{dir2}", _encodeBase64(dir2));
-
-    basicInfo = basicInfo
-        .replaceAll("{app_id}", _encodeBase64(env["AGORA_APP_ID"]!))
-        .replaceAll("{channel_name}", _encodeBase64(channelName))
-        .replaceAll("{recording_id}", _encodeBase64(recordingId.toString()))
-        .replaceAll("{resource_id}", _encodeBase64(resourceId))
-        .replaceAll(
-          "{customer_key}",
-          _encodeBase64(env["AGORA_CUSTOMER_KEY"]!),
-        )
-        .replaceAll(
-          "{customer_secret}",
-          _encodeBase64(env["AGORA_CUSTOMER_SECRET"]!),
-        )
-        .replaceAll("{token}", _encodeBase64(token));
-
-    recordingInfo = recordingInfo.replaceAll(
-      "{max_idle_time}",
-      _encodeBase64(maxIdleTime.toString()),
-    );
-
-    // Generate template
-    String loaded = template
-        .replaceAll("{basic_info}", basicInfo)
-        .replaceAll("{recording_info}", recordingInfo)
-        .replaceAll("{bucket_info}", bucketInfo)
-        .replaceAll("{endpoint}", env["MEDIA_ENDPOINT"]!)
-        .replaceAll("{cred}", _genCredentials(env));
+    Map<String, dynamic> body = {
+      "appId": env["AGORA_APP_ID"]!,
+      "customerKey": env["AGORA_CUSTOMER_KEY"]!,
+      "customerSecret": env["AGORA_CUSTOMER_SECRET"]!,
+      "recordingId": recordingId.toString(),
+      "resourceId": resourceId,
+      "channelName": channelName,
+      "token": token,
+      "maxIdleTime": maxIdleTime.toString(),
+      "uid": userUid,
+      "storage": {
+        "bucketAccessKey": env["BUCKET_ACCESS_KEY"]!,
+        "bucketId": env["BUCKET_ID"]!,
+        "bucketSecretKey": env["BUCKET_SECRET_KEY"]!,
+        "dir1": dir1,
+        "dir2": dir2,
+      }
+    };
 
     var json = await _fetch(
-      loaded,
       MediaAction.startRecording,
+      body,
       onError,
     );
 
@@ -250,7 +198,7 @@ class MediaServer {
 
     if (json["error"] != null) {
       Map? res = await _implementHandleNetworkJitter(
-        loaded,
+        body,
         MediaAction.startRecording,
         json,
         onError,
@@ -265,7 +213,7 @@ class MediaServer {
   }
 
   Future<Map?> _implementHandleNetworkJitter(
-    String url,
+    Map<String, dynamic> body,
     MediaAction action,
     Map? response,
     Function(String e) onError,
@@ -292,7 +240,7 @@ class MediaServer {
 
       // Fetch
       json = await _handleNetworkJitter(
-        url,
+        body,
         action,
         jitterRetries,
         onError,
@@ -333,23 +281,19 @@ class MediaServer {
     Map<String, String> env = dotenv.env;
 
     // URL endpoint
-    String template =
-        "{endpoint}/rtc/{channel_name}/{role}/{type}/{uid}/{app_id}/{app_certificate}/{credential}/";
-
-    String loaded = template
-        .replaceAll("{endpoint}", env["MEDIA_ENDPOINT"]!)
-        .replaceAll("{channel_name}", _encodeBase64(channelName))
-        .replaceAll("{role}", _encodeBase64(unpackTokenRole(role)))
-        .replaceAll("{type}", _encodeBase64(unpackTokenType(type)))
-        .replaceAll("{uid}", _encodeBase64(uid.toString()))
-        .replaceAll("{app_id}", _encodeBase64(env["AGORA_APP_ID"]!))
-        .replaceAll("{app_certificate}", _encodeBase64(env["AGORA_CERT"]!))
-        .replaceAll("{credential}", _genCredentials(env));
+    Map<String, String> body = {
+      "uid": uid.toString(),
+      "appId": env["AGORA_APP_ID"]!,
+      "appCertificate": env["AGORA_CERT"]!,
+      "role": unpackTokenRole(role),
+      "tokenType": unpackTokenType(type),
+      "channelName": channelName,
+    };
 
     //Make Request
     var json = await _fetch(
-      loaded,
       MediaAction.getRTCToken,
+      body,
       onError,
     );
 
@@ -357,7 +301,7 @@ class MediaServer {
 
     if (json["error"] != null) {
       Map? res = await _implementHandleNetworkJitter(
-        loaded,
+        body,
         MediaAction.getRTCToken,
         json,
         onError,
@@ -365,25 +309,34 @@ class MediaServer {
 
       if (res == null) return null;
 
-      return json["payload"]["rtcToken"];
+      return json["payload"]["token"];
     }
 
-    return json["payload"]["rtcToken"];
+    return json["payload"]["token"];
   }
 
-  Future<Map?> _fetch(
-      String url, MediaAction action, Function(String e) onError) async {
+  Future<Map?> _fetch(MediaAction action, Map<String, dynamic> body,
+      Function(String e) onError) async {
     http.Response? response;
 
+    // Get URL parameters
+    Map<String, String> env = dotenv.env;
+
+    String target = actionMap[action]!;
+
+    String endpoint =
+        "${env["MEDIA_ENDPOINT"]!}/$target?key=${_genCredentials(env)}";
+
     try {
-      response = await http.get(Uri.parse(url));
+      response =
+          await http.post(Uri.parse(endpoint), body: conv.json.encode(body));
     } catch (e) {
       onError(e.toString());
     }
 
     if (response == null) return null;
 
-    Map<String, dynamic> json = jsonDecode(response.body);
+    Map<String, dynamic> json = conv.jsonDecode(response.body);
 
     if (response.statusCode != 200) {
       var res = {

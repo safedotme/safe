@@ -149,7 +149,7 @@ class LanguageUtil {
     "home": {
       "header": "Tap to Safe",
       "header_disabled": "Safe Disabled",
-      "incident_recorded_header": "Last Incident",
+      "incident_recorded_header": "Incident Captured",
       "incident_limit": {
         "header": {
           LimitErrorState.emergency: "Incident Limit Reached",
@@ -215,7 +215,7 @@ class LanguageUtil {
     "capture": {
       "hint": [
         "Swipe down to hide the controls",
-        "Long press camera feed to enlarge",
+        "Tap on camera feed to enlarge it",
         "Safe has activated. Stay safe",
       ],
       "controls": {

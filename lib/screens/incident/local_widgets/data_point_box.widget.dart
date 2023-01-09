@@ -32,7 +32,7 @@ class DataPointBox extends StatelessWidget {
         child: ConstrainedBox(
           constraints: BoxConstraints(minHeight: 114),
           child: Padding(
-            padding: const EdgeInsets.all(15),
+            padding: const EdgeInsets.all(kIncidentDataBoxPadding),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [

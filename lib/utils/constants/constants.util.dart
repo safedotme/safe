@@ -113,12 +113,14 @@ enum MutableColor {
   primaryRed,
   primaryOrange,
   primaryPurple,
+
   primaryMagenta,
   secondaryGreen,
   secondaryRed,
   secondaryYellow,
   iosGrey,
   iosDarkGrey,
+  mapBackground,
 }
 
 const Map<MutableColor, Color> kColorMap = {
@@ -137,6 +139,9 @@ const Map<MutableColor, Color> kColorMap = {
   // -> OS SPECIFIC
   MutableColor.iosGrey: Color(0xff1E1920),
   MutableColor.iosDarkGrey: Color(0xff252525),
+
+  // -> MAP SPECIFIC
+  MutableColor.mapBackground: Color(0xff1e1e1e),
 
   // -> PRIMARY
   MutableColor.primaryYellow: Color(0xffF8D849),
@@ -269,6 +274,9 @@ enum AuthType {
   signup,
   login,
 }
+
+// INCIDENT SCREEN
+const double kIncidentDataBoxPadding = 15;
 
 // HOME
 

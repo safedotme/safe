@@ -13,13 +13,13 @@ mixin _$ContactStore on _ContactStore, Store {
       Atom(name: '_ContactStore.contacts', context: context);
 
   @override
-  List<Contact> get contacts {
+  List<Contact>? get contacts {
     _$contactsAtom.reportRead();
     return super.contacts;
   }
 
   @override
-  set contacts(List<Contact> value) {
+  set contacts(List<Contact>? value) {
     _$contactsAtom.reportWrite(value, super.contacts, () {
       super.contacts = value;
     });

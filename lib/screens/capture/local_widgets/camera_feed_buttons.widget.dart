@@ -50,7 +50,7 @@ class _CameraFeedButtonsState extends State<CameraFeedButtons> {
                 padding: EdgeInsets.only(left: 10),
                 child: MutableOverlayButton(
                   icon: icons[i],
-                  animateBeforeVoidCallback: i == 0,
+                  animateBeforeVoidCallback: true,
                   onTap: () async {
                     HapticFeedback.lightImpact();
 

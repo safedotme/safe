@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:safe/utils/constants/constants.util.dart';
 
 class MutableButton extends StatefulWidget {
@@ -48,6 +49,16 @@ class _MutableButtonState extends State<MutableButton>
     });
 
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    if (controller.isAnimating) {
+      controller.stop();
+    }
+
+    controller.dispose();
+    super.dispose();
   }
 
   Future<void> animate() async {

@@ -20,8 +20,8 @@ class AdminSettings {
     defaultIncidentCap: 2,
     dimensionHeight: 720,
     dimensionWidth: 1280,
-    frameRate: 15,
-    maxIdleTime: 1800,
+    frameRate: 24,
+    maxIdleTime: 3600,
     id: "prod",
   );
 

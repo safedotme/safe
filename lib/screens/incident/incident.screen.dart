@@ -7,7 +7,6 @@ import 'package:safe/screens/incident/local_widgets/recorded_data_box.widget.dar
 import 'package:safe/utils/constants/constants.util.dart';
 import 'package:safe/widgets/mutable_loader/mutable_loader.widget.dart';
 import 'package:safe/widgets/mutable_screen_transition/mutable_screen_transition.widget.dart';
-import 'package:safe/widgets/mutable_text/mutable_text.widget.dart';
 
 class IncidentScreen extends StatefulWidget {
   @override
@@ -27,7 +26,7 @@ class _IncidentInstanState extends State<IncidentScreen> {
   Widget build(BuildContext context) {
     return Observer(
       builder: (_) => MutableScreenTransition(
-        isOpen: true,
+        isOpen: false,
         isDismissable: false,
         controller: core.state.incident.controller,
         body: Container(

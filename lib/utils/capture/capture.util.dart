@@ -278,7 +278,7 @@ USER ID: ${_core!.state.capture.incident!.userId}
     await _uploadChanges(_core!.state.capture.incident!.copyWith(
       cloudRecordingAvailable: true,
       stream: _core!.state.capture.incident!.stream.copyWith(
-        filePath: response.fileName,
+        rawFilepath: response.files, // TODO: COME BACK
       ),
     ));
   }

@@ -59,8 +59,21 @@ class _IncidentRecordedHomeBannerState
             ["incident_recorded_header"],
         height: 125,
         onTap: () {
-          print("IMPLEMENT ME");
-          // ADD ONTAP LOGIC
+          if (core.state.incidentLog.incidents == null) {
+            // LOG
+            return;
+          }
+
+          if (core.state.incidentLog.incidents!.isEmpty) {
+            // LOG
+            return;
+          }
+
+          core.state.incident.setIncident(
+            core.state.incidentLog.incidents!.last,
+          );
+
+          core.state.incident.controller.open();
         },
         body: Align(
           alignment: Alignment.bottomCenter,
@@ -73,25 +86,17 @@ class _IncidentRecordedHomeBannerState
                   height: 60,
                   width: 60,
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(4),
-                    color: kColorMap[MutableColor.neutral9],
+                    borderRadius: BorderRadius.circular(8),
+                    color: kColorMap[MutableColor.secondaryGreen]!
+                        .withOpacity(0.15),
                   ),
-                  child: getData(
-                            core.state.incidentLog.incidents,
-                          )["thumbnail"] ==
-                          null
-                      ? SizedBox()
-                      : ClipRRect(
-                          borderRadius: BorderRadius.circular(4),
-                          child: MutableCachedImage(
-                            getData(
-                              core.state.incidentLog.incidents,
-                            )["thumbnail"]!,
-                            shimmerColor:
-                                kShimmerAnimationColor.withOpacity(0.3),
-                            backgroundColor: kColorMap[MutableColor.neutral9]!,
-                          ),
-                        ),
+                  child: Center(
+                    child: Image.asset(
+                      "assets/images/checkmark.png",
+                      height: 30,
+                      width: 30,
+                    ),
+                  ),
                 ),
                 SizedBox(width: 15),
                 Expanded(

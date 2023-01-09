@@ -57,6 +57,22 @@ mixin _$IncidentStore on _IncidentStore, Store {
     });
   }
 
+  late final _$mapStyleAtom =
+      Atom(name: '_IncidentStore.mapStyle', context: context);
+
+  @override
+  String? get mapStyle {
+    _$mapStyleAtom.reportRead();
+    return super.mapStyle;
+  }
+
+  @override
+  set mapStyle(String? value) {
+    _$mapStyleAtom.reportWrite(value, super.mapStyle, () {
+      super.mapStyle = value;
+    });
+  }
+
   late final _$_IncidentStoreActionController =
       ActionController(name: '_IncidentStore', context: context);
 
@@ -72,11 +88,23 @@ mixin _$IncidentStore on _IncidentStore, Store {
   }
 
   @override
+  void setMapStyle(String s) {
+    final _$actionInfo = _$_IncidentStoreActionController.startAction(
+        name: '_IncidentStore.setMapStyle');
+    try {
+      return super.setMapStyle(s);
+    } finally {
+      _$_IncidentStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 incident: ${incident},
 controller: ${controller},
-menuController: ${menuController}
+menuController: ${menuController},
+mapStyle: ${mapStyle}
     ''';
   }
 }

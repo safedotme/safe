@@ -19,4 +19,10 @@ abstract class _IncidentStore with Store {
 
   @observable
   ContextMenuController menuController = ContextMenuController();
+
+  @observable
+  String? mapStyle;
+
+  @action
+  void setMapStyle(String s) => mapStyle = s;
 }
