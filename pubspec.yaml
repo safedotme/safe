@@ -20,6 +20,7 @@ dependencies:
   uuid: ^3.0.6
   battery_plus: ^2.1.4
   sliding_up_panel: ^2.0.0+1
+  curved_progress_bar: ^1.0.2
   animations: ^2.0.3
   url_launcher: ^6.1.4
   http: ^0.13.4

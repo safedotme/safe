@@ -29,12 +29,17 @@ func Request(customerKey, customerSecret, endpoint, bodyBase string) (rid []byte
 	base64Credentials := base64.StdEncoding.EncodeToString([]byte(plainCredentials))
 
 	url := "https://api.agora.io/v1/apps/" + endpoint
-	method := "POST"
-
-	payload := strings.NewReader(bodyBase)
 
 	client := &http.Client{}
-	req, prob := http.NewRequest(method, url, payload)
+	var req *http.Request
+	var prob error
+
+	if bodyBase != "" {
+		payload := strings.NewReader(bodyBase)
+		req, prob = http.NewRequest("POST", url, payload)
+	} else {
+		req, prob = http.NewRequest("GET", url, nil)
+	}
 
 	if prob != nil {
 		fmt.Println(prob)
@@ -42,7 +47,12 @@ func Request(customerKey, customerSecret, endpoint, bodyBase string) (rid []byte
 	}
 	// Add Authorization header
 	req.Header.Add("Authorization", "Basic "+base64Credentials)
-	req.Header.Add("Content-Type", "application/json")
+
+	if bodyBase != "" {
+		req.Header.Add("Content-Type", "application/json")
+	} else {
+		req.Header.Add("Content-Type", "application/json;charset=utf-8")
+	}
 
 	// Send HTTP request
 	res, prob := client.Do(req)

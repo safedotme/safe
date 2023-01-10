@@ -152,7 +152,9 @@ func StopRecording(c *gin.Context) {
 		{
 			"cname": "<channelName>",
 			"uid": "<recordingId>",
-			"clientRequest":{}
+			"clientRequest":{
+				"async_stop": false
+			}
 		}
 		`
 
@@ -213,6 +215,33 @@ func StopRecording(c *gin.Context) {
 		uploaded = true
 	}
 
+	// Trigger Processing
+	err = utils.Process(body.ChannelName, "output", "watermarked", "thumbnail", body.BucketID)
+
+	if err != nil {
+		// Terminates directory either way
+		rootDir, ok := os.LookupEnv("MEDIA_ROOTDIR")
+
+		if !ok {
+			c.AbortWithStatusJSON(400, gin.H{
+				"status":  400,
+				"message": "Failed to process footage. unable to load root directory env. env not found",
+			})
+
+			return
+		}
+
+		utils.TerminateDirectory(rootDir, body.ChannelName)
+
+		// Aborts with error
+		c.AbortWithStatusJSON(400, gin.H{
+			"status":  400,
+			"message": "Failed to process footage. " + err.Error(),
+		})
+
+		return
+	}
+
 	c.JSON(200, gin.H{
 		"status": 200,
 		"response": map[string]any{
@@ -220,6 +249,7 @@ func StopRecording(c *gin.Context) {
 			"sid":              decoded.SID,
 			"uploading_status": uploaded,
 			"files":            mappedFiles,
+			"processed":        true,
 		},
 	})
 }
@@ -357,53 +387,5 @@ func GetResourceID(c *gin.Context) {
 	c.JSON(200, gin.H{
 		"status":      200,
 		"resource_id": decoded.ResourceID,
-	})
-}
-
-func Process(c *gin.Context) {
-	log.Printf("\n\nProcessing Video:\n")
-
-	// Will handle response
-	authorized := utils.AuthorizeRequest(c)
-
-	if !authorized {
-		return
-	}
-
-	body, err := utils.ParseProcessResponse(c)
-
-	if err != nil {
-		return
-	}
-
-	err = utils.Process(body.Path, body.OutputFilename, body.WatermarkFilename, body.ThumbnailFilename, body.BucketID)
-
-	if err != nil {
-		// Terminates directory either way
-		rootDir, ok := os.LookupEnv("MEDIA_ROOTDIR")
-
-		if !ok {
-			c.AbortWithStatusJSON(400, gin.H{
-				"status":  400,
-				"message": "Failed to process footage. unable to load root directory env. env not found",
-			})
-
-			return
-		}
-
-		utils.TerminateDirectory(rootDir, body.Path)
-
-		// Aborts with error
-		c.AbortWithStatusJSON(400, gin.H{
-			"status":  400,
-			"message": "Failed to process footage. " + err.Error(),
-		})
-
-		return
-	}
-
-	c.JSON(200, gin.H{
-		"status":  200,
-		"process": "complete",
 	})
 }

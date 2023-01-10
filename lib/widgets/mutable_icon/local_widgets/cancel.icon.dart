@@ -198,7 +198,7 @@ class CancelIcon extends CustomPainter {
     Paint paint_0_stroke = Paint()
       ..style = PaintingStyle.stroke
       ..strokeWidth = size.width * 0.03365385;
-    paint_0_stroke.color = Colors.white.withOpacity(1.0);
+    paint_0_stroke.color = color;
     canvas.drawPath(path_0, paint_0_stroke);
 
     Paint paint_0_fill = Paint()..style = PaintingStyle.fill;

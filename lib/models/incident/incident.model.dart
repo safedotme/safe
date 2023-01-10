@@ -12,6 +12,7 @@ class Incident {
   final List<IncidentType> type;
   final Stream stream;
   final bool streamAvailable;
+  final bool processedFootage;
   final bool cloudRecordingAvailable;
   final DateTime? stopTime;
   final DateTime datetime;
@@ -29,6 +30,7 @@ class Incident {
     required this.stream,
     required this.pubID,
     required this.datetime,
+    this.processedFootage = false,
     this.streamAvailable = false,
     this.cloudRecordingAvailable = false,
     this.stopTime,
@@ -54,6 +56,7 @@ class Incident {
       id: json["id"],
       userId: json['user_id'],
       name: json["name"],
+      processedFootage: json["processed_footage"],
       stream: Stream.fromJson(json["stream"]),
       pubID: json["pub_id"],
       type: _type.map((e) => IncidentUtil.parseType(e)).toList(),
@@ -78,6 +81,7 @@ class Incident {
     String? thumbnail,
     bool? streamAvailable,
     bool? cloudRecordingAvailable,
+    bool? processedFootage,
     Stream? stream,
     List<Location>? location,
     String? pubID,
@@ -93,6 +97,7 @@ class Incident {
       userId: userId ?? this.userId,
       name: name ?? this.name,
       type: type ?? this.type,
+      processedFootage: processedFootage ?? this.processedFootage,
       pubID: pubID ?? this.pubID,
       stream: stream ?? this.stream,
       stopTime: stopTime ?? this.stopTime,
@@ -108,6 +113,7 @@ class Incident {
         "id": id,
         "user_id": userId,
         "name": name,
+        "processed_footage": processedFootage,
         "stream_available": streamAvailable,
         "stop_time": stopTime?.toIso8601String(),
         "stream": stream.toMap(),

@@ -79,7 +79,7 @@ class CaptureUtil {
     // STREAM
 
     await _core!.services.agora.stop(_core!.state.capture.engine!);
-    await _saveStreamRecording();
+    _saveStreamRecording();
     await Future.delayed(Duration(seconds: 1));
 
     // UI
@@ -230,9 +230,7 @@ USER ID: ${_core!.state.capture.incident!.userId}
 
     StartRecordingResponse? response =
         await _core!.services.mediaServer.startRecording(
-      dir1: _core!.services.mediaServer.generateDirectory(
-        _core!.state.capture.incident!.id,
-      ),
+      dir1: _core!.state.capture.incident!.stream.channelName,
       dir2: "raw",
       userUid: _core!.state.capture.incident!.stream.userId.toString(),
       channelName: _core!.state.capture.incident!.stream.channelName,
@@ -278,7 +276,7 @@ USER ID: ${_core!.state.capture.incident!.userId}
     await _uploadChanges(_core!.state.capture.incident!.copyWith(
       cloudRecordingAvailable: true,
       stream: _core!.state.capture.incident!.stream.copyWith(
-        rawFilepath: response.files, // TODO: COME BACK
+        rawFilepath: response.files,
       ),
     ));
   }

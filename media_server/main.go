@@ -10,7 +10,7 @@ import (
 
 func main() {
 	// Set ENVs
-	err := utils.SetEnv(true)
+	err := utils.SetEnv(false) // TODO: SET to TRUE
 
 	if err != nil {
 		log.Fatal("Error loading envs: " + err.Error())
@@ -33,7 +33,6 @@ func main() {
 	api.POST("rtc", handlers.GetRTCToken)
 	api.POST("start", handlers.StartRecording)
 	api.POST("stop", handlers.StopRecording)
-	api.POST("process", handlers.Process)
 	api.Run(":" + port)
 }
 
