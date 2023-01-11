@@ -203,7 +203,7 @@ class LanguageUtil {
         "header": "Processing Incident",
         "description": {
           true:
-              "The team has been notified! We'll get back to you soon through the phone {PHONE}.",
+              "The team has been notified! We'll get back to you shortly through SMS ({PHONE}).",
           false:
               "This usually takes between {MIN} to {MAX} minutes.\nBeen a while? Let us know by tapping here and we'll get back to you with an update through SMS.",
         }

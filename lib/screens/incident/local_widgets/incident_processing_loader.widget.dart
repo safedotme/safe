@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
 import 'package:safe/models/incident/incident.model.dart';
+import 'package:safe/services/analytics/helper_classes/analytics_log_model.service.dart';
 import 'package:safe/utils/constants/constants.util.dart';
 import 'package:safe/utils/icon/icon.util.dart';
 import 'package:safe/widgets/mutable_button/mutable_button.widget.dart';
@@ -38,6 +39,7 @@ class _IncidentProcessingLoaderState extends State<IncidentProcessingLoader>
     super.initState();
     core = Provider.of<Core>(context, listen: false);
 
+    hasNotified = false;
     if (widget.incident == null) return;
     genExpectedTime(widget.incident!);
     initTimer(widget.incident!);
@@ -74,8 +76,7 @@ class _IncidentProcessingLoaderState extends State<IncidentProcessingLoader>
     }
 
     timer = Timer.periodic(const Duration(seconds: 1), (timer) {
-      int secondDifference =
-          DateTime.now().difference(incident.stopTime!).inSeconds;
+      int secondDifference = getWaitDuration(incident).inSeconds;
 
       if (secondDifference >= maxInSec) {
         animate();
@@ -88,14 +89,22 @@ class _IncidentProcessingLoaderState extends State<IncidentProcessingLoader>
     });
   }
 
+  Duration getIncidentDuration(Incident i) {
+    return i.stopTime!.difference(
+      i.datetime,
+    );
+  }
+
+  Duration getWaitDuration(Incident i) {
+    return DateTime.now().difference(i.stopTime!);
+  }
+
   void genExpectedTime(Incident incident) {
     if (incident.stopTime == null) {
       return;
     }
 
-    Duration duration = incident.stopTime!.difference(
-      incident.datetime,
-    );
+    var duration = getIncidentDuration(incident);
 
     if (duration.compareTo(Duration(minutes: 3)).isNegative) {
       minInSec = 120;
@@ -109,7 +118,13 @@ class _IncidentProcessingLoaderState extends State<IncidentProcessingLoader>
 
   String genBody(String base) {
     if (hasNotified) {
-      return base.replaceAll("{PHONE}", "");
+      String? phone = core.services.auth.currentUser!.phoneNumber;
+
+      if (phone == null) {
+        // TODO: Log
+      }
+
+      return base.replaceAll("{PHONE}", phone ?? "");
     }
 
     return base
@@ -183,7 +198,24 @@ class _IncidentProcessingLoaderState extends State<IncidentProcessingLoader>
           MutableButton(
             onTap: () async {
               HapticFeedback.lightImpact();
-              // TODO: Logsnag
+
+              if (hasNotified || widget.incident == null) return;
+
+              String? phone = core.services.auth.currentUser!.phoneNumber;
+
+              var log = AnalyticsLog(
+                channel: "capture-incident",
+                event: "processing-wait",
+                description:
+                    "\n**Processing is taking to long (*according to user*)**\nWait Time: ${getWaitDuration(widget.incident!).inMinutes} minutes\nIncident Duration: ${getIncidentDuration(widget.incident!).inMinutes} minutes\nLoad Status (shown to user): ${(val * 100).round()}%\nUser Number: $phone",
+                icon: "⚠️",
+                tags: {
+                  "id": widget.incident!.id,
+                  "userid": widget.incident!.userId,
+                },
+              );
+
+              core.services.analytics.log(log);
 
               setState(() {
                 hasNotified = true;
