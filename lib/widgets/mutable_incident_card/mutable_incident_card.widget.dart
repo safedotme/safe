@@ -29,7 +29,7 @@ class _MutableIncidentCardState extends State<MutableIncidentCard> {
   Widget build(BuildContext context) {
     return MutableButton(
       onTap: () {
-        core.state.incident.setIncident(widget.incident);
+        core.state.incident.setIncidentId(widget.incident.id);
         core.state.incident.controller.open();
       },
       child: Container(

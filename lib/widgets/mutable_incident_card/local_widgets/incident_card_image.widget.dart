@@ -25,11 +25,14 @@ class IncidentCardImage extends StatefulWidget {
 class _IncidentCardImageState extends State<IncidentCardImage>
     with TickerProviderStateMixin {
   late Animation animation;
+  String? thumbnail;
 
   @override
   void initState() {
     animate();
     super.initState();
+
+    genSignedUrl();
   }
 
   void animate() async {
@@ -51,6 +54,8 @@ class _IncidentCardImageState extends State<IncidentCardImage>
     controller.forward();
   }
 
+  String? genSignedUrl() {}
+
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -60,9 +65,9 @@ class _IncidentCardImageState extends State<IncidentCardImage>
           Container(
             width: double.infinity,
             color: kColorMap[kIncidentCardLoaderColor],
-            child: widget.incident.thumbnail != null
+            child: thumbnail != null
                 ? MutableCachedImage(
-                    widget.incident.thumbnail!,
+                    thumbnail!,
                     backgroundColor: kColorMap[kIncidentCardLoaderColor]!,
                     fit: BoxFit.cover,
                     shimmerColor: kBoxLoaderShimmerColor,
@@ -74,7 +79,7 @@ class _IncidentCardImageState extends State<IncidentCardImage>
 
           // Gradient Overlay
 
-          widget.incident.thumbnail != null
+          thumbnail != null
               ? Container(
                   decoration: BoxDecoration(
                     gradient: LinearGradient(

@@ -1,3 +1,4 @@
+import 'package:safe/services/analytics/analytics.service.dart';
 import 'package:safe/utils/credit/credit.util.dart';
 import 'package:safe/widgets/mutable_permission_card/mutable_permission_card.widget.dart';
 
@@ -149,7 +150,10 @@ class LanguageUtil {
     "home": {
       "header": "Tap to Safe",
       "header_disabled": "Safe Disabled",
-      "incident_recorded_header": "Incident Captured",
+      "incident_recorded_header": {
+        true: "Error Capturing Incident",
+        false: "Incident Captured",
+      },
       "incident_limit": {
         "header": {
           LimitErrorState.emergency: "Incident Limit Reached",
@@ -195,6 +199,15 @@ class LanguageUtil {
       "secured": "Secured",
     },
     "incident": {
+      "processing_loader": {
+        "header": "Processing Incident",
+        "description": {
+          true:
+              "The team has been notified! We'll get back to you soon through the phone {PHONE}.",
+          false:
+              "This usually takes between {MIN} to {MAX} minutes.\nBeen a while? Let us know by tapping here and we'll get back to you with an update through SMS.",
+        }
+      },
       "play_button": {
         "timeline": "Play Timeline",
         "video": "Play Video",
@@ -218,6 +231,14 @@ class LanguageUtil {
         "Tap on camera feed to enlarge it",
         "Safe has activated. Stay safe",
       ],
+      "errors": {
+        ErrorLogType.rtcFailed:
+            "The video stream could not be initialized. Check your internet connection and try capturing again.",
+        ErrorLogType.mediaServerFailed:
+            "The video stream ended abruptly. Check your internet connection and try capturing again.",
+        ErrorLogType.twilioFailed:
+            "Your contacts could not be notified. Check your internet connection and try capturing again.",
+      },
       "controls": {
         "flip_camera": {"header": "Flip Camera"},
         "flash": {"header": "Flashlight {STATE}"},

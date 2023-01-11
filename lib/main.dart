@@ -30,7 +30,8 @@ class Safe extends StatelessWidget {
       ],
       child: MaterialApp(
         title: "Safe",
-        debugShowCheckedModeBanner: false,
+        debugShowCheckedModeBanner:
+            dotenv.env["MEDIA_ENDPOINT"]!.contains(":8080"),
         themeMode: ThemeMode.dark,
         routes: {
           WelcomeScreen.id: (_) => WelcomeScreen(),

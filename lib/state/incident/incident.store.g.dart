@@ -9,19 +9,19 @@ part of 'incident.store.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
 mixin _$IncidentStore on _IncidentStore, Store {
-  late final _$incidentAtom =
-      Atom(name: '_IncidentStore.incident', context: context);
+  late final _$incidentIdAtom =
+      Atom(name: '_IncidentStore.incidentId', context: context);
 
   @override
-  Incident? get incident {
-    _$incidentAtom.reportRead();
-    return super.incident;
+  String? get incidentId {
+    _$incidentIdAtom.reportRead();
+    return super.incidentId;
   }
 
   @override
-  set incident(Incident? value) {
-    _$incidentAtom.reportWrite(value, super.incident, () {
-      super.incident = value;
+  set incidentId(String? value) {
+    _$incidentIdAtom.reportWrite(value, super.incidentId, () {
+      super.incidentId = value;
     });
   }
 
@@ -77,11 +77,11 @@ mixin _$IncidentStore on _IncidentStore, Store {
       ActionController(name: '_IncidentStore', context: context);
 
   @override
-  void setIncident(Incident i) {
+  void setIncidentId(String id) {
     final _$actionInfo = _$_IncidentStoreActionController.startAction(
-        name: '_IncidentStore.setIncident');
+        name: '_IncidentStore.setIncidentId');
     try {
-      return super.setIncident(i);
+      return super.setIncidentId(id);
     } finally {
       _$_IncidentStoreActionController.endAction(_$actionInfo);
     }
@@ -101,7 +101,7 @@ mixin _$IncidentStore on _IncidentStore, Store {
   @override
   String toString() {
     return '''
-incident: ${incident},
+incidentId: ${incidentId},
 controller: ${controller},
 menuController: ${menuController},
 mapStyle: ${mapStyle}

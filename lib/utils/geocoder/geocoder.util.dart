@@ -1,5 +1,7 @@
 class GeocoderUtil {
-  String removeTag(String raw) {
+  String? removeTag(String? raw) {
+    if (raw == null) return null;
+
     if (!raw.contains("+")) {
       return raw;
     }

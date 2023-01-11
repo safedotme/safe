@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:curved_progress_bar/curved_progress_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -14,7 +13,7 @@ import 'package:safe/widgets/mutable_overlay_button/mutable_overlay_button.widge
 import 'package:safe/widgets/mutable_text/mutable_text.widget.dart';
 
 class IncidentProcessingLoader extends StatefulWidget {
-  final Incident incident;
+  final Incident? incident;
 
   IncidentProcessingLoader(this.incident);
   @override
@@ -22,40 +21,100 @@ class IncidentProcessingLoader extends StatefulWidget {
       _IncidentProcessingLoaderState();
 }
 
-class _IncidentProcessingLoaderState extends State<IncidentProcessingLoader> {
+class _IncidentProcessingLoaderState extends State<IncidentProcessingLoader>
+    with TickerProviderStateMixin {
   late Core core;
   late Timer timer;
+  AnimationController? controller;
+
   double val = 0;
-  double duration = 1;
+  bool hasNotified = false;
+  int minInSec = 600;
+  int maxInSec = 900;
+  Color color = Colors.white;
 
   @override
   void initState() {
     super.initState();
     core = Provider.of<Core>(context, listen: false);
-    initTimer();
+
+    if (widget.incident == null) return;
+    genExpectedTime(widget.incident!);
+    initTimer(widget.incident!);
   }
 
-  void initTimer() {
-    if (widget.incident.stopTime == null) {
+  void animate() {
+    controller = AnimationController(
+      vsync: this,
+      duration: Duration(milliseconds: 1250),
+    );
+
+    Animation animation = ColorTween(
+      begin: Colors.white,
+      end: Color(0xff00D87D),
+    ).animate(
+      CurvedAnimation(
+        parent: controller!,
+        curve: Curves.easeIn,
+      ),
+    );
+
+    controller!.addListener(() {
+      setState(() {
+        color = animation.value;
+      });
+    });
+
+    controller!.forward();
+  }
+
+  void initTimer(Incident incident) {
+    if (incident.stopTime == null) {
       return;
     }
 
-    duration =
-        (DateTime.now().difference(widget.incident.stopTime!).inSeconds / 600);
-
     timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       int secondDifference =
-          DateTime.now().difference(widget.incident.stopTime!).inSeconds;
-      int waitTime = 600;
+          DateTime.now().difference(incident.stopTime!).inSeconds;
 
-      if (secondDifference > waitTime) {
+      if (secondDifference >= maxInSec) {
+        animate();
         timer.cancel();
       }
 
       setState(() {
-        val = secondDifference / waitTime;
+        val = secondDifference / maxInSec;
       });
     });
+  }
+
+  void genExpectedTime(Incident incident) {
+    if (incident.stopTime == null) {
+      return;
+    }
+
+    Duration duration = incident.stopTime!.difference(
+      incident.datetime,
+    );
+
+    if (duration.compareTo(Duration(minutes: 3)).isNegative) {
+      minInSec = 120;
+      maxInSec = 180;
+      return;
+    }
+
+    minInSec = (duration.inSeconds * 0.3).round();
+    maxInSec = (duration.inSeconds * 0.5).round();
+  }
+
+  String genBody(String base) {
+    if (hasNotified) {
+      return base.replaceAll("{PHONE}", "");
+    }
+
+    return base
+        .replaceAll("{MIN}", (minInSec / 60).round().toString())
+        .replaceAll("{MAX}", (maxInSec / 60).round().toString());
   }
 
   @override
@@ -63,6 +122,12 @@ class _IncidentProcessingLoaderState extends State<IncidentProcessingLoader> {
     if (timer.isActive) {
       timer.cancel();
     }
+
+    if (controller != null) {
+      controller!.stop();
+      controller!.dispose();
+    }
+
     super.dispose();
   }
 
@@ -101,27 +166,35 @@ class _IncidentProcessingLoaderState extends State<IncidentProcessingLoader> {
             child: CurvedCircularProgressIndicator(
               value: val < 0.05 ? 0.05 : val,
               strokeWidth: 8,
-              animationDuration: Duration(seconds: (3 * duration).round()),
-              color: kColorMap[MutableColor.neutral1],
+              animationDuration: Duration(seconds: (val * 3).round()),
+              color: color,
               backgroundColor: kColorMap[MutableColor.neutral5],
             ),
           ),
           SizedBox(height: 25),
           MutableText(
-            "Processing Incident", // TODO: Extract
+            core.utils.language
+                    .langMap[core.state.preferences.language]!["incident"]
+                ["processing_loader"]["header"],
             weight: TypeWeight.heavy,
             size: 22,
           ),
           SizedBox(height: 16),
           MutableButton(
-            onTap: () {
+            onTap: () async {
               HapticFeedback.lightImpact();
               // TODO: Logsnag
+
+              setState(() {
+                hasNotified = true;
+              });
             },
             child: Padding(
               padding: EdgeInsets.symmetric(horizontal: 18),
               child: MutableText(
-                "This usually takes between 10 to 15 minutes.\nBeen a while? Let us know by tapping here and we'll get back to you with an update through SMS.",
+                genBody(core.utils.language
+                        .langMap[core.state.preferences.language]!["incident"]
+                    ["processing_loader"]["description"][hasNotified]),
                 color: MutableColor.neutral2,
                 weight: TypeWeight.medium,
                 size: 14,

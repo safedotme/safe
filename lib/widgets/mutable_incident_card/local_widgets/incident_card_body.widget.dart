@@ -41,7 +41,9 @@ class _IncidentCardBodyState extends State<IncidentCardBody> {
       return "";
     }
 
-    return core.utils.geocoder.removeTag(widget.incident.location![0].address!);
+    return core.utils.geocoder
+            .removeTag(widget.incident.location![0].address!) ??
+        "";
   }
 
   @override

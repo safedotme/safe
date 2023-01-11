@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
+import 'package:safe/models/incident/incident.model.dart';
 import 'package:safe/screens/incident/local_widgets/incident_header.widget.dart';
 import 'package:safe/utils/constants/constants.util.dart';
 import 'package:safe/utils/icon/icon.util.dart';
@@ -11,6 +12,9 @@ import 'package:safe/widgets/mutable_icon/mutable_icon.widget.dart';
 import 'package:safe/widgets/mutable_overlay_button/mutable_overlay_button.widget.dart';
 
 class IncidentHeaderBox extends StatefulWidget {
+  final Incident? incident;
+
+  IncidentHeaderBox(this.incident);
   @override
   State<IncidentHeaderBox> createState() => _IncidentHeaderBoxState();
 }
@@ -139,7 +143,7 @@ class _IncidentHeaderBoxState extends State<IncidentHeaderBox> {
           ),
           Positioned(
             bottom: 0,
-            child: IncidentHeader(),
+            child: IncidentHeader(widget.incident),
           ),
         ],
       ),

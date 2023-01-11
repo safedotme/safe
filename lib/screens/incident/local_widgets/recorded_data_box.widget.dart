@@ -18,6 +18,8 @@ import 'package:safe/widgets/mutable_icon/mutable_icon.widget.dart';
 import 'package:safe/widgets/mutable_text/mutable_text.widget.dart';
 
 class RecordedDataBox extends StatefulWidget {
+  final Incident? incident;
+  RecordedDataBox(this.incident);
   @override
   State<RecordedDataBox> createState() => _RecordedDataBoxState();
 }
@@ -54,7 +56,8 @@ class _RecordedDataBoxState extends State<RecordedDataBox> {
     if (i.location!.isEmpty) return base;
     if (i.location![0].address == null) return base;
 
-    String address = core.utils.geocoder.removeTag(i.location![0].address!);
+    String address =
+        core.utils.geocoder.removeTag(i.location![0].address!) ?? "";
 
     base = address.substring(0, address.indexOf(","));
 
@@ -119,7 +122,8 @@ class _RecordedDataBoxState extends State<RecordedDataBox> {
     }
 
     return template
-        .replaceAll("{address}", core.utils.geocoder.removeTag(l.address!))
+        .replaceAll(
+            "{address}", core.utils.geocoder.removeTag(l.address!) ?? "")
         .replaceAll("{lat}", l.lat.toString())
         .replaceAll("{long}", l.long.toString());
   }
@@ -151,7 +155,7 @@ class _RecordedDataBoxState extends State<RecordedDataBox> {
                       Clipboard.setData(
                         ClipboardData(
                             text: genLocationClipboard(
-                          core.state.incident.incident,
+                          widget.incident,
                         )),
                       );
                     },
@@ -167,8 +171,8 @@ class _RecordedDataBoxState extends State<RecordedDataBox> {
               ),
             ],
             child: DataPointBox(
-              header: genAddress(core.state.incident.incident),
-              subheader: genLatLng(core.state.incident.incident),
+              header: genAddress(widget.incident),
+              subheader: genLatLng(widget.incident),
               keyIcon: MutableIcon(
                 MutableIcons.location,
                 size: Size(12, 12),
@@ -182,8 +186,8 @@ class _RecordedDataBoxState extends State<RecordedDataBox> {
               },
               sideWidget: ClipRRect(
                 borderRadius: BorderRadius.circular(8),
-                child: shoudDisplayMap(core.state.incident.incident)
-                    ? MapIncidentPreview()
+                child: shoudDisplayMap(widget.incident)
+                    ? MapIncidentPreview(widget.incident)
                     : SizedBox(),
               ),
             ),
@@ -195,10 +199,10 @@ class _RecordedDataBoxState extends State<RecordedDataBox> {
               Expanded(
                 child: DataPointBox(
                   header: genTime(
-                    core.state.incident.incident!.datetime,
-                    core.state.incident.incident!.stopTime,
+                    widget.incident!.datetime,
+                    widget.incident!.stopTime,
                   ),
-                  subheader: genDate(core.state.incident.incident!.datetime),
+                  subheader: genDate(widget.incident!.datetime),
                   keyIcon: MutableIcon(
                     MutableIcons.calendar,
                     size: Size(12, 11),

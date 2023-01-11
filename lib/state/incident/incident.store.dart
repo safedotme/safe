@@ -9,10 +9,10 @@ class IncidentStore extends _IncidentStore with _$IncidentStore {}
 
 abstract class _IncidentStore with Store {
   @observable
-  Incident? incident;
+  String? incidentId;
 
   @action
-  void setIncident(Incident i) => incident = i;
+  void setIncidentId(String id) => incidentId = id;
 
   @observable
   ScreenTransitionController controller = ScreenTransitionController();

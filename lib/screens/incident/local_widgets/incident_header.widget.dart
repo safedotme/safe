@@ -10,6 +10,9 @@ import 'package:safe/widgets/mutable_play_button/mutable_play_button.widget.dart
 import 'package:safe/widgets/mutable_text/mutable_text.widget.dart';
 
 class IncidentHeader extends StatefulWidget {
+  final Incident? incident;
+
+  IncidentHeader(this.incident);
   @override
   State<IncidentHeader> createState() => _IncidentHeaderState();
 }
@@ -36,7 +39,7 @@ class _IncidentHeaderState extends State<IncidentHeader> {
       return "";
     }
 
-    return core.utils.geocoder.removeTag(incident.location![0].address!);
+    return core.utils.geocoder.removeTag(incident.location![0].address!) ?? "";
   }
 
   @override
@@ -55,13 +58,13 @@ class _IncidentHeaderState extends State<IncidentHeader> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   MutableText(
-                    core.state.incident.incident!.name,
+                    widget.incident!.name,
                     size: 26,
                     weight: TypeWeight.heavy,
                   ),
                   SizedBox(height: 6),
                   MutableText(
-                    generateAddress(core.state.incident.incident!),
+                    generateAddress(widget.incident!),
                     size: 14,
                     color: MutableColor.neutral2,
                   ),
@@ -69,28 +72,27 @@ class _IncidentHeaderState extends State<IncidentHeader> {
                   Transform.scale(
                     alignment: Alignment.centerLeft,
                     scale: 1.1,
-                    child: core.state.incident.incident!.contactLog == null
+                    child: widget.incident!.contactLog == null
                         ? SizedBox()
                         : Row(
                             children: List.generate(
                               ContactsUtil.formatContactList(
-                                core.state.incident.incident!.contactLog,
+                                widget.incident!.contactLog,
                               )!
                                   .length,
                               (i) => Padding(
                                 padding: EdgeInsets.only(
                                   right: i + 1 ==
                                           ContactsUtil.formatContactList(
-                                            core.state.incident.incident!
-                                                .contactLog,
+                                            widget.incident!.contactLog,
                                           )!
                                               .length
                                       ? 0
                                       : kEmergencyContactAvatarSpacing,
                                 ),
                                 child: MutableEmergencyContactAvatar(
-                                  ContactsUtil.formatContactList(core
-                                      .state.incident.incident!.contactLog)![i],
+                                  ContactsUtil.formatContactList(
+                                      widget.incident!.contactLog)![i],
                                 ),
                               ),
                             ),

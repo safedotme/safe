@@ -167,9 +167,11 @@ func StopRecording(c *gin.Context) {
 	res, code, err := utils.Request(body.CustomerKey, body.CustomerSecret, endpoint, bodyRequest)
 
 	if err != nil {
+		message := "Failed to stop recording. " + err.Error() + "\n Server Response: " + string(res)
+		utils.Log(message, body.IncidentID)
 		c.AbortWithStatusJSON(code, gin.H{
 			"status":  code,
-			"message": "Failed to stop recording. " + err.Error() + "\n Server Response: " + string(res),
+			"message": message,
 		})
 
 		return
@@ -180,9 +182,11 @@ func StopRecording(c *gin.Context) {
 	isValid := json.Valid(res)
 
 	if !isValid {
+		message := "Agora response was invalid. Failed  parse body."
+		utils.Log(message, body.IncidentID)
 		c.AbortWithStatusJSON(400, gin.H{
 			"status":  400,
-			"message": "Agora response was invalid. Failed  parse body.",
+			"message": message,
 		})
 
 		return
@@ -193,9 +197,11 @@ func StopRecording(c *gin.Context) {
 	err = json.Unmarshal(res, &decoded)
 
 	if err != nil {
+		message := "Failed to stop recording. " + err.Error()
+		utils.Log(message, body.IncidentID)
 		c.AbortWithStatusJSON(400, gin.H{
 			"status":  400,
-			"message": "Failed to stop recording. " + err.Error(),
+			"message": message,
 		})
 
 		return
@@ -223,9 +229,11 @@ func StopRecording(c *gin.Context) {
 		rootDir, ok := os.LookupEnv("MEDIA_ROOTDIR")
 
 		if !ok {
+			message := "Failed to process footage. unable to load root directory env. env not found"
+			utils.Log(message, body.IncidentID)
 			c.AbortWithStatusJSON(400, gin.H{
 				"status":  400,
-				"message": "Failed to process footage. unable to load root directory env. env not found",
+				"message": message,
 			})
 
 			return
@@ -234,12 +242,26 @@ func StopRecording(c *gin.Context) {
 		utils.TerminateDirectory(rootDir, body.ChannelName)
 
 		// Aborts with error
+		message := "Failed to process footage. " + err.Error()
+		utils.Log(message, body.IncidentID)
 		c.AbortWithStatusJSON(400, gin.H{
 			"status":  400,
-			"message": "Failed to process footage. " + err.Error(),
+			"message": message,
 		})
 
 		return
+	}
+
+	// Update values in Firebase
+	err = utils.UploadChanges(body.Collection, body.IncidentID, body.ChannelName)
+
+	if err != nil {
+		message := "Failed to update Firebase. " + err.Error()
+		utils.Log(message, body.IncidentID)
+		c.AbortWithStatusJSON(400, gin.H{
+			"status":  400,
+			"message": message,
+		})
 	}
 
 	c.JSON(200, gin.H{
@@ -340,7 +362,7 @@ func GetResourceID(c *gin.Context) {
 		  "resourceExpiredHour": 24,
 		  "scene": 0
 	   }
-	  }
+	}
 	`
 
 	bodyRequest = strings.ReplaceAll(bodyRequest, `<channelName>`, body.ChannelName)

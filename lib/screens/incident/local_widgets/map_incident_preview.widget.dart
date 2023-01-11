@@ -3,10 +3,14 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
+import 'package:safe/models/incident/incident.model.dart';
 import 'package:safe/utils/constants/constants.util.dart';
 import 'package:flutter/services.dart' show rootBundle;
 
 class MapIncidentPreview extends StatefulWidget {
+  final Incident? incident;
+
+  MapIncidentPreview(this.incident);
   @override
   State<MapIncidentPreview> createState() => _MapIncidentPreviewState();
 }
@@ -71,8 +75,8 @@ class _MapIncidentPreviewState extends State<MapIncidentPreview> {
           tiltGesturesEnabled: false,
           initialCameraPosition: CameraPosition(
             target: LatLng(
-              core.state.incident.incident!.location![0].lat! + 0.0013,
-              core.state.incident.incident!.location![0].long! + 0.0001,
+              widget.incident!.location![0].lat! + 0.0013,
+              widget.incident!.location![0].long! + 0.0001,
             ),
             zoom: 16,
           ),
@@ -83,8 +87,8 @@ class _MapIncidentPreviewState extends State<MapIncidentPreview> {
               markerId: MarkerId("user"),
               icon: marker ?? BitmapDescriptor.defaultMarker,
               position: LatLng(
-                core.state.incident.incident!.location![0].lat!,
-                core.state.incident.incident!.location![0].long!,
+                widget.incident!.location![0].lat!,
+                widget.incident!.location![0].long!,
               ),
             ),
           ].toSet(),

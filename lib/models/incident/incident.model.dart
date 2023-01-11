@@ -13,9 +13,9 @@ class Incident {
   final Stream stream;
   final bool streamAvailable;
   final bool processedFootage;
-  final bool cloudRecordingAvailable;
   final DateTime? stopTime;
   final DateTime datetime;
+  final String? path;
   final String? thumbnail;
   final List<Location>? location;
   final String pubID;
@@ -31,13 +31,13 @@ class Incident {
     required this.pubID,
     required this.datetime,
     this.processedFootage = false,
+    this.thumbnail,
     this.streamAvailable = false,
-    this.cloudRecordingAvailable = false,
     this.stopTime,
     this.location,
     this.contactLog,
     this.battery,
-    this.thumbnail,
+    this.path,
   });
 
   factory Incident.fromJson(Map<String, dynamic> json) {
@@ -64,11 +64,11 @@ class Incident {
       location: _location?.map((e) => Location.fromJson(e)).toList(),
       contactLog: _contacts?.map((e) => NotifiedContact.fromJson(e)).toList(),
       battery: _battery?.map((e) => Battery.fromJson(e)).toList(),
+      path: json["path"],
       thumbnail: json["thumbnail"],
       stopTime:
           json["stop_time"] == null ? null : DateTime.parse(json["stop_time"]),
       streamAvailable: json["stream_available"],
-      cloudRecordingAvailable: json["cloud_recording_available"],
     );
   }
 
@@ -78,11 +78,11 @@ class Incident {
     String? name,
     List<IncidentType>? type,
     DateTime? datetime,
-    String? thumbnail,
+    String? path,
     bool? streamAvailable,
-    bool? cloudRecordingAvailable,
     bool? processedFootage,
     Stream? stream,
+    String? thumbnail,
     List<Location>? location,
     String? pubID,
     List<NotifiedContact>? contactLog,
@@ -92,16 +92,15 @@ class Incident {
     return Incident(
       id: id ?? this.id,
       streamAvailable: streamAvailable ?? this.streamAvailable,
-      cloudRecordingAvailable:
-          cloudRecordingAvailable ?? this.cloudRecordingAvailable,
       userId: userId ?? this.userId,
       name: name ?? this.name,
       type: type ?? this.type,
       processedFootage: processedFootage ?? this.processedFootage,
       pubID: pubID ?? this.pubID,
+      thumbnail: thumbnail ?? this.thumbnail,
       stream: stream ?? this.stream,
       stopTime: stopTime ?? this.stopTime,
-      thumbnail: thumbnail ?? this.thumbnail,
+      path: path ?? this.path,
       datetime: datetime ?? this.datetime,
       location: location ?? this.location,
       contactLog: contactLog ?? this.contactLog,
@@ -115,12 +114,12 @@ class Incident {
         "name": name,
         "processed_footage": processedFootage,
         "stream_available": streamAvailable,
+        "thumbnail": thumbnail,
         "stop_time": stopTime?.toIso8601String(),
         "stream": stream.toMap(),
         "type": type.map((e) => e.toString()).toList(),
         "datetime": datetime.toIso8601String(),
         "pub_id": pubID,
-        "cloud_recording_available": cloudRecordingAvailable,
         "location":
             location != null ? location!.map((e) => e.toMap()).toList() : null,
         "contact_log": contactLog != null
@@ -128,6 +127,6 @@ class Incident {
             : null,
         "battery":
             battery != null ? battery!.map((e) => e.toMap()).toList() : null,
-        "thumbnail": thumbnail,
+        "path": path,
       };
 }

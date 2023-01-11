@@ -132,6 +132,8 @@ func ParseStopBody(c *gin.Context) (data models.StopBody, err error) {
 		data.SID,
 		data.RecordingID,
 		data.BucketID,
+		data.Collection,
+		data.IncidentID,
 	)
 
 	if isEmpty {

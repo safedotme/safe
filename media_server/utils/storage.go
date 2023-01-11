@@ -243,6 +243,11 @@ func UploadFile(
 		return fmt.Errorf("Writer.Close: %v", err)
 	}
 
+	if err != nil {
+		log.Println(err.Error())
+		return err
+	}
+
 	return nil
 }
 

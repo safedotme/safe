@@ -378,6 +378,22 @@ mixin _$CaptureStore on _CaptureStore, Store {
     });
   }
 
+  late final _$errorCapturingAtom =
+      Atom(name: '_CaptureStore.errorCapturing', context: context);
+
+  @override
+  String? get errorCapturing {
+    _$errorCapturingAtom.reportRead();
+    return super.errorCapturing;
+  }
+
+  @override
+  set errorCapturing(String? value) {
+    _$errorCapturingAtom.reportWrite(value, super.errorCapturing, () {
+      super.errorCapturing = value;
+    });
+  }
+
   late final _$limErrorBannerControllerAtom =
       Atom(name: '_CaptureStore.limErrorBannerController', context: context);
 
@@ -621,6 +637,17 @@ mixin _$CaptureStore on _CaptureStore, Store {
   }
 
   @override
+  void setErrorCapturing(String? s) {
+    final _$actionInfo = _$_CaptureStoreActionController.startAction(
+        name: '_CaptureStore.setErrorCapturing');
+    try {
+      return super.setErrorCapturing(s);
+    } finally {
+      _$_CaptureStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 controller: ${controller},
@@ -646,6 +673,7 @@ isFlashOn: ${isFlashOn},
 settings: ${settings},
 shouldFlashLimitBanner: ${shouldFlashLimitBanner},
 limErrState: ${limErrState},
+errorCapturing: ${errorCapturing},
 limErrorBannerController: ${limErrorBannerController},
 incidentRecordedBannerPanelController: ${incidentRecordedBannerPanelController},
 flashButtonController: ${flashButtonController}

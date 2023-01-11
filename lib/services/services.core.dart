@@ -6,6 +6,7 @@ import 'package:safe/services/location/location.service.dart';
 import 'package:safe/services/media_server/media_server.service.dart';
 import 'package:safe/services/permissions/permissions.service.dart';
 import 'package:safe/services/server/server.service.dart';
+import 'package:safe/services/storage/storage.service.dart';
 import 'package:safe/services/twilio/twilio.service.dart';
 
 class Services {
@@ -17,5 +18,6 @@ class Services {
   AnalyticsService analytics = AnalyticsService();
   TwilioService twilio = TwilioService();
   MediaServer mediaServer = MediaServer();
+  StorageService storage = StorageService()..init();
   AgoraService agora = AgoraService();
 }

@@ -56,6 +56,8 @@ type Storage struct {
 type StopBody struct {
 	AppID          string `json:"appId"`
 	BucketID       string `json:"bucketId"`
+	Collection     string `json:"collection"`
+	IncidentID     string `json:"incidentId"`
 	ChannelName    string `json:"channelName"`
 	CustomerKey    string `json:"customerKey"`
 	CustomerSecret string `json:"customerSecret"`

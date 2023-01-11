@@ -70,6 +70,8 @@ class MediaServer {
     required String channelName,
     required int recordingId,
     required String resourceId,
+    required String incidentId,
+    required String collection,
     required String sid,
     required Function(String e) onError,
   }) async {
@@ -83,6 +85,8 @@ class MediaServer {
       "customerSecret": env["AGORA_CUSTOMER_SECRET"]!,
       "recordingId": recordingId.toString(),
       "sid": sid,
+      "incidentId": incidentId,
+      "collection": collection,
       "bucketId": env["BUCKET_ID"]!,
       "resourceId": resourceId,
       "channelName": channelName,

@@ -1,4 +1,5 @@
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:safe/models/incident/incident.model.dart';
+import 'package:safe/models/incident/location.model.dart';
 
 enum MessageType {
   start,
@@ -12,6 +13,29 @@ class EmergencyMessages {
     MessageType.batteryCrit: contactMessageBatteryTemplate,
     MessageType.end: contactMessageTemplateEnd,
   };
+
+  static String addLocation(String base, Location? l) {
+    String key = "{LOCATION}";
+
+    if (!base.contains(key)) return base;
+
+    bool shouldAddLocation = true;
+
+    if (l == null) shouldAddLocation = false;
+
+    if (l!.lat == null || l.long == null) shouldAddLocation = false;
+
+    if (l.address == null) shouldAddLocation = false;
+
+    String lString = "";
+
+    if (shouldAddLocation) {
+      lString =
+          "\n{NAME_POSESSIVE} last recorded location was {ADDRESS} ({LAT}° N, {LONG}° W).\n";
+    }
+
+    return base.replaceAll(key, lString);
+  }
 
   static MessageType parseType(String type) {
     String gen = "";
@@ -43,9 +67,7 @@ class EmergencyMessages {
 {FULL_NAME} is actively in an emergency. {NAME} listed you, {FULL_CONTACT_NAME}, as an emergency contacts.
 
 The emergency began at {TIME} and is listed as a {TYPE}.
-
-{NAME_POSESSIVE} last recorded location was {ADDRESS} ({LAT}° N, {LONG}° W).
-
+{LOCATION}
 Watch a livestream of the incident: {LINK}
 
 The app continues to record {NAME} camera and track {NAME_POSESSIVE} exact location. You will recieve a message when {NAME} stops capturing the incident.
@@ -57,9 +79,7 @@ This message was sent by Safe; an app that___.
 {NAME} has stopped capturing the incident at {TIME_END}.
 
 The emergency began at {TIME} and is listed as a {TYPE}.
-
-{NAME_POSESSIVE} last recorded location was {ADDRESS} ({LAT}° N, {LONG}° W).
-
+{LOCATION}
 This message was sent by Safe; an app that___.
 """;
 

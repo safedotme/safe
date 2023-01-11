@@ -37,12 +37,17 @@ func LoadKey(build bool) (keys models.LocalKeys, err error) {
 
 	isEmpty := ContainsEmpty(
 		keys.Build.Key,
+		keys.Build.ProjectID,
 		keys.Build.RootDir,
+		keys.Build.LogKey,
 		keys.Build.Secret,
 		keys.Build.GoogleCred,
-		keys.Dev.Key, keys.Dev.RootDir,
+		keys.Dev.Key,
+		keys.Dev.RootDir,
 		keys.Dev.Secret,
 		keys.Dev.GoogleCred,
+		keys.Dev.LogKey,
+		keys.Dev.ProjectID,
 	)
 
 	if isEmpty {
@@ -68,6 +73,8 @@ func SetEnv(build bool) (err error) {
 
 	os.Setenv("MEDIA_KEY", keys.Key)
 	os.Setenv("MEDIA_SECRET", keys.Secret)
+	os.Setenv("PROJECT_ID", keys.ProjectID)
+	os.Setenv("LOG_KEY", keys.LogKey)
 	os.Setenv("MEDIA_ROOTDIR", keys.RootDir)
 	os.Setenv("GOOGLE_APPLICATION_CREDENTIALS", GetBasepath(keys.RootDir)+keys.GoogleCred)
 

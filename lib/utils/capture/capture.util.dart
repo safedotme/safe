@@ -11,10 +11,11 @@ import 'package:safe/models/incident/incident.model.dart';
 import 'package:safe/models/incident/location.model.dart';
 import 'package:safe/models/incident/notified_contact.model.dart';
 import 'package:safe/models/media_server/start_recording_response.model.dart';
-import 'package:safe/models/media_server/stop_recording_response.model.dart';
 import 'package:safe/models/user/user.model.dart';
+import 'package:safe/services/analytics/analytics.service.dart';
 import 'package:safe/services/analytics/helper_classes/analytics_log_model.service.dart';
 import 'package:safe/services/media_server/media_server.service.dart';
+import 'package:safe/services/server/incident_server.service.dart';
 import 'package:safe/utils/capture/messages.capture.dart';
 import 'package:safe/utils/constants/constants.util.dart';
 import 'package:uuid/uuid.dart';
@@ -36,6 +37,11 @@ class CaptureUtil {
     // Will be used to start & stop incident
     isActive = true;
 
+    // Resets error
+    if (_core!.state.capture.errorCapturing != null) {
+      _core!.state.capture.setErrorCapturing(null);
+    }
+
     // Prevents two banners from being open at same time
     if (_core!
         .state.capture.incidentRecordedBannerPanelController.isPanelOpen) {
@@ -56,7 +62,7 @@ class CaptureUtil {
     _batteryListen();
   }
 
-  void stop() async {
+  void stop({String? error}) async {
     // Used to stop location and battery streams
     isActive = false;
 
@@ -90,6 +96,9 @@ class CaptureUtil {
 
     // Opens an error if user has reached credit limit
     if (_core!.state.capture.limErrState == null) {
+      if (error != null) {
+        _core!.state.capture.setErrorCapturing(error);
+      }
       _core!.state.capture.incidentRecordedBannerPanelController.open();
     }
   }
@@ -110,8 +119,9 @@ class CaptureUtil {
   }
 
   Future<void> _logError({
-    required String event,
+    required ErrorLogType event,
     required String error,
+    bool crit = false,
   }) async {
     String body = """
 **ERROR**
@@ -129,7 +139,7 @@ USER ID: ${_core!.state.capture.incident!.userId}
 
     await _core!.services.analytics.log(AnalyticsLog(
       channel: "error",
-      event: event,
+      event: AnalyticsService.mapErrors[event]!,
       description: body,
       icon: "🚨",
       tags: {
@@ -137,6 +147,14 @@ USER ID: ${_core!.state.capture.incident!.userId}
         "id": _core!.state.capture.incident!.userId,
       },
     ));
+
+    if (isActive && crit) {
+      stop(
+        error: _core!.utils.language
+                .langMap[_core!.state.preferences.language]!["capture"]
+            ["errors"][event],
+      );
+    }
   }
 
   // ⬇️ STREAM / RECORDING
@@ -153,7 +171,8 @@ USER ID: ${_core!.state.capture.incident!.userId}
       RtcEngineEventHandler(
         onError: (err, msg) {
           _logError(
-            event: "rtc-failed",
+            event: ErrorLogType.rtcFailed,
+            crit: true,
             error: {"error": err, "message": msg}.toString(),
           );
         },
@@ -186,7 +205,11 @@ USER ID: ${_core!.state.capture.incident!.userId}
         type: TokenType.userAccount,
         uid: _core!.state.capture.incident!.stream.userId,
         onError: (e) {
-          _logError(event: "media_server_failed", error: e);
+          _logError(
+            event: ErrorLogType.mediaServerFailed,
+            error: e,
+            crit: true,
+          );
         });
 
     if (token == null) {
@@ -209,7 +232,7 @@ USER ID: ${_core!.state.capture.incident!.userId}
       channelName: _core!.state.capture.incident!.stream.channelName,
       recordingId: _core!.state.capture.incident!.stream.recordingId,
       onError: (e) {
-        _logError(event: "media_server_failed", error: e);
+        _logError(event: ErrorLogType.mediaServerFailed, error: e, crit: true);
       },
     );
 
@@ -222,7 +245,7 @@ USER ID: ${_core!.state.capture.incident!.userId}
       type: TokenType.userAccount,
       uid: _core!.state.capture.incident!.stream.recordingId,
       onError: (e) {
-        _logError(event: "media_server_failed", error: e);
+        _logError(event: ErrorLogType.mediaServerFailed, error: e, crit: true);
       },
     );
 
@@ -239,7 +262,11 @@ USER ID: ${_core!.state.capture.incident!.userId}
       maxIdleTime: _core!.state.capture.settings!.maxIdleTime,
       token: recordToken,
       onError: (e) {
-        _logError(event: "media_server_failed", error: e);
+        _logError(
+          event: ErrorLogType.mediaServerFailed,
+          error: e,
+          crit: true,
+        );
       },
     );
 
@@ -258,27 +285,24 @@ USER ID: ${_core!.state.capture.incident!.userId}
 
     if (_core!.state.capture.incident!.stream.sid == null) return;
 
+    Incident i = _core!.state.capture.incident!;
+
     // Call stop recording
-    StopRecordingResponse? response =
-        await _core!.services.mediaServer.stopRecording(
-      channelName: _core!.state.capture.incident!.stream.channelName,
-      recordingId: _core!.state.capture.incident!.stream.recordingId,
-      resourceId: _core!.state.capture.incident!.stream.resourceId!,
-      sid: _core!.state.capture.incident!.stream.sid!,
+    _core!.services.mediaServer.stopRecording(
+      channelName: i.stream.channelName,
+      collection: IncidentServer.path,
+      incidentId: i.id,
+      recordingId: i.stream.recordingId,
+      resourceId: i.stream.resourceId!,
+      sid: i.stream.sid!,
       onError: (e) {
-        _logError(event: "media_server_failed", error: e);
+        _logError(
+          event: ErrorLogType.mediaServerFailed,
+          error: e,
+          crit: true,
+        );
       },
     );
-
-    if (response == null) return;
-
-    // Update Firebase values
-    await _uploadChanges(_core!.state.capture.incident!.copyWith(
-      cloudRecordingAvailable: true,
-      stream: _core!.state.capture.incident!.stream.copyWith(
-        rawFilepath: response.files,
-      ),
-    ));
   }
 
   // ⬇️ LOCATION
@@ -296,7 +320,7 @@ USER ID: ${_core!.state.capture.incident!.userId}
       long: location.long!,
       onError: (e) {
         _logError(
-          event: "geocoder_failed",
+          event: ErrorLogType.geocoderFailed,
           error: e.toString(),
         );
       },
@@ -418,9 +442,13 @@ USER ID: ${_core!.state.capture.incident!.userId}
   }) {
     String message = EmergencyMessages.messageMap[type]!;
 
-    // TODO: Location null error
+    Location? l = type == MessageType.end
+        ? incident.location?.last
+        : incident.location?.first;
 
-    final Map<String, String> replacementMap = {
+    message = EmergencyMessages.addLocation(message, l);
+
+    final Map<String, String?> replacementMap = {
       "{FULL_NAME}": user.name,
       "{NAME}": _core!.utils.name.genFirstName(user.name, false),
       "{FULL_CONTACT_NAME}": contact.name,
@@ -428,17 +456,19 @@ USER ID: ${_core!.state.capture.incident!.userId}
       "{TYPE}": _core!.utils.incident.generateType(incident.type[0])!,
       "{TIME_END}": DateFormat.jm().format(DateTime.now()),
       "{ADDRESS}": _core!.utils.geocoder.removeTag(
-        incident.location![0].address!,
+        l?.address,
       ),
-      "{LAT}": incident.location![0].lat!.toStringAsFixed(4),
-      "{LONG}": incident.location![0].long!.toStringAsFixed(4),
+      "{LAT}": l?.lat?.toStringAsFixed(4),
+      "{LONG}": l?.long?.toStringAsFixed(4),
       "{NAME_POSESSIVE}": _core!.utils.name.genFirstName(user.name, true),
       "{BATTERY}": battery.toString(),
       "{LINK}": "https://live.joinsafe.me/${incident.pubID}",
     };
 
     for (String key in replacementMap.keys) {
-      message = message.replaceAll(key, replacementMap[key]!);
+      if (replacementMap[key] != null) {
+        message = message.replaceAll(key, replacementMap[key]!);
+      }
     }
 
     return message;

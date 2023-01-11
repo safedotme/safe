@@ -143,6 +143,12 @@ abstract class _CaptureStore with Store {
   void setLimErrState(LimitErrorState? s) => limErrState = s;
 
   @observable
+  String? errorCapturing;
+
+  @action
+  void setErrorCapturing(String? s) => errorCapturing = s;
+
+  @observable
   PanelController limErrorBannerController = PanelController();
 
   @observable
