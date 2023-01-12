@@ -96,6 +96,7 @@ class _IncidentState extends State<IncidentScreen> {
                                   RecordedDataBox(getIncident()),
                                   SizedBox(height: 30),
                                   EmergencyContactsBox(getIncident()!),
+                                  SizedBox(height: 60),
                                 ],
                               ),
                             ),
