@@ -65,6 +65,7 @@ class _IncidentState extends State<IncidentScreen> {
     var queryData = MediaQuery.of(context);
     return Observer(
       builder: (_) => MutableScreenTransition(
+        isOpen: true, // TODO: Change me
         isDismissable: false,
         controller: core.state.incident.controller,
         body: Container(

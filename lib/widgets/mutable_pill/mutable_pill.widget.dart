@@ -13,10 +13,12 @@ class MutablePill extends StatefulWidget {
   final bool isButton;
   final double shadowPronouncement;
   final MutableColor? color;
+  final LetterSpacingType? letterSpacing;
 
   MutablePill({
     required this.text,
     this.icon,
+    this.letterSpacing,
     this.shadowPronouncement = 22,
     this.isButton = false,
     this.color,
@@ -90,6 +92,7 @@ class _MutablePillState extends State<MutablePill> {
             widget.text,
             style: widget.isButton ? TypeStyle.footnote : TypeStyle.body,
             weight: widget.isButton ? TypeWeight.heavy : TypeWeight.semiBold,
+            letterSpacing: widget.letterSpacing,
           ),
         ],
       ),

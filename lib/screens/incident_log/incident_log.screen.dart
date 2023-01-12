@@ -45,6 +45,9 @@ class _IncidentLogState extends State<IncidentLog> {
       core.state.incidentLog.setIncidents(incidents);
 
       fetchThumbnails(incidents);
+
+      // TODO: Delete me
+      core.state.incident.setIncidentId(incidents.first.id);
     });
   }
 
