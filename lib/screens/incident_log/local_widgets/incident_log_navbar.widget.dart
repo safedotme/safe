@@ -100,7 +100,7 @@ class _IncidentLogNavBarState extends State<IncidentLogNavBar> {
       state: state,
     );
 
-    return percentage * 15;
+    return percentage * kNavBarBlur;
   }
 
   @override

@@ -32,8 +32,8 @@ class MutableOverlayButton extends StatelessWidget {
         child: BackdropFilter(
           filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
           child: Container(
-            height: 40,
-            width: 40,
+            height: kOverlayButtonSize,
+            width: kOverlayButtonSize,
             decoration: BoxDecoration(
               color: (isActive
                       ? Colors.white

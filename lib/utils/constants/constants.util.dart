@@ -219,6 +219,15 @@ const double kDefaultTopMargin = 42;
 const double kHandleTopMargin = 6;
 const double kPanelHandleToHeader = 7;
 
+// NAVBAR
+const double kNavBarBlur = 15;
+const double kOverlayButtonSize = 40;
+const double kIncidentNavBarOffset = 150;
+
+// SCROLL
+const Duration kScrollAnimationDuration = Duration(milliseconds: 200);
+const Curve kScrollAnimationCurve = Curves.decelerate;
+
 // MARGINS
 const double kSideScreenMargin = 15;
 const double kBottomScreenMargin = 40;

@@ -42,7 +42,7 @@ class _IncidentHeaderBoxState extends State<IncidentHeaderBox> {
     var query = MediaQuery.of(context);
     return Observer(
       builder: (_) => SizedBox(
-        height: query.size.height * 0.6,
+        height: query.size.height * 0.6 + kIncidentNavBarOffset,
         child: Stack(
           children: [
             Padding(
@@ -85,31 +85,6 @@ class _IncidentHeaderBoxState extends State<IncidentHeaderBox> {
                   ],
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
-                ),
-              ),
-            ),
-            Align(
-              alignment: Alignment.topCenter,
-              child: Padding(
-                padding: EdgeInsets.fromLTRB(
-                  kSideScreenMargin,
-                  query.padding.top,
-                  kSideScreenMargin,
-                  0,
-                ),
-                child: Row(
-                  children: [
-                    MutableOverlayButton(
-                      animateBeforeVoidCallback: true,
-                      icon: MutableIcon(
-                        MutableIcons.cancel,
-                        size: Size(12, 12),
-                      ),
-                      onTap: () {
-                        core.state.incident.controller.close();
-                      },
-                    ),
-                  ],
                 ),
               ),
             ),

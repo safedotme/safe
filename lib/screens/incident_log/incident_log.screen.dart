@@ -92,10 +92,8 @@ class _IncidentLogState extends State<IncidentLog> {
 
     await core.state.incidentLog.scrollController.animateTo(
       0,
-      duration: Duration(
-        milliseconds: 200,
-      ),
-      curve: Curves.decelerate,
+      duration: kScrollAnimationDuration,
+      curve: kScrollAnimationCurve,
     );
 
     preventAnimationSpoofing = false;

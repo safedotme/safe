@@ -110,6 +110,8 @@ class ContextMenuController {
 
   bool get isAttached => _state != null;
 
+  bool get isOpen => _state!.isOpen;
+
   Future<void> toggle() async {
     assert(_state != null, "Controller is not attached");
 

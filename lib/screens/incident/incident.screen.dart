@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
 import 'package:safe/models/incident/incident.model.dart';
 import 'package:safe/screens/incident/local_widgets/incident_header_box.widget.dart';
+import 'package:safe/screens/incident/local_widgets/incident_nav_bar.widget.dart';
 import 'package:safe/screens/incident/local_widgets/incident_processing_loader.widget.dart';
 import 'package:safe/screens/incident/local_widgets/recorded_data_box.widget.dart';
 import 'package:safe/utils/constants/constants.util.dart';
@@ -22,6 +23,21 @@ class _IncidentState extends State<IncidentScreen> {
   void initState() {
     super.initState();
     core = Provider.of<Core>(context, listen: false);
+
+    initScrollController();
+  }
+
+  void initScrollController() {
+    core.state.incident.scrollController.addListener(() {
+      closeMenu();
+    });
+  }
+
+  void closeMenu() {
+    if (!core.state.incident.menuController.isAttached) return;
+    if (!core.state.incident.menuController.isOpen) return;
+
+    core.state.incident.menuController.close();
   }
 
   Incident? getIncident() {
@@ -36,7 +52,17 @@ class _IncidentState extends State<IncidentScreen> {
   }
 
   @override
+  void dispose() {
+    if (core.state.incident.scrollController.hasClients) {
+      core.state.incident.scrollController.dispose();
+    }
+
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    var queryData = MediaQuery.of(context);
     return Observer(
       builder: (_) => MutableScreenTransition(
         isDismissable: false,
@@ -51,14 +77,32 @@ class _IncidentState extends State<IncidentScreen> {
                 )
               : !getIncident()!.processedFootage
                   ? IncidentProcessingLoader(getIncident())
-                  : SingleChildScrollView(
-                      child: Column(
-                        children: [
-                          IncidentHeaderBox(getIncident()),
-                          SizedBox(height: 32),
-                          RecordedDataBox(getIncident())
-                        ],
-                      ),
+                  : Stack(
+                      children: [
+                        Positioned(
+                          top: -kIncidentNavBarOffset,
+                          child: SizedBox(
+                            width: queryData.size.width,
+                            height:
+                                queryData.size.height + kIncidentNavBarOffset,
+                            child: SingleChildScrollView(
+                              controller: core.state.incident.scrollController,
+                              child: Column(
+                                children: [
+                                  IncidentHeaderBox(getIncident()),
+                                  SizedBox(height: 32),
+                                  RecordedDataBox(getIncident())
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                        Positioned(
+                          top: -1,
+                          left: -1,
+                          child: IncidentNavBar(getIncident()!),
+                        )
+                      ],
                     ),
         ),
       ),
