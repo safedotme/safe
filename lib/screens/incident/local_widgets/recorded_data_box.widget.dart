@@ -131,7 +131,7 @@ class _RecordedDataBoxState extends State<RecordedDataBox> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: kSideScreenMargin),
+      padding: EdgeInsets.symmetric(horizontal: kSideScreenMargin),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -145,7 +145,7 @@ class _RecordedDataBoxState extends State<RecordedDataBox> {
             align: TextAlign.left,
             weight: TypeWeight.heavy,
           ),
-          SizedBox(height: 20),
+          SizedBox(height: kIncidentSubheaderToBody),
           CupertinoContextMenu(
             actions: [
               ContextMenuBody(
@@ -192,7 +192,7 @@ class _RecordedDataBoxState extends State<RecordedDataBox> {
               ),
             ),
           ),
-          SizedBox(height: 14),
+          SizedBox(height: kRecordedDataBoxSpacing),
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -213,7 +213,7 @@ class _RecordedDataBoxState extends State<RecordedDataBox> {
                       ["recorded_data"]["date"]["key"],
                 ),
               ),
-              SizedBox(width: 14),
+              SizedBox(width: kRecordedDataBoxSpacing),
               Expanded(
                 child: DataPointBox(
                   header: core.utils.language
@@ -234,9 +234,8 @@ class _RecordedDataBoxState extends State<RecordedDataBox> {
               ),
             ],
           ),
-          SizedBox(height: 15),
+          SizedBox(height: kRecordedDataBoxSpacing),
           IncidentDownloadBox(),
-          SizedBox(height: 500)
         ],
       ),
     );

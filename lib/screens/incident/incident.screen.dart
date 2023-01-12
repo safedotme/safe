@@ -3,6 +3,7 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
 import 'package:safe/models/incident/incident.model.dart';
+import 'package:safe/screens/incident/local_widgets/emergency_contacts_box.widget.dart';
 import 'package:safe/screens/incident/local_widgets/incident_header_box.widget.dart';
 import 'package:safe/screens/incident/local_widgets/incident_nav_bar.widget.dart';
 import 'package:safe/screens/incident/local_widgets/incident_processing_loader.widget.dart';
@@ -73,7 +74,7 @@ class _IncidentState extends State<IncidentScreen> {
           child: getIncident() == null
               ? Center(
                   child: MutableLoader(
-                    text: "Loading incident",
+                    text: "Loading incident", // TODO: Extract
                   ),
                 )
               : !getIncident()!.processedFootage
@@ -92,7 +93,9 @@ class _IncidentState extends State<IncidentScreen> {
                                 children: [
                                   IncidentHeaderBox(getIncident()),
                                   SizedBox(height: 32),
-                                  RecordedDataBox(getIncident())
+                                  RecordedDataBox(getIncident()),
+                                  SizedBox(height: 30),
+                                  EmergencyContactsBox(getIncident()!),
                                 ],
                               ),
                             ),

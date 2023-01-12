@@ -286,6 +286,8 @@ enum AuthType {
 
 // INCIDENT SCREEN
 const double kIncidentDataBoxPadding = 15;
+const double kIncidentSubheaderToBody = 20;
+const double kRecordedDataBoxSpacing = 14;
 
 // HOME
 

@@ -31,7 +31,7 @@ class _MutablePlayButtonState extends State<MutablePlayButton> {
         width: 60,
         decoration: BoxDecoration(
           shape: BoxShape.circle,
-          boxShadow: core.utils.color.applyGradientShadow(30, opacity: 0.8),
+          boxShadow: core.utils.color.applyGradientShadow(60, opacity: 0.2),
           gradient: LinearGradient(
             colors: kPrimaryGradientColors,
             begin: Alignment.topLeft,

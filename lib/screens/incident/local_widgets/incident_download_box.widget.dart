@@ -30,7 +30,7 @@ class IncidentDownloadBox extends StatelessWidget {
                   MutablePill(
                     isButton: true,
                     letterSpacing: LetterSpacingType.numeric,
-                    text: "DOWNLOAD",
+                    text: "Download".toUpperCase(), // TODO: Extract
                   ),
                 ],
               )
