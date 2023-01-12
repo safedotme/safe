@@ -39,7 +39,6 @@ class _IncidentState extends State<IncidentScreen> {
   Widget build(BuildContext context) {
     return Observer(
       builder: (_) => MutableScreenTransition(
-        isOpen: false,
         isDismissable: false,
         controller: core.state.incident.controller,
         body: Container(

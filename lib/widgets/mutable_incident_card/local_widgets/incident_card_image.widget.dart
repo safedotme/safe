@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:safe/core.dart';
 import 'package:safe/models/incident/incident.model.dart';
 import 'package:safe/utils/constants/constants.util.dart';
 import 'package:safe/utils/icon/icon.util.dart';
@@ -25,14 +27,13 @@ class IncidentCardImage extends StatefulWidget {
 class _IncidentCardImageState extends State<IncidentCardImage>
     with TickerProviderStateMixin {
   late Animation animation;
-  String? thumbnail;
+  late Core core;
 
   @override
   void initState() {
     animate();
     super.initState();
-
-    genSignedUrl();
+    core = Provider.of<Core>(context, listen: false);
   }
 
   void animate() async {
@@ -54,7 +55,13 @@ class _IncidentCardImageState extends State<IncidentCardImage>
     controller.forward();
   }
 
-  String? genSignedUrl() {}
+  String? fetchThumbnail(Map map) {
+    bool keyExists = map.containsKey(widget.incident.id);
+
+    if (!keyExists) return null;
+
+    return map[widget.incident.id];
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -63,24 +70,20 @@ class _IncidentCardImageState extends State<IncidentCardImage>
       child: Stack(
         children: [
           Container(
-            width: double.infinity,
-            color: kColorMap[kIncidentCardLoaderColor],
-            child: thumbnail != null
-                ? MutableCachedImage(
-                    thumbnail!,
-                    backgroundColor: kColorMap[kIncidentCardLoaderColor]!,
-                    fit: BoxFit.cover,
-                    shimmerColor: kBoxLoaderShimmerColor,
-                  )
-                : Container(
-                    color: kColorMap[kIncidentCardLoaderColor]!,
-                  ),
-          ),
+              width: double.infinity,
+              color: kColorMap[kIncidentCardLoaderColor],
+              child: MutableCachedImage(
+                fetchThumbnail(core.state.incidentLog.thumbnails),
+                backgroundColor: kColorMap[kIncidentCardLoaderColor]!,
+                fit: BoxFit.cover,
+                shimmerColor: kBoxLoaderShimmerColor,
+              )),
 
           // Gradient Overlay
 
-          thumbnail != null
+          fetchThumbnail(core.state.incidentLog.thumbnails) != null
               ? Container(
+                  margin: EdgeInsets.only(top: 0),
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
                       colors: [

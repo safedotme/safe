@@ -294,7 +294,7 @@ class _TutorialScreenState extends State<TutorialScreen> {
                         description: "User has finished their tutorial.",
                         icon: "📘",
                         tags: {
-                          "id": core.services.auth.currentUser!.uid,
+                          "userid": core.services.auth.currentUser!.uid,
                           "datetime": DateTime.now().toIso8601String(),
                         },
                       ));

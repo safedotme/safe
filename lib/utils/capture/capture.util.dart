@@ -112,7 +112,7 @@ class CaptureUtil {
           "User has begun ${stopped ? "stopped" : "started"} capturing the incident.",
       icon: stopped ? "☁️" : "📸",
       tags: {
-        "id": i.id,
+        "incidentid": i.id,
         "userid": i.userId,
       },
     ));
@@ -144,7 +144,7 @@ USER ID: ${_core!.state.capture.incident!.userId}
       icon: "🚨",
       tags: {
         "incidentid": _core!.state.capture.incident!.id,
-        "id": _core!.state.capture.incident!.userId,
+        "userid": _core!.state.capture.incident!.userId,
       },
     ));
 
@@ -308,8 +308,6 @@ USER ID: ${_core!.state.capture.incident!.userId}
   // ⬇️ LOCATION
 
   Future<String?> _generateAddress(Location location) async {
-    // Build better system for judging addresses based on whether one has been generated
-
     // Checks that received data is not null
     if (location.lat == null || location.long == null) {
       return null;

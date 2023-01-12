@@ -3,10 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
 import 'package:safe/utils/constants/constants.util.dart';
+import 'package:safe/widgets/mutable_cached_image/local_widgets/cached_image_loader.widget.dart';
 import 'package:safe/widgets/mutable_shimmer/mutable_shimmer.widget.dart';
 
 class MutableCachedImage extends StatefulWidget {
-  final String url;
+  final String? url;
   final BoxFit fit;
   final Color? shimmerColor;
   final bool isOval;
@@ -38,28 +39,28 @@ class _MutableCachedImageState extends State<MutableCachedImage> {
 
   @override
   Widget build(BuildContext context) {
-    return generateOval(
-      CachedNetworkImage(
-        fadeInDuration: Duration(milliseconds: kCachedImageLoadDuration),
-        fadeInCurve: Curves.easeInQuad,
-        fadeOutDuration: Duration(milliseconds: kCachedImageLoadDuration),
-        placeholderFadeInDuration:
-            Duration(milliseconds: kCachedImageLoadDuration),
-        fadeOutCurve: Curves.easeInQuad,
-        imageUrl: widget.url,
-        fit: widget.fit,
-        placeholder: (_, s) => MutableShimmer(
-          animateToColor: widget.shimmerColor ?? kShimmerAnimationColor,
-          child: generateOval(
-            Container(
-              decoration: BoxDecoration(
-                color: widget.backgroundColor ??
-                    kColorMap[MutableColor.neutral10]!,
+    return widget.url == null
+        ? CachedImageLoader(
+            isOval: widget.isOval,
+            shimmerColor: widget.shimmerColor,
+            backgroundColor: widget.backgroundColor,
+          )
+        : generateOval(
+            CachedNetworkImage(
+              fadeInDuration: Duration(milliseconds: kCachedImageLoadDuration),
+              fadeInCurve: Curves.easeInQuad,
+              fadeOutDuration: Duration(milliseconds: kCachedImageLoadDuration),
+              placeholderFadeInDuration:
+                  Duration(milliseconds: kCachedImageLoadDuration),
+              fadeOutCurve: Curves.easeInQuad,
+              imageUrl: widget.url!,
+              fit: widget.fit,
+              placeholder: (_, s) => CachedImageLoader(
+                shimmerColor: widget.shimmerColor,
+                backgroundColor: widget.backgroundColor,
+                isOval: widget.isOval,
               ),
             ),
-          ),
-        ),
-      ),
-    );
+          );
   }
 }

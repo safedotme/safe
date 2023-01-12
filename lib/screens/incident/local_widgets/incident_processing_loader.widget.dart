@@ -210,7 +210,7 @@ class _IncidentProcessingLoaderState extends State<IncidentProcessingLoader>
                     "\n**Processing is taking to long (*according to user*)**\nWait Time: ${getWaitDuration(widget.incident!).inMinutes} minutes\nIncident Duration: ${getIncidentDuration(widget.incident!).inMinutes} minutes\nLoad Status (shown to user): ${(val * 100).round()}%\nUser Number: $phone",
                 icon: "⚠️",
                 tags: {
-                  "id": widget.incident!.id,
+                  "incidentid": widget.incident!.id,
                   "userid": widget.incident!.userId,
                 },
               );

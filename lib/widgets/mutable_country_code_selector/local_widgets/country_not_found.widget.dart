@@ -27,7 +27,7 @@ class CountryNotFound extends StatelessWidget {
           ),
           MutableButton(
             onTap: () {
-              launchUrl(kRequestCountryUrl);
+              // TODO: Log request country code to logsnag
             },
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
+import 'package:safe/models/incident/incident.model.dart';
 import 'package:safe/screens/incident_log/local_widgets/incident_log_body.widget.dart';
 import 'package:safe/utils/constants/constants.util.dart';
 import 'package:safe/widgets/mutable_popup/local_widgets/mutable_popup_style.widget.dart';
@@ -42,7 +43,23 @@ class _IncidentLogState extends State<IncidentLog> {
             : null,
       );
       core.state.incidentLog.setIncidents(incidents);
+
+      fetchThumbnails(incidents);
     });
+  }
+
+  void fetchThumbnails(List<Incident> incidents) async {
+    for (Incident i in incidents) {
+      bool keyExists = core.state.incidentLog.thumbnails.containsKey(i.id);
+
+      if (i.thumbnail != null && !keyExists) {
+        core.services.storage.getDownloadUrl(i.thumbnail!).then((url) {
+          if (url.isNotEmpty) {
+            core.state.incidentLog.addThumbnail(i.id, url);
+          }
+        });
+      }
+    }
   }
 
   void listenScrollController() {
