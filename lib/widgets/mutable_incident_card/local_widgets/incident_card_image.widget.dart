@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
 import 'package:safe/models/incident/incident.model.dart';
@@ -12,47 +13,23 @@ import 'package:safe/widgets/mutable_incident_card/local_widgets/incident_card_p
 class IncidentCardImage extends StatefulWidget {
   final Incident incident;
   final void Function() onPlayTap;
-  final void Function() onMenuTap;
 
   IncidentCardImage(
     this.incident, {
     required this.onPlayTap,
-    required this.onMenuTap,
   });
 
   @override
   State<IncidentCardImage> createState() => _IncidentCardImageState();
 }
 
-class _IncidentCardImageState extends State<IncidentCardImage>
-    with TickerProviderStateMixin {
-  late Animation animation;
+class _IncidentCardImageState extends State<IncidentCardImage> {
   late Core core;
 
   @override
   void initState() {
-    animate();
     super.initState();
     core = Provider.of<Core>(context, listen: false);
-  }
-
-  void animate() async {
-    var controller = AnimationController(
-      vsync: this,
-      duration: Duration(milliseconds: kCachedImageLoadDuration),
-    );
-
-    animation = Tween<double>(begin: 0, end: 0.6).animate(
-      CurvedAnimation(parent: controller, curve: Curves.easeOut),
-    );
-
-    controller.addListener(() {
-      setState(() {});
-    });
-
-    await Future.delayed(Duration(milliseconds: kCachedImageLoadDuration));
-
-    controller.forward();
   }
 
   String? fetchThumbnail(Map map) {
@@ -65,11 +42,12 @@ class _IncidentCardImageState extends State<IncidentCardImage>
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: kIncidentCardImageHeight,
-      child: Stack(
-        children: [
-          Container(
+    return Observer(
+      builder: (_) => SizedBox(
+        height: kIncidentCardImageHeight,
+        child: Stack(
+          children: [
+            Container(
               width: double.infinity,
               color: kColorMap[kIncidentCardLoaderColor],
               child: MutableCachedImage(
@@ -77,43 +55,15 @@ class _IncidentCardImageState extends State<IncidentCardImage>
                 backgroundColor: kColorMap[kIncidentCardLoaderColor]!,
                 fit: BoxFit.cover,
                 shimmerColor: kBoxLoaderShimmerColor,
-              )),
-
-          // Gradient Overlay
-
-          fetchThumbnail(core.state.incidentLog.thumbnails) != null
-              ? Container(
-                  margin: EdgeInsets.only(top: 0),
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      colors: [
-                        Colors.black.withOpacity(animation.value),
-                        Colors.transparent
-                      ],
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                    ),
-                  ),
-                )
-              : SizedBox(),
-
-          IncidentCardPlayButton(onTap: widget.onPlayTap),
-
-          Align(
-            alignment: Alignment.topRight,
-            child: MutableButton(
-              onTap: widget.onMenuTap,
-              child: Container(
-                padding: EdgeInsets.all(14),
-                color: Colors.transparent,
-                child: MutableIcon(
-                  MutableIcons.menu,
-                  size: Size(15, 30),
-                ),
               ),
             ),
-          ),
-        ],
+            Visibility(
+              visible:
+                  fetchThumbnail(core.state.incidentLog.thumbnails) != null,
+              child: IncidentCardPlayButton(onTap: widget.onPlayTap),
+            ),
+          ],
+        ),
       ),
     );
   }

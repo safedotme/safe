@@ -51,9 +51,6 @@ class _MutableIncidentCardState extends State<MutableIncidentCard> {
                 onPlayTap: () {
                   print("play");
                 },
-                onMenuTap: () {
-                  print("menu");
-                },
               ),
               IncidentCardBody(widget.incident),
             ],

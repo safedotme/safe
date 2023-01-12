@@ -55,7 +55,12 @@ class _IncidentLogState extends State<IncidentLog> {
       if (i.thumbnail != null && !keyExists) {
         core.services.storage.getDownloadUrl(i.thumbnail!).then((url) {
           if (url.isNotEmpty) {
-            core.state.incidentLog.addThumbnail(i.id, url);
+            var t = core.state.incidentLog.thumbnails;
+            Map<String, String> newMap = {};
+            newMap[i.id] = url;
+
+            t.addAll(newMap);
+            core.state.incidentLog.setThumbnail(t);
           }
         });
       }

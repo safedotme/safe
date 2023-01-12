@@ -174,11 +174,11 @@ mixin _$IncidentLogStore on _IncidentLogStore, Store {
   }
 
   @override
-  void addThumbnail(String id, String path) {
+  void setThumbnail(Map<String, String> t) {
     final _$actionInfo = _$_IncidentLogStoreActionController.startAction(
-        name: '_IncidentLogStore.addThumbnail');
+        name: '_IncidentLogStore.setThumbnail');
     try {
-      return super.addThumbnail(id, path);
+      return super.setThumbnail(t);
     } finally {
       _$_IncidentLogStoreActionController.endAction(_$actionInfo);
     }
