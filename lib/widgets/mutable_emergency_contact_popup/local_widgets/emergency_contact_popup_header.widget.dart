@@ -42,10 +42,12 @@ class _EmergencyContactPopupHeaderState
   FocusNode phoneNode = FocusNode();
 
   // STATE
-  late int phoneLen = "(${widget.code}) ${widget.phone}) ".length;
   late String name = widget.name;
   late String phone = widget.phone;
   late String code = widget.code;
+
+  // Used only to determine size of phone textfield
+  late int phoneLen = "(${widget.code}) ${widget.phone}) ".length;
 
   void triggerFormat(String code) {
     formatPhone(code, phoneController.text);
