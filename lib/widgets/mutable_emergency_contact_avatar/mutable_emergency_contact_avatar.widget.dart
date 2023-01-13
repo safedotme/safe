@@ -1,35 +1,39 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
-import 'package:safe/models/incident/notified_contact.model.dart';
 import 'package:safe/utils/constants/constants.util.dart';
 import 'package:safe/widgets/mutable_text/mutable_text.widget.dart';
 
 class MutableEmergencyContactAvatar extends StatelessWidget {
-  final NotifiedContact contact;
+  final String name;
+  final double size;
 
-  MutableEmergencyContactAvatar(this.contact);
+  MutableEmergencyContactAvatar(this.name,
+      {this.size = kEmergencyContactAvatarSize});
   @override
   Widget build(BuildContext context) {
     Core core = Provider.of<Core>(context, listen: false);
     return Container(
-      height: kEmergencyContactAvatarSize,
-      width: kEmergencyContactAvatarSize,
+      height: size,
+      width: size,
       decoration: BoxDecoration(
         color: kColorMap[MutableColor.neutral8],
         shape: BoxShape.circle,
         border: Border.all(
-          width: 0.85,
+          width: 0.85 * (size / kEmergencyContactAvatarSize),
           color: kColorMap[MutableColor.neutral7]!,
         ),
       ),
       child: Center(
-        child: MutableText(
-          core.utils.name.genInitials(contact.name),
-          weight: TypeWeight.black,
-          height: 1,
-          size: 9,
-          letterSpacing: LetterSpacingType.heading,
+        child: Transform.scale(
+          scale: (size / kEmergencyContactAvatarSize),
+          child: MutableText(
+            core.utils.name.genInitials(name),
+            weight: TypeWeight.black,
+            height: 1,
+            size: 9,
+            letterSpacing: LetterSpacingType.heading,
+          ),
         ),
       ),
     );

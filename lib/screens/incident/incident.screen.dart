@@ -3,6 +3,7 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
 import 'package:safe/models/incident/incident.model.dart';
+import 'package:safe/screens/incident/local_widgets/emergency_contact_info_popup.widget.dart';
 import 'package:safe/screens/incident/local_widgets/emergency_contacts_box.widget.dart';
 import 'package:safe/screens/incident/local_widgets/incident_header_box.widget.dart';
 import 'package:safe/screens/incident/local_widgets/incident_nav_bar.widget.dart';
@@ -10,7 +11,9 @@ import 'package:safe/screens/incident/local_widgets/incident_processing_loader.w
 import 'package:safe/screens/incident/local_widgets/recorded_data_box.widget.dart';
 import 'package:safe/utils/constants/constants.util.dart';
 import 'package:safe/widgets/mutable_loader/mutable_loader.widget.dart';
+import 'package:safe/widgets/mutable_popup/mutable_popup.widget.dart';
 import 'package:safe/widgets/mutable_screen_transition/mutable_screen_transition.widget.dart';
+import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class IncidentScreen extends StatefulWidget {
   @override
@@ -96,7 +99,7 @@ class _IncidentState extends State<IncidentScreen> {
                                   RecordedDataBox(getIncident()),
                                   SizedBox(height: 30),
                                   EmergencyContactsBox(getIncident()!),
-                                  SizedBox(height: 60),
+                                  SizedBox(height: 65),
                                 ],
                               ),
                             ),
@@ -106,7 +109,8 @@ class _IncidentState extends State<IncidentScreen> {
                           top: -1,
                           left: -1,
                           child: IncidentNavBar(getIncident()!),
-                        )
+                        ),
+                        EmergencyContactInfoPopup()
                       ],
                     ),
         ),

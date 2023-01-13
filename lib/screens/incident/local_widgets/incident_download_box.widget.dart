@@ -1,10 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:safe/core.dart';
 import 'package:safe/screens/incident/local_widgets/data_point_wrapper.widget.dart';
 import 'package:safe/utils/constants/constants.util.dart';
 import 'package:safe/widgets/mutable_button/mutable_button.widget.dart';
 import 'package:safe/widgets/mutable_pill/mutable_pill.widget.dart';
 
-class IncidentDownloadBox extends StatelessWidget {
+class IncidentDownloadBox extends StatefulWidget {
+  @override
+  State<IncidentDownloadBox> createState() => _IncidentDownloadBoxState();
+}
+
+class _IncidentDownloadBoxState extends State<IncidentDownloadBox> {
+  late Core core;
+
+  @override
+  void initState() {
+    super.initState();
+    core = Provider.of<Core>(context, listen: false);
+  }
+
   @override
   Widget build(BuildContext context) {
     return MutableButton(
@@ -30,7 +45,12 @@ class IncidentDownloadBox extends StatelessWidget {
                   MutablePill(
                     isButton: true,
                     letterSpacing: LetterSpacingType.numeric,
-                    text: "Download".toUpperCase(), // TODO: Extract
+                    text: core
+                        .utils
+                        .language
+                        .langMap[core.state.preferences.language]!["incident"]
+                            ["recorded_data"]["download"]
+                        .toUpperCase(),
                   ),
                 ],
               )

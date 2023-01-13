@@ -5,7 +5,7 @@ import 'package:safe/utils/constants/constants.util.dart';
 class MutableText extends StatefulWidget {
   final String data;
   final bool selectable;
-  final TypeStyle style;
+  final TypeStyle? style;
   final LetterSpacingType? letterSpacing;
   final double? size;
   final MutableColor? color;
@@ -20,18 +20,43 @@ class MutableText extends StatefulWidget {
 
   MutableText(
     this.data, {
-    this.style = TypeStyle.h5,
+    this.style,
     this.decoration,
     this.overflow,
     this.letterSpacing,
     this.maxLines,
     this.selectable = false,
     this.align = TextAlign.left,
-    this.color = MutableColor.neutral1,
+    this.color,
     this.size,
     this.height,
     this.weight,
   });
+
+  static TextStyle generateTextStyle({
+    double? height,
+    double? size,
+    TypeStyle? style,
+    MutableColor? color,
+    TypeWeight? weight,
+    TextDecoration? decoration,
+    LetterSpacingType? letterSpacing,
+  }) {
+    style ??= TypeStyle.h5;
+    return TextStyle(
+      height: height,
+      fontSize: size ?? kTypeStyleSize[style]!.toDouble(),
+      color: kColorMap[color ?? MutableColor.neutral1],
+      fontFamily: kFontFamilyGen(
+        weight: weight ?? kTypeStyleMap[style]["weight"],
+      ),
+      decoration: decoration,
+      fontWeight: FontWeight.normal,
+      letterSpacing: (size ?? kTypeStyleSize[style]!.toDouble()) *
+          (kLetterSpacingMap[letterSpacing ?? kTypeStyleMap[style]["spacing"]]!
+              .toDouble()),
+    );
+  }
 
   @override
   State<MutableText> createState() => _MutableTextState();
@@ -42,19 +67,14 @@ class _MutableTextState extends State<MutableText> {
 
   @override
   Widget build(BuildContext context) {
-    style = TextStyle(
+    style = MutableText.generateTextStyle(
       height: widget.height,
-      fontSize: widget.size ?? kTypeStyleSize[widget.style]!.toDouble(),
-      color: kColorMap[widget.color],
-      fontFamily: kFontFamilyGen(
-        weight: widget.weight ?? kTypeStyleMap[widget.style]["weight"],
-      ),
+      size: widget.size,
+      style: widget.style,
+      color: widget.color,
+      weight: widget.weight,
       decoration: widget.decoration,
-      fontWeight: FontWeight.normal,
-      letterSpacing: (widget.size ?? kTypeStyleSize[widget.style]!.toDouble()) *
-          (kLetterSpacingMap[widget.letterSpacing ??
-                  kTypeStyleMap[widget.style]["spacing"]]!
-              .toDouble()),
+      letterSpacing: widget.letterSpacing,
     );
 
     return widget.selectable

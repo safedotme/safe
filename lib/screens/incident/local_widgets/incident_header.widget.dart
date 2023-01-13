@@ -69,36 +69,34 @@ class _IncidentHeaderState extends State<IncidentHeader> {
                     color: MutableColor.neutral2,
                   ),
                   SizedBox(height: 6),
-                  Transform.scale(
-                    alignment: Alignment.centerLeft,
-                    scale: 1.1,
-                    child: widget.incident!.contactLog == null
-                        ? SizedBox()
-                        : Row(
-                            children: List.generate(
-                              ContactsUtil.formatContactList(
-                                widget.incident!.contactLog,
-                              )!
-                                  .length,
-                              (i) => Padding(
-                                padding: EdgeInsets.only(
-                                  right: i + 1 ==
-                                          ContactsUtil.formatContactList(
-                                            widget.incident!.contactLog,
-                                          )!
-                                              .length
-                                      ? 0
-                                      : kEmergencyContactAvatarSpacing,
-                                ),
-                                child: MutableEmergencyContactAvatar(
-                                  ContactsUtil.formatContactList(
-                                    widget.incident!.contactLog,
-                                  )![i],
-                                ),
+                  widget.incident!.contactLog == null
+                      ? SizedBox()
+                      : Row(
+                          children: List.generate(
+                            ContactsUtil.formatContactList(
+                              widget.incident!.contactLog,
+                            )!
+                                .length,
+                            (i) => Padding(
+                              padding: EdgeInsets.only(
+                                right: i + 1 ==
+                                        ContactsUtil.formatContactList(
+                                          widget.incident!.contactLog,
+                                        )!
+                                            .length
+                                    ? 0
+                                    : kEmergencyContactAvatarSpacing,
+                              ),
+                              child: MutableEmergencyContactAvatar(
+                                ContactsUtil.formatContactList(
+                                  widget.incident!.contactLog,
+                                )![i]
+                                    .name,
+                                size: 27,
                               ),
                             ),
                           ),
-                  ),
+                        ),
                 ],
               ),
             ),

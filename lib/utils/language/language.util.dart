@@ -199,6 +199,10 @@ class LanguageUtil {
       "secured": "Secured",
     },
     "incident": {
+      "contacts": {
+        "header": "Emergency Contacts",
+        "notify_tag": "Notified",
+      },
       "processing_loader": {
         "header": "Processing Incident",
         "description": {
@@ -215,6 +219,7 @@ class LanguageUtil {
       },
       "location_opt": {"copy": "Copy"},
       "recorded_data": {
+        "download": "Download",
         "header": "Recorded Data",
         "location": {"key": "Location"},
         "date": {"key": "Date & Time"},

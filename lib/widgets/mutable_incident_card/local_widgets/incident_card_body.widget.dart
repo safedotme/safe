@@ -89,7 +89,8 @@ class _IncidentCardBodyState extends State<IncidentCardBody> {
                             ),
                             child: MutableEmergencyContactAvatar(
                               ContactsUtil.formatContactList(
-                                  widget.incident.contactLog)![i],
+                                      widget.incident.contactLog)![i]
+                                  .name,
                             ),
                           ),
                         ),
