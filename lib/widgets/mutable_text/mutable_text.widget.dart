@@ -12,6 +12,7 @@ class MutableText extends StatefulWidget {
   final TypeWeight? weight;
   final TextAlign align;
   final double? height;
+  final TextStyle? overrideStyle;
   final int? maxLines;
   final TextDecoration? decoration;
 
@@ -20,6 +21,7 @@ class MutableText extends StatefulWidget {
 
   MutableText(
     this.data, {
+    this.overrideStyle,
     this.style,
     this.decoration,
     this.overflow,
@@ -67,15 +69,19 @@ class _MutableTextState extends State<MutableText> {
 
   @override
   Widget build(BuildContext context) {
-    style = MutableText.generateTextStyle(
-      height: widget.height,
-      size: widget.size,
-      style: widget.style,
-      color: widget.color,
-      weight: widget.weight,
-      decoration: widget.decoration,
-      letterSpacing: widget.letterSpacing,
-    );
+    if (widget.overrideStyle == null) {
+      style = MutableText.generateTextStyle(
+        height: widget.height,
+        size: widget.size,
+        style: widget.style,
+        color: widget.color,
+        weight: widget.weight,
+        decoration: widget.decoration,
+        letterSpacing: widget.letterSpacing,
+      );
+    } else {
+      style = widget.overrideStyle!;
+    }
 
     return widget.selectable
         ? SelectableText(

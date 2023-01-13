@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:safe/core.dart';
 import 'package:safe/utils/constants/constants.util.dart';
+import 'package:safe/utils/phone/codes.util.dart';
+import 'package:safe/widgets/mutable_button/mutable_button.widget.dart';
 import 'package:safe/widgets/mutable_emergency_contact_avatar/mutable_emergency_contact_avatar.widget.dart';
 import 'package:safe/widgets/mutable_text/mutable_text.widget.dart';
 
@@ -8,16 +12,20 @@ class EmergencyContactPopupHeader extends StatefulWidget {
   final String phone;
   final String code;
   final bool immutable;
-  final Function()? onChange;
+  final Function(String s) onNameChange;
+  final Function(String s) onPhoneChange;
   final Function()? onCodeTap;
+  final EmergencyContactPopupController? controller;
 
   EmergencyContactPopupHeader({
     required this.name,
     required this.phone,
     required this.code,
+    this.controller,
     this.immutable = false,
     this.onCodeTap,
-    this.onChange,
+    required this.onNameChange,
+    required this.onPhoneChange,
   });
 
   @override
@@ -29,63 +37,239 @@ class _EmergencyContactPopupHeaderState
     extends State<EmergencyContactPopupHeader> {
   late TextEditingController nameController;
   late TextEditingController phoneController;
+  late Core core;
+  FocusNode nameNode = FocusNode();
+  FocusNode phoneNode = FocusNode();
+
+  // STATE
+  late int phoneLen = "(${widget.code}) ${widget.phone}) ".length;
+  late String name = widget.name;
+  late String phone = widget.phone;
+  late String code = widget.code;
+
+  void triggerFormat(String code) {
+    formatPhone(code, phoneController.text);
+  }
+
+  void unfocus(bool name) {
+    if (name) {
+      nameNode.unfocus();
+      return;
+    }
+
+    phoneNode.unfocus();
+  }
+
+  void focus(bool name) {
+    if (name) {
+      nameNode.nextFocus();
+      return;
+    }
+
+    phoneNode.nextFocus();
+  }
+
+  void formatPhone(String code, String ph) async {
+    Map? country;
+
+    try {
+      country =
+          kCountryCodes.where((element) => element["dial_code"] == code).first;
+    } catch (e) {
+      return;
+    }
+
+    var formattedPhone = await core.utils.phone.format(
+      core.utils.text.removeSymbols(ph),
+      country["code"],
+    );
+
+    setState(() {
+      phoneLen = "($code) $formattedPhone".length;
+      phone = formattedPhone;
+    });
+
+    phoneController.text = formattedPhone;
+    phoneController.selection = TextSelection.fromPosition(
+      TextPosition(
+        offset: phoneController.text.length,
+      ),
+    );
+  }
+
+  // STYLE
+  TextStyle phoneStyle = MutableText.generateTextStyle(
+    size: 18,
+    color: MutableColor.neutral2,
+  );
+
+  TextStyle nameStyle = MutableText.generateTextStyle(
+    size: 18,
+    color: MutableColor.neutral2,
+  );
 
   void initControllers() {
     nameController = TextEditingController();
 
+    nameController.text = widget.name;
+
     phoneController = TextEditingController();
+
+    phoneController.text = widget.phone;
   }
 
   @override
   void initState() {
     super.initState();
+    core = Provider.of<Core>(context, listen: false);
 
+    if (widget.controller != null) {
+      widget.controller!.setState(this);
+    }
     initControllers();
+    formatPhone(widget.code, widget.phone);
+  }
+
+  double genPadding(double width) {
+    double space = (width - phoneLen * 10);
+
+    if (phone == "") {
+      String formatted = "($code) ${core.utils.phone.generateHint(code)}";
+      space = width - formatted.length * 10;
+    }
+
+    if (space.isNegative) return 0;
+    return space / 2;
   }
 
   @override
   Widget build(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         MutableEmergencyContactAvatar(
-          widget.name,
+          name,
           size: 65,
         ),
         SizedBox(height: 13),
-        Visibility(
-          visible: widget.immutable,
-          child: MutableText(
-            widget.name,
-            weight: TypeWeight.heavy,
-            selectable: true,
-            size: 23,
-          ),
-        ),
-        Visibility(
+        Theme(
+          data: ThemeData.dark(),
           child: TextField(
             controller: nameController,
-            // style: MutableText(
-            //   "",
-            //   selectable: true,
-            //   size: 18,
-            //   color: MutableColor.neutral2,
-            // ).generateTextStyle(),
+            focusNode: nameNode,
+            onChanged: (s) {
+              widget.onNameChange(s);
+              setState(() {
+                name = s;
+              });
+            },
+            readOnly: widget.immutable,
+            keyboardType: TextInputType.name,
+            decoration: InputDecoration(
+              hintText: core.utils.language
+                      .langMap[core.state.preferences.language]!["widgets"]
+                  ["emergency_contacts_popup"]["no_name_hint_text"],
+              hintStyle: MutableText.generateTextStyle(
+                weight: TypeWeight.semiBold,
+                size: 23,
+                color: MutableColor.neutral4,
+              ),
+              isDense: true,
+              contentPadding: EdgeInsets.zero,
+              border: InputBorder.none,
+            ),
+            textAlign: TextAlign.center,
+            cursorColor: kColorMap[MutableColor.neutral4],
+            style: MutableText.generateTextStyle(
+              weight: TypeWeight.heavy,
+              size: 23,
+            ),
           ),
         ),
         SizedBox(height: 6),
-        Visibility(
-          visible: widget.immutable,
-          child: MutableText(
-            "${widget.code} ${widget.phone}",
-            selectable: true,
-            size: 18,
-            color: MutableColor.neutral2,
+        LayoutBuilder(
+          builder: (context, constraints) => Padding(
+            padding: EdgeInsets.only(
+              left: genPadding(constraints.maxWidth),
+            ),
+            child: Row(
+              children: [
+                MutableButton(
+                  onTap: widget.onCodeTap,
+                  child: MutableText(
+                    "($code)",
+                    overrideStyle: phoneStyle.copyWith(
+                      color: kColorMap[phone == ""
+                          ? MutableColor.neutral5
+                          : MutableColor.neutral2],
+                    ),
+                  ),
+                ),
+                SizedBox(width: 6),
+                Expanded(
+                  child: Theme(
+                    data: ThemeData.dark(),
+                    child: TextField(
+                      focusNode: phoneNode,
+                      controller: phoneController,
+                      readOnly: widget.immutable,
+                      onChanged: (s) {
+                        formatPhone(code, s);
+                        widget.onPhoneChange(s);
+                      },
+                      keyboardType: TextInputType.phone,
+                      decoration: InputDecoration(
+                        hintStyle: phoneStyle.copyWith(
+                          color: kColorMap[phone == ""
+                              ? MutableColor.neutral5
+                              : MutableColor.neutral2],
+                        ),
+                        hintText: core.utils.phone.generateHint(code),
+                        isDense: true,
+                        contentPadding: EdgeInsets.zero,
+                        border: InputBorder.none,
+                      ),
+                      cursorColor: kColorMap[MutableColor.neutral4],
+                      style: phoneStyle.copyWith(
+                        color: kColorMap[phone == ""
+                            ? MutableColor.neutral5
+                            : MutableColor.neutral2],
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
-        ),
-        Visibility(
-          child: TextField(),
         ),
       ],
     );
+  }
+}
+
+class EmergencyContactPopupController {
+  _EmergencyContactPopupHeaderState? _state;
+
+  // ignore: library_private_types_in_public_api
+  void setState(_EmergencyContactPopupHeaderState s) => _state = s;
+
+  bool get isAttached => _state != null;
+
+  void unfocus(bool name) {
+    assert(_state != null, "Controller has not been attached");
+
+    _state!.unfocus(name);
+  }
+
+  void focus(bool name) {
+    assert(_state != null, "Controller has not been attached");
+
+    _state!.focus(name);
+  }
+
+  void triggerFormat(String code) {
+    assert(_state != null, "Controller has not been attached");
+
+    _state!.triggerFormat(code);
   }
 }

@@ -6,8 +6,14 @@ class EmergencyContactInfoPopup extends StatelessWidget {
   Widget build(BuildContext context) {
     return MutableEmergencyContactPopup(
       name: "Filippo Fonseca",
-      code: "(+506)",
-      phone: "6049-9858",
+      onNameChange: (name) {
+        print(name);
+      },
+      onPhoneChange: (phone) {
+        print(phone);
+      },
+      code: "+506",
+      phone: "6049 9858",
     );
   }
 }

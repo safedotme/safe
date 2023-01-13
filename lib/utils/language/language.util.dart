@@ -131,6 +131,9 @@ class LanguageUtil {
         "loader": "Creating account"
       }
     },
+    "widgets": {
+      "emergency_contacts_popup": {"no_name_hint_text": "Your contact name"}
+    },
     "country_code_selector": {
       "search_hint": "Search",
       "header": "Country Codes",

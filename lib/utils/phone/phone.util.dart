@@ -20,6 +20,10 @@ class PhoneUtil {
     return num;
   }
 
+  String generateHint(String code) {
+    return code == "US" ? "(999) 999-9999" : "9999 9999"; //TODO: Fix later on
+  }
+
   List<Map<String, String>> searchCountry(String query) {
     List<Map<String, String>> result = [];
 

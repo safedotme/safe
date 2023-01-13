@@ -218,6 +218,7 @@ const double kBottomMarginPreviewPopup = 34;
 const double kDefaultTopMargin = 42;
 const double kHandleTopMargin = 6;
 const double kPanelHandleToHeader = 7;
+const double kInputPopupWidth = 265;
 
 // NAVBAR
 const double kNavBarBlur = 15;
