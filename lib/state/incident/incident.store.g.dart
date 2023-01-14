@@ -25,6 +25,56 @@ mixin _$IncidentStore on _IncidentStore, Store {
     });
   }
 
+  late final _$contactsAtom =
+      Atom(name: '_IncidentStore.contacts', context: context);
+
+  @override
+  List<NotifiedContact> get contacts {
+    _$contactsAtom.reportRead();
+    return super.contacts;
+  }
+
+  @override
+  set contacts(List<NotifiedContact> value) {
+    _$contactsAtom.reportWrite(value, super.contacts, () {
+      super.contacts = value;
+    });
+  }
+
+  late final _$contactPopupControllerAtom =
+      Atom(name: '_IncidentStore.contactPopupController', context: context);
+
+  @override
+  PanelController get contactPopupController {
+    _$contactPopupControllerAtom.reportRead();
+    return super.contactPopupController;
+  }
+
+  @override
+  set contactPopupController(PanelController value) {
+    _$contactPopupControllerAtom
+        .reportWrite(value, super.contactPopupController, () {
+      super.contactPopupController = value;
+    });
+  }
+
+  late final _$contactPopupValuesControllerAtom = Atom(
+      name: '_IncidentStore.contactPopupValuesController', context: context);
+
+  @override
+  EmergencyContactPopupController get contactPopupValuesController {
+    _$contactPopupValuesControllerAtom.reportRead();
+    return super.contactPopupValuesController;
+  }
+
+  @override
+  set contactPopupValuesController(EmergencyContactPopupController value) {
+    _$contactPopupValuesControllerAtom
+        .reportWrite(value, super.contactPopupValuesController, () {
+      super.contactPopupValuesController = value;
+    });
+  }
+
   late final _$incidentIdAtom =
       Atom(name: '_IncidentStore.incidentId', context: context);
 
@@ -93,6 +143,17 @@ mixin _$IncidentStore on _IncidentStore, Store {
       ActionController(name: '_IncidentStore', context: context);
 
   @override
+  void setContacts(List<NotifiedContact> c) {
+    final _$actionInfo = _$_IncidentStoreActionController.startAction(
+        name: '_IncidentStore.setContacts');
+    try {
+      return super.setContacts(c);
+    } finally {
+      _$_IncidentStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   void setIncidentId(String id) {
     final _$actionInfo = _$_IncidentStoreActionController.startAction(
         name: '_IncidentStore.setIncidentId');
@@ -118,6 +179,9 @@ mixin _$IncidentStore on _IncidentStore, Store {
   String toString() {
     return '''
 scrollController: ${scrollController},
+contacts: ${contacts},
+contactPopupController: ${contactPopupController},
+contactPopupValuesController: ${contactPopupValuesController},
 incidentId: ${incidentId},
 controller: ${controller},
 menuController: ${menuController},

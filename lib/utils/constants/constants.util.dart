@@ -219,6 +219,14 @@ const double kDefaultTopMargin = 42;
 const double kHandleTopMargin = 6;
 const double kPanelHandleToHeader = 7;
 const double kInputPopupWidth = 265;
+const double kTopInputPopupMargin = 26;
+const double kBottomInputPopupMargin = 18;
+const double kDefaultInputPopupHeight = 243;
+const MutableColor kInputPopupColor = MutableColor.neutral9;
+const String kDefaultCountryCode = "+1";
+
+// CONTACT
+const double kContactTimelineWidth = 8;
 
 // NAVBAR
 const double kNavBarBlur = 15;

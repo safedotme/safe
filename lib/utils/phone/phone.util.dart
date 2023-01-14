@@ -21,7 +21,9 @@ class PhoneUtil {
   }
 
   String generateHint(String code) {
-    return code == "US" ? "(999) 999-9999" : "9999 9999"; //TODO: Fix later on
+    return code == "US" || code == "CA"
+        ? "(999) 999-9999"
+        : "9999 9999"; //TODO: Fix later on
   }
 
   List<Map<String, String>> searchCountry(String query) {

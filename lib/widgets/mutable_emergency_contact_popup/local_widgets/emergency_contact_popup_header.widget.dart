@@ -8,9 +8,6 @@ import 'package:safe/widgets/mutable_emergency_contact_avatar/mutable_emergency_
 import 'package:safe/widgets/mutable_text/mutable_text.widget.dart';
 
 class EmergencyContactPopupHeader extends StatefulWidget {
-  final String name;
-  final String phone;
-  final String code;
   final bool immutable;
   final Function(String s) onNameChange;
   final Function(String s) onPhoneChange;
@@ -18,9 +15,6 @@ class EmergencyContactPopupHeader extends StatefulWidget {
   final EmergencyContactPopupController? controller;
 
   EmergencyContactPopupHeader({
-    required this.name,
-    required this.phone,
-    required this.code,
     this.controller,
     this.immutable = false,
     this.onCodeTap,
@@ -42,12 +36,12 @@ class _EmergencyContactPopupHeaderState
   FocusNode phoneNode = FocusNode();
 
   // STATE
-  late String name = widget.name;
-  late String phone = widget.phone;
-  late String code = widget.code;
+  String name = "";
+  String phone = "";
+  String code = kDefaultCountryCode;
 
   // Used only to determine size of phone textfield
-  late int phoneLen = "(${widget.code}) ${widget.phone}) ".length;
+  late int phoneLen;
 
   void triggerFormat(String code) {
     formatPhone(code, phoneController.text);
@@ -82,12 +76,15 @@ class _EmergencyContactPopupHeaderState
     }
 
     var formattedPhone = await core.utils.phone.format(
-      core.utils.text.removeSymbols(ph),
+      core.utils.text.removeSymbols(
+        ph.isEmpty ? core.utils.phone.generateHint(country["code"]) : ph,
+      ),
       country["code"],
     );
 
     setState(() {
       phoneLen = "($code) $formattedPhone".length;
+      this.code = code;
       phone = formattedPhone;
     });
 
@@ -113,11 +110,11 @@ class _EmergencyContactPopupHeaderState
   void initControllers() {
     nameController = TextEditingController();
 
-    nameController.text = widget.name;
+    nameController.text = name;
 
     phoneController = TextEditingController();
 
-    phoneController.text = widget.phone;
+    phoneController.text = phone;
   }
 
   @override
@@ -128,16 +125,100 @@ class _EmergencyContactPopupHeaderState
     if (widget.controller != null) {
       widget.controller!.setState(this);
     }
+
     initControllers();
-    formatPhone(widget.code, widget.phone);
+    formatPhone(code, phone);
+  }
+
+  String generateHint() {
+    String countryCode = kCountryCodes
+        .where((element) => element["dial_code"] == code)
+        .toList()
+        .first["code"]!;
+
+    String formatted = core.utils.phone.generateHint(countryCode);
+
+    return formatted;
+  }
+
+  double genPhoneLength(String phone) {
+    double count = 0;
+
+    for (int i = 0; i < phone.length; i++) {
+      switch (phone[i]) {
+        case "0":
+          count += 11;
+          break;
+        case "1":
+          count += 8.5;
+          break;
+        case "2":
+          count += 10.5;
+          break;
+        case "3":
+          count += 11;
+          break;
+        case "4":
+          count += 11;
+          break;
+        case "5":
+          count += 11;
+          break;
+        case "6":
+          count += 11;
+          break;
+        case "7":
+          count += 10;
+          break;
+        case "8":
+          count += 11;
+          break;
+        case "9":
+          count += 11;
+          break;
+        case "(":
+          count += 6.7;
+          break;
+        case ")":
+          count += 6;
+          break;
+        case "+":
+          count += 11;
+          break;
+        case "-":
+          count += 8;
+          break;
+        case " ":
+          count += 4.1;
+          break;
+      }
+    }
+
+    return count;
+  }
+
+  void setValues({
+    String? name,
+    String? phone,
+    String? code,
+  }) {
+    setState(() {
+      this.name = name ?? this.name;
+      nameController.text = name ?? nameController.text;
+      formatPhone(code ?? this.code, phone ?? this.phone);
+    });
   }
 
   double genPadding(double width) {
-    double space = (width - phoneLen * 10);
+    double space = 0;
 
     if (phone == "") {
-      String formatted = "($code) ${core.utils.phone.generateHint(code)}";
-      space = width - formatted.length * 10;
+      String formatted = generateHint();
+
+      formatted = "($code) $formatted";
+      space = width - genPhoneLength(formatted);
+    } else {
+      space = width - genPhoneLength("($code) $phone");
     }
 
     if (space.isNegative) return 0;
@@ -226,7 +307,7 @@ class _EmergencyContactPopupHeaderState
                               ? MutableColor.neutral5
                               : MutableColor.neutral2],
                         ),
-                        hintText: core.utils.phone.generateHint(code),
+                        hintText: generateHint(),
                         isDense: true,
                         contentPadding: EdgeInsets.zero,
                         border: InputBorder.none,
@@ -273,5 +354,15 @@ class EmergencyContactPopupController {
     assert(_state != null, "Controller has not been attached");
 
     _state!.triggerFormat(code);
+  }
+
+  void setValues({
+    String? name,
+    String? phone,
+    String? code,
+  }) {
+    assert(_state != null, "Controller has not been attached");
+
+    _state!.setValues(name: name, phone: phone, code: code);
   }
 }

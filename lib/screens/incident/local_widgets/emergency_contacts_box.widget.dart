@@ -49,14 +49,33 @@ class _EmergencyContactsBoxState extends State<EmergencyContactsBox> {
         widgets.add(EmergencyContactBar(
           contacts[i ~/ 2],
           onTap: (c) {
-            // TODO: Implement onTap
-            print(c.name);
+            fetchContactNotifications(c.id);
+            core.state.incident.contactPopupController.open();
           },
         ));
       }
     }
 
     return widgets;
+  }
+
+  void fetchContactNotifications(String id) {
+    List<NotifiedContact> contacts = [];
+
+    if (widget.incident.contactLog == null) return;
+
+    contacts = widget.incident.contactLog!.where((c) => c.id == id).toList();
+
+    core.state.incident.setContacts(contacts);
+
+    // Values used to set popup controller name and phone
+    var phoneInfo = contacts.first.parsePhone();
+
+    core.state.incident.contactPopupValuesController.setValues(
+      name: contacts.first.name,
+      phone: phoneInfo["phone"],
+      code: phoneInfo["code"],
+    );
   }
 
   @override

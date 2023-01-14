@@ -32,8 +32,6 @@ class MutablePopup extends StatefulWidget {
 
   /// [width] will not be applied with panel popup types
   final double? width;
-
-  /// [height] will not be applied with panel popup types
   final double? height;
 
   MutablePopup({
@@ -73,7 +71,12 @@ class _MutablePopupState extends State<MutablePopup> {
           (widget.type == PopupType.input
               ? kInputPopupWidth
               : queryData.size.width - (kSideMarginPreviewPopup * 2)),
-      widget.height ?? (widget.type == PopupType.input ? 243 : 323),
+      widget.height ??
+          (widget.type == PopupType.input
+              ? widget.height == null
+                  ? kDefaultInputPopupHeight
+                  : widget.height!
+              : 323),
     );
   }
 

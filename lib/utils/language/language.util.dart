@@ -1,4 +1,5 @@
 import 'package:safe/services/analytics/analytics.service.dart';
+import 'package:safe/utils/capture/messages.capture.dart';
 import 'package:safe/utils/credit/credit.util.dart';
 import 'package:safe/widgets/mutable_permission_card/mutable_permission_card.widget.dart';
 
@@ -184,6 +185,14 @@ class LanguageUtil {
           null: ""
         },
       }
+    },
+    "contacts": {
+      "types": {
+        MessageType.start: "Incident Began",
+        MessageType.end: "Incident Ended",
+        MessageType.batteryCrit: "Battery Critical",
+      },
+      "notified_msg": "{CONTACT} was notified at {TIME}",
     },
     "tutorial": {"button": "Add a Contact"},
     "incident_log": {

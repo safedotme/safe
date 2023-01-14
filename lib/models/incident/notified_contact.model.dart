@@ -17,6 +17,24 @@ class NotifiedContact {
     required this.datetime,
   });
 
+  Map<String, String> parsePhone() {
+    int codeStop = phone.indexOf(" ");
+    String c = "";
+    String p = "";
+
+    for (int i = 0; i < phone.length; i++) {
+      if (i < codeStop) {
+        c += phone[i];
+      }
+
+      if (i > codeStop) {
+        p += phone[i];
+      }
+    }
+
+    return {"code": c, "phone": p};
+  }
+
   factory NotifiedContact.fromJson(Map<String, dynamic> json) =>
       NotifiedContact(
         id: json["id"],

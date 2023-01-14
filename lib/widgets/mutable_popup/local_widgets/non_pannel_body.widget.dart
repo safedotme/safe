@@ -17,7 +17,6 @@ class NonPannelBody extends StatelessWidget {
     return Align(
       alignment: Alignment.topCenter,
       child: Container(
-        // EXTRACT
         height: size.height,
         width: size.width,
         decoration: BoxDecoration(
