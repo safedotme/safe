@@ -74,7 +74,7 @@ class _MutableActionBannerState extends State<MutableActionBanner>
   @override
   Widget build(BuildContext context) {
     return Visibility(
-      visible: state != 011,
+      visible: state != 0,
       child: Align(
         alignment: Alignment.bottomCenter,
         child: Opacity(
