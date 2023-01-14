@@ -146,50 +146,25 @@ class _RecordedDataBoxState extends State<RecordedDataBox> {
             weight: TypeWeight.heavy,
           ),
           SizedBox(height: kIncidentSubheaderToBody),
-          CupertinoContextMenu(
-            actions: [
-              ContextMenuBody(
-                items: [
-                  ContextMenuItem(
-                    onTap: () {
-                      Clipboard.setData(
-                        ClipboardData(
-                            text: genLocationClipboard(
-                          widget.incident,
-                        )),
-                      );
-                    },
-                    text: core.utils.language.langMap[core.state.preferences
-                        .language]!["incident"]["location_opt"]["copy"],
-                    icon: MutableIcon(
-                      MutableIcons.link,
-                      color: Colors.white,
-                      size: Size(18, 18),
-                    ),
-                  ),
-                ],
-              ),
-            ],
-            child: DataPointBox(
-              header: genAddress(widget.incident),
-              subheader: genLatLng(widget.incident),
-              keyIcon: MutableIcon(
-                MutableIcons.location,
-                size: Size(12, 12),
-                color: kColorMap[MutableColor.neutral3]!,
-              ),
-              keyText: core.utils.language
-                      .langMap[core.state.preferences.language]!["incident"]
-                  ["recorded_data"]["location"]["key"],
-              onTap: () {
-                // TODO: Open map view
-              },
-              sideWidget: ClipRRect(
-                borderRadius: BorderRadius.circular(8),
-                child: shoudDisplayMap(widget.incident)
-                    ? MapIncidentPreview(widget.incident)
-                    : SizedBox(),
-              ),
+          DataPointBox(
+            header: genAddress(widget.incident),
+            subheader: genLatLng(widget.incident),
+            keyIcon: MutableIcon(
+              MutableIcons.location,
+              size: Size(12, 12),
+              color: kColorMap[MutableColor.neutral3]!,
+            ),
+            keyText: core.utils.language
+                    .langMap[core.state.preferences.language]!["incident"]
+                ["recorded_data"]["location"]["key"],
+            onTap: () {
+              // TODO: Open map view
+            },
+            sideWidget: ClipRRect(
+              borderRadius: BorderRadius.circular(8),
+              child: shoudDisplayMap(widget.incident)
+                  ? MapIncidentPreview(widget.incident)
+                  : SizedBox(),
             ),
           ),
           SizedBox(height: kRecordedDataBoxSpacing),

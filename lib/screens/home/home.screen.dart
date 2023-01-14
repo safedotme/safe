@@ -15,6 +15,7 @@ import 'package:safe/screens/tutorial/tutorial.screen.dart';
 import 'package:safe/services/media_server/media_server.service.dart';
 import 'package:safe/utils/constants/constants.util.dart';
 import 'package:safe/utils/credit/credit.util.dart';
+import 'package:safe/widgets/mutable_action_banner/mutable_action_banner.widget.dart';
 import 'package:safe/widgets/mutable_safe_button/mutable_safe_button.widget.dart';
 import 'package:safe/widgets/mutable_scaffold/mutable_scaffold.widget.dart';
 import 'package:safe/widgets/mutable_text/mutable_text.widget.dart';
@@ -85,6 +86,7 @@ class _HomeScreenState extends State<HomeScreen> {
         CaptureScreen(),
         TutorialScreen(),
         IncidentScreen(),
+        MutableActionBanner(),
       ],
       underlays: [
         Padding(

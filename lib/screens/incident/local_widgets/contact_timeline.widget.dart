@@ -1,14 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:intl/intl.dart';
-import 'package:mobx/mobx.dart';
 import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
 import 'package:safe/models/incident/notified_contact.model.dart';
 import 'package:safe/screens/incident/local_widgets/timeline_circle.widget.dart';
-import 'package:safe/utils/capture/messages.capture.dart';
 import 'package:safe/utils/constants/constants.util.dart';
 import 'package:safe/widgets/mutable_text/mutable_text.widget.dart';
 
@@ -31,7 +26,7 @@ class _ContactTimelineState extends State<ContactTimeline> {
   }
 
   // CONSTANTS BASED ON SIZE
-  final double circleSpacing = 47.5;
+  final double circleSpacing = 55;
 
   List<Widget> genActionPair(NotifiedContact c) {
     String name = core.utils.name.genFirstName(c.name, false);
@@ -96,7 +91,7 @@ class _ContactTimelineState extends State<ContactTimeline> {
             child: Row(
               children: [
                 Padding(
-                  padding: EdgeInsets.only(top: 6),
+                  padding: EdgeInsets.only(top: 10),
                   child: SizedBox(
                     width: kContactTimelineWidth,
                     child: Stack(

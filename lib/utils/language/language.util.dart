@@ -188,9 +188,9 @@ class LanguageUtil {
     },
     "contacts": {
       "types": {
-        MessageType.start: "Incident Began",
-        MessageType.end: "Incident Ended",
-        MessageType.batteryCrit: "Battery Critical",
+        MessageType.start: "Incident Started ✅",
+        MessageType.end: "Incident Ended ✅",
+        MessageType.batteryCrit: "Battery Low Alert ✅",
       },
       "notified_msg": "{CONTACT} was notified at {TIME}",
     },
@@ -212,7 +212,7 @@ class LanguageUtil {
     },
     "incident": {
       "contacts": {
-        "header": "Emergency Contacts",
+        "header": "Notified Contacts",
         "notify_tag": "Notified",
       },
       "processing_loader": {

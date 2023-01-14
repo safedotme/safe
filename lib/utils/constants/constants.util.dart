@@ -113,11 +113,15 @@ enum MutableColor {
   primaryRed,
   primaryOrange,
   primaryPurple,
-
   primaryMagenta,
+
   secondaryGreen,
   secondaryRed,
   secondaryYellow,
+  overlaySecondaryGreen,
+  overlaySecondaryRed,
+  overlaySecondaryYellow,
+
   iosGrey,
   iosDarkGrey,
   mapBackground,
@@ -154,6 +158,9 @@ const Map<MutableColor, Color> kColorMap = {
   MutableColor.secondaryGreen: Color(0xff50C166),
   MutableColor.secondaryRed: Color(0xffFC645D),
   MutableColor.secondaryYellow: Color(0xffFCD95D),
+  MutableColor.overlaySecondaryGreen: Color(0xff0E1811),
+  MutableColor.overlaySecondaryRed: Color(0xff200F11),
+  MutableColor.overlaySecondaryYellow: Color(0xff201A11),
 };
 
 final List<Color> kPrimaryGradientColors = [
