@@ -104,7 +104,7 @@ class _IncidentHeaderState extends State<IncidentHeader> {
             MutablePlayButton(
               onTap: () {
                 HapticFeedback.lightImpact();
-                // TODO: Implement play toggle
+                core.state.incident.playController.open();
               },
             ),
           ],

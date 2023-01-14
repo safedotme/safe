@@ -37,6 +37,9 @@ abstract class _IncidentStore with Store {
   ScreenTransitionController controller = ScreenTransitionController();
 
   @observable
+  ScreenTransitionController playController = ScreenTransitionController();
+
+  @observable
   String? mapStyle;
 
   @action

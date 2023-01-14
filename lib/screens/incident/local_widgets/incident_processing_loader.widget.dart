@@ -122,7 +122,7 @@ class _IncidentProcessingLoaderState extends State<IncidentProcessingLoader>
 
       if (phone == null) return "";
 
-      return base.replaceAll("{PHONE}", phone ?? "");
+      return base.replaceAll("{PHONE}", phone);
     }
 
     return base

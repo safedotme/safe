@@ -107,6 +107,22 @@ mixin _$IncidentStore on _IncidentStore, Store {
     });
   }
 
+  late final _$playControllerAtom =
+      Atom(name: '_IncidentStore.playController', context: context);
+
+  @override
+  ScreenTransitionController get playController {
+    _$playControllerAtom.reportRead();
+    return super.playController;
+  }
+
+  @override
+  set playController(ScreenTransitionController value) {
+    _$playControllerAtom.reportWrite(value, super.playController, () {
+      super.playController = value;
+    });
+  }
+
   late final _$mapStyleAtom =
       Atom(name: '_IncidentStore.mapStyle', context: context);
 
@@ -168,6 +184,7 @@ contactPopupController: ${contactPopupController},
 contactPopupValuesController: ${contactPopupValuesController},
 incidentId: ${incidentId},
 controller: ${controller},
+playController: ${playController},
 mapStyle: ${mapStyle}
     ''';
   }
