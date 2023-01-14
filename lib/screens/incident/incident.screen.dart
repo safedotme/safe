@@ -27,21 +27,6 @@ class _IncidentState extends State<IncidentScreen> {
   void initState() {
     super.initState();
     core = Provider.of<Core>(context, listen: false);
-
-    initScrollController();
-  }
-
-  void initScrollController() {
-    core.state.incident.scrollController.addListener(() {
-      closeMenu();
-    });
-  }
-
-  void closeMenu() {
-    if (!core.state.incident.menuController.isAttached) return;
-    if (!core.state.incident.menuController.isOpen) return;
-
-    core.state.incident.menuController.close();
   }
 
   Incident? getIncident() {

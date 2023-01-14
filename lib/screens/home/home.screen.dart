@@ -12,6 +12,7 @@ import 'package:safe/screens/home/local_widgets/incident_limit_home_banner.widge
 import 'package:safe/screens/home/local_widgets/incident_recorded_home_banner.widget.dart';
 import 'package:safe/screens/incident/incident.screen.dart';
 import 'package:safe/screens/incident_log/incident_log.screen.dart';
+import 'package:safe/screens/play/play.screen.dart';
 import 'package:safe/screens/tutorial/tutorial.screen.dart';
 import 'package:safe/services/media_server/media_server.service.dart';
 import 'package:safe/utils/constants/constants.util.dart';
@@ -88,6 +89,7 @@ class _HomeScreenState extends State<HomeScreen> {
         CaptureScreen(),
         TutorialScreen(),
         IncidentScreen(),
+        PlayScreen(),
         MutableActionBanner(
           controller: core.state.preferences.actionController,
         ),

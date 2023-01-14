@@ -14,6 +14,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   flutter_archive: ^5.0.0
   google_maps_flutter: ^2.2.3
+  video_player: ^2.4.10
   flutter_svg: ^1.1.1+1
   flutter_linkify: ^5.0.2
   provider: ^6.0.3

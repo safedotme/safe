@@ -37,9 +37,6 @@ abstract class _IncidentStore with Store {
   ScreenTransitionController controller = ScreenTransitionController();
 
   @observable
-  ContextMenuController menuController = ContextMenuController();
-
-  @observable
   String? mapStyle;
 
   @action

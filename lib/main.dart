@@ -15,6 +15,9 @@ Future<void> main() async {
   await dotenv.load(fileName: ".env");
   Paint.enableDithering = true;
 
+  // Set device orientation
+  await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+
   // Load Firebase
   await Firebase.initializeApp();
 

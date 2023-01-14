@@ -89,42 +89,6 @@ class _IncidentHeaderBoxState extends State<IncidentHeaderBox> {
               ),
             ),
             Positioned(
-              bottom: 125,
-              right: 8,
-              child: MutableContextMenu(
-                controller: core.state.incident.menuController,
-                items: [
-                  ContextMenuItem(
-                    text: core.utils.language.langMap[core.state.preferences
-                        .language]!["incident"]["play_button"]["timeline"],
-                    icon: MutableIcon(
-                      MutableIcons.film,
-                      size: Size(20.8, 16.4),
-                    ),
-                    onTap: () {},
-                  ),
-                  ContextMenuItem(
-                    text: core.utils.language.langMap[core.state.preferences
-                        .language]!["incident"]["play_button"]["video"],
-                    icon: MutableIcon(
-                      MutableIcons.camera,
-                      size: Size(22, 18),
-                    ),
-                    onTap: () {},
-                  ),
-                  ContextMenuItem(
-                    text: core.utils.language.langMap[core.state.preferences
-                        .language]!["incident"]["play_button"]["map_view"],
-                    icon: MutableIcon(
-                      MutableIcons.map,
-                      size: Size(20, 18),
-                    ),
-                    onTap: () {},
-                  ),
-                ],
-              ),
-            ),
-            Positioned(
               bottom: 0,
               child: IncidentHeader(widget.incident),
             ),

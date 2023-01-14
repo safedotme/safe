@@ -107,22 +107,6 @@ mixin _$IncidentStore on _IncidentStore, Store {
     });
   }
 
-  late final _$menuControllerAtom =
-      Atom(name: '_IncidentStore.menuController', context: context);
-
-  @override
-  ContextMenuController get menuController {
-    _$menuControllerAtom.reportRead();
-    return super.menuController;
-  }
-
-  @override
-  set menuController(ContextMenuController value) {
-    _$menuControllerAtom.reportWrite(value, super.menuController, () {
-      super.menuController = value;
-    });
-  }
-
   late final _$mapStyleAtom =
       Atom(name: '_IncidentStore.mapStyle', context: context);
 
@@ -184,7 +168,6 @@ contactPopupController: ${contactPopupController},
 contactPopupValuesController: ${contactPopupValuesController},
 incidentId: ${incidentId},
 controller: ${controller},
-menuController: ${menuController},
 mapStyle: ${mapStyle}
     ''';
   }
