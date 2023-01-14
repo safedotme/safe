@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:safe/utils/constants/constants.util.dart';
 
 class MutableButton extends StatefulWidget {
