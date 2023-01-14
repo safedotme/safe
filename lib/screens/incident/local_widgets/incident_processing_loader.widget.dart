@@ -120,9 +120,7 @@ class _IncidentProcessingLoaderState extends State<IncidentProcessingLoader>
     if (hasNotified) {
       String? phone = core.services.auth.currentUser!.phoneNumber;
 
-      if (phone == null) {
-        // TODO: Log
-      }
+      if (phone == null) return "";
 
       return base.replaceAll("{PHONE}", phone ?? "");
     }

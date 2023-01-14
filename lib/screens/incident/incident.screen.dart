@@ -77,7 +77,8 @@ class _IncidentState extends State<IncidentScreen> {
           child: getIncident() == null
               ? Center(
                   child: MutableLoader(
-                    text: "Loading incident", // TODO: Extract
+                    text: core.utils.language.langMap[core
+                        .state.preferences.language]!["incident"]["loading"],
                   ),
                 )
               : !getIncident()!.processedFootage

@@ -41,6 +41,22 @@ mixin _$PreferencesStore on _PreferencesStore, Store {
     });
   }
 
+  late final _$actionControllerAtom =
+      Atom(name: '_PreferencesStore.actionController', context: context);
+
+  @override
+  ActionBannerController get actionController {
+    _$actionControllerAtom.reportRead();
+    return super.actionController;
+  }
+
+  @override
+  set actionController(ActionBannerController value) {
+    _$actionControllerAtom.reportWrite(value, super.actionController, () {
+      super.actionController = value;
+    });
+  }
+
   late final _$_PreferencesStoreActionController =
       ActionController(name: '_PreferencesStore', context: context);
 
@@ -70,7 +86,8 @@ mixin _$PreferencesStore on _PreferencesStore, Store {
   String toString() {
     return '''
 language: ${language},
-disabledPermissions: ${disabledPermissions}
+disabledPermissions: ${disabledPermissions},
+actionController: ${actionController}
     ''';
   }
 }

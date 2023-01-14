@@ -2,6 +2,7 @@ import 'package:flutter/material.dart' hide BoxShadow;
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:mobx/mobx.dart';
 import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
 import 'package:safe/models/contact/contact.model.dart';
@@ -16,6 +17,7 @@ import 'package:safe/services/media_server/media_server.service.dart';
 import 'package:safe/utils/constants/constants.util.dart';
 import 'package:safe/utils/credit/credit.util.dart';
 import 'package:safe/widgets/mutable_action_banner/mutable_action_banner.widget.dart';
+import 'package:safe/widgets/mutable_banner/mutable_banner.widget.dart';
 import 'package:safe/widgets/mutable_safe_button/mutable_safe_button.widget.dart';
 import 'package:safe/widgets/mutable_scaffold/mutable_scaffold.widget.dart';
 import 'package:safe/widgets/mutable_text/mutable_text.widget.dart';
@@ -86,7 +88,9 @@ class _HomeScreenState extends State<HomeScreen> {
         CaptureScreen(),
         TutorialScreen(),
         IncidentScreen(),
-        MutableActionBanner(),
+        MutableActionBanner(
+          controller: core.state.preferences.actionController,
+        ),
       ],
       underlays: [
         Padding(

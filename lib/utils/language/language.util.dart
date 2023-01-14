@@ -211,6 +211,7 @@ class LanguageUtil {
       "secured": "Secured",
     },
     "incident": {
+      "loading": "Loading incident",
       "contacts": {
         "header": "Notified Contacts",
         "notify_tag": "Notified",
@@ -233,8 +234,23 @@ class LanguageUtil {
       "recorded_data": {
         "download": "Download",
         "header": "Recorded Data",
-        "location": {"key": "Location"},
-        "date": {"key": "Date & Time"},
+        "location": {
+          "key": "Location",
+          "clipboard_msg":
+              "Address: {address}\nLatitude: {lat}\nLongitude:{long}",
+          "copied_msg": {
+            "success": "Copied address",
+          }
+        },
+        "date": {
+          "key": "Date & Time",
+          "clipboard_msg":
+              "Date: {DATE}\nIncident began at {TIME_START} \nIncident ended at {TIME_END}",
+          "copied_msg": {
+            "err": "Unable to copy time",
+            "success": "Copied time",
+          },
+        },
         "backup": {
           "key": "BACKUPS",
           "header": "Fully Secure",

@@ -1,7 +1,7 @@
-import 'package:camera/camera.dart';
 import 'package:mobx/mobx.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:safe/utils/language/language.util.dart';
+import 'package:safe/widgets/mutable_action_banner/mutable_action_banner.widget.dart';
 
 part 'preferences.store.g.dart';
 
@@ -19,4 +19,7 @@ abstract class _PreferencesStore with Store {
 
   @action
   void setDisabledPermissions(List<Permission> p) => disabledPermissions = p;
+
+  @observable
+  ActionBannerController actionController = ActionBannerController();
 }

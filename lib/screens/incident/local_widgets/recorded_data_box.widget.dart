@@ -6,16 +6,19 @@ import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
 import 'package:safe/models/incident/incident.model.dart';
 import 'package:safe/models/incident/location.model.dart';
+import 'package:safe/neuances.dart';
 import 'package:safe/screens/incident/local_widgets/data_point_box.widget.dart';
 import 'package:safe/screens/incident/local_widgets/data_point_wrapper.widget.dart';
 import 'package:safe/screens/incident/local_widgets/incident_download_box.widget.dart';
 import 'package:safe/screens/incident/local_widgets/map_incident_preview.widget.dart';
 import 'package:safe/utils/constants/constants.util.dart';
 import 'package:safe/utils/icon/icon.util.dart';
+import 'package:safe/widgets/mutable_banner/mutable_banner.widget.dart';
 import 'package:safe/widgets/mutable_context_menu/local_widgets/context_menu_body.widget.dart';
 import 'package:safe/widgets/mutable_context_menu/local_widgets/context_menu_item.widget.dart';
 import 'package:safe/widgets/mutable_icon/mutable_icon.widget.dart';
 import 'package:safe/widgets/mutable_text/mutable_text.widget.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class RecordedDataBox extends StatefulWidget {
   final Incident? incident;
@@ -111,7 +114,9 @@ class _RecordedDataBoxState extends State<RecordedDataBox> {
   }
 
   String genLocationClipboard(Incident? i) {
-    String template = "Address: {address}\nLatitude: {lat}\nLongitude:{long}";
+    String template = core.utils.language
+            .langMap[core.state.preferences.language]!["incident"]
+        ["recorded_data"]["location"]["clipboard_msg"];
 
     var l = checkLocationAvailable(i);
 
@@ -126,6 +131,22 @@ class _RecordedDataBoxState extends State<RecordedDataBox> {
             "{address}", core.utils.geocoder.removeTag(l.address!) ?? "")
         .replaceAll("{lat}", l.lat.toString())
         .replaceAll("{long}", l.long.toString());
+  }
+
+  String? genDatetimeClipboard(Incident? i) {
+    String template = core.utils.language
+            .langMap[core.state.preferences.language]!["incident"]
+        ["recorded_data"]["date"]["clipboard_msg"];
+
+    if (i!.stopTime == null) return null;
+
+    return template
+        .replaceAll(
+          "{DATE}",
+          "${DateFormat.yMMMd().format(i.datetime)} (${i.datetime.timeZoneName})",
+        )
+        .replaceAll("{TIME_START}", DateFormat.jms().format(i.datetime))
+        .replaceAll("{TIME_END}", DateFormat.jms().format(i.stopTime!));
   }
 
   @override
@@ -158,7 +179,18 @@ class _RecordedDataBoxState extends State<RecordedDataBox> {
                     .langMap[core.state.preferences.language]!["incident"]
                 ["recorded_data"]["location"]["key"],
             onTap: () {
-              // TODO: Open map view
+              Clipboard.setData(
+                ClipboardData(
+                  text: genLocationClipboard(widget.incident),
+                ),
+              );
+
+              core.state.preferences.actionController.trigger(
+                core.utils.language
+                        .langMap[core.state.preferences.language]!["incident"]
+                    ["recorded_data"]["location"]["copied_msg"]["success"],
+                MessageType.success,
+              );
             },
             sideWidget: ClipRRect(
               borderRadius: BorderRadius.circular(8),
@@ -173,6 +205,32 @@ class _RecordedDataBoxState extends State<RecordedDataBox> {
             children: [
               Expanded(
                 child: DataPointBox(
+                  onTap: () {
+                    String? data = genDatetimeClipboard(widget.incident);
+
+                    if (data == null) {
+                      core.state.preferences.actionController.trigger(
+                        core.utils.language.langMap[
+                                core.state.preferences.language]!["incident"]
+                            ["recorded_data"]["date"]["copied_msg"]["err"],
+                        MessageType.error,
+                      );
+                      return;
+                    }
+
+                    Clipboard.setData(
+                      ClipboardData(
+                        text: data,
+                      ),
+                    );
+
+                    core.state.preferences.actionController.trigger(
+                      core.utils.language.langMap[
+                              core.state.preferences.language]!["incident"]
+                          ["recorded_data"]["date"]["copied_msg"]["success"],
+                      MessageType.success,
+                    );
+                  },
                   header: genTime(
                     widget.incident!.datetime,
                     widget.incident!.stopTime,
@@ -191,6 +249,9 @@ class _RecordedDataBoxState extends State<RecordedDataBox> {
               SizedBox(width: kRecordedDataBoxSpacing),
               Expanded(
                 child: DataPointBox(
+                  onTap: () {
+                    launchUrl(kSecurityInfoUrl);
+                  },
                   header: core.utils.language
                           .langMap[core.state.preferences.language]!["incident"]
                       ["recorded_data"]["backup"]["header"],
