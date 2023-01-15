@@ -109,7 +109,10 @@ class _PlayBodyState extends State<PlayBody> {
             ),
           ),
         ),
-        PlayerProgressIndicator()
+        Align(
+          alignment: Alignment.bottomCenter,
+          child: PlayerProgressIndicator(),
+        )
       ],
     );
   }

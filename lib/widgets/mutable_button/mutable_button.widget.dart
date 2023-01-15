@@ -7,11 +7,13 @@ class MutableButton extends StatefulWidget {
   final Duration? duration;
   final void Function()? onSlide;
   final bool animateBeforeVoidCallback;
+  final double scale;
 
   MutableButton({
     this.onTap,
     required this.child,
     this.onSlide,
+    this.scale = kScaleDownButtonPercentage,
     this.duration,
     this.animateBeforeVoidCallback = false,
   });
@@ -33,8 +35,7 @@ class _MutableButtonState extends State<MutableButton>
       duration: kScaleDownButtonTime,
     );
 
-    Animation animation =
-        Tween(begin: 1, end: kScaleDownButtonPercentage).animate(
+    Animation animation = Tween(begin: 1, end: widget.scale).animate(
       CurvedAnimation(
         parent: controller,
         curve: Curves.decelerate,

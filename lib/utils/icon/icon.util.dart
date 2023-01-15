@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:safe/widgets/mutable_icon/local_widgets/backward.widget.dart';
+import 'package:safe/widgets/mutable_icon/local_widgets/backward.icon.dart';
 import 'package:safe/widgets/mutable_icon/local_widgets/calendar.icon.dart';
 import 'package:safe/widgets/mutable_icon/local_widgets/camera.icon.dart';
 import 'package:safe/widgets/mutable_icon/local_widgets/camera_flip.icon.dart';

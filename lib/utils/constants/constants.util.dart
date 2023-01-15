@@ -367,5 +367,6 @@ const Duration kCaptureStreamTimeout = Duration(seconds: 20);
 // SHIMMER
 final Color kBoxLoaderShimmerColor = kShimmerAnimationColor.withOpacity(0.05);
 
-// PLAY SCREEn
+// PLAY SCREEN
 final Duration kRotationDuration = Duration(milliseconds: 1000);
+const double kLinearProgressIndicatorWidth = 5;
