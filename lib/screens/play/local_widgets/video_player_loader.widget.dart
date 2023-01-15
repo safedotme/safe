@@ -47,11 +47,11 @@ class _VideoPlayerLoaderState extends State<VideoPlayerLoader> {
         ),
         ClipRect(
           child: BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: 8, sigmaY: 8),
+            filter: ImageFilter.blur(sigmaX: 4, sigmaY: 4),
             child: Container(
               height: double.infinity,
               width: double.infinity,
-              color: kColorMap[MutableColor.neutral10]!.withOpacity(0.6),
+              color: kColorMap[MutableColor.neutral10]!.withOpacity(0.8),
               child: Center(
                 child: SizedBox(
                   height: 34,

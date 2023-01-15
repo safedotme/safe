@@ -8,7 +8,7 @@ import 'package:safe/models/incident/incident.model.dart';
 import 'package:safe/screens/play/local_widgets/video_player_loader.widget.dart';
 import 'package:safe/services/analytics/helper_classes/analytics_log_model.service.dart';
 import 'package:safe/widgets/mutable_banner/mutable_banner.widget.dart';
-import 'package:video_player/video_player.dart';
+import 'package:video_player/video_player.dart' as api;
 
 class VideoPlayer extends StatefulWidget {
   final Incident incident;
@@ -36,13 +36,11 @@ class _VideoPlayerState extends State<VideoPlayer> {
           children: [
             core.state.incident.loading
                 ? SizedBox()
-                : Container(
-                    color: Colors.red,
-                  ),
+                : api.VideoPlayer(core.state.incident.player!),
             AnimatedOpacity(
               opacity: core.state.incident.loading ? 1 : 0,
-              duration: Duration(milliseconds: 500),
-              curve: Curves.ease,
+              duration: Duration(milliseconds: 1250),
+              curve: Curves.easeIn,
               child: VideoPlayerLoader(widget.incident),
             ),
           ],

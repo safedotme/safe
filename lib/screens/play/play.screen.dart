@@ -93,7 +93,7 @@ class _PlayScreenState extends State<PlayScreen> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return MutableScreenTransition(
-      isOpen: true, // TODO: Change me
+      isOpen: false, // TODO: Change me
       backgroundColor: kColorMap[MutableColor.neutral10],
       isDismissable: false,
       onOpen: () async {
@@ -101,14 +101,14 @@ class _PlayScreenState extends State<PlayScreen> with TickerProviderStateMixin {
       },
       onClose: () {},
       controller: core.state.incident.playController,
-      // body: Visibility(
-      //   visible: opacity != 0,
-      //   child: Opacity(
-      //     opacity: opacity,
-      //     child: getIncident() == null ? SizedBox() : PlayBody(getIncident()!),
-      //   ),
-      // ),
-      body: getIncident() == null ? SizedBox() : PlayBody(getIncident()!),
+      body: Visibility(
+        visible: opacity != 0,
+        child: Opacity(
+          opacity: opacity,
+          child: getIncident() == null ? SizedBox() : PlayBody(getIncident()!),
+        ),
+      ),
+      //body: getIncident() == null ? SizedBox() : PlayBody(getIncident()!),
     );
   }
 }
