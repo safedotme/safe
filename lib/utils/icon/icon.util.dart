@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:safe/widgets/mutable_icon/local_widgets/backward.widget.dart';
 import 'package:safe/widgets/mutable_icon/local_widgets/calendar.icon.dart';
 import 'package:safe/widgets/mutable_icon/local_widgets/camera.icon.dart';
 import 'package:safe/widgets/mutable_icon/local_widgets/camera_flip.icon.dart';
@@ -10,6 +11,7 @@ import 'package:safe/widgets/mutable_icon/local_widgets/cloud.icon.dart';
 import 'package:safe/widgets/mutable_icon/local_widgets/compass.icon.dart';
 import 'package:safe/widgets/mutable_icon/local_widgets/film.icon.dart';
 import 'package:safe/widgets/mutable_icon/local_widgets/flashlight.icon.dart';
+import 'package:safe/widgets/mutable_icon/local_widgets/forward.widget.dart';
 import 'package:safe/widgets/mutable_icon/local_widgets/gear.icon.dart';
 import 'package:safe/widgets/mutable_icon/local_widgets/key.icon.dart';
 import 'package:safe/widgets/mutable_icon/local_widgets/link.icon.dart';
@@ -18,7 +20,9 @@ import 'package:safe/widgets/mutable_icon/local_widgets/map.icon.dart';
 import 'package:safe/widgets/mutable_icon/local_widgets/menu.icon.dart';
 import 'package:safe/widgets/mutable_icon/local_widgets/next.icon.dart';
 import 'package:safe/widgets/mutable_icon/local_widgets/next_borderless.icon.dart';
+import 'package:safe/widgets/mutable_icon/local_widgets/pause.icon.dart';
 import 'package:safe/widgets/mutable_icon/local_widgets/phone.icon.dart';
+import 'package:safe/widgets/mutable_icon/local_widgets/play.icon.dart';
 import 'package:safe/widgets/mutable_icon/local_widgets/play_large.icon.dart';
 import 'package:safe/widgets/mutable_icon/local_widgets/profile.icon.dart';
 import 'package:safe/widgets/mutable_icon/local_widgets/safe.icon.dart';
@@ -45,6 +49,10 @@ enum MutableIcons {
   nextBorderless,
   next,
   shield,
+  play,
+  pause,
+  forward,
+  backward,
   cameraFlip,
   location,
   calendar,
@@ -60,6 +68,10 @@ class IconUtil {
 
   void init() {
     iconsMap = {
+      MutableIcons.play: (c) => PlayIcon(c),
+      MutableIcons.pause: (c) => PauseIcon(c),
+      MutableIcons.forward: (c) => ForwardIcon(c),
+      MutableIcons.backward: (c) => BackwardIcon(c),
       MutableIcons.profile: (c) => ProfileIcon(c),
       MutableIcons.playLarge: (c) => PlayLargeIcon(c),
       MutableIcons.safe: (c) => SafeIcon(c),

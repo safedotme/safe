@@ -4,6 +4,7 @@ import 'package:safe/core.dart';
 import 'package:safe/models/incident/incident.model.dart';
 import 'package:safe/screens/play/local_widgets/map_view.widget.dart';
 import 'package:safe/screens/play/local_widgets/player_border.widget.dart';
+import 'package:safe/screens/play/local_widgets/player_progress_indicator.widget.dart';
 import 'package:safe/screens/play/local_widgets/video_player.widget.dart';
 import 'package:safe/utils/constants/constants.util.dart';
 import 'package:safe/utils/icon/icon.util.dart';
@@ -108,6 +109,7 @@ class _PlayBodyState extends State<PlayBody> {
             ),
           ),
         ),
+        PlayerProgressIndicator()
       ],
     );
   }
