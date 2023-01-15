@@ -1,4 +1,3 @@
-import 'package:curved_progress_bar/curved_progress_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:safe/utils/constants/constants.util.dart';
 import 'package:safe/widgets/mutable_video_progress_indicator/local_widgets/video_progress_indicator_skeleton.widget.dart';
@@ -76,7 +75,7 @@ class _MutableVideoProgressIndicatorState
       },
       child: Container(
         height: 40,
-        color: Colors.red,
+        color: Colors.transparent,
         child: Align(
           alignment: Alignment.bottomCenter,
           child: VideoProgressIndicatorSkeleton(
