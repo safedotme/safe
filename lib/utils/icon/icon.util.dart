@@ -7,6 +7,7 @@ import 'package:safe/widgets/mutable_icon/local_widgets/cancel.icon.dart';
 import 'package:safe/widgets/mutable_icon/local_widgets/caret_right.icon.dart';
 import 'package:safe/widgets/mutable_icon/local_widgets/checkmark.icon.dart';
 import 'package:safe/widgets/mutable_icon/local_widgets/cloud.icon.dart';
+import 'package:safe/widgets/mutable_icon/local_widgets/compass.icon.dart';
 import 'package:safe/widgets/mutable_icon/local_widgets/film.icon.dart';
 import 'package:safe/widgets/mutable_icon/local_widgets/flashlight.icon.dart';
 import 'package:safe/widgets/mutable_icon/local_widgets/gear.icon.dart';
@@ -33,6 +34,7 @@ enum MutableIcons {
   profile,
   camera,
   film,
+  compass,
   map,
   checkmark,
   caretRight,
@@ -62,6 +64,7 @@ class IconUtil {
       MutableIcons.playLarge: (c) => PlayLargeIcon(c),
       MutableIcons.safe: (c) => SafeIcon(c),
       MutableIcons.shield: (c) => ShieldIcon(c),
+      MutableIcons.compass: (c) => CompassIcon(c),
       MutableIcons.link: (c) => LinkIcon(c),
       MutableIcons.cameraFlip: (c) => CameraFlipIcon(c),
       MutableIcons.stopRecording: (c) => StopRecordingIcon(c),

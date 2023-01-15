@@ -139,6 +139,38 @@ mixin _$IncidentStore on _IncidentStore, Store {
     });
   }
 
+  late final _$mapControllerAtom =
+      Atom(name: '_IncidentStore.mapController', context: context);
+
+  @override
+  GoogleMapController? get mapController {
+    _$mapControllerAtom.reportRead();
+    return super.mapController;
+  }
+
+  @override
+  set mapController(GoogleMapController? value) {
+    _$mapControllerAtom.reportWrite(value, super.mapController, () {
+      super.mapController = value;
+    });
+  }
+
+  late final _$loadingAtom =
+      Atom(name: '_IncidentStore.loading', context: context);
+
+  @override
+  bool get loading {
+    _$loadingAtom.reportRead();
+    return super.loading;
+  }
+
+  @override
+  set loading(bool value) {
+    _$loadingAtom.reportWrite(value, super.loading, () {
+      super.loading = value;
+    });
+  }
+
   late final _$_IncidentStoreActionController =
       ActionController(name: '_IncidentStore', context: context);
 
@@ -176,6 +208,28 @@ mixin _$IncidentStore on _IncidentStore, Store {
   }
 
   @override
+  void setMapController(GoogleMapController c) {
+    final _$actionInfo = _$_IncidentStoreActionController.startAction(
+        name: '_IncidentStore.setMapController');
+    try {
+      return super.setMapController(c);
+    } finally {
+      _$_IncidentStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void setLoading(bool l) {
+    final _$actionInfo = _$_IncidentStoreActionController.startAction(
+        name: '_IncidentStore.setLoading');
+    try {
+      return super.setLoading(l);
+    } finally {
+      _$_IncidentStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 scrollController: ${scrollController},
@@ -185,7 +239,9 @@ contactPopupValuesController: ${contactPopupValuesController},
 incidentId: ${incidentId},
 controller: ${controller},
 playController: ${playController},
-mapStyle: ${mapStyle}
+mapStyle: ${mapStyle},
+mapController: ${mapController},
+loading: ${loading}
     ''';
   }
 }

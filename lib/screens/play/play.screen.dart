@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
+import 'package:safe/models/incident/incident.model.dart';
 import 'package:safe/screens/play/local_widgets/play_body.widget.dart';
 import 'package:safe/utils/constants/constants.util.dart';
 import 'package:safe/widgets/mutable_screen_transition/mutable_screen_transition.widget.dart';
@@ -32,6 +33,8 @@ class _PlayScreenState extends State<PlayScreen> with TickerProviderStateMixin {
         DeviceOrientation.landscapeLeft,
       ],
     );
+
+    await Future.delayed(Duration(milliseconds: 500));
 
     // ⬇️ Animate In
     controller = AnimationController(
@@ -81,6 +84,17 @@ class _PlayScreenState extends State<PlayScreen> with TickerProviderStateMixin {
     );
   }
 
+  Incident? getIncident() {
+    var i = core.state.incidentLog.incidents ?? [];
+
+    if (i.isEmpty || core.state.incident.incidentId == null) {
+      return null;
+    }
+
+    return i
+        .singleWhere((element) => element.id == core.state.incident.incidentId);
+  }
+
   @override
   Widget build(BuildContext context) {
     return MutableScreenTransition(
@@ -96,10 +110,10 @@ class _PlayScreenState extends State<PlayScreen> with TickerProviderStateMixin {
       //   visible: opacity != 0,
       //   child: Opacity(
       //     opacity: opacity,
-      //     child: SizedBox(), // TODO: Replace with actual content
+      //     child: getIncident() == null ? SizedBox() : PlayBody(getIncident()!),
       //   ),
       // ),
-      body: PlayBody(),
+      body: getIncident() == null ? SizedBox() : PlayBody(getIncident()!),
     );
   }
 }

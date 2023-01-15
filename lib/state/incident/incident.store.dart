@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mobx/mobx.dart';
 import 'package:safe/models/incident/notified_contact.model.dart';
-import 'package:safe/widgets/mutable_context_menu/mutable_context_menu.widget.dart';
 import 'package:safe/widgets/mutable_emergency_contact_popup/local_widgets/emergency_contact_popup_header.widget.dart';
 import 'package:safe/widgets/mutable_screen_transition/mutable_screen_transition.widget.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
@@ -44,4 +44,17 @@ abstract class _IncidentStore with Store {
 
   @action
   void setMapStyle(String s) => mapStyle = s;
+
+  // PLAY
+  @observable
+  GoogleMapController? mapController;
+
+  @action
+  void setMapController(GoogleMapController c) => mapController = c;
+
+  @observable
+  bool loading = true;
+
+  @action
+  void setLoading(bool l) => loading = l;
 }
