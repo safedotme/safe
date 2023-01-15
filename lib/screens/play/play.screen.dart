@@ -22,16 +22,14 @@ class _PlayScreenState extends State<PlayScreen> with TickerProviderStateMixin {
   void initState() {
     super.initState();
     core = Provider.of<Core>(context, listen: false);
+    core.utils.play.initialize(core);
   }
 
   // Used to prevent RenderFlex Issues
   Future<void> animateIn() async {
     // Always call first (for animation purposes)
     await SystemChrome.setPreferredOrientations(
-      [
-        DeviceOrientation.landscapeRight,
-        DeviceOrientation.landscapeLeft,
-      ],
+      [DeviceOrientation.landscapeRight],
     );
 
     await Future.delayed(Duration(milliseconds: 500));
@@ -77,10 +75,7 @@ class _PlayScreenState extends State<PlayScreen> with TickerProviderStateMixin {
 
     // Always call last (for animation purposes)
     await SystemChrome.setPreferredOrientations(
-      [
-        DeviceOrientation.landscapeRight,
-        DeviceOrientation.landscapeLeft,
-      ],
+      [DeviceOrientation.portraitUp],
     );
   }
 

@@ -56,11 +56,11 @@ class _IncidentLogState extends State<IncidentLog> {
       bool keyExists = core.state.incidentLog.thumbnails.containsKey(i.id);
 
       if (i.thumbnail != null && !keyExists) {
-        core.services.storage.getDownloadUrl(i.thumbnail!).then((url) {
-          if (url.isNotEmpty) {
+        core.services.storage.getDownloadUrl(i.thumbnail!).then((data) {
+          if (data["error"] == null) {
             var t = core.state.incidentLog.thumbnails;
             Map<String, String> newMap = {};
-            newMap[i.id] = url;
+            newMap[i.id] = data["url"];
 
             t.addAll(newMap);
             core.state.incidentLog.setThumbnail(t);

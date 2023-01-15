@@ -150,9 +150,9 @@ class ActionBannerController {
   // ignore: library_private_types_in_public_api
   void setState(_MutableActionBannerState s) => _state = s;
 
-  void trigger(String message, MessageType type) {
+  void trigger(String message, MessageType type, {Duration? wait}) {
     assert(_state != null, "The controller is not attached");
 
-    _state!.trigger(message, type);
+    _state!.trigger(message, type, wait: wait);
   }
 }

@@ -10,6 +10,7 @@ import 'package:safe/utils/language/language.util.dart';
 import 'package:safe/utils/map/map.util.dart';
 import 'package:safe/utils/name/name.util.dart';
 import 'package:safe/utils/phone/phone.util.dart';
+import 'package:safe/utils/play/play.util.dart';
 import 'package:safe/utils/popup_navigation/popup_navigation.util.dart';
 import 'package:safe/utils/text/text.util.dart';
 
@@ -28,4 +29,5 @@ class Utils {
   GeocoderUtil geocoder = GeocoderUtil();
   IncidentUtil incident = IncidentUtil();
   MapUtil map = MapUtil();
+  PlayUtil play = PlayUtil();
 }

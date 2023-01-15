@@ -171,6 +171,22 @@ mixin _$IncidentStore on _IncidentStore, Store {
     });
   }
 
+  late final _$playerAtom =
+      Atom(name: '_IncidentStore.player', context: context);
+
+  @override
+  VideoPlayerController? get player {
+    _$playerAtom.reportRead();
+    return super.player;
+  }
+
+  @override
+  set player(VideoPlayerController? value) {
+    _$playerAtom.reportWrite(value, super.player, () {
+      super.player = value;
+    });
+  }
+
   late final _$_IncidentStoreActionController =
       ActionController(name: '_IncidentStore', context: context);
 
@@ -230,6 +246,17 @@ mixin _$IncidentStore on _IncidentStore, Store {
   }
 
   @override
+  void setPlayer(VideoPlayerController c) {
+    final _$actionInfo = _$_IncidentStoreActionController.startAction(
+        name: '_IncidentStore.setPlayer');
+    try {
+      return super.setPlayer(c);
+    } finally {
+      _$_IncidentStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 scrollController: ${scrollController},
@@ -241,7 +268,8 @@ controller: ${controller},
 playController: ${playController},
 mapStyle: ${mapStyle},
 mapController: ${mapController},
-loading: ${loading}
+loading: ${loading},
+player: ${player}
     ''';
   }
 }
