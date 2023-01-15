@@ -11,12 +11,20 @@ class PlayUtil {
   void initialize(Core c) => core = c;
 
   // ⬇️ Initialize Player
-  Future<void> initPlayer(Incident i) async {
+  Future<void> initIncident(Incident i) async {
+    assert(core != null, "Utility has not been initialized.");
     // Set incident
     incident = i;
+  }
 
-    // Init Video Player
-    await _initializeVideoPlayer();
+  void reset() {
+    assert(core != null, "Utility has not been initialized.");
+
+    if (core!.state.incident.player != null) {
+      core!.state.incident.player!.pause();
+    }
+
+    core!.state.incident.setPlayer(null);
   }
 
   // ⬇️ Video
@@ -47,14 +55,14 @@ class PlayUtil {
     );
   }
 
-  Future<void> _initializeVideoPlayer() async {
+  Future<bool> initializeVideoPlayer() async {
     // ⬇️ Fetch Video URL
     Map? data = await _fetchVideo();
 
     // Logs error
     if (data["error"] != null) {
       _logError("Unable to load video", data["error"]); // TODO: Extract message
-      return;
+      return false;
     }
 
     // ⬇️ Initialize Video Player
@@ -66,10 +74,9 @@ class PlayUtil {
       await core!.state.incident.player!.initialize();
     } catch (e) {
       _logError("Unable to load video", e.toString()); // TODO: Extract message
-      return;
+      return false;
     }
 
-    // ⬇️ Prep loader
-    core!.state.incident.setLoading(false);
+    return true;
   }
 }

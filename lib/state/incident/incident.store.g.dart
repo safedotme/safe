@@ -139,6 +139,22 @@ mixin _$IncidentStore on _IncidentStore, Store {
     });
   }
 
+  late final _$isPlayerOpenAtom =
+      Atom(name: '_IncidentStore.isPlayerOpen', context: context);
+
+  @override
+  bool get isPlayerOpen {
+    _$isPlayerOpenAtom.reportRead();
+    return super.isPlayerOpen;
+  }
+
+  @override
+  set isPlayerOpen(bool value) {
+    _$isPlayerOpenAtom.reportWrite(value, super.isPlayerOpen, () {
+      super.isPlayerOpen = value;
+    });
+  }
+
   late final _$mapControllerAtom =
       Atom(name: '_IncidentStore.mapController', context: context);
 
@@ -152,22 +168,6 @@ mixin _$IncidentStore on _IncidentStore, Store {
   set mapController(GoogleMapController? value) {
     _$mapControllerAtom.reportWrite(value, super.mapController, () {
       super.mapController = value;
-    });
-  }
-
-  late final _$loadingAtom =
-      Atom(name: '_IncidentStore.loading', context: context);
-
-  @override
-  bool get loading {
-    _$loadingAtom.reportRead();
-    return super.loading;
-  }
-
-  @override
-  set loading(bool value) {
-    _$loadingAtom.reportWrite(value, super.loading, () {
-      super.loading = value;
     });
   }
 
@@ -224,7 +224,18 @@ mixin _$IncidentStore on _IncidentStore, Store {
   }
 
   @override
-  void setMapController(GoogleMapController c) {
+  void setIsPlayerOpen(bool b) {
+    final _$actionInfo = _$_IncidentStoreActionController.startAction(
+        name: '_IncidentStore.setIsPlayerOpen');
+    try {
+      return super.setIsPlayerOpen(b);
+    } finally {
+      _$_IncidentStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void setMapController(GoogleMapController? c) {
     final _$actionInfo = _$_IncidentStoreActionController.startAction(
         name: '_IncidentStore.setMapController');
     try {
@@ -235,18 +246,7 @@ mixin _$IncidentStore on _IncidentStore, Store {
   }
 
   @override
-  void setLoading(bool l) {
-    final _$actionInfo = _$_IncidentStoreActionController.startAction(
-        name: '_IncidentStore.setLoading');
-    try {
-      return super.setLoading(l);
-    } finally {
-      _$_IncidentStoreActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
-  void setPlayer(VideoPlayerController c) {
+  void setPlayer(VideoPlayerController? c) {
     final _$actionInfo = _$_IncidentStoreActionController.startAction(
         name: '_IncidentStore.setPlayer');
     try {
@@ -267,8 +267,8 @@ incidentId: ${incidentId},
 controller: ${controller},
 playController: ${playController},
 mapStyle: ${mapStyle},
+isPlayerOpen: ${isPlayerOpen},
 mapController: ${mapController},
-loading: ${loading},
 player: ${player}
     ''';
   }

@@ -48,20 +48,20 @@ abstract class _IncidentStore with Store {
 
   // PLAY
   @observable
+  bool isPlayerOpen = false;
+
+  @action
+  void setIsPlayerOpen(bool b) => isPlayerOpen = b;
+
+  @observable
   GoogleMapController? mapController;
 
   @action
-  void setMapController(GoogleMapController c) => mapController = c;
-
-  @observable
-  bool loading = true;
-
-  @action
-  void setLoading(bool l) => loading = l;
+  void setMapController(GoogleMapController? c) => mapController = c;
 
   @observable
   VideoPlayerController? player;
 
   @action
-  void setPlayer(VideoPlayerController c) => player = c;
+  void setPlayer(VideoPlayerController? c) => player = c;
 }

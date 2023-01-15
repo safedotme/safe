@@ -26,12 +26,6 @@ class _MapViewState extends State<MapView> {
     setCustomMarker();
   }
 
-  Future<String>? getCustomStyle() {
-    if (core.state.incident.mapStyle != null) return null;
-
-    return rootBundle.loadString('assets/map/style_labeled.txt');
-  }
-
   Future<void> setCustomMarker() async {
     var bytes = await core.utils.map.getBytesFromAsset(
       "assets/images/marker.png",
@@ -56,11 +50,11 @@ class _MapViewState extends State<MapView> {
       onMapCreated: (c) async {
         core.state.incident.setMapController(c);
         // Set Map Style
-        String? style = await getCustomStyle();
+        String style = await rootBundle.loadString(
+          'assets/map/style_labeled.txt',
+        );
 
-        if (style != null) {
-          c.setMapStyle(style);
-        }
+        core.state.incident.mapController!.setMapStyle(style);
       },
       initialCameraPosition: CameraPosition(
         zoom: 16,

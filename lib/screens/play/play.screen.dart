@@ -27,12 +27,14 @@ class _PlayScreenState extends State<PlayScreen> with TickerProviderStateMixin {
 
   // Used to prevent RenderFlex Issues
   Future<void> animateIn() async {
+    core.state.incident.setIsPlayerOpen(true);
+
     // Always call first (for animation purposes)
     await SystemChrome.setPreferredOrientations(
       [DeviceOrientation.landscapeRight],
     );
 
-    await Future.delayed(Duration(milliseconds: 500));
+    await Future.delayed(kRotationDuration);
 
     // ⬇️ Animate In
     controller = AnimationController(
@@ -72,11 +74,19 @@ class _PlayScreenState extends State<PlayScreen> with TickerProviderStateMixin {
     });
 
     await controller!.forward();
+    await Future.delayed(Duration(milliseconds: 500));
 
     // Always call last (for animation purposes)
     await SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp],
     );
+
+    await Future.delayed(kRotationDuration);
+
+    core.state.incident.setIsPlayerOpen(false);
+
+    core.utils.play.reset();
+    core.state.incident.playController.close();
   }
 
   Incident? getIncident() {
@@ -93,7 +103,6 @@ class _PlayScreenState extends State<PlayScreen> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return MutableScreenTransition(
-      isOpen: false, // TODO: Change me
       backgroundColor: kColorMap[MutableColor.neutral10],
       isDismissable: false,
       onOpen: () async {
@@ -105,10 +114,11 @@ class _PlayScreenState extends State<PlayScreen> with TickerProviderStateMixin {
         visible: opacity != 0,
         child: Opacity(
           opacity: opacity,
-          child: getIncident() == null ? SizedBox() : PlayBody(getIncident()!),
+          child: getIncident() == null
+              ? SizedBox()
+              : PlayBody(getIncident()!, animateOut),
         ),
       ),
-      //body: getIncident() == null ? SizedBox() : PlayBody(getIncident()!),
     );
   }
 }

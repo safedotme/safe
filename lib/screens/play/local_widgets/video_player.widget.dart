@@ -20,31 +20,47 @@ class VideoPlayer extends StatefulWidget {
 
 class _VideoPlayerState extends State<VideoPlayer> {
   late Core core;
+  bool loading = true;
 
   @override
   void initState() {
     super.initState();
     core = Provider.of<Core>(context, listen: false);
+
+    load();
+  }
+
+  void load() async {
+    bool ok = await core.utils.play.initializeVideoPlayer();
+
+    if (!ok) return;
+
+    core.state.incident.player!.addListener(() {
+      if (core.state.incident.player!.value.isInitialized && loading) {
+        loading = false;
+        core.state.incident.player!.play();
+
+        WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+          setState(() {});
+        });
+      }
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return AspectRatio(
       aspectRatio: 720 / 1080,
-      child: Observer(
-        builder: (_) => Stack(
-          children: [
-            core.state.incident.loading
-                ? SizedBox()
-                : api.VideoPlayer(core.state.incident.player!),
-            AnimatedOpacity(
-              opacity: core.state.incident.loading ? 1 : 0,
-              duration: Duration(milliseconds: 1250),
-              curve: Curves.easeIn,
-              child: VideoPlayerLoader(widget.incident),
-            ),
-          ],
-        ),
+      child: Stack(
+        children: [
+          loading ? SizedBox() : api.VideoPlayer(core.state.incident.player!),
+          AnimatedOpacity(
+            opacity: loading ? 1 : 0,
+            duration: Duration(milliseconds: 500),
+            curve: Curves.easeIn,
+            child: VideoPlayerLoader(widget.incident),
+          ),
+        ],
       ),
     );
   }

@@ -361,10 +361,11 @@ const double kCaptureControlBorderRadius = 8;
 const double kCameraPreviewWidthPercentage = 0.3;
 const double kControlBoxBodyHeight = 150;
 
-// -> CAMERA PREVIEW
-
 // -> LOCATION TIMEOUT
 const Duration kCaptureStreamTimeout = Duration(seconds: 20);
 
 // SHIMMER
 final Color kBoxLoaderShimmerColor = kShimmerAnimationColor.withOpacity(0.05);
+
+// PLAY SCREEn
+final Duration kRotationDuration = Duration(milliseconds: 1000);
