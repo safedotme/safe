@@ -10,8 +10,8 @@ class IncidentCardPlayButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
-      // Extract
       child: MutableButton(
+        scale: 0.9,
         onTap: onTap,
         child: Container(
           alignment: Alignment.center,

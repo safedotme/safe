@@ -49,7 +49,8 @@ class _MutableIncidentCardState extends State<MutableIncidentCard> {
               IncidentCardImage(
                 widget.incident,
                 onPlayTap: () {
-                  print("play");
+                  core.state.incident.setIncidentId(widget.incident.id);
+                  core.state.incident.playController.open();
                 },
               ),
               IncidentCardBody(widget.incident),

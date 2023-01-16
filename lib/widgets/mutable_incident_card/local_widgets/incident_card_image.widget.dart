@@ -60,7 +60,9 @@ class _IncidentCardImageState extends State<IncidentCardImage> {
             Visibility(
               visible:
                   fetchThumbnail(core.state.incidentLog.thumbnails) != null,
-              child: IncidentCardPlayButton(onTap: widget.onPlayTap),
+              child: IncidentCardPlayButton(
+                onTap: widget.onPlayTap,
+              ),
             ),
           ],
         ),
