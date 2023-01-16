@@ -81,6 +81,11 @@ class _VideoPlayerState extends State<VideoPlayer> {
     // ⬇️ SET DATETIME
     String time = core.utils.play.parseTime(position);
     core.state.incident.setPlayTime(time);
+
+    String date = core.utils.play.parseDate(datetimePointer);
+    core.state.incident.setPlayDate(date);
+
+    // ⬇️ SET BATTERY
   }
 
   @override

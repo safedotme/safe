@@ -1,6 +1,9 @@
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:safe/core.dart';
+import 'package:safe/models/incident/battery.model.dart';
 import 'package:safe/models/incident/incident.model.dart';
+import 'package:safe/models/incident/location.model.dart';
 import 'package:safe/services/analytics/helper_classes/analytics_log_model.service.dart';
 import 'package:safe/widgets/mutable_banner/mutable_banner.widget.dart';
 import 'package:video_player/video_player.dart';
@@ -19,6 +22,14 @@ class PlayUtil {
 
     core!.state.incident.setPlayTime(parseTime(Duration.zero));
     core!.state.incident.setPlayDate(parseDate(i.datetime));
+
+    if (i.battery != null && i.battery!.isNotEmpty) {
+      core!.state.incident.setPlayBattery(parseBattery(i.battery!.first));
+    }
+
+    if (i.location != null && i.location!.isNotEmpty) {
+      core!.state.incident.setPlayPosition(parsePosition(i.location!.first));
+    }
   }
 
   void reset() {
@@ -82,6 +93,32 @@ class PlayUtil {
     }
 
     return true;
+  }
+
+  LatLng? parsePosition(Location? l) {
+    if (l == null || l.lat == null || l.long == null) return null;
+
+    return LatLng(l.lat!, l.long!);
+  }
+
+  String? parseBattery(Battery? battery) {
+    if (battery == null) return null;
+
+    String state = "${battery.percentage * 100}% ({STATE})";
+
+    if (battery.percentage < 0.1) {
+      return state.replaceAll("{STATE}", "CRITICAL"); // TODO: Extract message
+    }
+
+    if (battery.percentage < 0.2) {
+      return state.replaceAll("{STATE}", "LOW"); // TODO: Extract message
+    }
+
+    if (battery.percentage < 0.8) {
+      return state.replaceAll("{STATE}", "NORMAL"); // TODO: Extract message
+    }
+
+    return state.replaceAll("{STATE}", "HIGH"); // TODO: Extract message
   }
 
   String parseDate(DateTime t) {

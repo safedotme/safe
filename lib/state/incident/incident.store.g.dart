@@ -239,13 +239,13 @@ mixin _$IncidentStore on _IncidentStore, Store {
       Atom(name: '_IncidentStore.playBattery', context: context);
 
   @override
-  String get playBattery {
+  String? get playBattery {
     _$playBatteryAtom.reportRead();
     return super.playBattery;
   }
 
   @override
-  set playBattery(String value) {
+  set playBattery(String? value) {
     _$playBatteryAtom.reportWrite(value, super.playBattery, () {
       super.playBattery = value;
     });
@@ -255,13 +255,13 @@ mixin _$IncidentStore on _IncidentStore, Store {
       Atom(name: '_IncidentStore.playPosition', context: context);
 
   @override
-  LatLng get playPosition {
+  LatLng? get playPosition {
     _$playPositionAtom.reportRead();
     return super.playPosition;
   }
 
   @override
-  set playPosition(LatLng value) {
+  set playPosition(LatLng? value) {
     _$playPositionAtom.reportWrite(value, super.playPosition, () {
       super.playPosition = value;
     });
@@ -370,7 +370,7 @@ mixin _$IncidentStore on _IncidentStore, Store {
   }
 
   @override
-  void setPlayBattery(String s) {
+  void setPlayBattery(String? s) {
     final _$actionInfo = _$_IncidentStoreActionController.startAction(
         name: '_IncidentStore.setPlayBattery');
     try {
@@ -381,7 +381,7 @@ mixin _$IncidentStore on _IncidentStore, Store {
   }
 
   @override
-  void setPlayPosition(LatLng l) {
+  void setPlayPosition(LatLng? l) {
     final _$actionInfo = _$_IncidentStoreActionController.startAction(
         name: '_IncidentStore.setPlayPosition');
     try {
