@@ -28,7 +28,7 @@ class PlayUtil {
     }
 
     if (i.location != null && i.location!.isNotEmpty) {
-      core!.state.incident.setPlayPosition(parsePosition(i.location!.first));
+      core!.state.incident.setPlaySpeed(parseSpeed(i.location!.first));
     }
   }
 
@@ -136,6 +136,20 @@ class PlayUtil {
     }
 
     return state.replaceAll("{STATE}", "HIGH"); // TODO: Extract message
+  }
+
+  String? parseSpeed(Location? l) {
+    if (l == null) return null;
+    if (l.speed == null) return null;
+    if (l.speed! < 0) return "0 KM/H";
+
+    String speed = (l.speed! * 3.6).toString();
+
+    if (!speed.contains(".")) {
+      return "$speed.0 KM/H";
+    }
+
+    return "${speed.substring(0, speed.indexOf(".") + 1)} KM/H";
   }
 
   String parseDate(DateTime t) {

@@ -219,19 +219,19 @@ mixin _$IncidentStore on _IncidentStore, Store {
     });
   }
 
-  late final _$playStateAtom =
-      Atom(name: '_IncidentStore.playState', context: context);
+  late final _$playSpeedAtom =
+      Atom(name: '_IncidentStore.playSpeed', context: context);
 
   @override
-  String get playState {
-    _$playStateAtom.reportRead();
-    return super.playState;
+  String? get playSpeed {
+    _$playSpeedAtom.reportRead();
+    return super.playSpeed;
   }
 
   @override
-  set playState(String value) {
-    _$playStateAtom.reportWrite(value, super.playState, () {
-      super.playState = value;
+  set playSpeed(String? value) {
+    _$playSpeedAtom.reportWrite(value, super.playSpeed, () {
+      super.playSpeed = value;
     });
   }
 
@@ -248,22 +248,6 @@ mixin _$IncidentStore on _IncidentStore, Store {
   set playBattery(String? value) {
     _$playBatteryAtom.reportWrite(value, super.playBattery, () {
       super.playBattery = value;
-    });
-  }
-
-  late final _$playPositionAtom =
-      Atom(name: '_IncidentStore.playPosition', context: context);
-
-  @override
-  LatLng? get playPosition {
-    _$playPositionAtom.reportRead();
-    return super.playPosition;
-  }
-
-  @override
-  set playPosition(LatLng? value) {
-    _$playPositionAtom.reportWrite(value, super.playPosition, () {
-      super.playPosition = value;
     });
   }
 
@@ -359,11 +343,11 @@ mixin _$IncidentStore on _IncidentStore, Store {
   }
 
   @override
-  String setPlayState(String s) {
+  void setPlaySpeed(String? s) {
     final _$actionInfo = _$_IncidentStoreActionController.startAction(
-        name: '_IncidentStore.setPlayState');
+        name: '_IncidentStore.setPlaySpeed');
     try {
-      return super.setPlayState(s);
+      return super.setPlaySpeed(s);
     } finally {
       _$_IncidentStoreActionController.endAction(_$actionInfo);
     }
@@ -375,17 +359,6 @@ mixin _$IncidentStore on _IncidentStore, Store {
         name: '_IncidentStore.setPlayBattery');
     try {
       return super.setPlayBattery(s);
-    } finally {
-      _$_IncidentStoreActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
-  void setPlayPosition(LatLng? l) {
-    final _$actionInfo = _$_IncidentStoreActionController.startAction(
-        name: '_IncidentStore.setPlayPosition');
-    try {
-      return super.setPlayPosition(l);
     } finally {
       _$_IncidentStoreActionController.endAction(_$actionInfo);
     }
@@ -407,9 +380,8 @@ mapController: ${mapController},
 player: ${player},
 playDate: ${playDate},
 playTime: ${playTime},
-playState: ${playState},
-playBattery: ${playBattery},
-playPosition: ${playPosition}
+playSpeed: ${playSpeed},
+playBattery: ${playBattery}
     ''';
   }
 }

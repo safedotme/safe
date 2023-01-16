@@ -79,20 +79,14 @@ abstract class _IncidentStore with Store {
   void setPlayTime(String s) => playTime = s;
 
   @observable
-  String playState = "";
+  String? playSpeed;
 
   @action
-  String setPlayState(String s) => playState = s;
+  void setPlaySpeed(String? s) => playSpeed = s;
 
   @observable
   String? playBattery;
 
   @action
   void setPlayBattery(String? s) => playBattery = s;
-
-  @observable
-  LatLng? playPosition;
-
-  @action
-  void setPlayPosition(LatLng? l) => playPosition = l;
 }
