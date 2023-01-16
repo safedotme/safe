@@ -106,7 +106,7 @@ class _VideoPlayerState extends State<VideoPlayer> {
       core.utils.play.parseBattery(battery),
     );
 
-    // ⬇️ SETLOCATION
+    // ⬇️ SET LOCATION
     Location? location = core.utils.play.fetchLatestLocation(
       datetimePointer,
       locationLog,
@@ -132,6 +132,15 @@ class _VideoPlayerState extends State<VideoPlayer> {
         ),
       );
     }
+
+    // ⬇️ SET LOADING
+    if (loading && position != Duration.zero) {
+      WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+        setState(() {
+          loading = false;
+        });
+      });
+    }
   }
 
   @override
@@ -142,7 +151,7 @@ class _VideoPlayerState extends State<VideoPlayer> {
         children: [
           loading ? SizedBox() : api.VideoPlayer(core.state.incident.player!),
           AnimatedOpacity(
-            opacity: core.state.incident.player == null ? 1 : 0,
+            opacity: loading ? 1 : 0,
             duration: Duration(milliseconds: 500),
             curve: Curves.easeIn,
             child: VideoPlayerLoader(widget.incident),
