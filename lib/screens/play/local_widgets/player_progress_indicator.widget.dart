@@ -1,16 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
+import 'package:safe/models/incident/incident.model.dart';
+import 'package:safe/utils/constants/constants.util.dart';
 import 'package:safe/utils/icon/icon.util.dart';
 import 'package:safe/widgets/mutable_button/mutable_button.widget.dart';
 import 'package:safe/widgets/mutable_icon/mutable_icon.widget.dart';
+import 'package:safe/widgets/mutable_text/mutable_text.widget.dart';
 import 'package:safe/widgets/mutable_video_progress_indicator/local_widgets/video_progress_indicator_skeleton.widget.dart';
 import 'package:safe/widgets/mutable_video_progress_indicator/mutable_video_progress_indicator.widget.dart';
-import 'package:video_player/video_player.dart';
 
 class PlayerProgressIndicator extends StatefulWidget {
+  final Incident incident;
+
+  PlayerProgressIndicator(this.incident);
   @override
   State<PlayerProgressIndicator> createState() =>
       _PlayerProgressIndicatorState();
@@ -89,6 +95,28 @@ class _PlayerProgressIndicatorState extends State<PlayerProgressIndicator> {
                 child: core.state.incident.player != null
                     ? MutableVideoProgressIndicator(core.state.incident.player!)
                     : VideoProgressIndicatorSkeleton(),
+              ),
+            ),
+
+            // ⬇️ TIME INDICATOR
+            SizedBox(width: 14),
+            Observer(
+              builder: (_) => Row(
+                crossAxisAlignment: CrossAxisAlignment.baseline,
+                textBaseline: TextBaseline.alphabetic,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  MutableText(
+                    core.state.incident.playTime,
+                    weight: TypeWeight.semiBold,
+                  ),
+                  SizedBox(width: 3),
+                  MutableText(
+                    core.state.incident.playDate,
+                    size: 12,
+                    color: MutableColor.neutral2,
+                  ),
+                ],
               ),
             ),
           ],

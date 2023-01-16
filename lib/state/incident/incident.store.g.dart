@@ -187,6 +187,86 @@ mixin _$IncidentStore on _IncidentStore, Store {
     });
   }
 
+  late final _$playDateAtom =
+      Atom(name: '_IncidentStore.playDate', context: context);
+
+  @override
+  String get playDate {
+    _$playDateAtom.reportRead();
+    return super.playDate;
+  }
+
+  @override
+  set playDate(String value) {
+    _$playDateAtom.reportWrite(value, super.playDate, () {
+      super.playDate = value;
+    });
+  }
+
+  late final _$playTimeAtom =
+      Atom(name: '_IncidentStore.playTime', context: context);
+
+  @override
+  String get playTime {
+    _$playTimeAtom.reportRead();
+    return super.playTime;
+  }
+
+  @override
+  set playTime(String value) {
+    _$playTimeAtom.reportWrite(value, super.playTime, () {
+      super.playTime = value;
+    });
+  }
+
+  late final _$playStateAtom =
+      Atom(name: '_IncidentStore.playState', context: context);
+
+  @override
+  String get playState {
+    _$playStateAtom.reportRead();
+    return super.playState;
+  }
+
+  @override
+  set playState(String value) {
+    _$playStateAtom.reportWrite(value, super.playState, () {
+      super.playState = value;
+    });
+  }
+
+  late final _$playBatteryAtom =
+      Atom(name: '_IncidentStore.playBattery', context: context);
+
+  @override
+  String get playBattery {
+    _$playBatteryAtom.reportRead();
+    return super.playBattery;
+  }
+
+  @override
+  set playBattery(String value) {
+    _$playBatteryAtom.reportWrite(value, super.playBattery, () {
+      super.playBattery = value;
+    });
+  }
+
+  late final _$playPositionAtom =
+      Atom(name: '_IncidentStore.playPosition', context: context);
+
+  @override
+  LatLng get playPosition {
+    _$playPositionAtom.reportRead();
+    return super.playPosition;
+  }
+
+  @override
+  set playPosition(LatLng value) {
+    _$playPositionAtom.reportWrite(value, super.playPosition, () {
+      super.playPosition = value;
+    });
+  }
+
   late final _$_IncidentStoreActionController =
       ActionController(name: '_IncidentStore', context: context);
 
@@ -257,6 +337,61 @@ mixin _$IncidentStore on _IncidentStore, Store {
   }
 
   @override
+  void setPlayDate(String s) {
+    final _$actionInfo = _$_IncidentStoreActionController.startAction(
+        name: '_IncidentStore.setPlayDate');
+    try {
+      return super.setPlayDate(s);
+    } finally {
+      _$_IncidentStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void setPlayTime(String s) {
+    final _$actionInfo = _$_IncidentStoreActionController.startAction(
+        name: '_IncidentStore.setPlayTime');
+    try {
+      return super.setPlayTime(s);
+    } finally {
+      _$_IncidentStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  String setPlayState(String s) {
+    final _$actionInfo = _$_IncidentStoreActionController.startAction(
+        name: '_IncidentStore.setPlayState');
+    try {
+      return super.setPlayState(s);
+    } finally {
+      _$_IncidentStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void setPlayBattery(String s) {
+    final _$actionInfo = _$_IncidentStoreActionController.startAction(
+        name: '_IncidentStore.setPlayBattery');
+    try {
+      return super.setPlayBattery(s);
+    } finally {
+      _$_IncidentStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void setPlayPosition(LatLng l) {
+    final _$actionInfo = _$_IncidentStoreActionController.startAction(
+        name: '_IncidentStore.setPlayPosition');
+    try {
+      return super.setPlayPosition(l);
+    } finally {
+      _$_IncidentStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 scrollController: ${scrollController},
@@ -269,7 +404,12 @@ playController: ${playController},
 mapStyle: ${mapStyle},
 isPlayerOpen: ${isPlayerOpen},
 mapController: ${mapController},
-player: ${player}
+player: ${player},
+playDate: ${playDate},
+playTime: ${playTime},
+playState: ${playState},
+playBattery: ${playBattery},
+playPosition: ${playPosition}
     ''';
   }
 }

@@ -64,4 +64,35 @@ abstract class _IncidentStore with Store {
 
   @action
   void setPlayer(VideoPlayerController? c) => player = c;
+
+  // -> UPDATED STATE
+  @observable
+  String playDate = "";
+
+  @action
+  void setPlayDate(String s) => playDate = s;
+
+  @observable
+  String playTime = "";
+
+  @action
+  void setPlayTime(String s) => playTime = s;
+
+  @observable
+  String playState = "";
+
+  @action
+  String setPlayState(String s) => playState = s;
+
+  @observable
+  String playBattery = "";
+
+  @action
+  void setPlayBattery(String s) => playBattery = s;
+
+  @observable
+  LatLng playPosition = LatLng(0, 0);
+
+  @action
+  void setPlayPosition(LatLng l) => playPosition = l;
 }

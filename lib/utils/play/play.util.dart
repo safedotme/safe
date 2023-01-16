@@ -1,3 +1,4 @@
+import 'package:intl/intl.dart';
 import 'package:safe/core.dart';
 import 'package:safe/models/incident/incident.model.dart';
 import 'package:safe/services/analytics/helper_classes/analytics_log_model.service.dart';
@@ -15,6 +16,9 @@ class PlayUtil {
     assert(core != null, "Utility has not been initialized.");
     // Set incident
     incident = i;
+
+    core!.state.incident.setPlayTime(parseTime(Duration.zero));
+    core!.state.incident.setPlayDate(parseDate(i.datetime));
   }
 
   void reset() {
@@ -78,5 +82,34 @@ class PlayUtil {
     }
 
     return true;
+  }
+
+  String parseDate(DateTime t) {
+    String time = DateFormat.jm().format(t);
+
+    return "$time (${t.timeZoneName})";
+  }
+
+  String parseTime(Duration position) {
+    int minutes = position.inMinutes;
+    int seconds = position.inSeconds;
+    String parsedMin = "";
+    String parsedSec = "";
+
+    seconds = seconds - (minutes * 60);
+
+    if (minutes.toString().length == 1) {
+      parsedMin = "0$minutes";
+    } else {
+      parsedMin = minutes.toString();
+    }
+
+    if (seconds.toString().length == 1) {
+      parsedSec = "0$seconds";
+    } else {
+      parsedSec = seconds.toString();
+    }
+
+    return "$parsedMin:$parsedSec";
   }
 }

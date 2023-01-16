@@ -1,8 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
+import 'package:safe/models/incident/battery.model.dart';
 import 'package:safe/models/incident/incident.model.dart';
+import 'package:safe/models/incident/location.model.dart';
 import 'package:safe/screens/play/local_widgets/video_player_loader.widget.dart';
 import 'package:video_player/video_player.dart' as api;
 
@@ -18,11 +21,19 @@ class _VideoPlayerState extends State<VideoPlayer> {
   late Core core;
   bool loading = true;
 
+  // ⬇️ MASTER STATE
+  List<Battery> batteryLog = [];
+  List<Location> locationLog = [];
+
   @override
   void initState() {
     super.initState();
     core = Provider.of<Core>(context, listen: false);
 
+    // ⬇️ Load External State (battery, location, etc...)
+    loadState();
+
+    // ⬇️ Load Video
     load();
   }
 
@@ -40,7 +51,36 @@ class _VideoPlayerState extends State<VideoPlayer> {
           setState(() {});
         });
       }
+
+      refreshState();
     });
+  }
+
+  void loadState() {
+    batteryLog = widget.incident.battery ?? [];
+    locationLog = widget.incident.location ?? [];
+
+    batteryLog.sort(
+      (a, b) => a.datetime.compareTo(b.datetime),
+    );
+
+    locationLog.sort(
+      (a, b) => a.datetime.compareTo(b.datetime),
+    );
+  }
+
+  void refreshState() {
+    // ⬇️ Update State Values
+    if (core.state.incident.player!.value.isBuffering) return;
+    if (!core.state.incident.player!.value.isInitialized) return;
+    if (!mounted) return;
+
+    var position = core.state.incident.player!.value.position;
+    var datetimePointer = widget.incident.datetime.add(position);
+
+    // ⬇️ SET DATETIME
+    String time = core.utils.play.parseTime(position);
+    core.state.incident.setPlayTime(time);
   }
 
   @override

@@ -111,7 +111,7 @@ class _PlayBodyState extends State<PlayBody> {
         ),
         Align(
           alignment: Alignment.bottomCenter,
-          child: PlayerProgressIndicator(),
+          child: PlayerProgressIndicator(widget.incident),
         )
       ],
     );
