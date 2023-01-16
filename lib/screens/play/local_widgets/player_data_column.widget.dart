@@ -34,17 +34,17 @@ class _PlayerDataColumnState extends State<PlayerDataColumn> {
                 color: kColorMap[MutableColor.neutral3]!,
                 size: Size(13, 12),
               ),
-              header: "Battery",
+              header: "Battery", // TODO: Extract
               value: "89% (High)",
             ),
             SizedBox(height: 6),
             PlayerDataBox(
               icon: MutableIcon(
-                MutableIcons.camera,
+                MutableIcons.location,
                 color: kColorMap[MutableColor.neutral3]!,
-                size: Size(13, 12),
+                size: Size(10, 10),
               ),
-              header: "Speed",
+              header: "Speed", // TODO: Extract
               value: "13.4 km/h",
             ),
           ],

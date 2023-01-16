@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:safe/widgets/mutable_icon/local_widgets/backward.icon.dart';
+import 'package:safe/widgets/mutable_icon/local_widgets/battery.icon.dart';
 import 'package:safe/widgets/mutable_icon/local_widgets/calendar.icon.dart';
 import 'package:safe/widgets/mutable_icon/local_widgets/camera.icon.dart';
 import 'package:safe/widgets/mutable_icon/local_widgets/camera_flip.icon.dart';
@@ -40,6 +41,7 @@ enum MutableIcons {
   film,
   compass,
   map,
+  battery,
   checkmark,
   caretRight,
   gear,
@@ -89,6 +91,7 @@ class IconUtil {
       MutableIcons.key: (c) => KeyIcon(c),
       MutableIcons.gear: (c) => GearIcon(c),
       MutableIcons.map: (c) => MapIcon(c),
+      MutableIcons.battery: (c) => BatteryIcon(c),
       MutableIcons.camera: (c) => CameraIcon(c),
       MutableIcons.film: (c) => FilmIcon(c),
       MutableIcons.phone: (c) => PhoneIcon(c),
