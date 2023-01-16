@@ -80,6 +80,11 @@ class _VideoPlayerState extends State<VideoPlayer> {
     var position = core.state.incident.player!.value.position;
     var datetimePointer = widget.incident.datetime.add(position);
 
+    // ⬇️ SET PLAYING STATE
+    core.state.incident.setIsPlaying(
+      core.state.incident.player!.value.isPlaying,
+    );
+
     // ⬇️ SET DATETIME
     String time = core.utils.play.parseTime(position);
     core.state.incident.setPlayTime(time);
