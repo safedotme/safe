@@ -235,6 +235,22 @@ mixin _$IncidentStore on _IncidentStore, Store {
     });
   }
 
+  late final _$playPositionAtom =
+      Atom(name: '_IncidentStore.playPosition', context: context);
+
+  @override
+  LatLng? get playPosition {
+    _$playPositionAtom.reportRead();
+    return super.playPosition;
+  }
+
+  @override
+  set playPosition(LatLng? value) {
+    _$playPositionAtom.reportWrite(value, super.playPosition, () {
+      super.playPosition = value;
+    });
+  }
+
   late final _$playBatteryAtom =
       Atom(name: '_IncidentStore.playBattery', context: context);
 
@@ -354,6 +370,17 @@ mixin _$IncidentStore on _IncidentStore, Store {
   }
 
   @override
+  void setPlayPosition(LatLng l) {
+    final _$actionInfo = _$_IncidentStoreActionController.startAction(
+        name: '_IncidentStore.setPlayPosition');
+    try {
+      return super.setPlayPosition(l);
+    } finally {
+      _$_IncidentStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   void setPlayBattery(String? s) {
     final _$actionInfo = _$_IncidentStoreActionController.startAction(
         name: '_IncidentStore.setPlayBattery');
@@ -381,6 +408,7 @@ player: ${player},
 playDate: ${playDate},
 playTime: ${playTime},
 playSpeed: ${playSpeed},
+playPosition: ${playPosition},
 playBattery: ${playBattery}
     ''';
   }

@@ -29,6 +29,10 @@ class PlayUtil {
 
     if (i.location != null && i.location!.isNotEmpty) {
       core!.state.incident.setPlaySpeed(parseSpeed(i.location!.first));
+      core!.state.incident.setPlayPosition(LatLng(
+        i.location!.first.lat!,
+        i.location!.first.long!,
+      ));
     }
   }
 

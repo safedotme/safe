@@ -104,7 +104,6 @@ class _PlayScreenState extends State<PlayScreen> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     return MutableScreenTransition(
       backgroundColor: kColorMap[MutableColor.neutral10],
-      isOpen: false,
       isDismissable: false,
       onOpen: () async {
         animateIn();
@@ -120,9 +119,6 @@ class _PlayScreenState extends State<PlayScreen> with TickerProviderStateMixin {
               : PlayBody(getIncident()!, animateOut),
         ),
       ),
-      // body: getIncident() == null
-      //     ? SizedBox()
-      //     : PlayBody(getIncident()!, animateOut),
     );
   }
 }

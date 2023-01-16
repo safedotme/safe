@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
@@ -7,6 +8,7 @@ import 'package:safe/models/incident/battery.model.dart';
 import 'package:safe/models/incident/incident.model.dart';
 import 'package:safe/models/incident/location.model.dart';
 import 'package:safe/screens/play/local_widgets/video_player_loader.widget.dart';
+import 'package:safe/utils/constants/constants.util.dart';
 import 'package:video_player/video_player.dart' as api;
 
 class VideoPlayer extends StatefulWidget {
@@ -102,6 +104,24 @@ class _VideoPlayerState extends State<VideoPlayer> {
     core.state.incident.setPlaySpeed(
       core.utils.play.parseSpeed(location),
     );
+
+    if (location != null) {
+      var pos = LatLng(location.lat!, location.long!);
+
+      core.state.incident.setPlayPosition(pos);
+
+      core.state.incident.mapController!.animateCamera(
+        CameraUpdate.newCameraPosition(
+          CameraPosition(
+            zoom: kMapZoom,
+            target: LatLng(
+              location.lat! + kMapPaddingCompensation,
+              location.long!,
+            ),
+          ),
+        ),
+      );
+    }
   }
 
   @override

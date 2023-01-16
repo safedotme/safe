@@ -85,6 +85,12 @@ abstract class _IncidentStore with Store {
   void setPlaySpeed(String? s) => playSpeed = s;
 
   @observable
+  LatLng? playPosition;
+
+  @action
+  void setPlayPosition(LatLng l) => playPosition = l;
+
+  @observable
   String? playBattery;
 
   @action
