@@ -57,6 +57,10 @@ class _PlayScreenState extends State<PlayScreen> with TickerProviderStateMixin {
 
   // Used to prevent RenderFlex Issues
   Future<void> animateOut() async {
+    if (core.state.incident.player != null) {
+      core.state.incident.player!.pause();
+    }
+
     // ⬇️ Animate Out
     controller = AnimationController(
       vsync: this,

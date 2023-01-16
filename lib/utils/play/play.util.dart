@@ -39,10 +39,6 @@ class PlayUtil {
   void reset() {
     assert(core != null, "Utility has not been initialized.");
 
-    if (core!.state.incident.player != null) {
-      core!.state.incident.player!.pause();
-    }
-
     core!.state.incident.setPlayer(null);
   }
 

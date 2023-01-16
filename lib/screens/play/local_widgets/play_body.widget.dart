@@ -50,6 +50,14 @@ class _PlayBodyState extends State<PlayBody> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+
+    core.state.incident.player?.dispose();
+    core.state.incident.mapController?.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Stack(
       children: [
