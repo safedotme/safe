@@ -93,6 +93,15 @@ class _VideoPlayerState extends State<VideoPlayer> {
     core.state.incident.setPlayBattery(
       core.utils.play.parseBattery(battery),
     );
+
+    // ⬇️ SETLOCATION
+    Location? location = core.utils.play.fetchLatestLocation(
+      datetimePointer,
+      locationLog,
+    );
+    core.state.incident.setPlaySpeed(
+      core.utils.play.parseSpeed(location),
+    );
   }
 
   @override
