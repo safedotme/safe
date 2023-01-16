@@ -61,14 +61,30 @@ class _PlayerProgressIndicatorState extends State<PlayerProgressIndicator> {
               scale: 0.9,
               onTap: () {
                 HapticFeedback.lightImpact();
+
+                if (core.state.incident.player == null) return;
+                if (!core.state.incident.player!.value.isInitialized) return;
+
+                if (core.state.incident.player!.value.isPlaying) {
+                  core.state.incident.setIsPlaying(true);
+                  core.state.incident.player!.pause();
+                } else {
+                  core.state.incident.setIsPlaying(false);
+                  core.state.incident.player!.play();
+                }
               },
               child: SizedBox(
                 width: 20,
                 height: 20,
-                child: MutableIcon(
-                  MutableIcons.play,
-                  size: Size(18, 20),
-                ),
+                child: core.state.incident.isPlaying
+                    ? MutableIcon(
+                        MutableIcons.play,
+                        size: Size(18, 20),
+                      )
+                    : MutableIcon(
+                        MutableIcons.pause,
+                        size: Size(15, 20),
+                      ),
               ),
             ),
             SizedBox(width: 10),

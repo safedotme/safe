@@ -67,6 +67,12 @@ abstract class _IncidentStore with Store {
 
   // -> UPDATED STATE
   @observable
+  bool isPlaying = false;
+
+  @action
+  void setIsPlaying(bool v) => isPlaying = v;
+
+  @observable
   String playDate = "";
 
   @action

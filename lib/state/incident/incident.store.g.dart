@@ -187,6 +187,22 @@ mixin _$IncidentStore on _IncidentStore, Store {
     });
   }
 
+  late final _$isPlayingAtom =
+      Atom(name: '_IncidentStore.isPlaying', context: context);
+
+  @override
+  bool get isPlaying {
+    _$isPlayingAtom.reportRead();
+    return super.isPlaying;
+  }
+
+  @override
+  set isPlaying(bool value) {
+    _$isPlayingAtom.reportWrite(value, super.isPlaying, () {
+      super.isPlaying = value;
+    });
+  }
+
   late final _$playDateAtom =
       Atom(name: '_IncidentStore.playDate', context: context);
 
@@ -337,6 +353,17 @@ mixin _$IncidentStore on _IncidentStore, Store {
   }
 
   @override
+  void setIsPlaying(bool v) {
+    final _$actionInfo = _$_IncidentStoreActionController.startAction(
+        name: '_IncidentStore.setIsPlaying');
+    try {
+      return super.setIsPlaying(v);
+    } finally {
+      _$_IncidentStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   void setPlayDate(String s) {
     final _$actionInfo = _$_IncidentStoreActionController.startAction(
         name: '_IncidentStore.setPlayDate');
@@ -405,6 +432,7 @@ mapStyle: ${mapStyle},
 isPlayerOpen: ${isPlayerOpen},
 mapController: ${mapController},
 player: ${player},
+isPlaying: ${isPlaying},
 playDate: ${playDate},
 playTime: ${playTime},
 playSpeed: ${playSpeed},
