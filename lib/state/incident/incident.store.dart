@@ -101,4 +101,10 @@ abstract class _IncidentStore with Store {
 
   @action
   void setPlayBattery(String? s) => playBattery = s;
+
+  @observable
+  bool isBuffering = false;
+
+  @action
+  void setIsBuffering(bool b) => isBuffering = b;
 }

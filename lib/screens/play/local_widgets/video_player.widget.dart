@@ -9,6 +9,7 @@ import 'package:safe/models/incident/incident.model.dart';
 import 'package:safe/models/incident/location.model.dart';
 import 'package:safe/screens/play/local_widgets/video_player_loader.widget.dart';
 import 'package:safe/utils/constants/constants.util.dart';
+import 'package:safe/widgets/mutable_video_loader/mutable_video_loader.widget.dart';
 import 'package:video_player/video_player.dart' as api;
 
 class VideoPlayer extends StatefulWidget {
@@ -85,6 +86,10 @@ class _VideoPlayerState extends State<VideoPlayer> {
       core.state.incident.player!.value.isPlaying,
     );
 
+    core.state.incident.setIsBuffering(
+      core.state.incident.player!.value.isBuffering,
+    );
+
     // ⬇️ SET DATETIME
     String time = core.utils.play.parseTime(position);
     core.state.incident.setPlayTime(time);
@@ -141,6 +146,23 @@ class _VideoPlayerState extends State<VideoPlayer> {
             duration: Duration(milliseconds: 500),
             curve: Curves.easeIn,
             child: VideoPlayerLoader(widget.incident),
+          ),
+          AnimatedOpacity(
+            opacity: core.state.incident.isBuffering ? 1 : 0,
+            duration: Duration(milliseconds: 250),
+            curve: Curves.ease,
+            child: Container(
+              height: double.infinity,
+              width: double.infinity,
+              color: kColorMap[MutableColor.neutral10]!.withOpacity(0.8),
+              child: Center(
+                child: SizedBox(
+                  height: 34,
+                  width: 34,
+                  child: MutableVideoLoader(),
+                ),
+              ),
+            ),
           ),
         ],
       ),

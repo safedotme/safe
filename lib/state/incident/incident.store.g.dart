@@ -283,6 +283,22 @@ mixin _$IncidentStore on _IncidentStore, Store {
     });
   }
 
+  late final _$isBufferingAtom =
+      Atom(name: '_IncidentStore.isBuffering', context: context);
+
+  @override
+  bool get isBuffering {
+    _$isBufferingAtom.reportRead();
+    return super.isBuffering;
+  }
+
+  @override
+  set isBuffering(bool value) {
+    _$isBufferingAtom.reportWrite(value, super.isBuffering, () {
+      super.isBuffering = value;
+    });
+  }
+
   late final _$_IncidentStoreActionController =
       ActionController(name: '_IncidentStore', context: context);
 
@@ -419,6 +435,17 @@ mixin _$IncidentStore on _IncidentStore, Store {
   }
 
   @override
+  void setIsBuffering(bool b) {
+    final _$actionInfo = _$_IncidentStoreActionController.startAction(
+        name: '_IncidentStore.setIsBuffering');
+    try {
+      return super.setIsBuffering(b);
+    } finally {
+      _$_IncidentStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 scrollController: ${scrollController},
@@ -437,7 +464,8 @@ playDate: ${playDate},
 playTime: ${playTime},
 playSpeed: ${playSpeed},
 playPosition: ${playPosition},
-playBattery: ${playBattery}
+playBattery: ${playBattery},
+isBuffering: ${isBuffering}
     ''';
   }
 }
