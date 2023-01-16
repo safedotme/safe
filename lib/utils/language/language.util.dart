@@ -207,6 +207,23 @@ class LanguageUtil {
             "There are no inicdents tied to this account. Tap on the Safe button to document one.",
       }
     },
+    "play": {
+      "errors": {"load_failed": "Unable to load location."},
+      "data_box": {
+        "battery": {
+          "header": "Battery",
+          "state": {
+            "critical": "CRITICAL",
+            "low": "LOW",
+            "normal": "NORMAL",
+            "high": "HIGH",
+          }
+        },
+        "speed": {
+          "header": "Speed",
+        },
+      }
+    },
     "incident_card": {
       "secured": "Secured",
     },

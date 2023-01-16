@@ -46,7 +46,9 @@ class _PlayerDataColumnState extends State<PlayerDataColumn> {
                       color: kColorMap[MutableColor.neutral3]!,
                       size: Size(17, 8),
                     ),
-                    header: "Battery", // TODO: Extract
+                    header: core.utils.language
+                            .langMap[core.state.preferences.language]!["play"]
+                        ["data_box"]["battery"]["header"],
                     value: core.state.incident.playBattery!,
                   ),
             SizedBox(height: 6),
@@ -58,7 +60,9 @@ class _PlayerDataColumnState extends State<PlayerDataColumn> {
                       color: kColorMap[MutableColor.neutral3]!,
                       size: Size(10, 10),
                     ),
-                    header: "Speed", // TODO: Extract
+                    header: core.utils.language
+                            .langMap[core.state.preferences.language]!["play"]
+                        ["data_box"]["speed"]["header"],
                     value: core.state.incident.playSpeed!,
                   ),
           ],

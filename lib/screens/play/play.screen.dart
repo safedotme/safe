@@ -6,7 +6,6 @@ import 'package:safe/models/incident/incident.model.dart';
 import 'package:safe/screens/play/local_widgets/play_body.widget.dart';
 import 'package:safe/utils/constants/constants.util.dart';
 import 'package:safe/widgets/mutable_screen_transition/mutable_screen_transition.widget.dart';
-import 'package:safe/widgets/mutable_text/mutable_text.widget.dart';
 
 class PlayScreen extends StatefulWidget {
   @override

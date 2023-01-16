@@ -55,7 +55,8 @@ class _MapViewState extends State<MapView> {
     if (!cl) {
       WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
         core.state.preferences.actionController.trigger(
-          "Unable to load location.", // TODO: Extract
+          core.utils.language.langMap[core.state.preferences.language]!["play"]
+              ["errors"]["load_failed"],
           MessageType.error,
           wait: Duration(seconds: 6),
         );

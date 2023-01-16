@@ -76,7 +76,11 @@ class PlayUtil {
 
     // Logs error
     if (data["error"] != null) {
-      _logError("Unable to load video", data["error"]); // TODO: Extract message
+      _logError(
+        core!.utils.language.langMap[core!.state.preferences.language]!["play"]
+            ["errors"]["load_failed"],
+        data["error"],
+      );
       return false;
     }
 
@@ -88,7 +92,11 @@ class PlayUtil {
     try {
       await core!.state.incident.player!.initialize();
     } catch (e) {
-      _logError("Unable to load video", e.toString()); // TODO: Extract message
+      _logError(
+        core!.utils.language.langMap[core!.state.preferences.language]!["play"]
+            ["errors"]["load_failed"],
+        e.toString(),
+      );
       return false;
     }
 
@@ -141,18 +149,34 @@ class PlayUtil {
     String state = "${battery.percentage * 100}% ({STATE})";
 
     if (battery.percentage < 0.1) {
-      return state.replaceAll("{STATE}", "CRITICAL"); // TODO: Extract message
+      return state.replaceAll(
+        "{STATE}",
+        core!.utils.language.langMap[core!.state.preferences.language]!["play"]
+            ["data_box"]["battery"]["state"]["critical"],
+      );
     }
 
     if (battery.percentage < 0.2) {
-      return state.replaceAll("{STATE}", "LOW"); // TODO: Extract message
+      return state.replaceAll(
+        "{STATE}",
+        core!.utils.language.langMap[core!.state.preferences.language]!["play"]
+            ["data_box"]["battery"]["state"]["low"],
+      );
     }
 
     if (battery.percentage < 0.8) {
-      return state.replaceAll("{STATE}", "NORMAL"); // TODO: Extract message
+      return state.replaceAll(
+        "{STATE}",
+        core!.utils.language.langMap[core!.state.preferences.language]!["play"]
+            ["data_box"]["battery"]["state"]["normal"],
+      );
     }
 
-    return state.replaceAll("{STATE}", "HIGH"); // TODO: Extract message
+    return state.replaceAll(
+      "{STATE}",
+      core!.utils.language.langMap[core!.state.preferences.language]!["play"]
+          ["data_box"]["battery"]["state"]["high"],
+    );
   }
 
   String? parseSpeed(Location? l) {

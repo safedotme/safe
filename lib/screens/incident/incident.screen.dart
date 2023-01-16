@@ -11,9 +11,7 @@ import 'package:safe/screens/incident/local_widgets/incident_processing_loader.w
 import 'package:safe/screens/incident/local_widgets/recorded_data_box.widget.dart';
 import 'package:safe/utils/constants/constants.util.dart';
 import 'package:safe/widgets/mutable_loader/mutable_loader.widget.dart';
-import 'package:safe/widgets/mutable_popup/mutable_popup.widget.dart';
 import 'package:safe/widgets/mutable_screen_transition/mutable_screen_transition.widget.dart';
-import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class IncidentScreen extends StatefulWidget {
   @override
