@@ -86,6 +86,13 @@ class _VideoPlayerState extends State<VideoPlayer> {
     core.state.incident.setPlayDate(date);
 
     // ⬇️ SET BATTERY
+    Battery? battery = core.utils.play.fetchLatestBattery(
+      datetimePointer,
+      batteryLog,
+    );
+    core.state.incident.setPlayBattery(
+      core.utils.play.parseBattery(battery),
+    );
   }
 
   @override

@@ -95,6 +95,23 @@ class PlayUtil {
     return true;
   }
 
+  Battery? fetchLatestBattery(DateTime pointer, List<Battery> log) {
+    if (log.isEmpty) return null;
+
+    Battery latest = log.first;
+
+    for (Battery current in log) {
+      var beat = pointer.difference(latest.datetime).inMilliseconds.abs();
+      var contender = pointer.difference(current.datetime).inMilliseconds.abs();
+
+      if (contender < beat) {
+        latest = current;
+      }
+    }
+
+    return latest;
+  }
+
   LatLng? parsePosition(Location? l) {
     if (l == null || l.lat == null || l.long == null) return null;
 
