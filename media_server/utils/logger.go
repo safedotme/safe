@@ -24,7 +24,7 @@ func LogStatus(out, event, incidentId string) {
 		"channel": "capture-incident",
 		"event": "<event>",
 		"description": "<description>",
-		"icon": "📀",
+		"icon": "🤖",
 		"tags": {
 			"incidentid": "<id>"
 		},

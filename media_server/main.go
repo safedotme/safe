@@ -10,7 +10,7 @@ import (
 
 func main() {
 	// Set ENVs
-	err := utils.SetEnv(true)
+	err := utils.SetEnv(false)
 
 	if err != nil {
 		log.Fatal("Error loading envs: " + err.Error())

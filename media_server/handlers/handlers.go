@@ -222,6 +222,7 @@ func StopRecording(c *gin.Context) {
 	}
 
 	// Trigger Processing
+	utils.LogStatus("Server has begun to process video recording", "processing-started", body.IncidentID)
 	err = utils.Process(body.ChannelName, "output", "watermarked", "thumbnail", body.BucketID)
 
 	if err != nil {
@@ -264,6 +265,7 @@ func StopRecording(c *gin.Context) {
 		})
 	}
 
+	utils.LogStatus("Server has sucessfully processed content and uploaded it to bucket", "processing-successful", body.IncidentID)
 	c.JSON(200, gin.H{
 		"status": 200,
 		"response": map[string]any{
