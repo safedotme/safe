@@ -55,11 +55,14 @@ class CaptureUtil {
     // ⬇️ STREAM / RECORDING
     _stream();
 
-    // // ⬇️ LOCATION + SMS
+    // ⬇️ LOCATION + SMS
     _locationListen();
 
-    // // ⬇️ BATTERY
+    // ⬇️ BATTERY
     _batteryListen();
+
+    // Auto Stop (will stop incident after 1 hour)
+    _timeout();
   }
 
   void stop({String? error}) async {
@@ -100,6 +103,17 @@ class CaptureUtil {
         _core!.state.capture.setErrorCapturing(error);
       }
       _core!.state.capture.incidentRecordedBannerPanelController.open();
+    }
+  }
+
+  // ⬇️ TIMEOUT
+  void _timeout() async {
+    await Future.delayed(Duration(
+      seconds: _core!.state.capture.settings!.maxIdleTime,
+    ));
+
+    if (isActive) {
+      stop();
     }
   }
 

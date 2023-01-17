@@ -9,6 +9,7 @@ enum ErrorLogType {
   mediaServerFailed,
   twilioFailed,
   geocoderFailed,
+  timeout,
 }
 
 class AnalyticsService {
