@@ -363,6 +363,7 @@ const double kControlBoxBodyHeight = 150;
 
 // -> LOCATION TIMEOUT
 const Duration kCaptureStreamTimeout = Duration(seconds: 20);
+const Duration kLocationStreamTimeout = Duration(seconds: 5);
 
 // SHIMMER
 final Color kBoxLoaderShimmerColor = kShimmerAnimationColor.withOpacity(0.05);

@@ -410,7 +410,7 @@ USER ID: ${_core!.state.capture.incident!.userId}
         await _sendLocation(log);
       }
 
-      await Future.delayed(kCaptureStreamTimeout);
+      await Future.delayed(kLocationStreamTimeout);
     }
   }
 
