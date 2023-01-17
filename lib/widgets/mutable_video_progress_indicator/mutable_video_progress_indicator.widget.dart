@@ -83,7 +83,9 @@ class _MutableVideoProgressIndicatorState
               alignment: Alignment.centerLeft,
               child: LayoutBuilder(
                 builder: (_, constraints) => Container(
-                  width: constraints.maxWidth * percentage,
+                  width: (constraints.maxWidth * percentage).isNegative
+                      ? 0
+                      : constraints.maxWidth * percentage,
                   height: kLinearProgressIndicatorWidth,
                   decoration: BoxDecoration(
                     color: Colors.white,

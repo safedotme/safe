@@ -134,7 +134,7 @@ class _VideoPlayerState extends State<VideoPlayer> {
     }
 
     // ⬇️ SET LOADING
-    if (loading && position != Duration.zero) {
+    if (loading && position > Duration.zero) {
       WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
         setState(() {
           loading = false;
