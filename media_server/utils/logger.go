@@ -6,7 +6,56 @@ import (
 	"strings"
 )
 
-func Log(out, incidentId string) {
+func LogStatus(out, event, incidentId string) {
+	var err error
+	client := &http.Client{}
+	var req *http.Request
+	token, ok := os.LookupEnv("LOG_KEY")
+
+	if !ok {
+		return
+	}
+
+	endpoint := "https://api.logsnag.com/v1/log"
+
+	body := `
+	{
+		"project": "safe",
+		"channel": "capture-incident",
+		"event": "<event>",
+		"description": "<description>",
+		"icon": "📀",
+		"tags": {
+			"incidentid": "<id>"
+		},
+		"notify": true
+	}
+	`
+
+	body = strings.ReplaceAll(body, "<description>", out)
+	body = strings.ReplaceAll(body, "<id>", incidentId)
+	body = strings.ReplaceAll(body, "<event>", event)
+
+	encoded := strings.NewReader(body)
+
+	if err != nil {
+		return
+	}
+
+	req, err = http.NewRequest("POST", endpoint, encoded)
+
+	if err != nil {
+		return
+	}
+
+	req.Header.Add("Authorization", "Bearer "+token)
+	req.Header.Add("Content-Type", "application/json")
+
+	// Make Request
+	client.Do(req)
+}
+
+func LogError(out, incidentId string) {
 	var err error
 	client := &http.Client{}
 	var req *http.Request

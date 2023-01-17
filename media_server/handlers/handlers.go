@@ -168,7 +168,7 @@ func StopRecording(c *gin.Context) {
 
 	if err != nil {
 		message := "Failed to stop recording. " + err.Error() + "\n Server Response: " + string(res)
-		utils.Log(message, body.IncidentID)
+		utils.LogError(message, body.IncidentID)
 		c.AbortWithStatusJSON(code, gin.H{
 			"status":  code,
 			"message": message,
@@ -183,7 +183,7 @@ func StopRecording(c *gin.Context) {
 
 	if !isValid {
 		message := "Agora response was invalid. Failed  parse body."
-		utils.Log(message, body.IncidentID)
+		utils.LogError(message, body.IncidentID)
 		c.AbortWithStatusJSON(400, gin.H{
 			"status":  400,
 			"message": message,
@@ -198,7 +198,7 @@ func StopRecording(c *gin.Context) {
 
 	if err != nil {
 		message := "Failed to stop recording. " + err.Error()
-		utils.Log(message, body.IncidentID)
+		utils.LogError(message, body.IncidentID)
 		c.AbortWithStatusJSON(400, gin.H{
 			"status":  400,
 			"message": message,
@@ -230,7 +230,7 @@ func StopRecording(c *gin.Context) {
 
 		if !ok {
 			message := "Failed to process footage. unable to load root directory env. env not found"
-			utils.Log(message, body.IncidentID)
+			utils.LogError(message, body.IncidentID)
 			c.AbortWithStatusJSON(400, gin.H{
 				"status":  400,
 				"message": message,
@@ -243,7 +243,7 @@ func StopRecording(c *gin.Context) {
 
 		// Aborts with error
 		message := "Failed to process footage. " + err.Error()
-		utils.Log(message, body.IncidentID)
+		utils.LogError(message, body.IncidentID)
 		c.AbortWithStatusJSON(400, gin.H{
 			"status":  400,
 			"message": message,
@@ -257,7 +257,7 @@ func StopRecording(c *gin.Context) {
 
 	if err != nil {
 		message := "Failed to update Firebase. " + err.Error()
-		utils.Log(message, body.IncidentID)
+		utils.LogError(message, body.IncidentID)
 		c.AbortWithStatusJSON(400, gin.H{
 			"status":  400,
 			"message": message,
