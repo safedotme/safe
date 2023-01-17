@@ -57,6 +57,22 @@ mixin _$PreferencesStore on _PreferencesStore, Store {
     });
   }
 
+  late final _$isConnectedAtom =
+      Atom(name: '_PreferencesStore.isConnected', context: context);
+
+  @override
+  bool get isConnected {
+    _$isConnectedAtom.reportRead();
+    return super.isConnected;
+  }
+
+  @override
+  set isConnected(bool value) {
+    _$isConnectedAtom.reportWrite(value, super.isConnected, () {
+      super.isConnected = value;
+    });
+  }
+
   late final _$_PreferencesStoreActionController =
       ActionController(name: '_PreferencesStore', context: context);
 
@@ -83,11 +99,23 @@ mixin _$PreferencesStore on _PreferencesStore, Store {
   }
 
   @override
+  void setIsConnected(bool b) {
+    final _$actionInfo = _$_PreferencesStoreActionController.startAction(
+        name: '_PreferencesStore.setIsConnected');
+    try {
+      return super.setIsConnected(b);
+    } finally {
+      _$_PreferencesStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 language: ${language},
 disabledPermissions: ${disabledPermissions},
-actionController: ${actionController}
+actionController: ${actionController},
+isConnected: ${isConnected}
     ''';
   }
 }

@@ -22,4 +22,10 @@ abstract class _PreferencesStore with Store {
 
   @observable
   ActionBannerController actionController = ActionBannerController();
+
+  @observable
+  bool isConnected = true;
+
+  @action
+  void setIsConnected(bool b) => isConnected = b;
 }

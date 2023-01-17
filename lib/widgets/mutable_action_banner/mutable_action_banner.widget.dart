@@ -22,6 +22,23 @@ class _MutableActionBannerState extends State<MutableActionBanner>
 
   double state = 0;
 
+  Future<void> open(String msg, MessageType type) async {
+    setState(() {
+      text = msg;
+      this.type = type;
+    });
+
+    if (!canCall) return;
+    canCall = false;
+
+    return animation.forward();
+  }
+
+  Future<void> close() async {
+    await animation.reverse();
+    canCall = true;
+  }
+
   Future<void> trigger(String msg, MessageType type, {Duration? wait}) async {
     setState(() {
       text = msg;
@@ -154,5 +171,17 @@ class ActionBannerController {
     assert(_state != null, "The controller is not attached");
 
     _state!.trigger(message, type, wait: wait);
+  }
+
+  void open(String message, MessageType type) {
+    assert(_state != null, "The controller is not attached");
+
+    _state!.open(message, type);
+  }
+
+  void close() {
+    assert(_state != null, "The controller is not attached");
+
+    _state!.close();
   }
 }

@@ -164,11 +164,14 @@ class LanguageUtil {
           LimitErrorState.permissions: "Missing Permissions",
           LimitErrorState.maxed: "Incident Limit Reached",
           LimitErrorState.missingContacts: "Missing Contacts",
+          LimitErrorState.noConnection: "No Connection",
           null: "",
         },
         "body": {
           LimitErrorState.emergency:
               "You have one incident credit left. Spare it for an emergency. Tap here to activate Safe.",
+          LimitErrorState.noConnection:
+              "We cannot capture an incident without an internet connection. Try checking your connection.",
           LimitErrorState.maxed:
               "No worries, simply delete a previous incident to gain back the ability to capture one.",
           LimitErrorState.missingContacts:
@@ -182,6 +185,7 @@ class LanguageUtil {
           LimitErrorState.maxed: "Delete an Incident",
           LimitErrorState.missingContacts: "Add Contacts",
           LimitErrorState.permissions: "Go to Settings",
+          LimitErrorState.noConnection: "Go to Settings",
           null: ""
         },
       }

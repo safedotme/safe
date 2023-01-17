@@ -1,3 +1,4 @@
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart' hide BoxShadow;
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -42,6 +43,7 @@ class _HomeScreenState extends State<HomeScreen> {
     userSubscribe();
     contactSubscribe();
     permissionSubscribe();
+    connectivitySubscribe();
   }
 
   void contactSubscribe() {
@@ -78,6 +80,36 @@ class _HomeScreenState extends State<HomeScreen> {
         }
       });
     });
+  }
+
+  void handleOnConnectivityChanged(ConnectivityResult res) {
+    if (res == ConnectivityResult.none) {
+      core.state.preferences.setIsConnected(false);
+
+      WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+        core.utils.credit.obtainState(core);
+      });
+
+      return;
+    }
+
+    core.state.preferences.setIsConnected(true);
+
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      core.utils.credit.obtainState(core);
+    });
+  }
+
+  void connectivitySubscribe() async {
+    final client = Connectivity();
+
+    Future.delayed(Duration(milliseconds: 100)).then((_) async {
+      final res = await client.checkConnectivity();
+
+      handleOnConnectivityChanged(res);
+    });
+
+    client.onConnectivityChanged.listen(handleOnConnectivityChanged);
   }
 
   @override
