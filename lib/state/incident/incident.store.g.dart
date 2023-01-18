@@ -25,6 +25,22 @@ mixin _$IncidentStore on _IncidentStore, Store {
     });
   }
 
+  late final _$overlayControllerAtom =
+      Atom(name: '_IncidentStore.overlayController', context: context);
+
+  @override
+  OverlayController get overlayController {
+    _$overlayControllerAtom.reportRead();
+    return super.overlayController;
+  }
+
+  @override
+  set overlayController(OverlayController value) {
+    _$overlayControllerAtom.reportWrite(value, super.overlayController, () {
+      super.overlayController = value;
+    });
+  }
+
   late final _$contactsAtom =
       Atom(name: '_IncidentStore.contacts', context: context);
 
@@ -449,6 +465,7 @@ mixin _$IncidentStore on _IncidentStore, Store {
   String toString() {
     return '''
 scrollController: ${scrollController},
+overlayController: ${overlayController},
 contacts: ${contacts},
 contactPopupController: ${contactPopupController},
 contactPopupValuesController: ${contactPopupValuesController},

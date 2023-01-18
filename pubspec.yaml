@@ -20,8 +20,6 @@ dependencies:
   path_provider: ^2.0.11
   csv: ^5.0.1
   dio: ^4.0.6
-  # TODO: REMOVE OPEN FILE
-  open_file: ^3.2.1
   flutter_linkify: ^5.0.2
   provider: ^6.0.3
   uuid: ^3.0.6

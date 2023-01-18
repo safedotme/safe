@@ -162,38 +162,31 @@ class _HomeScreenState extends State<HomeScreen> {
                 opacity: core.state.incidentLog.user == null ? 0 : 1,
                 duration: kFadeInDuration,
                 child: MutableSafeButton(
-                  onTap: () {
-                    var incident = core.state.incidentLog.incidents!.where(
-                      (i) => i.id == "cb27e990-915d-11ed-9f3d-1d67a86615c3",
+                  onTap: () async {
+                    HapticFeedback.heavyImpact();
+
+                    bool shouldCapture = await core.utils.credit.shouldCapture(
+                      TriggerIdentifier.primary,
+                      core,
                     );
 
-                    core.services.export.export(incident.first);
+                    bool missingContacts = core.state.capture.limErrState ==
+                        LimitErrorState.missingContacts;
+
+                    if (!shouldCapture || missingContacts) {
+                      // Flashes Incident Limit Banner
+                      if (core.state.capture.shouldFlashLimitBanner == false) {
+                        core.state.capture.setFlashLimitBanner(true);
+                        await Future.delayed(Duration(seconds: 8));
+                        core.state.capture.setFlashLimitBanner(false);
+                      }
+
+                      return;
+                    }
+
+                    core.utils.capture.start();
+                    core.state.capture.controller.open();
                   },
-                  // onTap: () async {
-                  //   HapticFeedback.heavyImpact();
-
-                  //   bool shouldCapture = await core.utils.credit.shouldCapture(
-                  //     TriggerIdentifier.primary,
-                  //     core,
-                  //   );
-
-                  //   bool missingContacts = core.state.capture.limErrState ==
-                  //       LimitErrorState.missingContacts;
-
-                  //   if (!shouldCapture || missingContacts) {
-                  //     // Flashes Incident Limit Banner
-                  //     if (core.state.capture.shouldFlashLimitBanner == false) {
-                  //       core.state.capture.setFlashLimitBanner(true);
-                  //       await Future.delayed(Duration(seconds: 8));
-                  //       core.state.capture.setFlashLimitBanner(false);
-                  //     }
-
-                  //     return;
-                  //   }
-
-                  //   core.utils.capture.start();
-                  //   core.state.capture.controller.open();
-                  // },
                 ),
               ),
             ),

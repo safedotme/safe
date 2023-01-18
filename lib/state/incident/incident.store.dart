@@ -3,6 +3,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mobx/mobx.dart';
 import 'package:safe/models/incident/notified_contact.model.dart';
 import 'package:safe/widgets/mutable_emergency_contact_popup/local_widgets/emergency_contact_popup_header.widget.dart';
+import 'package:safe/widgets/mutable_overlay/mutable_overlay.widget.dart';
 import 'package:safe/widgets/mutable_screen_transition/mutable_screen_transition.widget.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:video_player/video_player.dart';
@@ -14,6 +15,9 @@ class IncidentStore extends _IncidentStore with _$IncidentStore {}
 abstract class _IncidentStore with Store {
   @observable
   ScrollController scrollController = ScrollController();
+
+  @observable
+  OverlayController overlayController = OverlayController();
 
   @observable
   List<NotifiedContact> contacts = [];

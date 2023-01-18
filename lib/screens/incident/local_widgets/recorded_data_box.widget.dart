@@ -271,7 +271,7 @@ class _RecordedDataBoxState extends State<RecordedDataBox> {
             ],
           ),
           SizedBox(height: kRecordedDataBoxSpacing),
-          IncidentDownloadBox(),
+          IncidentDownloadBox(widget.incident!),
         ],
       ),
     );

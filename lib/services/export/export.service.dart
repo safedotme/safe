@@ -3,7 +3,6 @@ import 'package:archive/archive_io.dart';
 import 'package:csv/csv.dart';
 import 'package:dio/dio.dart';
 import 'package:intl/intl.dart';
-import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart' as platform;
 import 'package:safe/models/incident/battery.model.dart';
 import 'package:safe/models/incident/incident.model.dart';

@@ -11,6 +11,7 @@ import 'package:safe/screens/incident/local_widgets/incident_processing_loader.w
 import 'package:safe/screens/incident/local_widgets/recorded_data_box.widget.dart';
 import 'package:safe/utils/constants/constants.util.dart';
 import 'package:safe/widgets/mutable_loader/mutable_loader.widget.dart';
+import 'package:safe/widgets/mutable_overlay/mutable_overlay.widget.dart';
 import 'package:safe/widgets/mutable_screen_transition/mutable_screen_transition.widget.dart';
 
 class IncidentScreen extends StatefulWidget {
@@ -93,7 +94,18 @@ class _IncidentState extends State<IncidentScreen> {
                           left: -1,
                           child: IncidentNavBar(getIncident()!),
                         ),
-                        EmergencyContactInfoPopup()
+                        EmergencyContactInfoPopup(),
+                        MutableOverlay(
+                          controller: core.state.incident.overlayController,
+                          child: Center(
+                            child: MutableLoader(
+                              text: core.utils.language.langMap[core
+                                  .state
+                                  .preferences
+                                  .language]!["incident"]["downloading_loader"],
+                            ),
+                          ),
+                        ),
                       ],
                     ),
         ),

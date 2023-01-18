@@ -233,6 +233,7 @@ class LanguageUtil {
     },
     "incident": {
       "loading": "Loading incident",
+      "downloading_loader": "Exporting incident",
       "contacts": {
         "header": "Notified Contacts",
         "notify_tag": "Notified",
