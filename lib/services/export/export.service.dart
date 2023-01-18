@@ -1,6 +1,8 @@
 import 'dart:io';
+import 'package:csv/csv.dart';
 import 'package:dio/dio.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:intl/intl.dart';
 import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart' as platform;
 import 'package:safe/models/incident/battery.model.dart';
@@ -14,6 +16,7 @@ class ExportService {
     if (i == null) return null;
     Directory? directory;
 
+    // ⬇️ CREATE DIRECTORY
     try {
       final dir = await platform.getApplicationDocumentsDirectory();
       directory = Directory("${dir.path}/${i.path}/");
@@ -27,13 +30,48 @@ class ExportService {
       return null;
     }
 
-    var test = await _downloadVideo(i.path, directory);
+    // ⬇️ DOWNLOAD WATERMARKED VIDEO
+    // final video = await _downloadVideo(i.path, directory);
 
-    if (test == null) return null;
+    // ⬇️ PROCESS BATTERY DATA
+    //final battery = await _processBatteryLog(i.battery, directory);
+
+    // ⬇️ PROCESS CONTACT
+    //final battery = await _processBatteryLog(i.battery, directory);
   }
 
-  Future<File?> _processBatteryLog(List<Battery>? b) async {
-    return null;
+  Future<File?> _processBatteryLog(List<Battery>? b, Directory dir) async {
+    if (b == null || b.isEmpty) return null;
+
+    List<List<dynamic>> rows = [];
+
+    // ADD ROWS
+    rows.add(["Date", "Time", "Battery Percentage"]);
+
+    // POPULATE ROWS
+    for (final bat in b) {
+      List<dynamic> row = [];
+      // DATE
+      row.add(
+        "${DateFormat.yMMMMd().format(bat.datetime)} (${bat.datetime.timeZoneName})",
+      );
+
+      // TIME
+      row.add(
+        "${DateFormat.jms().format(bat.datetime)} (${bat.datetime.timeZoneName})",
+      );
+
+      // PERCENTAGE
+      row.add("${bat.percentage * 100}%");
+
+      rows.add(row);
+    }
+
+    String csv = const ListToCsvConverter().convert(rows);
+
+    File f = File("${dir.path}/battery_log.csv");
+
+    return f.writeAsString(csv);
   }
 
   Future<File?> _processContactLog(List<NotifiedContact>? b) async {
