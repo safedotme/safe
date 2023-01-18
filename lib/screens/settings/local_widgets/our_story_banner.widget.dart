@@ -13,16 +13,16 @@ class OurStoryBanner extends StatelessWidget {
     return MutableButton(
       scale: 0.95,
       child: MutableShimmer(
-        animateToColor: kColorMap[MutableColor.secondaryRed]!.withOpacity(0.4),
+        animateToColor: kColorMap[MutableColor.secondaryBlue]!.withOpacity(0.4),
         speed: Speed.slow,
         child: Container(
           width: double.infinity,
           padding: EdgeInsets.all(15),
           decoration: BoxDecoration(
-            color: kColorMap[MutableColor.secondaryRed]!.withOpacity(0.1),
+            color: kColorMap[MutableColor.secondaryBlue]!.withOpacity(0.1),
             border: Border.all(
               width: kBorderWidth,
-              color: kColorMap[MutableColor.secondaryRed]!,
+              color: kColorMap[MutableColor.secondaryBlue]!,
             ),
             borderRadius: BorderRadius.circular(12),
           ),
@@ -51,7 +51,7 @@ class OurStoryBanner extends StatelessWidget {
                     height: 60,
                     width: 60,
                     decoration: BoxDecoration(
-                      color: kColorMap[MutableColor.secondaryRed]!
+                      color: kColorMap[MutableColor.secondaryBlue]!
                           .withOpacity(0.15),
                       borderRadius: BorderRadius.circular(8),
                     ),

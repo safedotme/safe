@@ -7,6 +7,7 @@ import 'package:safe/screens/settings/local_widgets/our_story_banner.widget.dart
 import 'package:safe/screens/settings/local_widgets/settings_nav_bar.widget.dart';
 import 'package:safe/utils/constants/constants.util.dart';
 import 'package:safe/widgets/mutable_screen_transition/mutable_screen_transition.widget.dart';
+import 'package:safe/widgets/mutable_settings_block/local_widgets/settings_block_item.widget.dart';
 import 'package:safe/widgets/mutable_settings_block/mutable_settings_block.widget.dart';
 
 class SettingsScreen extends StatefulWidget {
@@ -44,7 +45,20 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 children: [
                   OurStoryBanner(),
                   SizedBox(height: kSettingsComponentSpacing),
-                  // MutableSettingsBlock(),
+                  MutableSettingsBlock(
+                    header: "Preferences", // TODO: Extract
+                    items: [
+                      SettingsBlockItem(
+                        text: "Change Phone Number",
+                      ),
+                      SettingsBlockItem(
+                        text: "Livestream Quality",
+                      ),
+                      SettingsBlockItem(
+                        text: "Enable Face ID",
+                      ),
+                    ],
+                  ),
                 ],
               ),
             ),

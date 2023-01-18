@@ -118,6 +118,7 @@ enum MutableColor {
   secondaryGreen,
   secondaryRed,
   secondaryYellow,
+  secondaryBlue,
   overlaySecondaryGreen,
   overlaySecondaryRed,
   overlaySecondaryYellow,
@@ -156,6 +157,7 @@ const Map<MutableColor, Color> kColorMap = {
 
   // -> SECONDARY
   MutableColor.secondaryGreen: Color(0xff50C166),
+  MutableColor.secondaryBlue: Color(0xff3275F6),
   MutableColor.secondaryRed: Color(0xffFC645D),
   MutableColor.secondaryYellow: Color(0xffFCD95D),
   MutableColor.overlaySecondaryGreen: Color(0xff0E1811),

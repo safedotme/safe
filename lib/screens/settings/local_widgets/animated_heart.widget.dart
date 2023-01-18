@@ -21,12 +21,12 @@ class _AnimatedHeartState extends State<AnimatedHeart>
   void animate() {
     controller = AnimationController(
       vsync: this,
-      duration: Duration(milliseconds: 750),
+      duration: Duration(milliseconds: 400),
     );
 
     animation = Tween<double>(begin: 1.0, end: 0.0).animate(CurvedAnimation(
       parent: controller,
-      curve: Curves.easeInOutSine,
+      curve: Curves.ease,
     ));
 
     controller.repeat(reverse: true);
@@ -54,8 +54,8 @@ class _AnimatedHeartState extends State<AnimatedHeart>
       scale: 0.8 + (0.2 * state),
       child: Image.asset(
         "assets/images/heart.png",
-        height: 35,
-        width: 35,
+        height: 30,
+        width: 30,
       ),
     );
   }
