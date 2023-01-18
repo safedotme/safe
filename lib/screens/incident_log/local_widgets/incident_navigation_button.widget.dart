@@ -18,6 +18,7 @@ class IncidentNavigationButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MutableButton(
+      onTap: onTap,
       child: Container(
         padding: EdgeInsets.all(14),
         height: kLargeButtonHeight,

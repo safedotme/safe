@@ -38,7 +38,7 @@ class _NavigationButtonsState extends State<NavigationButtons> {
                     .langMap[core.state.preferences.language]!["incident_log"]
                 ["settings_button"],
             onTap: () {
-              print("navigate to settings");
+              core.state.preferences.controller.open();
             },
           ),
         ],

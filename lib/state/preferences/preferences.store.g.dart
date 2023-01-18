@@ -73,6 +73,22 @@ mixin _$PreferencesStore on _PreferencesStore, Store {
     });
   }
 
+  late final _$controllerAtom =
+      Atom(name: '_PreferencesStore.controller', context: context);
+
+  @override
+  ScreenTransitionController get controller {
+    _$controllerAtom.reportRead();
+    return super.controller;
+  }
+
+  @override
+  set controller(ScreenTransitionController value) {
+    _$controllerAtom.reportWrite(value, super.controller, () {
+      super.controller = value;
+    });
+  }
+
   late final _$_PreferencesStoreActionController =
       ActionController(name: '_PreferencesStore', context: context);
 
@@ -115,7 +131,8 @@ mixin _$PreferencesStore on _PreferencesStore, Store {
 language: ${language},
 disabledPermissions: ${disabledPermissions},
 actionController: ${actionController},
-isConnected: ${isConnected}
+isConnected: ${isConnected},
+controller: ${controller}
     ''';
   }
 }
