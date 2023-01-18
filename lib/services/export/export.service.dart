@@ -1,7 +1,7 @@
 import 'dart:io';
+import 'package:archive/archive_io.dart';
 import 'package:csv/csv.dart';
 import 'package:dio/dio.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:intl/intl.dart';
 import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart' as platform;
@@ -42,7 +42,30 @@ class ExportService {
     // ⬇️ PROCESS LOCATION DATA
     final location = await _processLocationLog(i.location, directory);
 
-    // TODO: Delete directory after
+    // ⬇️ COMPRESS TO ZIP
+    final nullable = [location, contact, battery, video];
+    List<File> files = [];
+
+    for (final contender in nullable) {
+      if (contender != null) {
+        files.add(contender);
+      }
+    }
+
+    if (files.isEmpty) return null;
+
+    try {
+      final encoder = ZipFileEncoder()..create("${directory.path}/data.zip");
+
+      for (final f in files) {
+        await encoder.addFile(f);
+      }
+      encoder.close();
+    } catch (e) {
+      return null;
+    }
+
+    return File("${directory.path}/data.zip");
   }
 
   Future<File?> _processBatteryLog(List<Battery>? b, Directory dir) async {
