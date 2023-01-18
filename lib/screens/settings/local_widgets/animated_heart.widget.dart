@@ -51,7 +51,7 @@ class _AnimatedHeartState extends State<AnimatedHeart>
   @override
   Widget build(BuildContext context) {
     return Transform.scale(
-      scale: 0.8 + (0.2 * state),
+      scale: 0.95 + (0.05 * state),
       child: Image.asset(
         "assets/images/heart.png",
         height: 30,
