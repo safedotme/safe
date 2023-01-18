@@ -1,6 +1,7 @@
 import 'package:safe/services/agora/agora.service.dart';
 import 'package:safe/services/analytics/analytics.service.dart';
 import 'package:safe/services/auth/auth.service.dart';
+import 'package:safe/services/export/export.service.dart';
 import 'package:safe/services/geocoder/geocoder.service.dart';
 import 'package:safe/services/location/location.service.dart';
 import 'package:safe/services/media_server/media_server.service.dart';
@@ -20,4 +21,5 @@ class Services {
   MediaServer mediaServer = MediaServer();
   StorageService storage = StorageService()..init();
   AgoraService agora = AgoraService();
+  ExportService export = ExportService();
 }

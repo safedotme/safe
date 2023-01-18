@@ -7,6 +7,19 @@ class StorageService {
     _client = FirebaseStorage.instance;
   }
 
+  Reference? getChild(String path) {
+    assert(_client != null, "Storage client has not been initialized");
+    Reference? ref;
+
+    try {
+      ref = _client!.ref(path);
+    } on FirebaseException catch (e) {
+      print(e);
+    }
+
+    return ref;
+  }
+
   Future<Map<String, dynamic>> getDownloadUrl(String path) async {
     assert(_client != null, "Storage client has not been initialized");
     String? url;

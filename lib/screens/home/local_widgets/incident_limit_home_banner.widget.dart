@@ -88,7 +88,7 @@ class _IncidentLimitHomeBannerState extends State<IncidentLimitHomeBanner> {
           HapticFeedback.mediumImpact();
 
           if (core.state.capture.limErrState == LimitErrorState.noConnection) {
-            AppSettings.openWirelessSettings();
+            AppSettings.openWIFISettings();
             return;
           }
 
