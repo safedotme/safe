@@ -47,7 +47,7 @@ class _SettingsNavBarState extends State<SettingsNavBar> {
             10,
             0,
             10,
-            1,
+            12,
           ),
           alignment: Alignment.bottomCenter,
           child: Row(

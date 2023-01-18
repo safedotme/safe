@@ -3,6 +3,7 @@ import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
+import 'package:safe/screens/settings/local_widgets/our_story_banner.widget.dart';
 import 'package:safe/screens/settings/local_widgets/settings_nav_bar.widget.dart';
 import 'package:safe/utils/constants/constants.util.dart';
 import 'package:safe/widgets/mutable_screen_transition/mutable_screen_transition.widget.dart';
@@ -36,8 +37,17 @@ class _SettingsScreenState extends State<SettingsScreen> {
               child: SettingsNavBar(),
             ),
             SingleChildScrollView(
-              padding: EdgeInsets.only(top: 108),
-              child: Column(),
+              padding: EdgeInsets.fromLTRB(
+                kSideScreenMargin,
+                108,
+                kSideScreenMargin,
+                0,
+              ),
+              child: Column(
+                children: [
+                  OurStoryBanner(),
+                ],
+              ),
             ),
           ],
         ),
