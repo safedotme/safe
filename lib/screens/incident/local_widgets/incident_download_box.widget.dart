@@ -34,10 +34,13 @@ class _IncidentDownloadBoxState extends State<IncidentDownloadBox> {
       onTap: () async {
         core.state.incident.overlayController.show();
         final file = await core.services.export.export(widget.incident);
+        core.state.incident.overlayController.hide();
 
         if (file == null) {
           core.state.preferences.actionController.trigger(
-            "Exporting failed", // TODO: Extract
+            core.utils.language
+                    .langMap[core.state.preferences.language]!["incident"]
+                ["downloading_failed"],
             MessageType.error,
           );
 
@@ -55,7 +58,6 @@ class _IncidentDownloadBoxState extends State<IncidentDownloadBox> {
           );
           return;
         }
-        core.state.incident.overlayController.hide();
 
         Share.shareXFiles([XFile(file.path)], subject: "Incident Data");
       },
