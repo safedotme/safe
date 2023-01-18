@@ -9,6 +9,7 @@ import 'package:safe/utils/constants/constants.util.dart';
 import 'package:safe/widgets/mutable_screen_transition/mutable_screen_transition.widget.dart';
 import 'package:safe/widgets/mutable_settings_block/local_widgets/settings_block_item.widget.dart';
 import 'package:safe/widgets/mutable_settings_block/mutable_settings_block.widget.dart';
+import 'package:safe/widgets/mutable_text/mutable_text.widget.dart';
 
 class SettingsScreen extends StatefulWidget {
   @override
@@ -39,7 +40,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 kSideScreenMargin,
                 108,
                 kSideScreenMargin,
-                0,
+                72,
               ),
               child: Column(
                 children: [
@@ -59,6 +60,46 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       ),
                     ],
                   ),
+                  SizedBox(height: kSettingsComponentSpacing),
+                  MutableSettingsBlock(
+                    header: "Reach Out", // TODO: Extract
+                    items: [
+                      SettingsBlockItem(
+                        text: "❤️\tRate the app",
+                      ),
+                      SettingsBlockItem(
+                        text: "🐦\tFollow on Twitter",
+                      ),
+                      SettingsBlockItem(
+                        text: "💫\tStar on GitHub",
+                      ),
+                      SettingsBlockItem(
+                        text: "📧\tShoot us an email",
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: kSettingsComponentSpacing),
+                  MutableSettingsBlock(
+                    header: "Support", // TODO: Extract
+                    items: [
+                      SettingsBlockItem(
+                        text: "About",
+                      ),
+                      SettingsBlockItem(
+                        text: "Help",
+                      ),
+                      SettingsBlockItem(
+                        text: "Give feedback",
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: kSettingsComponentSpacing),
+                  MutableText(
+                    "Version 1.0.1 - Production", // TODO: Extract
+                    size: 14,
+                    color: MutableColor.neutral2,
+                    align: TextAlign.center,
+                  )
                 ],
               ),
             ),

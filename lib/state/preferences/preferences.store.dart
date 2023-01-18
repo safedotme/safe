@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:safe/utils/language/language.util.dart';
@@ -30,6 +31,10 @@ abstract class _PreferencesStore with Store {
   @action
   void setIsConnected(bool b) => isConnected = b;
 
+  // SETTINGS RELATED
   @observable
   ScreenTransitionController controller = ScreenTransitionController();
+
+  @observable
+  ScrollController scrollController = ScrollController();
 }

@@ -89,6 +89,22 @@ mixin _$PreferencesStore on _PreferencesStore, Store {
     });
   }
 
+  late final _$scrollControllerAtom =
+      Atom(name: '_PreferencesStore.scrollController', context: context);
+
+  @override
+  ScrollController get scrollController {
+    _$scrollControllerAtom.reportRead();
+    return super.scrollController;
+  }
+
+  @override
+  set scrollController(ScrollController value) {
+    _$scrollControllerAtom.reportWrite(value, super.scrollController, () {
+      super.scrollController = value;
+    });
+  }
+
   late final _$_PreferencesStoreActionController =
       ActionController(name: '_PreferencesStore', context: context);
 
@@ -132,7 +148,8 @@ language: ${language},
 disabledPermissions: ${disabledPermissions},
 actionController: ${actionController},
 isConnected: ${isConnected},
-controller: ${controller}
+controller: ${controller},
+scrollController: ${scrollController}
     ''';
   }
 }

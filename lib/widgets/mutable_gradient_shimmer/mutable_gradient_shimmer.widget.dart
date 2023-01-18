@@ -28,7 +28,7 @@ class _MutableGradientShimmerState extends State<MutableGradientShimmer>
       duration: Duration(milliseconds: 2000),
     );
 
-    controller.repeat(reverse: true);
+    controller.repeat(reverse: false);
 
     controller.addListener(() {
       setState(() {
@@ -95,9 +95,9 @@ class _MutableGradientShimmerState extends State<MutableGradientShimmer>
     double s = 0;
 
     if (state > 0.5) {
-      s = genAnimate(0.55, 0.95, state, false);
+      s = genAnimate(0.5, 1, state, false);
     } else {
-      s = genAnimate(0.05, 0.45, state, true);
+      s = genAnimate(0, 0.5, state, true);
     }
 
     return s * 0.4;

@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:safe/widgets/mutable_button/mutable_button.widget.dart';
+import 'package:safe/widgets/mutable_text/mutable_text.widget.dart';
 
 class SettingsBlockItem extends StatelessWidget {
-  final Widget? prefix;
   final String text;
   final void Function()? onTap;
   final Widget? action;
 
   SettingsBlockItem({
-    this.prefix,
     required this.text,
     this.onTap,
     this.action,
@@ -15,9 +15,22 @@ class SettingsBlockItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 20,
-      color: Colors.red,
+    return MutableButton(
+      onTap: onTap,
+      child: Container(
+        height: 48,
+        color: Colors.transparent,
+        child: Row(
+          children: [
+            MutableText(
+              text,
+              size: 18,
+            ),
+            Spacer(),
+            action != null ? action! : SizedBox(),
+          ],
+        ),
+      ),
     );
   }
 }
