@@ -7,6 +7,7 @@ import 'package:safe/screens/settings/local_widgets/our_story_banner.widget.dart
 import 'package:safe/screens/settings/local_widgets/settings_nav_bar.widget.dart';
 import 'package:safe/utils/constants/constants.util.dart';
 import 'package:safe/widgets/mutable_screen_transition/mutable_screen_transition.widget.dart';
+import 'package:safe/widgets/mutable_settings_block/mutable_settings_block.widget.dart';
 
 class SettingsScreen extends StatefulWidget {
   @override
@@ -32,10 +33,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
         color: kColorMap[MutableColor.neutral10],
         child: Stack(
           children: [
-            Align(
-              alignment: Alignment.topCenter,
-              child: SettingsNavBar(),
-            ),
             SingleChildScrollView(
               padding: EdgeInsets.fromLTRB(
                 kSideScreenMargin,
@@ -46,8 +43,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
               child: Column(
                 children: [
                   OurStoryBanner(),
+                  SizedBox(height: kSettingsComponentSpacing),
+                  // MutableSettingsBlock(),
                 ],
               ),
+            ),
+            Align(
+              alignment: Alignment.topCenter,
+              child: SettingsNavBar(),
             ),
           ],
         ),

@@ -32,7 +32,7 @@ class OurStoryBanner extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   MutableText(
-                    "Our Story".toUpperCase(), // TODO: Extract
+                    "The Safe Story".toUpperCase(), // TODO: Extract
                     weight: TypeWeight.bold,
                     size: 14,
                   ),

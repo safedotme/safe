@@ -35,7 +35,7 @@ class _SettingsNavBarState extends State<SettingsNavBar> {
           width: double.infinity,
           height: 90,
           decoration: BoxDecoration(
-            color: kColorMap[MutableColor.neutral10]!.withOpacity(0.85),
+            color: kColorMap[MutableColor.neutral10]!.withOpacity(0.7),
             border: Border(
               bottom: BorderSide(
                 width: kBorderWidth,

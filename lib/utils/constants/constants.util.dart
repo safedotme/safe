@@ -373,3 +373,6 @@ final Duration kRotationDuration = Duration(milliseconds: 1000);
 const double kLinearProgressIndicatorWidth = 5;
 const double kMapPaddingCompensation = 0.005;
 const double kMapZoom = 16;
+
+// SETTINGS
+const double kSettingsComponentSpacing = 45;
