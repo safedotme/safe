@@ -231,6 +231,9 @@ class LanguageUtil {
     "incident_card": {
       "secured": "Secured",
     },
+    "settings": {
+      "header": "Settings",
+    },
     "incident": {
       "loading": "Loading incident",
       "downloading_loader": "Exporting incident",

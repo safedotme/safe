@@ -3,6 +3,8 @@ import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
+import 'package:safe/screens/settings/local_widgets/settings_nav_bar.widget.dart';
+import 'package:safe/utils/constants/constants.util.dart';
 import 'package:safe/widgets/mutable_screen_transition/mutable_screen_transition.widget.dart';
 
 class SettingsScreen extends StatefulWidget {
@@ -22,9 +24,19 @@ class _SettingsScreenState extends State<SettingsScreen> {
   @override
   Widget build(BuildContext context) {
     return MutableScreenTransition(
+      isOpen: true, // TODO: Set to false
       controller: core.state.preferences.controller,
+      isDismissable: false,
       body: Container(
-        color: Colors.red,
+        color: kColorMap[MutableColor.neutral10],
+        child: Stack(
+          children: [
+            Align(
+              alignment: Alignment.topCenter,
+              child: SettingsNavBar(),
+            ),
+          ],
+        ),
       ),
     );
   }
