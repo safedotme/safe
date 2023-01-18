@@ -35,6 +35,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
               alignment: Alignment.topCenter,
               child: SettingsNavBar(),
             ),
+            SingleChildScrollView(
+              padding: EdgeInsets.only(top: 108),
+              child: Column(),
+            ),
           ],
         ),
       ),

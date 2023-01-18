@@ -33,13 +33,21 @@ class _SettingsNavBarState extends State<SettingsNavBar> {
         ),
         child: Container(
           width: double.infinity,
-          height: 87,
-          color: kColorMap[MutableColor.neutral10]!.withOpacity(0.85),
+          height: 90,
+          decoration: BoxDecoration(
+            color: kColorMap[MutableColor.neutral10]!.withOpacity(0.85),
+            border: Border(
+              bottom: BorderSide(
+                width: kBorderWidth,
+                color: kColorMap[MutableColor.neutral7]!,
+              ),
+            ),
+          ),
           padding: EdgeInsets.fromLTRB(
             10,
             0,
             10,
-            12,
+            1,
           ),
           alignment: Alignment.bottomCenter,
           child: Row(
