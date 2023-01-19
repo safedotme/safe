@@ -94,6 +94,20 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     ],
                   ),
                   SizedBox(height: kSettingsComponentSpacing),
+                  MutableSettingsBlock(
+                    header: "Danger Zone", // TODO: Extract
+                    items: [
+                      SettingsBlockItem(
+                        text: "Sign Out",
+                        textColor: MutableColor.secondaryRed,
+                      ),
+                      SettingsBlockItem(
+                        text: "Delete Account",
+                        textColor: MutableColor.secondaryRed,
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: kSettingsComponentSpacing),
                   MutableText(
                     "Version 1.0.1 - Production", // TODO: Extract
                     size: 14,

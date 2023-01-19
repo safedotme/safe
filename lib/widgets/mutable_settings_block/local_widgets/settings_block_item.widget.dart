@@ -9,11 +9,13 @@ class SettingsBlockItem extends StatelessWidget {
   final String text;
   final void Function()? onTap;
   final Widget? action;
+  final MutableColor textColor;
 
   SettingsBlockItem({
     required this.text,
     this.onTap,
     this.action,
+    this.textColor = MutableColor.neutral1,
   });
 
   @override
@@ -27,6 +29,7 @@ class SettingsBlockItem extends StatelessWidget {
           children: [
             MutableText(
               text,
+              color: textColor,
               size: 18,
             ),
             Spacer(),
