@@ -5,6 +5,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
 import 'package:safe/screens/settings/local_widgets/our_story_banner.widget.dart';
+import 'package:safe/screens/settings/local_widgets/reach_out_block.widget.dart';
 import 'package:safe/screens/settings/local_widgets/settings_nav_bar.widget.dart';
 import 'package:safe/screens/settings/local_widgets/user_preferences_block.widget.dart';
 import 'package:safe/utils/constants/constants.util.dart';
@@ -51,23 +52,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   SizedBox(height: kSettingsComponentSpacing),
                   UserPreferencesBlock(),
                   SizedBox(height: kSettingsComponentSpacing),
-                  MutableSettingsBlock(
-                    header: "Reach Out", // TODO: Extract
-                    items: [
-                      SettingsBlockItem(
-                        text: "❤️\tRate the app",
-                      ),
-                      SettingsBlockItem(
-                        text: "🐦\tFollow on Twitter",
-                      ),
-                      SettingsBlockItem(
-                        text: "💫\tStar on GitHub",
-                      ),
-                      SettingsBlockItem(
-                        text: "📧\tShoot us an email",
-                      ),
-                    ],
-                  ),
+                  ReachOutBlock(),
                   SizedBox(height: kSettingsComponentSpacing),
                   MutableSettingsBlock(
                     header: "Support", // TODO: Extract
