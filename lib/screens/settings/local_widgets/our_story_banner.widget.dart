@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:safe/neuances.dart';
 import 'package:safe/screens/settings/local_widgets/animated_heart.widget.dart';
 import 'package:safe/utils/constants/constants.util.dart';
 import 'package:safe/utils/icon/icon.util.dart';
@@ -7,12 +8,16 @@ import 'package:safe/widgets/mutable_gradient_border/mutable_gradient_border.wid
 import 'package:safe/widgets/mutable_gradient_shimmer/mutable_gradient_shimmer.widget.dart';
 import 'package:safe/widgets/mutable_icon/mutable_icon.widget.dart';
 import 'package:safe/widgets/mutable_text/mutable_text.widget.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class OurStoryBanner extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MutableButton(
       scale: 0.95,
+      onTap: () {
+        launchUrl(kStoryUrl);
+      },
       child: MutableGradientShimmer(
         borderRadius: 12,
         builder: (key) => MutableGradientBorder(
