@@ -4,7 +4,9 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
 import 'package:safe/utils/constants/constants.util.dart';
+import 'package:safe/utils/icon/icon.util.dart';
 import 'package:safe/widgets/mutable_banner/mutable_banner.widget.dart';
+import 'package:safe/widgets/mutable_icon/mutable_icon.widget.dart';
 import 'package:safe/widgets/mutable_settings_block/local_widgets/settings_block_item.widget.dart';
 import 'package:safe/widgets/mutable_settings_block/mutable_settings_block.widget.dart';
 import 'package:safe/widgets/mutable_switch/mutable_switch.widget.dart';
@@ -89,6 +91,14 @@ class _UserPreferencesBlockState extends State<UserPreferencesBlock> {
             onTap: () {
               print("here");
             },
+            following: Padding(
+              padding: EdgeInsets.only(left: 8),
+              child: MutableIcon(
+                MutableIcons.calendar,
+                size: Size(16, 16),
+                color: Colors.white,
+              ),
+            ),
             action: MutableText(
               quality == null
                   ? "Loading quality..."

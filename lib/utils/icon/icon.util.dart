@@ -14,6 +14,7 @@ import 'package:safe/widgets/mutable_icon/local_widgets/film.icon.dart';
 import 'package:safe/widgets/mutable_icon/local_widgets/flashlight.icon.dart';
 import 'package:safe/widgets/mutable_icon/local_widgets/forward.widget.dart';
 import 'package:safe/widgets/mutable_icon/local_widgets/gear.icon.dart';
+import 'package:safe/widgets/mutable_icon/local_widgets/info.icon.dart';
 import 'package:safe/widgets/mutable_icon/local_widgets/key.icon.dart';
 import 'package:safe/widgets/mutable_icon/local_widgets/link.icon.dart';
 import 'package:safe/widgets/mutable_icon/local_widgets/location.icon.dart';
@@ -56,6 +57,7 @@ enum MutableIcons {
   forward,
   backward,
   cameraFlip,
+  info,
   location,
   calendar,
   cloud,
@@ -77,6 +79,7 @@ class IconUtil {
       MutableIcons.profile: (c) => ProfileIcon(c),
       MutableIcons.playLarge: (c) => PlayLargeIcon(c),
       MutableIcons.safe: (c) => SafeIcon(c),
+      MutableIcons.info: (c) => InfoIcon(c),
       MutableIcons.shield: (c) => ShieldIcon(c),
       MutableIcons.compass: (c) => CompassIcon(c),
       MutableIcons.link: (c) => LinkIcon(c),
