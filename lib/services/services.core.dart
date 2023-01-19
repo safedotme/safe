@@ -25,5 +25,5 @@ class Services {
   AgoraService agora = AgoraService();
   ExportService export = ExportService();
   LocalAuthService localAuth = LocalAuthService();
-  PreferencesService preferences = PreferencesService()..initialize();
+  PreferencesService preferences = PreferencesService();
 }

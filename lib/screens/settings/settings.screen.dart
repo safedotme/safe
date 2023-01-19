@@ -35,7 +35,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   @override
   Widget build(BuildContext context) {
     return MutableScreenTransition(
-      isOpen: true, // TODO: Set to false
+      isOpen: false, // TODO: Set to false
       controller: core.state.preferences.controller,
       isDismissable: false,
       body: Container(

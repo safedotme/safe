@@ -137,19 +137,23 @@ class _IncidentNavBarState extends State<IncidentNavBar> {
                     ),
                     Opacity(
                       opacity: 1 * textOpacity,
-                      child: Column(
-                        children: [
-                          MutableText(
-                            widget.incident.name,
-                            weight: TypeWeight.bold,
-                          ),
-                          SizedBox(height: 4),
-                          MutableText(
-                            genAddress(widget.incident),
-                            size: 14,
-                            color: MutableColor.neutral2,
-                          )
-                        ],
+                      child: ConstrainedBox(
+                        constraints: BoxConstraints(maxWidth: 200),
+                        child: Column(
+                          children: [
+                            MutableText(
+                              widget.incident.name,
+                              weight: TypeWeight.bold,
+                            ),
+                            SizedBox(height: 4),
+                            MutableText(
+                              genAddress(widget.incident),
+                              maxLines: 1,
+                              size: 14,
+                              color: MutableColor.neutral2,
+                            )
+                          ],
+                        ),
                       ),
                     ),
                     SizedBox(width: kOverlayButtonSize),

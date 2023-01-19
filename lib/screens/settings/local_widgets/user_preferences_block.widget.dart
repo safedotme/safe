@@ -15,6 +15,7 @@ import 'package:safe/widgets/mutable_settings_block/local_widgets/settings_block
 import 'package:safe/widgets/mutable_settings_block/mutable_settings_block.widget.dart';
 import 'package:safe/widgets/mutable_switch/mutable_switch.widget.dart';
 import 'package:safe/widgets/mutable_text/mutable_text.widget.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class UserPreferencesBlock extends StatefulWidget {
@@ -25,6 +26,7 @@ class UserPreferencesBlock extends StatefulWidget {
 class _UserPreferencesBlockState extends State<UserPreferencesBlock> {
   late Core core;
   String? quality;
+  SharedPreferences? _client;
 
   @override
   void initState() {
@@ -43,7 +45,7 @@ class _UserPreferencesBlockState extends State<UserPreferencesBlock> {
 
   Future<bool> handleFaceIDTap(bool v) async {
     if (!v) {
-      core.state.preferences.setFaceIDEnabled(false);
+      setBiometrics(false);
       return true;
     }
 
@@ -60,12 +62,17 @@ class _UserPreferencesBlockState extends State<UserPreferencesBlock> {
 
     if (!active) {
       logError("Face ID failed. Try again"); // TODO: Extract
-      core.state.preferences.setFaceIDEnabled(false);
+      setBiometrics(false);
       return false;
     }
 
-    core.state.preferences.setFaceIDEnabled(true);
+    setBiometrics(true);
     return true;
+  }
+
+  void setBiometrics(bool v) {
+    core.state.preferences.setBiometricsEnabled(v);
+    core.services.preferences.setBiometricsEnabled(v, _client!);
   }
 
   void fetchQuality() async {
@@ -135,7 +142,7 @@ class _UserPreferencesBlockState extends State<UserPreferencesBlock> {
                     .langMap[core.state.preferences.language]!["settings"]
                 ["preferences"]["face_id"],
             action: MutableSwitch(
-              defaultState: core.state.preferences.isFaceIDEnabled,
+              defaultState: core.state.preferences.biometricsEnabled ?? false,
               onChange: handleFaceIDTap,
             ),
           ),

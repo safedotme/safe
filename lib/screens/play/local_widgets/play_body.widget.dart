@@ -102,6 +102,7 @@ class _PlayBodyState extends State<PlayBody> {
             padding: EdgeInsets.only(top: 18),
             child: Column(
               mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 MutableText(
                   widget.incident.name,
@@ -109,10 +110,14 @@ class _PlayBodyState extends State<PlayBody> {
                   size: 20,
                 ),
                 SizedBox(height: 2),
-                MutableText(
-                  generateAddress(widget.incident),
-                  size: 14,
-                  color: MutableColor.neutral2,
+                SizedBox(
+                  width: 300,
+                  child: MutableText(
+                    generateAddress(widget.incident),
+                    maxLines: 1,
+                    size: 14,
+                    color: MutableColor.neutral2,
+                  ),
                 ),
               ],
             ),

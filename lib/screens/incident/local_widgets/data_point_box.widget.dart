@@ -45,6 +45,7 @@ class DataPointBox extends StatelessWidget {
                         SizedBox(height: 10),
                         MutableText(
                           header,
+                          maxLines: 1,
                           weight: TypeWeight.bold,
                           decoration: TextDecoration.none,
                           size: 18,

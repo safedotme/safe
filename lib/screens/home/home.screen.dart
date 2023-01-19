@@ -25,6 +25,7 @@ import 'package:safe/widgets/mutable_overlay/mutable_overlay.widget.dart';
 import 'package:safe/widgets/mutable_safe_button/mutable_safe_button.widget.dart';
 import 'package:safe/widgets/mutable_scaffold/mutable_scaffold.widget.dart';
 import 'package:safe/widgets/mutable_text/mutable_text.widget.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class HomeScreen extends StatefulWidget {
   static const String id = "home_screen";
@@ -45,6 +46,7 @@ class _HomeScreenState extends State<HomeScreen> {
     userSubscribe();
     contactSubscribe();
     permissionSubscribe();
+    preferencesSubscribe();
     connectivitySubscribe();
   }
 
@@ -61,6 +63,15 @@ class _HomeScreenState extends State<HomeScreen> {
         });
       },
     );
+  }
+
+  void preferencesSubscribe() async {
+    final client = await SharedPreferences.getInstance();
+
+    final biometricsEnabled =
+        core.services.preferences.fetchBiometricsEnabled(client);
+
+    core.state.preferences.setBiometricsEnabled(biometricsEnabled);
   }
 
   void permissionSubscribe() async {

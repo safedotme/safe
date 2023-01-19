@@ -33,10 +33,10 @@ abstract class _PreferencesStore with Store {
   void setIsConnected(bool b) => isConnected = b;
 
   @observable
-  bool isFaceIDEnabled = false;
+  bool? biometricsEnabled;
 
   @action
-  void setFaceIDEnabled(bool v) => isFaceIDEnabled = v;
+  void setBiometricsEnabled(bool? v) => biometricsEnabled = v;
 
   // SETTINGS RELATED
   @observable

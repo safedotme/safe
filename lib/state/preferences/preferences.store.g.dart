@@ -73,19 +73,19 @@ mixin _$PreferencesStore on _PreferencesStore, Store {
     });
   }
 
-  late final _$isFaceIDEnabledAtom =
-      Atom(name: '_PreferencesStore.isFaceIDEnabled', context: context);
+  late final _$biometricsEnabledAtom =
+      Atom(name: '_PreferencesStore.biometricsEnabled', context: context);
 
   @override
-  bool get isFaceIDEnabled {
-    _$isFaceIDEnabledAtom.reportRead();
-    return super.isFaceIDEnabled;
+  bool? get biometricsEnabled {
+    _$biometricsEnabledAtom.reportRead();
+    return super.biometricsEnabled;
   }
 
   @override
-  set isFaceIDEnabled(bool value) {
-    _$isFaceIDEnabledAtom.reportWrite(value, super.isFaceIDEnabled, () {
-      super.isFaceIDEnabled = value;
+  set biometricsEnabled(bool? value) {
+    _$biometricsEnabledAtom.reportWrite(value, super.biometricsEnabled, () {
+      super.biometricsEnabled = value;
     });
   }
 
@@ -174,11 +174,11 @@ mixin _$PreferencesStore on _PreferencesStore, Store {
   }
 
   @override
-  void setFaceIDEnabled(bool v) {
+  void setBiometricsEnabled(bool? v) {
     final _$actionInfo = _$_PreferencesStoreActionController.startAction(
-        name: '_PreferencesStore.setFaceIDEnabled');
+        name: '_PreferencesStore.setBiometricsEnabled');
     try {
-      return super.setFaceIDEnabled(v);
+      return super.setBiometricsEnabled(v);
     } finally {
       _$_PreferencesStoreActionController.endAction(_$actionInfo);
     }
@@ -191,7 +191,7 @@ language: ${language},
 disabledPermissions: ${disabledPermissions},
 actionController: ${actionController},
 isConnected: ${isConnected},
-isFaceIDEnabled: ${isFaceIDEnabled},
+biometricsEnabled: ${biometricsEnabled},
 controller: ${controller},
 scrollController: ${scrollController},
 overlayController: ${overlayController}
