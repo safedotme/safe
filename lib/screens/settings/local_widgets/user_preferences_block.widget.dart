@@ -8,6 +8,7 @@ import 'package:safe/widgets/mutable_banner/mutable_banner.widget.dart';
 import 'package:safe/widgets/mutable_settings_block/local_widgets/settings_block_item.widget.dart';
 import 'package:safe/widgets/mutable_settings_block/mutable_settings_block.widget.dart';
 import 'package:safe/widgets/mutable_switch/mutable_switch.widget.dart';
+import 'package:safe/widgets/mutable_text/mutable_text.widget.dart';
 
 class UserPreferencesBlock extends StatefulWidget {
   @override
@@ -16,11 +17,14 @@ class UserPreferencesBlock extends StatefulWidget {
 
 class _UserPreferencesBlockState extends State<UserPreferencesBlock> {
   late Core core;
+  String? quality;
 
   @override
   void initState() {
     super.initState();
     core = Provider.of<Core>(context, listen: false);
+
+    fetchQuality();
   }
 
   void logError(String msg) {
@@ -57,6 +61,14 @@ class _UserPreferencesBlockState extends State<UserPreferencesBlock> {
     return true;
   }
 
+  void fetchQuality() async {
+    final settings = await core.services.server.admin.readLatest();
+
+    setState(() {
+      quality = settings.dimensionHeight.toString();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Observer(
@@ -74,6 +86,20 @@ class _UserPreferencesBlockState extends State<UserPreferencesBlock> {
             text: core.utils.language
                     .langMap[core.state.preferences.language]!["settings"]
                 ["preferences"]["quality"],
+            onTap: () {
+              print("here");
+            },
+            action: MutableText(
+              quality == null
+                  ? "Loading quality..."
+                  : "High ({DIMENSION}p)".replaceAll(
+                      // TODO: Extract
+                      "{DIMENSION}",
+                      quality!,
+                    ),
+              size: 18,
+              color: MutableColor.neutral2,
+            ),
           ),
           SettingsBlockItem(
             text: core.utils.language
