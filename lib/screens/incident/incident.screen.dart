@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
@@ -56,6 +54,7 @@ class _IncidentState extends State<IncidentScreen> {
     return Observer(
       builder: (_) => MutableScreenTransition(
         isDismissable: false,
+        onOpen: () {},
         controller: core.state.incident.controller,
         body: Container(
           color: kColorMap[MutableColor.neutral10],
@@ -108,26 +107,8 @@ class _IncidentState extends State<IncidentScreen> {
                             ),
                           ),
                         ),
-                        LocalAuthOverlay(),
                       ],
                     ),
-        ),
-      ),
-    );
-  }
-}
-
-class LocalAuthOverlay extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return ClipRect(
-      child: BackdropFilter(
-        filter: ImageFilter.blur(
-          sigmaX: 30,
-          sigmaY: 30,
-        ),
-        child: Container(
-          color: kColorMap[MutableColor.neutral10]!.withOpacity(0.1),
         ),
       ),
     );

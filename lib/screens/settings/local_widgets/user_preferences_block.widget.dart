@@ -34,6 +34,11 @@ class _UserPreferencesBlockState extends State<UserPreferencesBlock> {
     core = Provider.of<Core>(context, listen: false);
 
     fetchQuality();
+    SharedPreferences.getInstance().then(
+      (c) {
+        _client = c;
+      },
+    );
   }
 
   void logError(String msg) {

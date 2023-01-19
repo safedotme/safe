@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
 import 'package:safe/models/incident/incident.model.dart';
 import 'package:safe/utils/constants/constants.util.dart';
+import 'package:safe/widgets/mutable_banner/mutable_banner.widget.dart';
 import 'package:safe/widgets/mutable_button/mutable_button.widget.dart';
 import 'package:safe/widgets/mutable_incident_card/local_widgets/incident_card_body.widget.dart';
 import 'package:safe/widgets/mutable_incident_card/local_widgets/incident_card_image.widget.dart';
@@ -25,10 +26,35 @@ class _MutableIncidentCardState extends State<MutableIncidentCard> {
     core = Provider.of<Core>(context, listen: false);
   }
 
+  Future<bool> authenticate() async {
+    bool auth = core.state.preferences.biometricsEnabled ?? false;
+
+    if (auth) {
+      bool passed = await core.services.localAuth.authenticate(
+        "Authenticate to view incident", // TODO: Extract
+      );
+
+      if (!passed) {
+        core.state.preferences.actionController.trigger(
+          "Unable to authenticate. Try again.", // TODO: Extract
+          MessageType.error,
+        );
+
+        return false;
+      }
+    }
+
+    return true;
+  }
+
   @override
   Widget build(BuildContext context) {
     return MutableButton(
-      onTap: () {
+      onTap: () async {
+        bool pass = await authenticate();
+
+        if (!pass) return;
+
         core.state.incident.setIncidentId(widget.incident.id);
         core.state.incident.controller.open();
       },
@@ -48,7 +74,11 @@ class _MutableIncidentCardState extends State<MutableIncidentCard> {
             children: [
               IncidentCardImage(
                 widget.incident,
-                onPlayTap: () {
+                onPlayTap: () async {
+                  bool pass = await authenticate();
+
+                  if (!pass) return;
+
                   core.state.incident.setIncidentId(widget.incident.id);
                   core.state.incident.playController.open();
                 },
