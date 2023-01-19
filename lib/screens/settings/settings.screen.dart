@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -5,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
 import 'package:safe/screens/settings/local_widgets/our_story_banner.widget.dart';
 import 'package:safe/screens/settings/local_widgets/settings_nav_bar.widget.dart';
+import 'package:safe/screens/settings/local_widgets/user_preferences_block.widget.dart';
 import 'package:safe/utils/constants/constants.util.dart';
 import 'package:safe/widgets/mutable_screen_transition/mutable_screen_transition.widget.dart';
 import 'package:safe/widgets/mutable_settings_block/local_widgets/settings_block_item.widget.dart';
@@ -46,20 +48,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 children: [
                   OurStoryBanner(),
                   SizedBox(height: kSettingsComponentSpacing),
-                  MutableSettingsBlock(
-                    header: "Preferences", // TODO: Extract
-                    items: [
-                      SettingsBlockItem(
-                        text: "Change Phone Number",
-                      ),
-                      SettingsBlockItem(
-                        text: "Livestream Quality",
-                      ),
-                      SettingsBlockItem(
-                        text: "Enable Face ID",
-                      ),
-                    ],
-                  ),
+                  UserPreferencesBlock(),
                   SizedBox(height: kSettingsComponentSpacing),
                   MutableSettingsBlock(
                     header: "Reach Out", // TODO: Extract

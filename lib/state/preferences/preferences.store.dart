@@ -31,6 +31,12 @@ abstract class _PreferencesStore with Store {
   @action
   void setIsConnected(bool b) => isConnected = b;
 
+  @observable
+  bool isFaceIDEnabled = false;
+
+  @action
+  void setFaceIDEnabled(bool v) => isFaceIDEnabled = v;
+
   // SETTINGS RELATED
   @observable
   ScreenTransitionController controller = ScreenTransitionController();

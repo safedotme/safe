@@ -18,10 +18,20 @@ class SettingsBlockItem extends StatelessWidget {
     this.textColor = MutableColor.neutral1,
   });
 
-  @override
-  Widget build(BuildContext context) {
+  Widget addOnTap({required Widget child}) {
+    if (onTap == null) {
+      return child;
+    }
+
     return MutableButton(
       onTap: onTap,
+      child: child,
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return addOnTap(
       child: Container(
         height: 48,
         color: Colors.transparent,

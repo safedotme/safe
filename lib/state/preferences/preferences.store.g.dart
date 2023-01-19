@@ -73,6 +73,22 @@ mixin _$PreferencesStore on _PreferencesStore, Store {
     });
   }
 
+  late final _$isFaceIDEnabledAtom =
+      Atom(name: '_PreferencesStore.isFaceIDEnabled', context: context);
+
+  @override
+  bool get isFaceIDEnabled {
+    _$isFaceIDEnabledAtom.reportRead();
+    return super.isFaceIDEnabled;
+  }
+
+  @override
+  set isFaceIDEnabled(bool value) {
+    _$isFaceIDEnabledAtom.reportWrite(value, super.isFaceIDEnabled, () {
+      super.isFaceIDEnabled = value;
+    });
+  }
+
   late final _$controllerAtom =
       Atom(name: '_PreferencesStore.controller', context: context);
 
@@ -142,12 +158,24 @@ mixin _$PreferencesStore on _PreferencesStore, Store {
   }
 
   @override
+  void setFaceIDEnabled(bool v) {
+    final _$actionInfo = _$_PreferencesStoreActionController.startAction(
+        name: '_PreferencesStore.setFaceIDEnabled');
+    try {
+      return super.setFaceIDEnabled(v);
+    } finally {
+      _$_PreferencesStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 language: ${language},
 disabledPermissions: ${disabledPermissions},
 actionController: ${actionController},
 isConnected: ${isConnected},
+isFaceIDEnabled: ${isFaceIDEnabled},
 controller: ${controller},
 scrollController: ${scrollController}
     ''';
