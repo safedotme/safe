@@ -233,6 +233,12 @@ class LanguageUtil {
     },
     "settings": {
       "header": "Settings",
+      "preferences": {
+        "header": "Preferences",
+        "change_phone": "Change Phone Number",
+        "quality": "Livestream Quality",
+        "face_id": "Enable Face ID"
+      }
     },
     "incident": {
       "loading": "Loading incident",

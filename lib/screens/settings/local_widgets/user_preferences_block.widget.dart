@@ -4,6 +4,7 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
 import 'package:safe/utils/constants/constants.util.dart';
+import 'package:safe/widgets/mutable_banner/mutable_banner.widget.dart';
 import 'package:safe/widgets/mutable_settings_block/local_widgets/settings_block_item.widget.dart';
 import 'package:safe/widgets/mutable_settings_block/mutable_settings_block.widget.dart';
 import 'package:safe/widgets/mutable_switch/mutable_switch.widget.dart';
@@ -22,21 +23,66 @@ class _UserPreferencesBlockState extends State<UserPreferencesBlock> {
     core = Provider.of<Core>(context, listen: false);
   }
 
+  void logError(String msg) {
+    core.state.preferences.actionController.trigger(
+      msg,
+      MessageType.error,
+    );
+  }
+
+  Future<bool> handleFaceIDTap(bool v) async {
+    if (!v) {
+      core.state.preferences.setFaceIDEnabled(false);
+      return true;
+    }
+
+    final isAvailable = await core.services.localAuth.isAvailable();
+
+    if (!isAvailable) {
+      logError("Face ID is unavailable");
+      return false;
+    }
+
+    final active = await core.services.localAuth.authenticate(
+      "Authenticate to enable service", // TODO: Extract
+    );
+
+    if (!active) {
+      logError("Face ID failed. Try again"); // TODO: Extract
+      core.state.preferences.setFaceIDEnabled(false);
+      return false;
+    }
+
+    core.state.preferences.setFaceIDEnabled(true);
+    return true;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Observer(
       builder: (_) => MutableSettingsBlock(
-        header: "Preferences", // TODO: Extract
+        header: core.utils.language
+                .langMap[core.state.preferences.language]!["settings"]
+            ["preferences"]["header"],
         items: [
           SettingsBlockItem(
-            text: "Change Phone Number",
+            text: core.utils.language
+                    .langMap[core.state.preferences.language]!["settings"]
+                ["preferences"]["change_phone"],
           ),
           SettingsBlockItem(
-            text: "Livestream Quality",
+            text: core.utils.language
+                    .langMap[core.state.preferences.language]!["settings"]
+                ["preferences"]["quality"],
           ),
           SettingsBlockItem(
-            text: "Enable Face ID",
-            action: MutableSwitch(),
+            text: core.utils.language
+                    .langMap[core.state.preferences.language]!["settings"]
+                ["preferences"]["face_id"],
+            action: MutableSwitch(
+              defaultState: core.state.preferences.isFaceIDEnabled,
+              onChange: handleFaceIDTap,
+            ),
           ),
         ],
       ),

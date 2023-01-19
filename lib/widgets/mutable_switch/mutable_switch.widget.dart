@@ -1,10 +1,12 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:safe/widgets/mutable_switch/local_widgets/switch_painter.widget.dart';
 
 class MutableSwitch extends StatefulWidget {
   final bool defaultState;
-  final void Function(bool v)? onChange;
+  final FutureOr<bool> Function(bool v)? onChange;
 
   MutableSwitch({
     this.defaultState = false,
@@ -65,12 +67,21 @@ class _MutableSwitchState extends State<MutableSwitch>
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
+      onTap: () async {
         if (controller.isAnimating) return;
 
         HapticFeedback.lightImpact();
+
+        if (widget.onChange == null) {
+          animate();
+          return;
+        }
+
+        final shouldAnimate = await widget.onChange!(state == 0 ? true : false);
+
+        if (!shouldAnimate) return;
+
         animate();
-        widget.onChange?.call(state == 0 ? true : false);
       },
       child: CustomPaint(
         painter: SwitchPainter(state),
