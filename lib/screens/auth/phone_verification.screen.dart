@@ -97,10 +97,6 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen>
         phone: core.state.auth.phoneNumber,
         dialCode: core.state.auth.countryDialCode,
         onCodeSend: (verificationId, resentToken) {
-          WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-            handleSMSSent();
-          });
-
           core.state.auth.setVerificationId(verificationId);
           core.state.auth.setResendToken(resentToken);
         },
@@ -128,24 +124,6 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen>
     core.state.auth.setBannerState(MessageType.error);
     core.state.auth.setBannerMessage(error["desc"]);
     core.state.auth.setBannerTitle(error["header"]);
-
-    // Display error message
-    core.state.auth.bannerController.show();
-  }
-
-  void handleSMSSent() {
-    core.state.auth.setBannerState(MessageType.success);
-    core.state.auth.setBannerMessage(
-      core
-          .utils
-          .language
-          .langMap[core.state.preferences.language]!["auth"]
-              ["phone_verification"]["smsSentMsg"]["header"]
-          .replaceAll("{PHONE}", core.state.auth.phoneNumber),
-    );
-    core.state.auth.setBannerTitle(
-        core.utils.language.langMap[core.state.preferences.language]!["auth"]
-            ["phone_verification"]["smsSentMsg"]["body"]);
 
     // Display error message
     core.state.auth.bannerController.show();

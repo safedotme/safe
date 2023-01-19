@@ -47,4 +47,10 @@ abstract class _PreferencesStore with Store {
 
   @observable
   OverlayController overlayController = OverlayController();
+
+  @observable
+  String overlayText = "";
+
+  @action
+  void setOverlayText(String s) => overlayText = s;
 }

@@ -137,6 +137,22 @@ mixin _$PreferencesStore on _PreferencesStore, Store {
     });
   }
 
+  late final _$overlayTextAtom =
+      Atom(name: '_PreferencesStore.overlayText', context: context);
+
+  @override
+  String get overlayText {
+    _$overlayTextAtom.reportRead();
+    return super.overlayText;
+  }
+
+  @override
+  set overlayText(String value) {
+    _$overlayTextAtom.reportWrite(value, super.overlayText, () {
+      super.overlayText = value;
+    });
+  }
+
   late final _$_PreferencesStoreActionController =
       ActionController(name: '_PreferencesStore', context: context);
 
@@ -185,6 +201,17 @@ mixin _$PreferencesStore on _PreferencesStore, Store {
   }
 
   @override
+  void setOverlayText(String s) {
+    final _$actionInfo = _$_PreferencesStoreActionController.startAction(
+        name: '_PreferencesStore.setOverlayText');
+    try {
+      return super.setOverlayText(s);
+    } finally {
+      _$_PreferencesStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 language: ${language},
@@ -194,7 +221,8 @@ isConnected: ${isConnected},
 biometricsEnabled: ${biometricsEnabled},
 controller: ${controller},
 scrollController: ${scrollController},
-overlayController: ${overlayController}
+overlayController: ${overlayController},
+overlayText: ${overlayText}
     ''';
   }
 }

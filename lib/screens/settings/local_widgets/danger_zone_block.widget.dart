@@ -49,8 +49,14 @@ class _DangerZoneBlockState extends State<DangerZoneBlock> {
                 actions: [
                   CupertinoActionSheetAction(
                     isDestructiveAction: true,
-                    onPressed: () {
+                    onPressed: () async {
                       Navigator.pop(context);
+                      core.state.preferences.setOverlayText(
+                        "Signing out",
+                      ); // TODO: Extract
+                      await core.state.preferences.overlayController.show();
+                      await core.state.incidentLog.controller.close();
+                      core.state.preferences.overlayController.hide();
                       core.services.auth.signOut();
                     },
                     child: Text("Sign Out"),
