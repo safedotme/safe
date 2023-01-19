@@ -121,6 +121,22 @@ mixin _$PreferencesStore on _PreferencesStore, Store {
     });
   }
 
+  late final _$overlayControllerAtom =
+      Atom(name: '_PreferencesStore.overlayController', context: context);
+
+  @override
+  OverlayController get overlayController {
+    _$overlayControllerAtom.reportRead();
+    return super.overlayController;
+  }
+
+  @override
+  set overlayController(OverlayController value) {
+    _$overlayControllerAtom.reportWrite(value, super.overlayController, () {
+      super.overlayController = value;
+    });
+  }
+
   late final _$_PreferencesStoreActionController =
       ActionController(name: '_PreferencesStore', context: context);
 
@@ -177,7 +193,8 @@ actionController: ${actionController},
 isConnected: ${isConnected},
 isFaceIDEnabled: ${isFaceIDEnabled},
 controller: ${controller},
-scrollController: ${scrollController}
+scrollController: ${scrollController},
+overlayController: ${overlayController}
     ''';
   }
 }

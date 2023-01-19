@@ -2,8 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
+import 'package:safe/widgets/mutable_banner/mutable_banner.widget.dart';
 
-class CaptureStopAlertDialog extends StatelessWidget {
+class ChangePhoneAlertDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Core core = Provider.of<Core>(context, listen: false);
@@ -11,37 +12,42 @@ class CaptureStopAlertDialog extends StatelessWidget {
       data: ThemeData.dark(),
       child: CupertinoAlertDialog(
         title: Text(
-          core.utils.language
-                  .langMap[core.state.preferences.language]!["capture"]
-              ["controls"]["stop_alert"]["header"],
+          // TODO: Extract
+          "Change Phone",
         ),
         content: Text(
-          core.utils.language
-                  .langMap[core.state.preferences.language]!["capture"]
-              ["controls"]["stop_alert"]["content"],
+          "Changing your phone number is currently unavailable through the app. Notify the team and we'll help you out through SMS ({PHONE})!"
+              .replaceAll(
+            "{PHONE}",
+            core.state.incidentLog.user?.phone ?? "",
+          ),
         ),
         actions: [
           CupertinoDialogAction(
             onPressed: () {
               Navigator.of(context).pop();
+              core.state.preferences.overlayController.hide();
             },
             child: Text(
-              core.utils.language
-                      .langMap[core.state.preferences.language]!["capture"]
-                  ["controls"]["stop_alert"]["cancel"],
+              "Cancel",
             ),
           ),
           CupertinoDialogAction(
             onPressed: () async {
-              core.utils.capture.stop();
               Navigator.of(context).pop();
+              core.state.preferences.overlayController.hide();
+
+              //TODO: Log
+
+              core.state.preferences.actionController.trigger(
+                "The team has been notified!",
+                MessageType.success,
+              );
             },
             isDefaultAction: true,
             textStyle: TextStyle(fontWeight: FontWeight.w500),
             child: Text(
-              core.utils.language
-                      .langMap[core.state.preferences.language]!["capture"]
-                  ["controls"]["stop_alert"]["confirm"],
+              "Notify",
             ),
           ),
         ],

@@ -3,6 +3,7 @@ import 'package:mobx/mobx.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:safe/utils/language/language.util.dart';
 import 'package:safe/widgets/mutable_action_banner/mutable_action_banner.widget.dart';
+import 'package:safe/widgets/mutable_overlay/mutable_overlay.widget.dart';
 import 'package:safe/widgets/mutable_screen_transition/mutable_screen_transition.widget.dart';
 
 part 'preferences.store.g.dart';
@@ -43,4 +44,7 @@ abstract class _PreferencesStore with Store {
 
   @observable
   ScrollController scrollController = ScrollController();
+
+  @observable
+  OverlayController overlayController = OverlayController();
 }

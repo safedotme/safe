@@ -8,6 +8,7 @@ import 'package:safe/screens/settings/local_widgets/our_story_banner.widget.dart
 import 'package:safe/screens/settings/local_widgets/settings_nav_bar.widget.dart';
 import 'package:safe/screens/settings/local_widgets/user_preferences_block.widget.dart';
 import 'package:safe/utils/constants/constants.util.dart';
+import 'package:safe/widgets/mutable_overlay/mutable_overlay.widget.dart';
 import 'package:safe/widgets/mutable_screen_transition/mutable_screen_transition.widget.dart';
 import 'package:safe/widgets/mutable_settings_block/local_widgets/settings_block_item.widget.dart';
 import 'package:safe/widgets/mutable_settings_block/mutable_settings_block.widget.dart';
@@ -109,6 +110,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
             Align(
               alignment: Alignment.topCenter,
               child: SettingsNavBar(),
+            ),
+            MutableOverlay(
+              controller: core.state.preferences.overlayController,
             ),
           ],
         ),

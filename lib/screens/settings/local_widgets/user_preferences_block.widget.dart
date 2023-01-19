@@ -1,9 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
 import 'package:safe/neuances.dart';
+import 'package:safe/screens/capture/local_widgets/capture_stop_alert_dialog.widget.dart';
+import 'package:safe/screens/settings/local_widgets/change_phone_alert_dialog.widget.dart';
 import 'package:safe/utils/constants/constants.util.dart';
 import 'package:safe/utils/icon/icon.util.dart';
 import 'package:safe/widgets/mutable_banner/mutable_banner.widget.dart';
@@ -85,6 +88,15 @@ class _UserPreferencesBlockState extends State<UserPreferencesBlock> {
             text: core.utils.language
                     .langMap[core.state.preferences.language]!["settings"]
                 ["preferences"]["change_phone"],
+            onTap: () {
+              HapticFeedback.lightImpact();
+              core.state.preferences.overlayController.show();
+              showCupertinoDialog(
+                context: context,
+                barrierDismissible: true,
+                builder: (_) => ChangePhoneAlertDialog(),
+              );
+            },
           ),
           SettingsBlockItem(
             text: core.utils.language
