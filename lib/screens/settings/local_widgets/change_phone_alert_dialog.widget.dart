@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
+import 'package:safe/services/analytics/helper_classes/analytics_log_model.service.dart';
 import 'package:safe/widgets/mutable_banner/mutable_banner.widget.dart';
 
 class ChangePhoneAlertDialog extends StatelessWidget {
@@ -37,7 +38,16 @@ class ChangePhoneAlertDialog extends StatelessWidget {
               Navigator.of(context).pop();
               core.state.preferences.overlayController.hide();
 
-              //TODO: Log
+              core.services.analytics.log(AnalyticsLog(
+                channel: "change-phone-number",
+                event: "change-request",
+                description:
+                    "User has requested to change their phone number.\n\t**Phone Number**: ${core.state.incidentLog.user?.phone}\n**Name**: ${core.state.incidentLog.user?.name}",
+                icon: "☎️",
+                tags: {
+                  "userid": core.state.incidentLog.user?.id ?? "",
+                },
+              ));
 
               core.state.preferences.actionController.trigger(
                 "The team has been notified!",
