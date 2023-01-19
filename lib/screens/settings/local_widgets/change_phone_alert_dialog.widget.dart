@@ -13,11 +13,16 @@ class ChangePhoneAlertDialog extends StatelessWidget {
       data: ThemeData.dark(),
       child: CupertinoAlertDialog(
         title: Text(
-          // TODO: Extract
-          "Change Phone",
+          core.utils.language
+                  .langMap[core.state.preferences.language]!["settings"]
+              ["preferences"]["change_phone"]["popup"]["header"],
         ),
         content: Text(
-          "Changing your phone number is currently unavailable through the app. Notify the team and we'll help you out through SMS ({PHONE})!"
+          core
+              .utils
+              .language
+              .langMap[core.state.preferences.language]!["settings"]
+                  ["preferences"]["change_phone"]["popup"]["body"]
               .replaceAll(
             "{PHONE}",
             core.state.incidentLog.user?.phone ?? "",
@@ -30,7 +35,9 @@ class ChangePhoneAlertDialog extends StatelessWidget {
               core.state.preferences.overlayController.hide();
             },
             child: Text(
-              "Cancel",
+              core.utils.language
+                      .langMap[core.state.preferences.language]!["settings"]
+                  ["preferences"]["change_phone"]["popup"]["cancel"],
             ),
           ),
           CupertinoDialogAction(
@@ -50,14 +57,18 @@ class ChangePhoneAlertDialog extends StatelessWidget {
               ));
 
               core.state.preferences.actionController.trigger(
-                "The team has been notified!",
+                core.utils.language
+                        .langMap[core.state.preferences.language]!["settings"]
+                    ["preferences"]["change_phone"]["popup"]["notify_success"],
                 MessageType.success,
               );
             },
             isDefaultAction: true,
             textStyle: TextStyle(fontWeight: FontWeight.w500),
             child: Text(
-              "Notify",
+              core.utils.language
+                      .langMap[core.state.preferences.language]!["settings"]
+                  ["preferences"]["change_phone"]["popup"]["notify"],
             ),
           ),
         ],

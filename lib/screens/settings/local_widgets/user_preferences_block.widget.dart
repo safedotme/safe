@@ -87,7 +87,7 @@ class _UserPreferencesBlockState extends State<UserPreferencesBlock> {
           SettingsBlockItem(
             text: core.utils.language
                     .langMap[core.state.preferences.language]!["settings"]
-                ["preferences"]["change_phone"],
+                ["preferences"]["change_phone"]["header"],
             onTap: () {
               HapticFeedback.lightImpact();
               core.state.preferences.overlayController.show();

@@ -235,7 +235,17 @@ class LanguageUtil {
       "header": "Settings",
       "preferences": {
         "header": "Preferences",
-        "change_phone": "Change Phone Number",
+        "change_phone": {
+          "header": "Change Phone Number",
+          "popup": {
+            "header": "Change Phone",
+            "body":
+                "Changing your phone number is currently unavailable through the app. Notify the team and we'll help you out through SMS ({PHONE})!",
+            "cancel": "Cancel",
+            "notify_success": "The team has been notified!",
+            "notify": "Notify",
+          }
+        },
         "quality": {
           "header": "Livestream Quality",
           "loading": "Loading quality...",
