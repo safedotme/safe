@@ -4,6 +4,7 @@ import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
+import 'package:safe/neuances.dart';
 import 'package:safe/screens/settings/local_widgets/danger_zone_block.widget.dart';
 import 'package:safe/screens/settings/local_widgets/our_story_banner.widget.dart';
 import 'package:safe/screens/settings/local_widgets/reach_out_block.widget.dart';
@@ -61,7 +62,15 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   DangerZoneBlock(),
                   SizedBox(height: kSettingsComponentSpacing),
                   MutableText(
-                    "Version 1.0.1 - Production", // TODO: Extract
+                    core
+                        .utils
+                        .language
+                        .langMap[core.state.preferences.language]!["settings"]
+                            ["version"]
+                        .replaceAll(
+                      "{VERSION}",
+                      kAppVersion,
+                    ),
                     size: 14,
                     color: MutableColor.neutral2,
                     align: TextAlign.center,

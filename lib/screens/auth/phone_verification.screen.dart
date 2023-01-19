@@ -136,8 +136,16 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen>
   void handleSMSSent() {
     core.state.auth.setBannerState(MessageType.success);
     core.state.auth.setBannerMessage(
-        "SMS sent to ${core.state.auth.phoneNumber}"); // TODO: Extract
-    core.state.auth.setBannerTitle("Check your SMS messages."); // TODO: Extract
+      core
+          .utils
+          .language
+          .langMap[core.state.preferences.language]!["auth"]
+              ["phone_verification"]["smsSentMsg"]["header"]
+          .replaceAll("{PHONE}", core.state.auth.phoneNumber),
+    );
+    core.state.auth.setBannerTitle(
+        core.utils.language.langMap[core.state.preferences.language]!["auth"]
+            ["phone_verification"]["smsSentMsg"]["body"]);
 
     // Display error message
     core.state.auth.bannerController.show();

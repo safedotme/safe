@@ -7,6 +7,7 @@ import 'package:safe/services/local_auth/local_auth.service.dart';
 import 'package:safe/services/location/location.service.dart';
 import 'package:safe/services/media_server/media_server.service.dart';
 import 'package:safe/services/permissions/permissions.service.dart';
+import 'package:safe/services/preferences/preferences.service.dart';
 import 'package:safe/services/server/server.service.dart';
 import 'package:safe/services/storage/storage.service.dart';
 import 'package:safe/services/twilio/twilio.service.dart';
@@ -24,4 +25,5 @@ class Services {
   AgoraService agora = AgoraService();
   ExportService export = ExportService();
   LocalAuthService localAuth = LocalAuthService();
+  PreferencesService preferences = PreferencesService()..initialize();
 }

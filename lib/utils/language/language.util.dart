@@ -129,6 +129,10 @@ class LanguageUtil {
         "title": "Enter Phone Number",
         "desc": "We'll send you a SMS code to verify your\n account",
         "buttonText": "Send SMS",
+        "smsSentMsg": {
+          "header": "SMS sent to {PHONE}",
+          "body": "Check your SMS messages.",
+        },
         "loader": "Creating account"
       }
     },
@@ -233,6 +237,7 @@ class LanguageUtil {
     },
     "settings": {
       "header": "Settings",
+      "version": "Version {VERSION} - Production",
       "preferences": {
         "header": "Preferences",
         "change_phone": {

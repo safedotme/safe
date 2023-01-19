@@ -8,3 +8,4 @@ final Uri kRateAppUrl = Uri.parse("https://joinsafe.me");
 final Uri kGitHubUrl = Uri.parse("https://github.com/safedotme/safe");
 final Uri kEmailUrl = Uri.parse("mailto:mark@joinsafe.me");
 final Uri kStoryUrl = Uri.parse("https://joinsafe.me/story");
+const String kAppVersion = "1.0.1";

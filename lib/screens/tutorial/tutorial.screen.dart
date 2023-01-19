@@ -21,7 +21,7 @@ class _TutorialScreenState extends State<TutorialScreen> {
 
   // General
   final Duration duration = Duration(milliseconds: 300);
-  final Duration consumeDuration = Duration(milliseconds: 3000);
+  final Duration consumeDuration = Duration(milliseconds: 1500);
   final List<Curve> curves = [Curves.easeOut, Curves.easeInOut];
   final Curve bubbleCurve = Curves.easeIn;
 
