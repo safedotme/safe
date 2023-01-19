@@ -9,14 +9,26 @@ class PhoneExtentionDisplay extends StatelessWidget {
   PhoneExtentionDisplay(this.code, {required this.onTap});
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.only(right: kWidgetSpacing),
-      child: MutableButton(
-        onTap: onTap,
-        child: Text(
-          "($code)",
-          style: kTextInputStyle.copyWith(
-            color: kColorMap[MutableColor.neutral2],
+    return MutableButton(
+      scale: 0.9,
+      onTap: onTap,
+      child: Container(
+        height: 50,
+        padding: EdgeInsets.symmetric(horizontal: 12),
+        decoration: BoxDecoration(
+          color: kColorMap[MutableColor.neutral8]!,
+          border: Border.all(
+            color: kColorMap[MutableColor.neutral7]!,
+            width: kBorderWidth,
+          ),
+          borderRadius: BorderRadius.circular(25),
+        ),
+        child: Center(
+          child: Text(
+            "($code)",
+            style: kTextInputStyle.copyWith(
+              color: kColorMap[MutableColor.neutral2],
+            ),
           ),
         ),
       ),

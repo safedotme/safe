@@ -256,7 +256,7 @@ const double kBorderWidth = 1.5;
 
 // LARGE BUTTON
 const double kLargeButtonHeight = 50;
-const double kLargeButtonBorderRadius = 18;
+const double kLargeButtonBorderRadius = kLargeButtonHeight / 2;
 
 // BUTTONS
 const double kScaleDownButtonPercentage = 0.97;

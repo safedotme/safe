@@ -8,6 +8,7 @@ import 'package:safe/widgets/mutable_banner/mutable_banner.widget.dart';
 import 'package:safe/widgets/mutable_input_panel/mutable_input_panel.widget.dart';
 import 'package:safe/widgets/mutable_popup/mutable_popup.widget.dart';
 import 'package:safe/widgets/mutable_submit_textfield_button/mutable_submit_textfield_button.widget.dart';
+import 'package:safe/widgets/mutable_text/mutable_text.widget.dart';
 import 'package:safe/widgets/mutable_text_field/local_widgets/phone_extention_display.widget.dart';
 import 'package:safe/widgets/mutable_text_field/mutable_text_field.widget.dart';
 
@@ -96,9 +97,9 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen>
         phone: core.state.auth.phoneNumber,
         dialCode: core.state.auth.countryDialCode,
         onCodeSend: (verificationId, resentToken) {
-          print(
-            "OPT code has been sent to ${core.state.auth.formattedPhone}. Verification ID: $verificationId",
-          );
+          WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+            handleSMSSent();
+          });
 
           core.state.auth.setVerificationId(verificationId);
           core.state.auth.setResendToken(resentToken);
@@ -127,6 +128,16 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen>
     core.state.auth.setBannerState(MessageType.error);
     core.state.auth.setBannerMessage(error["desc"]);
     core.state.auth.setBannerTitle(error["header"]);
+
+    // Display error message
+    core.state.auth.bannerController.show();
+  }
+
+  void handleSMSSent() {
+    core.state.auth.setBannerState(MessageType.success);
+    core.state.auth.setBannerMessage(
+        "SMS sent to ${core.state.auth.phoneNumber}"); // TODO: Extract
+    core.state.auth.setBannerTitle("Check your SMS messages."); // TODO: Extract
 
     // Display error message
     core.state.auth.bannerController.show();
@@ -186,25 +197,30 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen>
       body: MutableInputPanel(
         // Phone Input Text Field
         body: Observer(
-          builder: (_) => MutableTextField(
-            onSubmit: (_) {
-              submit();
-            },
-            controller: fieldController,
-            type: TextInputType.phone,
-            focusNode: node,
-            onChange: format,
-            hintText: handleHint(core.state.auth.countryCode),
-            leadingRight: MutableSubmitTextFieldButton(submit),
-            leadingLeft: Observer(
-              builder: (_) => PhoneExtentionDisplay(
+          builder: (_) => Row(
+            children: [
+              PhoneExtentionDisplay(
                 core.state.auth.countryDialCode,
                 onTap: () {
                   node.unfocus();
                   core.state.auth.countryCodeController.open();
                 },
               ),
-            ),
+              SizedBox(width: 6),
+              Expanded(
+                child: MutableTextField(
+                  onSubmit: (_) {
+                    submit();
+                  },
+                  controller: fieldController,
+                  type: TextInputType.phone,
+                  focusNode: node,
+                  onChange: format,
+                  hintText: handleHint(core.state.auth.countryCode),
+                  leadingRight: MutableSubmitTextFieldButton(submit),
+                ),
+              ),
+            ],
           ),
         ),
         resizeToAvoidBottomInsets: true,
