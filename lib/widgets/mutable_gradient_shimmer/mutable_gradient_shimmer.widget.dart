@@ -4,8 +4,10 @@ import 'package:safe/utils/constants/constants.util.dart';
 class MutableGradientShimmer extends StatefulWidget {
   final Widget Function(GlobalKey key) builder;
   final double borderRadius;
+  final bool animate;
   MutableGradientShimmer({
     required this.builder,
+    this.animate = true,
     this.borderRadius = 0,
   });
 
@@ -31,6 +33,13 @@ class _MutableGradientShimmerState extends State<MutableGradientShimmer>
     controller.repeat(reverse: false);
 
     controller.addListener(() {
+      if (!widget.animate) {
+        setState(() {
+          state = 0;
+        });
+
+        return;
+      }
       setState(() {
         state = controller.value;
       });
@@ -52,7 +61,6 @@ class _MutableGradientShimmerState extends State<MutableGradientShimmer>
       fetchChildData();
     });
 
-    animate();
     super.initState();
   }
 
@@ -67,7 +75,9 @@ class _MutableGradientShimmerState extends State<MutableGradientShimmer>
       size = box.size;
     });
 
-    //TODO: ANIMATE
+    if (widget.animate) {
+      animate();
+    }
   }
 
   double genAnimate(double a, double b, double c, bool increase) {

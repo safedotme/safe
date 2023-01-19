@@ -4,9 +4,11 @@ import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
+import 'package:safe/screens/settings/local_widgets/danger_zone_block.widget.dart';
 import 'package:safe/screens/settings/local_widgets/our_story_banner.widget.dart';
 import 'package:safe/screens/settings/local_widgets/reach_out_block.widget.dart';
 import 'package:safe/screens/settings/local_widgets/settings_nav_bar.widget.dart';
+import 'package:safe/screens/settings/local_widgets/support_block.widget.dart';
 import 'package:safe/screens/settings/local_widgets/user_preferences_block.widget.dart';
 import 'package:safe/utils/constants/constants.util.dart';
 import 'package:safe/widgets/mutable_overlay/mutable_overlay.widget.dart';
@@ -54,34 +56,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   SizedBox(height: kSettingsComponentSpacing),
                   ReachOutBlock(),
                   SizedBox(height: kSettingsComponentSpacing),
-                  MutableSettingsBlock(
-                    header: "Support", // TODO: Extract
-                    items: [
-                      SettingsBlockItem(
-                        text: "About",
-                      ),
-                      SettingsBlockItem(
-                        text: "Help",
-                      ),
-                      SettingsBlockItem(
-                        text: "Give feedback",
-                      ),
-                    ],
-                  ),
+                  SupportBlock(),
                   SizedBox(height: kSettingsComponentSpacing),
-                  MutableSettingsBlock(
-                    header: "Danger Zone", // TODO: Extract
-                    items: [
-                      SettingsBlockItem(
-                        text: "Sign Out",
-                        textColor: MutableColor.secondaryRed,
-                      ),
-                      SettingsBlockItem(
-                        text: "Delete Account",
-                        textColor: MutableColor.secondaryRed,
-                      ),
-                    ],
-                  ),
+                  DangerZoneBlock(),
                   SizedBox(height: kSettingsComponentSpacing),
                   MutableText(
                     "Version 1.0.1 - Production", // TODO: Extract
@@ -95,9 +72,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
             Align(
               alignment: Alignment.topCenter,
               child: SettingsNavBar(),
-            ),
-            MutableOverlay(
-              controller: core.state.preferences.overlayController,
             ),
           ],
         ),

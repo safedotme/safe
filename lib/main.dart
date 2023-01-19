@@ -36,6 +36,7 @@ class Safe extends StatelessWidget {
         debugShowCheckedModeBanner:
             dotenv.env["MEDIA_ENDPOINT"]!.contains(":8080"),
         themeMode: ThemeMode.dark,
+        theme: ThemeData.dark(),
         routes: {
           WelcomeScreen.id: (_) => WelcomeScreen(),
           HomeScreen.id: (_) => HomeScreen(),

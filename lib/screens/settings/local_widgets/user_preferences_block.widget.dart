@@ -90,7 +90,6 @@ class _UserPreferencesBlockState extends State<UserPreferencesBlock> {
                 ["preferences"]["change_phone"]["header"],
             onTap: () {
               HapticFeedback.lightImpact();
-              core.state.preferences.overlayController.show();
               showCupertinoDialog(
                 context: context,
                 barrierDismissible: true,

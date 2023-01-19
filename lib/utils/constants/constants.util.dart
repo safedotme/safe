@@ -178,8 +178,8 @@ final List<Color> kDisabledGradientColors = [
   Color(0xff090809),
 ];
 
-final Alignment kPrimaryGradientAlignmentBegin = Alignment(-0.1, -2.5);
-final Alignment kPrimaryGradientAlignmentEnd = Alignment(0.1, 3);
+final Alignment kPrimaryGradientAlignmentBegin = Alignment(-2, -2);
+final Alignment kPrimaryGradientAlignmentEnd = Alignment(2, 2);
 final Color kIconColorInGradientFill =
     kColorMap[MutableColor.neutral1]!.withOpacity(0.75);
 final Color kShimmerAnimationColor = Colors.white.withOpacity(0.3);
@@ -256,7 +256,7 @@ const double kBorderWidth = 1.5;
 
 // LARGE BUTTON
 const double kLargeButtonHeight = 50;
-const double kLargeButtonBorderRadius = kLargeButtonHeight / 2;
+const double kLargeButtonBorderRadius = 18;
 
 // BUTTONS
 const double kScaleDownButtonPercentage = 0.97;
