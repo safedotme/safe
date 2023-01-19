@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
+import 'package:safe/neuances.dart';
 import 'package:safe/utils/constants/constants.util.dart';
 import 'package:safe/utils/icon/icon.util.dart';
 import 'package:safe/widgets/mutable_banner/mutable_banner.widget.dart';
@@ -11,6 +12,7 @@ import 'package:safe/widgets/mutable_settings_block/local_widgets/settings_block
 import 'package:safe/widgets/mutable_settings_block/mutable_settings_block.widget.dart';
 import 'package:safe/widgets/mutable_switch/mutable_switch.widget.dart';
 import 'package:safe/widgets/mutable_text/mutable_text.widget.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class UserPreferencesBlock extends StatefulWidget {
   @override
@@ -87,23 +89,29 @@ class _UserPreferencesBlockState extends State<UserPreferencesBlock> {
           SettingsBlockItem(
             text: core.utils.language
                     .langMap[core.state.preferences.language]!["settings"]
-                ["preferences"]["quality"],
+                ["preferences"]["quality"]["header"],
             onTap: () {
-              print("here");
+              launchUrl(kLivestreamQualityInfo);
             },
             following: Padding(
               padding: EdgeInsets.only(left: 8),
               child: MutableIcon(
-                MutableIcons.calendar,
+                MutableIcons.info,
                 size: Size(16, 16),
                 color: Colors.white,
               ),
             ),
             action: MutableText(
               quality == null
-                  ? "Loading quality..."
-                  : "High ({DIMENSION}p)".replaceAll(
-                      // TODO: Extract
+                  ? core.utils.language
+                          .langMap[core.state.preferences.language]!["settings"]
+                      ["preferences"]["quality"]["loading"]
+                  : core
+                      .utils
+                      .language
+                      .langMap[core.state.preferences.language]!["settings"]
+                          ["preferences"]["quality"]["template"]
+                      .replaceAll(
                       "{DIMENSION}",
                       quality!,
                     ),

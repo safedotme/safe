@@ -236,7 +236,11 @@ class LanguageUtil {
       "preferences": {
         "header": "Preferences",
         "change_phone": "Change Phone Number",
-        "quality": "Livestream Quality",
+        "quality": {
+          "header": "Livestream Quality",
+          "loading": "Loading quality...",
+          "template": "High ({DIMENSION}p)"
+        },
         "face_id": "Enable Face ID"
       }
     },
