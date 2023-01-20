@@ -10,14 +10,18 @@ import 'package:safe/widgets/mutable_icon/local_widgets/caret_right.icon.dart';
 import 'package:safe/widgets/mutable_icon/local_widgets/checkmark.icon.dart';
 import 'package:safe/widgets/mutable_icon/local_widgets/cloud.icon.dart';
 import 'package:safe/widgets/mutable_icon/local_widgets/compass.icon.dart';
+import 'package:safe/widgets/mutable_icon/local_widgets/doc.icon.dart';
 import 'package:safe/widgets/mutable_icon/local_widgets/film.icon.dart';
 import 'package:safe/widgets/mutable_icon/local_widgets/flashlight.icon.dart';
 import 'package:safe/widgets/mutable_icon/local_widgets/forward.widget.dart';
 import 'package:safe/widgets/mutable_icon/local_widgets/gear.icon.dart';
+import 'package:safe/widgets/mutable_icon/local_widgets/hammer.icon.dart';
+import 'package:safe/widgets/mutable_icon/local_widgets/heart.icon.dart';
 import 'package:safe/widgets/mutable_icon/local_widgets/info.icon.dart';
 import 'package:safe/widgets/mutable_icon/local_widgets/key.icon.dart';
 import 'package:safe/widgets/mutable_icon/local_widgets/link.icon.dart';
 import 'package:safe/widgets/mutable_icon/local_widgets/location.icon.dart';
+import 'package:safe/widgets/mutable_icon/local_widgets/lock_cloud.icon.dart';
 import 'package:safe/widgets/mutable_icon/local_widgets/map.icon.dart';
 import 'package:safe/widgets/mutable_icon/local_widgets/menu.icon.dart';
 import 'package:safe/widgets/mutable_icon/local_widgets/next.icon.dart';
@@ -65,6 +69,10 @@ enum MutableIcons {
   key,
   safe,
   link,
+  hammer,
+  lockCloud,
+  heart,
+  doc,
 }
 
 class IconUtil {
@@ -79,6 +87,10 @@ class IconUtil {
       MutableIcons.profile: (c) => ProfileIcon(c),
       MutableIcons.playLarge: (c) => PlayLargeIcon(c),
       MutableIcons.safe: (c) => SafeIcon(c),
+      MutableIcons.heart: (c) => HeartIcon(c),
+      MutableIcons.lockCloud: (c) => LockCloudIcon(c),
+      MutableIcons.doc: (c) => DocIcon(c),
+      MutableIcons.hammer: (c) => HammerIcon(c),
       MutableIcons.info: (c) => InfoIcon(c),
       MutableIcons.shield: (c) => ShieldIcon(c),
       MutableIcons.compass: (c) => CompassIcon(c),
