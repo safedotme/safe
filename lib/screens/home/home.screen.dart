@@ -1,14 +1,13 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart' hide BoxShadow;
 import 'package:flutter/services.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:mobx/mobx.dart';
 import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
 import 'package:safe/models/contact/contact.model.dart';
 import 'package:safe/models/user/user.model.dart';
 import 'package:safe/screens/capture/capture.screen.dart';
+import 'package:safe/screens/contact/contact.screen.dart';
 import 'package:safe/screens/home/local_widgets/incident_limit_home_banner.widget.dart';
 import 'package:safe/screens/home/local_widgets/incident_recorded_home_banner.widget.dart';
 import 'package:safe/screens/incident/incident.screen.dart';
@@ -16,12 +15,10 @@ import 'package:safe/screens/incident_log/incident_log.screen.dart';
 import 'package:safe/screens/play/play.screen.dart';
 import 'package:safe/screens/settings/settings.screen.dart';
 import 'package:safe/screens/tutorial/tutorial.screen.dart';
-import 'package:safe/services/media_server/media_server.service.dart';
 import 'package:safe/utils/constants/constants.util.dart';
 import 'package:safe/utils/credit/credit.util.dart';
 import 'package:safe/widgets/mutable_action_banner/mutable_action_banner.widget.dart';
-import 'package:safe/widgets/mutable_banner/mutable_banner.widget.dart';
-import 'package:safe/widgets/mutable_overlay/mutable_overlay.widget.dart';
+import 'package:safe/widgets/mutable_popup/mutable_popup.widget.dart';
 import 'package:safe/widgets/mutable_safe_button/mutable_safe_button.widget.dart';
 import 'package:safe/widgets/mutable_scaffold/mutable_scaffold.widget.dart';
 import 'package:safe/widgets/mutable_text/mutable_text.widget.dart';
@@ -132,6 +129,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return MutableScaffold(
       overlays: [
         SettingsScreen(),
+        ContactScreen(),
         CaptureScreen(),
         TutorialScreen(),
         IncidentScreen(),
