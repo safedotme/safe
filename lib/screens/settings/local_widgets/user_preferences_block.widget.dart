@@ -49,11 +49,16 @@ class _UserPreferencesBlockState extends State<UserPreferencesBlock> {
 
   Future<bool> handleFaceIDTap(bool v) async {
     if (!v) {
-      final pass = await core.services.localAuth
-          .authenticate("Authenticate to disable service");
+      final pass = await core.services.localAuth.authenticate(
+        core.utils.language
+                .langMap[core.state.preferences.language]!["settings"]
+            ["preferences"]["biometrics"]["disable_reason"],
+      );
 
       if (!pass) {
-        logError("Face ID failed. Try again");
+        logError(core.utils.language
+                .langMap[core.state.preferences.language]!["settings"]
+            ["preferences"]["biometrics"]["failed_msg"]);
         return false;
       }
       setBiometrics(false);
@@ -63,16 +68,21 @@ class _UserPreferencesBlockState extends State<UserPreferencesBlock> {
     final isAvailable = await core.services.localAuth.isAvailable();
 
     if (!isAvailable) {
-      logError("Face ID is unavailable");
+      logError(core.utils.language
+              .langMap[core.state.preferences.language]!["settings"]
+          ["preferences"]["biometrics"]["unavailable"]);
       return false;
     }
 
     final active = await core.services.localAuth.authenticate(
-      "Authenticate to enable service", // TODO: Extract
+      core.utils.language.langMap[core.state.preferences.language]!["settings"]
+          ["preferences"]["biometrics"]["enable_reason"],
     );
 
     if (!active) {
-      logError("Face ID failed. Try again"); // TODO: Extract
+      logError(core.utils.language
+              .langMap[core.state.preferences.language]!["settings"]
+          ["preferences"]["biometrics"]["failed_msg"]);
       setBiometrics(false);
       return false;
     }
@@ -151,7 +161,7 @@ class _UserPreferencesBlockState extends State<UserPreferencesBlock> {
           SettingsBlockItem(
             text: core.utils.language
                     .langMap[core.state.preferences.language]!["settings"]
-                ["preferences"]["face_id"],
+                ["preferences"]["biometrics"]["header"],
             action: MutableSwitch(
               defaultState: core.state.preferences.biometricsEnabled ?? false,
               onChange: handleFaceIDTap,

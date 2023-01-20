@@ -258,7 +258,13 @@ class LanguageUtil {
           "loading": "Loading quality...",
           "template": "High ({DIMENSION}p)"
         },
-        "face_id": "Enable Face ID"
+        "biometrics": {
+          "header": "Enable Face ID",
+          "failed_msg": "Face ID failed. Try again",
+          "unavailable": "Face ID is unavailable",
+          "enable_reason": "Authenticate to enable service",
+          "disable_reason": "Authenticate to disable service",
+        }
       },
       "support": {
         "header": "Support",
