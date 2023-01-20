@@ -57,4 +57,10 @@ abstract class _PreferencesStore with Store {
 
   @observable
   ContextMenuController aboutContextMenuController = ContextMenuController();
+
+  @observable
+  double contextMenuPos = 0;
+
+  @action
+  void setContextMenuPos(double d) => contextMenuPos = d;
 }

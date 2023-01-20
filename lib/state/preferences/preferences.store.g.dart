@@ -170,6 +170,22 @@ mixin _$PreferencesStore on _PreferencesStore, Store {
     });
   }
 
+  late final _$contextMenuPosAtom =
+      Atom(name: '_PreferencesStore.contextMenuPos', context: context);
+
+  @override
+  double get contextMenuPos {
+    _$contextMenuPosAtom.reportRead();
+    return super.contextMenuPos;
+  }
+
+  @override
+  set contextMenuPos(double value) {
+    _$contextMenuPosAtom.reportWrite(value, super.contextMenuPos, () {
+      super.contextMenuPos = value;
+    });
+  }
+
   late final _$_PreferencesStoreActionController =
       ActionController(name: '_PreferencesStore', context: context);
 
@@ -229,6 +245,17 @@ mixin _$PreferencesStore on _PreferencesStore, Store {
   }
 
   @override
+  void setContextMenuPos(double d) {
+    final _$actionInfo = _$_PreferencesStoreActionController.startAction(
+        name: '_PreferencesStore.setContextMenuPos');
+    try {
+      return super.setContextMenuPos(d);
+    } finally {
+      _$_PreferencesStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 language: ${language},
@@ -240,7 +267,8 @@ controller: ${controller},
 scrollController: ${scrollController},
 overlayController: ${overlayController},
 overlayText: ${overlayText},
-aboutContextMenuController: ${aboutContextMenuController}
+aboutContextMenuController: ${aboutContextMenuController},
+contextMenuPos: ${contextMenuPos}
     ''';
   }
 }

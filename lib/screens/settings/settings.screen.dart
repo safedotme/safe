@@ -101,11 +101,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               alignment: Alignment.topCenter,
               child: SettingsNavBar(),
             ),
-            Positioned(
-              right: kSideScreenMargin - 2,
-              bottom: 460,
-              child: AboutContextMenu(),
-            ),
+            AboutContextMenu(),
             Observer(
               builder: (_) => MutableOverlay(
                 controller: core.state.preferences.overlayController,

@@ -17,16 +17,39 @@ class SupportBlock extends StatefulWidget {
 
 class _SupportBlockState extends State<SupportBlock> {
   late Core core;
+  GlobalKey key = GlobalKey();
 
   @override
   void initState() {
     super.initState();
     core = Provider.of<Core>(context, listen: false);
+
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      listenToPosition();
+    });
+
+    core.state.preferences.scrollController.addListener(() {
+      listenToPosition();
+    });
+  }
+
+  void listenToPosition() {
+    if (key.currentContext == null) return;
+
+    final box = key.currentContext!.findRenderObject() as RenderBox?;
+
+    if (box == null) return;
+
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      double pos = box.localToGlobal(Offset.zero).dy;
+      core.state.preferences.setContextMenuPos(pos);
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Stack(
+      key: key,
       clipBehavior: Clip.none,
       children: [
         MutableSettingsBlock(
