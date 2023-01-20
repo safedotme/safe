@@ -50,6 +50,13 @@ class _UserPreferencesBlockState extends State<UserPreferencesBlock> {
 
   Future<bool> handleFaceIDTap(bool v) async {
     if (!v) {
+      final pass = await core.services.localAuth
+          .authenticate("Authenticate to disable service");
+
+      if (!pass) {
+        logError("Face ID failed. Try again");
+        return false;
+      }
       setBiometrics(false);
       return true;
     }
