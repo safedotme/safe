@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
+import 'package:safe/screens/settings/local_widgets/about_context_menu.widget.dart';
 import 'package:safe/utils/icon/icon.util.dart';
 import 'package:safe/widgets/mutable_context_menu/local_widgets/context_menu_item.widget.dart';
 import 'package:safe/widgets/mutable_context_menu/mutable_context_menu.widget.dart';
 import 'package:safe/widgets/mutable_icon/mutable_icon.widget.dart';
 import 'package:safe/widgets/mutable_settings_block/local_widgets/settings_block_item.widget.dart';
 import 'package:safe/widgets/mutable_settings_block/mutable_settings_block.widget.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class SupportBlock extends StatefulWidget {
   @override
@@ -25,13 +27,16 @@ class _SupportBlockState extends State<SupportBlock> {
   @override
   Widget build(BuildContext context) {
     return Stack(
+      clipBehavior: Clip.none,
       children: [
         MutableSettingsBlock(
           header: "Support", // TODO: Extract
           items: [
             SettingsBlockItem(
               text: "About",
-              onTap: () {},
+              onTap: () {
+                core.state.preferences.aboutContextMenuController.toggle();
+              },
             ),
             SettingsBlockItem(
               text: "Help",
@@ -41,30 +46,6 @@ class _SupportBlockState extends State<SupportBlock> {
             ),
           ],
         ),
-        MutableContextMenu(
-          items: [
-            ContextMenuItem(
-              onTap: () {},
-              text: "Terms of Service",
-              icon: MutableIcon(MutableIcons.backward),
-            ),
-            ContextMenuItem(
-              onTap: () {},
-              text: "Privacy Policy",
-              icon: MutableIcon(MutableIcons.backward),
-            ),
-            ContextMenuItem(
-              onTap: () {},
-              text: "Collaborators",
-              icon: MutableIcon(MutableIcons.backward),
-            ),
-            ContextMenuItem(
-              onTap: () {},
-              text: "Media Kit",
-              icon: MutableIcon(MutableIcons.backward),
-            ),
-          ],
-        )
       ],
     );
   }

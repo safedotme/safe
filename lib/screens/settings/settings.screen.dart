@@ -6,6 +6,7 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
 import 'package:safe/neuances.dart';
+import 'package:safe/screens/settings/local_widgets/about_context_menu.widget.dart';
 import 'package:safe/screens/settings/local_widgets/danger_zone_block.widget.dart';
 import 'package:safe/screens/settings/local_widgets/our_story_banner.widget.dart';
 import 'package:safe/screens/settings/local_widgets/reach_out_block.widget.dart';
@@ -47,6 +48,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
         child: Stack(
           children: [
             SingleChildScrollView(
+              controller: core.state.preferences.scrollController,
               padding: EdgeInsets.fromLTRB(
                 kSideScreenMargin,
                 108,
@@ -98,6 +100,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
             Align(
               alignment: Alignment.topCenter,
               child: SettingsNavBar(),
+            ),
+            Positioned(
+              right: kSideScreenMargin - 2,
+              bottom: 460,
+              child: AboutContextMenu(),
             ),
             Observer(
               builder: (_) => MutableOverlay(

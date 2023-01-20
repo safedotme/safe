@@ -10,3 +10,7 @@ final Uri kEmailUrl = Uri.parse("mailto:mark@joinsafe.me");
 final Uri kStoryUrl = Uri.parse("https://joinsafe.me/story");
 const String kAppVersion = "1.0.1";
 final Uri kMarcoCalzadaMemory = Uri.parse("https://youtu.be/GVdFoKvmMtU");
+final Uri kTermsOfService = Uri.parse("https://joinsafe.me/terms");
+final Uri kPrivacyPolicy = Uri.parse("https://joinsafe.me/privacy");
+final Uri kMediaKit = Uri.parse("https://joinsafe.me/media");
+final Uri kCollaborators = Uri.parse("https://joinsafe.me/collaborators");

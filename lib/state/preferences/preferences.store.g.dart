@@ -153,6 +153,23 @@ mixin _$PreferencesStore on _PreferencesStore, Store {
     });
   }
 
+  late final _$aboutContextMenuControllerAtom = Atom(
+      name: '_PreferencesStore.aboutContextMenuController', context: context);
+
+  @override
+  ContextMenuController get aboutContextMenuController {
+    _$aboutContextMenuControllerAtom.reportRead();
+    return super.aboutContextMenuController;
+  }
+
+  @override
+  set aboutContextMenuController(ContextMenuController value) {
+    _$aboutContextMenuControllerAtom
+        .reportWrite(value, super.aboutContextMenuController, () {
+      super.aboutContextMenuController = value;
+    });
+  }
+
   late final _$_PreferencesStoreActionController =
       ActionController(name: '_PreferencesStore', context: context);
 
@@ -222,7 +239,8 @@ biometricsEnabled: ${biometricsEnabled},
 controller: ${controller},
 scrollController: ${scrollController},
 overlayController: ${overlayController},
-overlayText: ${overlayText}
+overlayText: ${overlayText},
+aboutContextMenuController: ${aboutContextMenuController}
     ''';
   }
 }

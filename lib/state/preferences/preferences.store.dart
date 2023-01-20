@@ -3,6 +3,7 @@ import 'package:mobx/mobx.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:safe/utils/language/language.util.dart';
 import 'package:safe/widgets/mutable_action_banner/mutable_action_banner.widget.dart';
+import 'package:safe/widgets/mutable_context_menu/mutable_context_menu.widget.dart';
 import 'package:safe/widgets/mutable_overlay/mutable_overlay.widget.dart';
 import 'package:safe/widgets/mutable_screen_transition/mutable_screen_transition.widget.dart';
 
@@ -53,4 +54,7 @@ abstract class _PreferencesStore with Store {
 
   @action
   void setOverlayText(String s) => overlayText = s;
+
+  @observable
+  ContextMenuController aboutContextMenuController = ContextMenuController();
 }

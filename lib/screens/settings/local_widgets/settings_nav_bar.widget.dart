@@ -25,61 +25,70 @@ class _SettingsNavBarState extends State<SettingsNavBar> {
 
   @override
   Widget build(BuildContext context) {
-    return ClipRect(
-      child: BackdropFilter(
-        filter: ImageFilter.blur(
-          sigmaX: kNavBarBlur,
-          sigmaY: kNavBarBlur,
-        ),
-        child: Container(
-          width: double.infinity,
-          height: 90,
-          decoration: BoxDecoration(
-            color: kColorMap[MutableColor.neutral10]!.withOpacity(0.7),
-            border: Border(
-              bottom: BorderSide(
-                width: kBorderWidth,
-                color: kColorMap[MutableColor.neutral7]!,
+    return GestureDetector(
+      onTap: () {
+        core.state.preferences.scrollController.animateTo(
+          0,
+          duration: Duration(milliseconds: 200),
+          curve: Curves.decelerate,
+        );
+      },
+      child: ClipRect(
+        child: BackdropFilter(
+          filter: ImageFilter.blur(
+            sigmaX: kNavBarBlur,
+            sigmaY: kNavBarBlur,
+          ),
+          child: Container(
+            width: double.infinity,
+            height: 90,
+            decoration: BoxDecoration(
+              color: kColorMap[MutableColor.neutral10]!.withOpacity(0.7),
+              border: Border(
+                bottom: BorderSide(
+                  width: kBorderWidth,
+                  color: kColorMap[MutableColor.neutral7]!,
+                ),
               ),
             ),
-          ),
-          padding: EdgeInsets.fromLTRB(
-            10,
-            0,
-            10,
-            12,
-          ),
-          alignment: Alignment.bottomCenter,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              MutableButton(
-                scale: 0.8,
-                onTap: () {
-                  core.state.preferences.controller.close();
-                },
-                child: Container(
-                  color: Colors.transparent,
-                  height: 25,
-                  width: 30,
-                  child: Center(
-                    child: MutableIcon(
-                      MutableIcons.cancel,
-                      color: Colors.white,
-                      size: Size(16, 16),
+            padding: EdgeInsets.fromLTRB(
+              10,
+              0,
+              10,
+              12,
+            ),
+            alignment: Alignment.bottomCenter,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                MutableButton(
+                  scale: 0.8,
+                  onTap: () {
+                    core.state.preferences.controller.close();
+                  },
+                  child: Container(
+                    color: Colors.transparent,
+                    height: 25,
+                    width: 30,
+                    child: Center(
+                      child: MutableIcon(
+                        MutableIcons.cancel,
+                        color: Colors.white,
+                        size: Size(16, 16),
+                      ),
                     ),
                   ),
                 ),
-              ),
-              MutableText(
-                core.utils.language
-                        .langMap[core.state.preferences.language]!["settings"]
-                    ["header"],
-                size: 18,
-                weight: TypeWeight.bold,
-              ),
-              SizedBox(width: 30),
-            ],
+                MutableText(
+                  core.utils.language
+                          .langMap[core.state.preferences.language]!["settings"]
+                      ["header"],
+                  size: 18,
+                  weight: TypeWeight.bold,
+                ),
+                SizedBox(width: 30),
+              ],
+            ),
           ),
         ),
       ),
