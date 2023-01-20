@@ -1,3 +1,4 @@
+import 'package:mobx/mobx.dart';
 import 'package:safe/services/analytics/analytics.service.dart';
 import 'package:safe/utils/capture/messages.capture.dart';
 import 'package:safe/utils/credit/credit.util.dart';
@@ -297,6 +298,13 @@ class LanguageUtil {
         "header": "The Safe Story",
         "body":
             "The Safe App is a social impact venture developed by Mark Music (a high school student). Tap here to learn more.",
+      },
+      "reach_out": {
+        "header": "Reach Out",
+        "rate": "❤️\tRate the app",
+        "twitter": "🐦\tFollow on Twitter",
+        "github": "💫\tStar on GitHub",
+        "email": "📧\tShoot us an email",
       },
     },
     "incident": {

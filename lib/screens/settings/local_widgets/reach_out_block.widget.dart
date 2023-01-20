@@ -23,28 +23,38 @@ class _ReachOutBlockState extends State<ReachOutBlock> {
   @override
   Widget build(BuildContext context) {
     return MutableSettingsBlock(
-      header: "Reach Out", // TODO: Extract
+      header: core.utils.language
+              .langMap[core.state.preferences.language]!["settings"]
+          ["reach_out"]["header"],
       items: [
         SettingsBlockItem(
-          text: "❤️\tRate the app",
+          text: core.utils.language
+                  .langMap[core.state.preferences.language]!["settings"]
+              ["reach_out"]["rate"],
           onTap: () {
             launchUrl(kRateAppUrl);
           },
         ),
         SettingsBlockItem(
-          text: "🐦\tFollow on Twitter",
+          text: core.utils.language
+                  .langMap[core.state.preferences.language]!["settings"]
+              ["reach_out"]["twitter"],
           onTap: () {
             launchUrl(kMarkMusicTwitter);
           },
         ),
         SettingsBlockItem(
-          text: "💫\tStar on GitHub",
+          text: core.utils.language
+                  .langMap[core.state.preferences.language]!["settings"]
+              ["reach_out"]["github"],
           onTap: () {
             launchUrl(kGitHubUrl);
           },
         ),
         SettingsBlockItem(
-          text: "📧\tShoot us an email",
+          text: core.utils.language
+                  .langMap[core.state.preferences.language]!["settings"]
+              ["reach_out"]["email"],
           onTap: () {
             launchUrl(kEmailUrl);
           },
