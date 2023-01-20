@@ -293,6 +293,11 @@ class LanguageUtil {
           },
         },
       },
+      "story": {
+        "header": "The Safe Story",
+        "body":
+            "The Safe App is a social impact venture developed by Mark Music (a high school student). Tap here to learn more.",
+      },
     },
     "incident": {
       "loading": "Loading incident",

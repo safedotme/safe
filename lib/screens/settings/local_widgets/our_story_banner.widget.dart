@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:safe/core.dart';
 import 'package:safe/neuances.dart';
 import 'package:safe/screens/settings/local_widgets/animated_heart.widget.dart';
 import 'package:safe/utils/constants/constants.util.dart';
@@ -10,7 +12,20 @@ import 'package:safe/widgets/mutable_icon/mutable_icon.widget.dart';
 import 'package:safe/widgets/mutable_text/mutable_text.widget.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class OurStoryBanner extends StatelessWidget {
+class OurStoryBanner extends StatefulWidget {
+  @override
+  State<OurStoryBanner> createState() => _OurStoryBannerState();
+}
+
+class _OurStoryBannerState extends State<OurStoryBanner> {
+  late Core core;
+
+  @override
+  void initState() {
+    super.initState();
+    core = Provider.of<Core>(context, listen: false);
+  }
+
   @override
   Widget build(BuildContext context) {
     return MutableButton(
@@ -44,7 +59,12 @@ class OurStoryBanner extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     MutableText(
-                      "The Safe Story".toUpperCase(), // TODO: Extract
+                      core
+                          .utils
+                          .language
+                          .langMap[core.state.preferences.language]!["settings"]
+                              ["story"]["header"]
+                          .toUpperCase(),
                       weight: TypeWeight.bold,
                       size: 14,
                     ),
@@ -79,7 +99,8 @@ class OurStoryBanner extends StatelessWidget {
                     SizedBox(width: 14),
                     Expanded(
                       child: MutableText(
-                        "The Safe App is a social impact venture developed by Mark Music (a high school student). Tap here to learn more.", // TODO: Extract
+                        core.utils.language.langMap[core.state.preferences
+                            .language]!["settings"]["story"]["body"],
                         size: 14,
                       ),
                     )
