@@ -30,6 +30,7 @@ import 'package:safe/widgets/mutable_icon/local_widgets/pause.icon.dart';
 import 'package:safe/widgets/mutable_icon/local_widgets/phone.icon.dart';
 import 'package:safe/widgets/mutable_icon/local_widgets/play.icon.dart';
 import 'package:safe/widgets/mutable_icon/local_widgets/play_large.icon.dart';
+import 'package:safe/widgets/mutable_icon/local_widgets/plus.icon.dart';
 import 'package:safe/widgets/mutable_icon/local_widgets/profile.icon.dart';
 import 'package:safe/widgets/mutable_icon/local_widgets/safe.icon.dart';
 import 'package:safe/widgets/mutable_icon/local_widgets/share.icon.dart';
@@ -67,6 +68,7 @@ enum MutableIcons {
   cloud,
   stopRecording,
   key,
+  plus,
   safe,
   link,
   hammer,
@@ -91,6 +93,7 @@ class IconUtil {
       MutableIcons.lockCloud: (c) => LockCloudIcon(c),
       MutableIcons.doc: (c) => DocIcon(c),
       MutableIcons.hammer: (c) => HammerIcon(c),
+      MutableIcons.plus: (c) => PlusIcon(c),
       MutableIcons.info: (c) => InfoIcon(c),
       MutableIcons.shield: (c) => ShieldIcon(c),
       MutableIcons.compass: (c) => CompassIcon(c),
