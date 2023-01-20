@@ -237,6 +237,8 @@ const String kDefaultCountryCode = "+1";
 
 // CONTACT
 const double kContactTimelineWidth = 8;
+const double kContactBottomMargin = 56;
+const double kContactTopMargin = 8;
 
 // NAVBAR
 const double kNavBarBlur = 15;

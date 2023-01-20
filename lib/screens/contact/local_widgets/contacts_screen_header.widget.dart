@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
@@ -37,6 +38,7 @@ class _ContactScreenHeaderState extends State<ContactScreenHeader> {
           child: MutableButton(
             scale: 0.9,
             onTap: () {
+              HapticFeedback.lightImpact();
               core.state.contact.setIsEditing(!core.state.contact.isEditing);
             },
             child: Container(
