@@ -13,12 +13,14 @@ import 'package:safe/screens/settings/local_widgets/settings_nav_bar.widget.dart
 import 'package:safe/screens/settings/local_widgets/support_block.widget.dart';
 import 'package:safe/screens/settings/local_widgets/user_preferences_block.widget.dart';
 import 'package:safe/utils/constants/constants.util.dart';
+import 'package:safe/widgets/mutable_button/mutable_button.widget.dart';
 import 'package:safe/widgets/mutable_loader/mutable_loader.widget.dart';
 import 'package:safe/widgets/mutable_overlay/mutable_overlay.widget.dart';
 import 'package:safe/widgets/mutable_screen_transition/mutable_screen_transition.widget.dart';
 import 'package:safe/widgets/mutable_settings_block/local_widgets/settings_block_item.widget.dart';
 import 'package:safe/widgets/mutable_settings_block/mutable_settings_block.widget.dart';
 import 'package:safe/widgets/mutable_text/mutable_text.widget.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class SettingsScreen extends StatefulWidget {
   @override
@@ -37,7 +39,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   @override
   Widget build(BuildContext context) {
     return MutableScreenTransition(
-      isOpen: false, // TODO: Set to false
+      isOpen: true, // TODO: Set to false
       controller: core.state.preferences.controller,
       isDismissable: false,
       body: Container(
@@ -76,6 +78,19 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     size: 14,
                     color: MutableColor.neutral2,
                     align: TextAlign.center,
+                  ),
+                  SizedBox(height: 2),
+                  MutableButton(
+                    scale: 0.85,
+                    onTap: () {
+                      launchUrl(kMarcoCalzadaMemory);
+                    },
+                    child: MutableText(
+                      "In memory of Marco Calzada", // TODO: Extract
+                      size: 13,
+                      color: MutableColor.neutral3,
+                      align: TextAlign.center,
+                    ),
                   )
                 ],
               ),

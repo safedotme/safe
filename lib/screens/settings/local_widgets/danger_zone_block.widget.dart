@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
+import 'package:safe/screens/settings/local_widgets/change_phone_alert_dialog.widget.dart';
+import 'package:safe/screens/settings/local_widgets/delete_account_alert_dialog.widget.dart';
 import 'package:safe/utils/constants/constants.util.dart';
 import 'package:safe/widgets/mutable_settings_block/local_widgets/settings_block_item.widget.dart';
 import 'package:safe/widgets/mutable_settings_block/mutable_settings_block.widget.dart';
@@ -75,6 +77,13 @@ class _DangerZoneBlockState extends State<DangerZoneBlock> {
         ),
         SettingsBlockItem(
           text: "Delete Account",
+          onTap: () {
+            showCupertinoDialog(
+              context: context,
+              barrierDismissible: true,
+              builder: (_) => DeleteAccountAlertDialog(),
+            );
+          },
           textColor: MutableColor.secondaryRed,
         ),
       ],
