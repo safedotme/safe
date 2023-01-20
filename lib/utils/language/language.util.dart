@@ -257,7 +257,19 @@ class LanguageUtil {
           "template": "High ({DIMENSION}p)"
         },
         "face_id": "Enable Face ID"
-      }
+      },
+      "support": {
+        "header": "Support",
+        "about": {
+          "header": "About",
+          "terms": "Terms of Service",
+          "privacy": "Privacy Policy",
+          "collaborators": "Collaborators",
+          "media_kit": "Media Kit",
+        },
+        "help": "Help",
+        "feedback": "Give feedback"
+      },
     },
     "incident": {
       "loading": "Loading incident",

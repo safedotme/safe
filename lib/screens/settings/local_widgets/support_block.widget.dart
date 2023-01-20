@@ -49,22 +49,30 @@ class _SupportBlockState extends State<SupportBlock> {
       clipBehavior: Clip.none,
       children: [
         MutableSettingsBlock(
-          header: "Support", // TODO: Extract
+          header: core.utils.language
+                  .langMap[core.state.preferences.language]!["settings"]
+              ["support"]["header"],
           items: [
             SettingsBlockItem(
-              text: "About",
+              text: core.utils.language
+                      .langMap[core.state.preferences.language]!["settings"]
+                  ["support"]["about"]["header"],
               onTap: () {
                 core.state.preferences.aboutContextMenuController.toggle();
               },
             ),
             SettingsBlockItem(
-              text: "Help",
+              text: core.utils.language
+                      .langMap[core.state.preferences.language]!["settings"]
+                  ["support"]["help"],
               onTap: () {
                 launchUrl(kHelpCenter);
               },
             ),
             SettingsBlockItem(
-              text: "Give feedback",
+              text: core.utils.language
+                      .langMap[core.state.preferences.language]!["settings"]
+                  ["support"]["feedback"],
               onTap: () {
                 launchUrl(kGiveFeedback);
               },

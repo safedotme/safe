@@ -38,7 +38,9 @@ class _AboutContextMenuState extends State<AboutContextMenu> {
                 launchUrl(kTermsOfService);
                 core.state.preferences.aboutContextMenuController.close();
               },
-              text: "Terms of Service", // TODO: Extract
+              text: core.utils.language
+                      .langMap[core.state.preferences.language]!["settings"]
+                  ["support"]["about"]["terms"],
               icon: MutableIcon(
                 MutableIcons.doc,
                 color: Colors.white,
@@ -50,7 +52,9 @@ class _AboutContextMenuState extends State<AboutContextMenu> {
                 launchUrl(kPrivacyPolicy);
                 core.state.preferences.aboutContextMenuController.close();
               },
-              text: "Privacy Policy",
+              text: core.utils.language
+                      .langMap[core.state.preferences.language]!["settings"]
+                  ["support"]["about"]["privacy"],
               icon: MutableIcon(
                 MutableIcons.lockCloud,
                 color: Colors.white,
@@ -62,7 +66,9 @@ class _AboutContextMenuState extends State<AboutContextMenu> {
                 launchUrl(kCollaborators);
                 core.state.preferences.aboutContextMenuController.close();
               },
-              text: "Collaborators",
+              text: core.utils.language
+                      .langMap[core.state.preferences.language]!["settings"]
+                  ["support"]["about"]["collaborators"],
               icon: MutableIcon(
                 MutableIcons.heart,
                 color: Colors.white,
@@ -74,7 +80,9 @@ class _AboutContextMenuState extends State<AboutContextMenu> {
                 launchUrl(kMediaKit);
                 core.state.preferences.aboutContextMenuController.close();
               },
-              text: "Media Kit",
+              text: core.utils.language
+                      .langMap[core.state.preferences.language]!["settings"]
+                  ["support"]["about"]["media_kit"],
               icon: MutableIcon(
                 MutableIcons.hammer,
                 color: Colors.white,
