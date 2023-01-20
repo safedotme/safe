@@ -42,6 +42,22 @@ mixin _$ContactStore on _ContactStore, Store {
     });
   }
 
+  late final _$isEditingAtom =
+      Atom(name: '_ContactStore.isEditing', context: context);
+
+  @override
+  bool get isEditing {
+    _$isEditingAtom.reportRead();
+    return super.isEditing;
+  }
+
+  @override
+  set isEditing(bool value) {
+    _$isEditingAtom.reportWrite(value, super.isEditing, () {
+      super.isEditing = value;
+    });
+  }
+
   late final _$_ContactStoreActionController =
       ActionController(name: '_ContactStore', context: context);
 
@@ -57,10 +73,22 @@ mixin _$ContactStore on _ContactStore, Store {
   }
 
   @override
+  void setIsEditing(bool v) {
+    final _$actionInfo = _$_ContactStoreActionController.startAction(
+        name: '_ContactStore.setIsEditing');
+    try {
+      return super.setIsEditing(v);
+    } finally {
+      _$_ContactStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 contacts: ${contacts},
-homeWariningController: ${homeWariningController}
+homeWariningController: ${homeWariningController},
+isEditing: ${isEditing}
     ''';
   }
 }

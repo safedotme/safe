@@ -137,9 +137,7 @@ class _MutablePopupState extends State<MutablePopup> {
                       : null
                   : null,
               child: GestureDetector(
-                onTap: () {
-                  print("here");
-                },
+                onTap: () {},
                 child: Container(
                   color: widget.type == PopupType.input
                       ? null

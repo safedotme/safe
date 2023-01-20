@@ -15,4 +15,10 @@ abstract class _ContactStore with Store {
 
   @observable
   PanelController homeWariningController = PanelController();
+
+  @observable
+  bool isEditing = false;
+
+  @action
+  void setIsEditing(bool v) => isEditing = v;
 }
