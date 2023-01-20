@@ -1,7 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
@@ -18,8 +16,6 @@ import 'package:safe/widgets/mutable_button/mutable_button.widget.dart';
 import 'package:safe/widgets/mutable_loader/mutable_loader.widget.dart';
 import 'package:safe/widgets/mutable_overlay/mutable_overlay.widget.dart';
 import 'package:safe/widgets/mutable_screen_transition/mutable_screen_transition.widget.dart';
-import 'package:safe/widgets/mutable_settings_block/local_widgets/settings_block_item.widget.dart';
-import 'package:safe/widgets/mutable_settings_block/mutable_settings_block.widget.dart';
 import 'package:safe/widgets/mutable_text/mutable_text.widget.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -88,7 +84,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       launchUrl(kMarcoCalzadaMemory);
                     },
                     child: MutableText(
-                      "In memory of Marco Calzada", // TODO: Extract
+                      core.utils.language.langMap[core
+                          .state.preferences.language]!["settings"]["marco"],
                       size: 13,
                       color: MutableColor.neutral3,
                       align: TextAlign.center,

@@ -236,6 +236,7 @@ class LanguageUtil {
       "secured": "Secured",
     },
     "settings": {
+      "marco": "In memory of Marco Calzada",
       "header": "Settings",
       "version": "Version {VERSION} - Production",
       "preferences": {
@@ -269,6 +270,28 @@ class LanguageUtil {
         },
         "help": "Help",
         "feedback": "Give feedback"
+      },
+      "danger": {
+        "header": "Danger Zone",
+        "sign_out": {
+          "header": "Sign Out",
+          "modal": {
+            "header": "Sign Out",
+            "desc": "Are you sure you want to sign out?",
+            "button": "Sign Out",
+            "cancel": "Cancel",
+          },
+          "overlay": "Signing out",
+        },
+        "delete_acc": {
+          "header": "Delete Account",
+          "modal": {
+            "header": "Delete Account",
+            "desc":
+                "Deleting an account is currently unavailable due to the highly sensitive nature of Safe accounts and the information they store. We're actively working on finding a secure way make this possible.",
+            "button": "Ok",
+          },
+        },
       },
     },
     "incident": {

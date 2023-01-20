@@ -25,10 +25,14 @@ class _DangerZoneBlockState extends State<DangerZoneBlock> {
   @override
   Widget build(BuildContext context) {
     return MutableSettingsBlock(
-      header: "Danger Zone", // TODO: Extract
+      header: core.utils.language
+              .langMap[core.state.preferences.language]!["settings"]["danger"]
+          ["header"],
       items: [
         SettingsBlockItem(
-          text: "Sign Out",
+          text: core.utils.language
+                  .langMap[core.state.preferences.language]!["settings"]
+              ["danger"]["sign_out"]["header"],
           textColor: MutableColor.secondaryRed,
           onTap: () {
             showCupertinoModalPopup(
@@ -38,13 +42,17 @@ class _DangerZoneBlockState extends State<DangerZoneBlock> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Text(
-                      "Sign Out",
+                      core.utils.language.langMap[
+                              core.state.preferences.language]!["settings"]
+                          ["danger"]["sign_out"]["modal"]["header"],
                       style: TextStyle(
                         fontWeight: FontWeight.w600,
                       ),
                     ),
                     SizedBox(height: 6),
-                    Text("Are you sure you want to sign out?"),
+                    Text(core.utils.language.langMap[
+                            core.state.preferences.language]!["settings"]
+                        ["danger"]["sign_out"]["modal"]["desc"]),
                     SizedBox(height: 10),
                   ],
                 ),
@@ -54,14 +62,20 @@ class _DangerZoneBlockState extends State<DangerZoneBlock> {
                     onPressed: () async {
                       Navigator.pop(context);
                       core.state.preferences.setOverlayText(
-                        "Signing out",
-                      ); // TODO: Extract
+                        core.utils.language.langMap[
+                                core.state.preferences.language]!["settings"]
+                            ["danger"]["sign_out"]["overlay"],
+                      );
                       await core.state.preferences.overlayController.show();
                       await core.state.incidentLog.controller.close();
                       core.state.preferences.overlayController.hide();
                       core.services.auth.signOut();
                     },
-                    child: Text("Sign Out"),
+                    child: Text(
+                      core.utils.language.langMap[
+                              core.state.preferences.language]!["settings"]
+                          ["danger"]["sign_out"]["modal"]["button"],
+                    ),
                   )
                 ],
                 cancelButton: CupertinoActionSheetAction(
@@ -69,14 +83,20 @@ class _DangerZoneBlockState extends State<DangerZoneBlock> {
                   onPressed: () {
                     Navigator.pop(context);
                   },
-                  child: Text("Cancel"),
+                  child: Text(
+                    core.utils.language.langMap[
+                            core.state.preferences.language]!["settings"]
+                        ["danger"]["sign_out"]["modal"]["cancel"],
+                  ),
                 ),
               ),
             );
           },
         ),
         SettingsBlockItem(
-          text: "Delete Account",
+          text: core.utils.language
+                  .langMap[core.state.preferences.language]!["settings"]
+              ["danger"]["delete_acc"]["header"],
           onTap: () {
             showCupertinoDialog(
               context: context,

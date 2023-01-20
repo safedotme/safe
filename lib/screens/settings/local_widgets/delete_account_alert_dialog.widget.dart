@@ -2,16 +2,33 @@ import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
 
-class DeleteAccountAlertDialog extends StatelessWidget {
+class DeleteAccountAlertDialog extends StatefulWidget {
+  @override
+  State<DeleteAccountAlertDialog> createState() =>
+      _DeleteAccountAlertDialogState();
+}
+
+class _DeleteAccountAlertDialogState extends State<DeleteAccountAlertDialog> {
+  late Core core;
+
+  @override
+  void initState() {
+    super.initState();
+    core = Provider.of<Core>(context, listen: false);
+  }
+
   @override
   Widget build(BuildContext context) {
-    Core core = Provider.of<Core>(context, listen: false);
     return CupertinoAlertDialog(
       title: Text(
-        "Delete Account", // TODO: Extract
+        core.utils.language
+                .langMap[core.state.preferences.language]!["settings"]["danger"]
+            ["delete_acc"]["modal"]["header"],
       ),
       content: Text(
-        "Deleting an account is currently unavailable due to the highly sensitive nature of Safe accounts and the information they store. We're actively working on finding a secure way make this possible.",
+        core.utils.language
+                .langMap[core.state.preferences.language]!["settings"]["danger"]
+            ["delete_acc"]["modal"]["desc"],
       ),
       actions: [
         CupertinoDialogAction(
@@ -19,7 +36,9 @@ class DeleteAccountAlertDialog extends StatelessWidget {
             Navigator.of(context).pop();
           },
           child: Text(
-            "Ok",
+            core.utils.language
+                    .langMap[core.state.preferences.language]!["settings"]
+                ["danger"]["delete_acc"]["modal"]["button"],
           ),
         ),
       ],
