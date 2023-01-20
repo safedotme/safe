@@ -14,3 +14,5 @@ final Uri kTermsOfService = Uri.parse("https://joinsafe.me/terms");
 final Uri kPrivacyPolicy = Uri.parse("https://joinsafe.me/privacy");
 final Uri kMediaKit = Uri.parse("https://joinsafe.me/media");
 final Uri kCollaborators = Uri.parse("https://joinsafe.me/collaborators");
+final Uri kHelpCenter = Uri.parse("https://joinsafe.me/help");
+final Uri kGiveFeedback = Uri.parse("https://joinsafe.me/feedback");

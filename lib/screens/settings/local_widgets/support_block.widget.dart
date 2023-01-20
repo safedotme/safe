@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
+import 'package:safe/neuances.dart';
 import 'package:safe/widgets/mutable_settings_block/local_widgets/settings_block_item.widget.dart';
 import 'package:safe/widgets/mutable_settings_block/mutable_settings_block.widget.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class SupportBlock extends StatefulWidget {
   @override
@@ -57,9 +59,15 @@ class _SupportBlockState extends State<SupportBlock> {
             ),
             SettingsBlockItem(
               text: "Help",
+              onTap: () {
+                launchUrl(kHelpCenter);
+              },
             ),
             SettingsBlockItem(
               text: "Give feedback",
+              onTap: () {
+                launchUrl(kGiveFeedback);
+              },
             ),
           ],
         ),
