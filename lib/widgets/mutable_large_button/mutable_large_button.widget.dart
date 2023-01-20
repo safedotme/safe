@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:safe/utils/constants/constants.util.dart';
 import 'package:safe/widgets/mutable_button/mutable_button.widget.dart';
 import 'package:safe/widgets/mutable_gradient_border/mutable_gradient_border.widget.dart';
+import 'package:safe/widgets/mutable_gradient_shimmer/mutable_gradient_shimmer.widget.dart';
 import 'package:safe/widgets/mutable_shimmer/mutable_shimmer.widget.dart';
 import 'package:safe/widgets/mutable_text/mutable_text.widget.dart';
 
@@ -47,9 +48,10 @@ class MutableLargeButton extends StatelessWidget {
     return MutableButton(
       onTap: onTap,
       animateBeforeVoidCallback: animateBeforeVoidCallback,
-      child: MutableShimmer(
-        active: shimmer,
-        child: Container(
+      child: MutableGradientShimmer(
+        animate: isActive,
+        builder: (key) => Container(
+          key: key,
           height: height,
           decoration: BoxDecoration(
             color: !isActive ? kColorMap[MutableColor.neutral7]! : null,
@@ -63,8 +65,7 @@ class MutableLargeButton extends StatelessWidget {
             gradient: isActive
                 ? LinearGradient(
                     colors: kPrimaryGradientColors
-                        .map((e) =>
-                            e.withOpacity(kTransparencyMap[Transparency.v20]!))
+                        .map((e) => e.withOpacity(0.15))
                         .toList(),
                     begin: kPrimaryGradientAlignmentBegin,
                     end: kPrimaryGradientAlignmentEnd,

@@ -114,16 +114,24 @@ enum MutableColor {
   primaryOrange,
   primaryPurple,
   primaryMagenta,
+
   secondaryGreen,
   secondaryRed,
   secondaryYellow,
+  secondaryBlue,
+  overlaySecondaryGreen,
+  overlaySecondaryRed,
+  overlaySecondaryYellow,
+
   iosGrey,
+  iosDarkGrey,
+  mapBackground,
 }
 
 const Map<MutableColor, Color> kColorMap = {
   // -> NEUTRAL
   MutableColor.neutral1: Colors.white,
-  MutableColor.neutral2: Color(0xffB4B5B9),
+  MutableColor.neutral2: Color(0xffC7C7C7),
   MutableColor.neutral3: Color(0xff656565),
   MutableColor.neutral4: Color(0xff484848),
   MutableColor.neutral5: Color(0xff242424),
@@ -135,6 +143,10 @@ const Map<MutableColor, Color> kColorMap = {
 
   // -> OS SPECIFIC
   MutableColor.iosGrey: Color(0xff1E1920),
+  MutableColor.iosDarkGrey: Color(0xff252525),
+
+  // -> MAP SPECIFIC
+  MutableColor.mapBackground: Color(0xff1e1e1e),
 
   // -> PRIMARY
   MutableColor.primaryYellow: Color(0xffF8D849),
@@ -145,8 +157,12 @@ const Map<MutableColor, Color> kColorMap = {
 
   // -> SECONDARY
   MutableColor.secondaryGreen: Color(0xff50C166),
+  MutableColor.secondaryBlue: Color(0xff3275F6),
   MutableColor.secondaryRed: Color(0xffFC645D),
   MutableColor.secondaryYellow: Color(0xffFCD95D),
+  MutableColor.overlaySecondaryGreen: Color(0xff0E1811),
+  MutableColor.overlaySecondaryRed: Color(0xff200F11),
+  MutableColor.overlaySecondaryYellow: Color(0xff201A11),
 };
 
 final List<Color> kPrimaryGradientColors = [
@@ -162,8 +178,8 @@ final List<Color> kDisabledGradientColors = [
   Color(0xff090809),
 ];
 
-final Alignment kPrimaryGradientAlignmentBegin = Alignment(-0.1, -2.5);
-final Alignment kPrimaryGradientAlignmentEnd = Alignment(0.1, 3);
+final Alignment kPrimaryGradientAlignmentBegin = Alignment(-2, -2);
+final Alignment kPrimaryGradientAlignmentEnd = Alignment(2, 2);
 final Color kIconColorInGradientFill =
     kColorMap[MutableColor.neutral1]!.withOpacity(0.75);
 final Color kShimmerAnimationColor = Colors.white.withOpacity(0.3);
@@ -197,6 +213,7 @@ const Map<Transparency, double> kTransparencyMap = {
 };
 
 final double kBackgroundOpacity = kTransparencyMap[Transparency.v80]!;
+const double kGradientShimmerOpacity = 0.6;
 
 // BORDER RADIUS
 const double kPanelPopupBorderRadius = 35;
@@ -211,6 +228,24 @@ const double kBottomMarginPreviewPopup = 34;
 const double kDefaultTopMargin = 42;
 const double kHandleTopMargin = 6;
 const double kPanelHandleToHeader = 7;
+const double kInputPopupWidth = 265;
+const double kTopInputPopupMargin = 26;
+const double kBottomInputPopupMargin = 18;
+const double kDefaultInputPopupHeight = 243;
+const MutableColor kInputPopupColor = MutableColor.neutral9;
+const String kDefaultCountryCode = "+1";
+
+// CONTACT
+const double kContactTimelineWidth = 8;
+
+// NAVBAR
+const double kNavBarBlur = 15;
+const double kOverlayButtonSize = 40;
+const double kIncidentNavBarOffset = 150;
+
+// SCROLL
+const Duration kScrollAnimationDuration = Duration(milliseconds: 200);
+const Curve kScrollAnimationCurve = Curves.decelerate;
 
 // MARGINS
 const double kSideScreenMargin = 15;
@@ -226,6 +261,10 @@ const double kLargeButtonBorderRadius = kLargeButtonHeight / 2;
 // BUTTONS
 const double kScaleDownButtonPercentage = 0.97;
 const Duration kScaleDownButtonTime = Duration(milliseconds: 125);
+
+// CONTEXT MENU
+const double kContextMenuWidth = 254;
+const double kContextMenuBorderRadius = 12;
 
 // NAVIGATION BUTTON
 const double kNavButtonSize = 40;
@@ -263,6 +302,11 @@ enum AuthType {
   signup,
   login,
 }
+
+// INCIDENT SCREEN
+const double kIncidentDataBoxPadding = 15;
+const double kIncidentSubheaderToBody = 20;
+const double kRecordedDataBoxSpacing = 14;
 
 // HOME
 
@@ -305,6 +349,9 @@ const double kIncidentLogCardSpacing = 25;
 const double kEmergencyContactAvatarSize = 24;
 const double kEmergencyContactAvatarSpacing = 3;
 
+// MAP
+const EdgeInsets kMapPadding = EdgeInsets.only(bottom: 100, left: 15);
+
 // TRANSITIONS
 const double kScreenTransitionBounds = 400;
 const Duration kScreenTransitionDuration = Duration(milliseconds: 200);
@@ -317,10 +364,18 @@ const double kCaptureControlBorderRadius = 8;
 const double kCameraPreviewWidthPercentage = 0.3;
 const double kControlBoxBodyHeight = 150;
 
-// -> CAMERA PREVIEW
-
 // -> LOCATION TIMEOUT
 const Duration kCaptureStreamTimeout = Duration(seconds: 20);
+const Duration kLocationStreamTimeout = Duration(seconds: 5);
 
 // SHIMMER
 final Color kBoxLoaderShimmerColor = kShimmerAnimationColor.withOpacity(0.05);
+
+// PLAY SCREEN
+final Duration kRotationDuration = Duration(milliseconds: 1000);
+const double kLinearProgressIndicatorWidth = 5;
+const double kMapPaddingCompensation = 0.005;
+const double kMapZoom = 16;
+
+// SETTINGS
+const double kSettingsComponentSpacing = 45;

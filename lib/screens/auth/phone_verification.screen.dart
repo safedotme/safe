@@ -8,6 +8,7 @@ import 'package:safe/widgets/mutable_banner/mutable_banner.widget.dart';
 import 'package:safe/widgets/mutable_input_panel/mutable_input_panel.widget.dart';
 import 'package:safe/widgets/mutable_popup/mutable_popup.widget.dart';
 import 'package:safe/widgets/mutable_submit_textfield_button/mutable_submit_textfield_button.widget.dart';
+import 'package:safe/widgets/mutable_text/mutable_text.widget.dart';
 import 'package:safe/widgets/mutable_text_field/local_widgets/phone_extention_display.widget.dart';
 import 'package:safe/widgets/mutable_text_field/mutable_text_field.widget.dart';
 
@@ -78,7 +79,7 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen>
 
   // Generates different hint text based on country
   String handleHint(String code) {
-    return code == "US" ? "(999) 999-9999" : "9999 9999"; //TODO: Fix later on
+    return core.utils.phone.generateHint(code);
   }
 
   void submit() async {
@@ -96,10 +97,6 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen>
         phone: core.state.auth.phoneNumber,
         dialCode: core.state.auth.countryDialCode,
         onCodeSend: (verificationId, resentToken) {
-          print(
-            "OPT code has been sent to ${core.state.auth.formattedPhone}. Verification ID: $verificationId",
-          );
-
           core.state.auth.setVerificationId(verificationId);
           core.state.auth.setResendToken(resentToken);
         },
@@ -186,25 +183,30 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen>
       body: MutableInputPanel(
         // Phone Input Text Field
         body: Observer(
-          builder: (_) => MutableTextField(
-            onSubmit: (_) {
-              submit();
-            },
-            controller: fieldController,
-            type: TextInputType.phone,
-            focusNode: node,
-            onChange: format,
-            hintText: handleHint(core.state.auth.countryCode),
-            leadingRight: MutableSubmitTextFieldButton(submit),
-            leadingLeft: Observer(
-              builder: (_) => PhoneExtentionDisplay(
+          builder: (_) => Row(
+            children: [
+              PhoneExtentionDisplay(
                 core.state.auth.countryDialCode,
                 onTap: () {
                   node.unfocus();
                   core.state.auth.countryCodeController.open();
                 },
               ),
-            ),
+              SizedBox(width: 6),
+              Expanded(
+                child: MutableTextField(
+                  onSubmit: (_) {
+                    submit();
+                  },
+                  controller: fieldController,
+                  type: TextInputType.phone,
+                  focusNode: node,
+                  onChange: format,
+                  hintText: handleHint(core.state.auth.countryCode),
+                  leadingRight: MutableSubmitTextFieldButton(submit),
+                ),
+              ),
+            ],
           ),
         ),
         resizeToAvoidBottomInsets: true,

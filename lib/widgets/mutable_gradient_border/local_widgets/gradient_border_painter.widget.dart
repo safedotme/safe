@@ -24,10 +24,6 @@ class GradientBorderPainter extends CustomPainter {
     Paint paint = Paint()
       ..shader = LinearGradient(
         colors: kPrimaryGradientColors,
-        // begin: Alignment(-1.5, 1.5),
-        // end: Alignment(1, -1),
-        // begin: Alignment(-1.2, -4),
-        // end: Alignment(0.78, 4),
         begin: begin ?? kPrimaryGradientAlignmentBegin,
         end: end ?? kPrimaryGradientAlignmentEnd,
       ).createShader(rect)

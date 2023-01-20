@@ -7,7 +7,7 @@ class AnalyticsLog {
   final String description;
   final String icon;
   final bool notify;
-  final List<Map<String, String>> tags;
+  final Map<String, String> tags;
 
   AnalyticsLog({
     required this.channel,
@@ -15,7 +15,7 @@ class AnalyticsLog {
     required this.description,
     required this.icon,
     this.notify = true,
-    this.tags = const [],
+    this.tags = const {},
   });
 
   Map<String, dynamic> toMap() {
@@ -27,7 +27,7 @@ class AnalyticsLog {
       "description": description,
       "icon": icon,
       "notify": notify,
-      // "tags": tags,
+      "tags": tags,
     };
   }
 }

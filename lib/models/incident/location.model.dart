@@ -23,7 +23,7 @@ class Location {
         alt: json["alt"],
         datetime: DateTime.parse(json["datetime"]),
         address: json["address"],
-        speed: json["speed"],
+        speed: (json["speed"]).toDouble(),
         accuracy: json["accuracy"],
       );
 

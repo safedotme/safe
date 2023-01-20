@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
+import 'package:safe/models/incident/incident.model.dart';
 import 'package:safe/screens/incident_log/local_widgets/incident_log_body.widget.dart';
 import 'package:safe/utils/constants/constants.util.dart';
 import 'package:safe/widgets/mutable_popup/local_widgets/mutable_popup_style.widget.dart';
@@ -37,10 +38,33 @@ class _IncidentLogState extends State<IncidentLog> {
       core.utils.credit.obtainState(
         core,
         incidents: incidents.length,
-        contacts: core.state.contact.contacts.length,
+        contacts: core.state.contact.contacts != null
+            ? core.state.contact.contacts!.length
+            : null,
       );
       core.state.incidentLog.setIncidents(incidents);
+
+      fetchThumbnails(incidents);
     });
+  }
+
+  void fetchThumbnails(List<Incident> incidents) async {
+    for (Incident i in incidents) {
+      bool keyExists = core.state.incidentLog.thumbnails.containsKey(i.id);
+
+      if (i.thumbnail != null && !keyExists) {
+        core.services.storage.getDownloadUrl(i.thumbnail!).then((data) {
+          if (data["error"] == null) {
+            var t = core.state.incidentLog.thumbnails;
+            Map<String, String> newMap = {};
+            newMap[i.id] = data["url"];
+
+            t.addAll(newMap);
+            core.state.incidentLog.setThumbnail(t);
+          }
+        });
+      }
+    }
   }
 
   void listenScrollController() {
@@ -68,10 +92,8 @@ class _IncidentLogState extends State<IncidentLog> {
 
     await core.state.incidentLog.scrollController.animateTo(
       0,
-      duration: Duration(
-        milliseconds: 200,
-      ),
-      curve: Curves.decelerate,
+      duration: kScrollAnimationDuration,
+      curve: kScrollAnimationCurve,
     );
 
     preventAnimationSpoofing = false;

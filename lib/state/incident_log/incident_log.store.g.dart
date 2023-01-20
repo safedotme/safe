@@ -89,6 +89,22 @@ mixin _$IncidentLogStore on _IncidentLogStore, Store {
     });
   }
 
+  late final _$thumbnailsAtom =
+      Atom(name: '_IncidentLogStore.thumbnails', context: context);
+
+  @override
+  Map<String, String> get thumbnails {
+    _$thumbnailsAtom.reportRead();
+    return super.thumbnails;
+  }
+
+  @override
+  set thumbnails(Map<String, String> value) {
+    _$thumbnailsAtom.reportWrite(value, super.thumbnails, () {
+      super.thumbnails = value;
+    });
+  }
+
   late final _$scrollOffsetAtom =
       Atom(name: '_IncidentLogStore.scrollOffset', context: context);
 
@@ -158,6 +174,17 @@ mixin _$IncidentLogStore on _IncidentLogStore, Store {
   }
 
   @override
+  void setThumbnail(Map<String, String> t) {
+    final _$actionInfo = _$_IncidentLogStoreActionController.startAction(
+        name: '_IncidentLogStore.setThumbnail');
+    try {
+      return super.setThumbnail(t);
+    } finally {
+      _$_IncidentLogStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   void setScrollOffset(double o) {
     final _$actionInfo = _$_IncidentLogStoreActionController.startAction(
         name: '_IncidentLogStore.setScrollOffset');
@@ -187,6 +214,7 @@ offset: ${offset},
 scrollController: ${scrollController},
 scrollPhysics: ${scrollPhysics},
 incidents: ${incidents},
+thumbnails: ${thumbnails},
 scrollOffset: ${scrollOffset},
 user: ${user}
     ''';

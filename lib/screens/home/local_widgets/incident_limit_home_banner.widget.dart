@@ -1,3 +1,4 @@
+import 'package:app_settings/app_settings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
@@ -85,6 +86,11 @@ class _IncidentLimitHomeBannerState extends State<IncidentLimitHomeBanner> {
         borderColor: MutableColor.secondaryRed,
         onTap: () async {
           HapticFeedback.mediumImpact();
+
+          if (core.state.capture.limErrState == LimitErrorState.noConnection) {
+            AppSettings.openWIFISettings();
+            return;
+          }
 
           if (core.state.capture.limErrState ==
               LimitErrorState.missingContacts) {

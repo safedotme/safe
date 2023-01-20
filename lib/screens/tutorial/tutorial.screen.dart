@@ -2,10 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
+import 'package:safe/neuances.dart';
 import 'package:safe/screens/tutorial/local_widgets/tutorial_component.widget.dart';
+import 'package:safe/services/analytics/helper_classes/analytics_log_model.service.dart';
 import 'package:safe/utils/constants/constants.util.dart';
 import 'package:safe/widgets/mutable_large_button/mutable_large_button.widget.dart';
 import 'package:safe/widgets/mutable_screen_transition/mutable_screen_transition.widget.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class TutorialScreen extends StatefulWidget {
   @override
@@ -18,7 +21,7 @@ class _TutorialScreenState extends State<TutorialScreen> {
 
   // General
   final Duration duration = Duration(milliseconds: 300);
-  final Duration consumeDuration = Duration(milliseconds: 3000);
+  final Duration consumeDuration = Duration(milliseconds: 1500);
   final List<Curve> curves = [Curves.easeOut, Curves.easeInOut];
   final Curve bubbleCurve = Curves.easeIn;
 
@@ -270,7 +273,12 @@ class _TutorialScreenState extends State<TutorialScreen> {
                   duration: duration,
                   curve: curves[footerCurve],
                   opacity: footerOpacity,
-                  child: TutorialComponent("footer"),
+                  child: TutorialComponent(
+                    "footer",
+                    onTap: () {
+                      launchUrl(kMarkMusicTwitter);
+                    },
+                  ),
                 ),
               ),
 
@@ -286,6 +294,19 @@ class _TutorialScreenState extends State<TutorialScreen> {
                     borderRadius: 15,
                     animateBeforeVoidCallback: true,
                     onTap: () async {
+                      // Log
+                      core.services.analytics.log(AnalyticsLog(
+                        channel: "user-register",
+                        event: "tutorial-finished",
+                        description: "User has finished their tutorial.",
+                        icon: "📘",
+                        tags: {
+                          "userid": core.services.auth.currentUser!.uid,
+                          "datetime": DateTime.now().toIso8601String(),
+                        },
+                      ));
+
+                      // Close tutorial
                       await core.state.auth.tutorialController.close();
                       core.state.auth.setIsTutorialOpen(false);
 

@@ -41,7 +41,9 @@ class _IncidentCardBodyState extends State<IncidentCardBody> {
       return "";
     }
 
-    return core.utils.geocoder.removeTag(widget.incident.location![0].address!);
+    return core.utils.geocoder
+            .removeTag(widget.incident.location![0].address!) ??
+        "";
   }
 
   @override
@@ -87,7 +89,8 @@ class _IncidentCardBodyState extends State<IncidentCardBody> {
                             ),
                             child: MutableEmergencyContactAvatar(
                               ContactsUtil.formatContactList(
-                                  widget.incident.contactLog)![i],
+                                      widget.incident.contactLog)![i]
+                                  .name,
                             ),
                           ),
                         ),

@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:safe/core.dart';
 import 'package:safe/models/admin/admin.model.dart';
 import 'package:safe/models/user/user.model.dart';
@@ -9,6 +8,7 @@ enum LimitErrorState {
   emergency,
   missingContacts,
   permissions,
+  noConnection,
 }
 
 enum TriggerIdentifier {
@@ -28,6 +28,10 @@ class CreditUtil {
     await _base(
       core,
       contacts: contacts,
+      onDisconnected: () {
+        core.state.capture.setLimErrState(LimitErrorState.noConnection);
+        core.state.capture.limErrorBannerController.open();
+      },
       onFirstIncident: () {
         core.state.capture.setLimErrState(null);
         core.state.capture.limErrorBannerController.close();
@@ -66,6 +70,9 @@ class CreditUtil {
     bool capture = false;
     await _base(
       core,
+      onDisconnected: () {
+        capture = false;
+      },
       onFirstIncident: () {
         capture = true;
       },
@@ -101,10 +108,16 @@ class CreditUtil {
     required Function onMaxedOut,
     required Function onMissingContacts,
     required Function onDisabledPermissions,
+    required Function onDisconnected,
     User? user,
     int? contacts,
     int? incidents,
   }) async {
+    if (!core.state.preferences.isConnected) {
+      onDisconnected();
+      return;
+    }
+
     // Load all credits
     user ??= await core.services.server.user.readFromIdOnce(
       id: core.services.auth.currentUser!.uid,

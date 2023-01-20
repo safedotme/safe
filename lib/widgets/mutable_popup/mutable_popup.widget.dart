@@ -24,6 +24,7 @@ class MutablePopup extends StatefulWidget {
   final bool draggable;
   final double minHeight;
   final bool enableBorder;
+  final double bottomInsets;
   final double maxHeight;
 
   final MutablePopupStyle? style;
@@ -31,14 +32,13 @@ class MutablePopup extends StatefulWidget {
 
   /// [width] will not be applied with panel popup types
   final double? width;
-
-  /// [height] will not be applied with panel popup types
   final double? height;
 
   MutablePopup({
     this.type = PopupType.pannel,
     this.enableBorder = true,
     this.onOpened,
+    this.bottomInsets = 0,
     this.scrollBuilder,
     this.minHeight = 500,
     this.maxHeight = 770,
@@ -61,6 +61,7 @@ class MutablePopup extends StatefulWidget {
 
 class _MutablePopupState extends State<MutablePopup> {
   late MediaQueryData queryData;
+  late PanelController controller;
 
   // Determine height and width for non-panel popups
   late Size size;
@@ -68,9 +69,14 @@ class _MutablePopupState extends State<MutablePopup> {
     size = Size(
       widget.width ??
           (widget.type == PopupType.input
-              ? 265
+              ? kInputPopupWidth
               : queryData.size.width - (kSideMarginPreviewPopup * 2)),
-      widget.height ?? (widget.type == PopupType.input ? 243 : 323),
+      widget.height ??
+          (widget.type == PopupType.input
+              ? widget.height == null
+                  ? kDefaultInputPopupHeight
+                  : widget.height!
+              : 323),
     );
   }
 
@@ -78,9 +84,21 @@ class _MutablePopupState extends State<MutablePopup> {
   late MutablePopupStyle style;
 
   @override
+  void initState() {
+    super.initState();
+
+    if (widget.controller != null) {
+      controller = widget.controller!;
+    } else {
+      controller = PanelController();
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     // Initialize query data
     queryData = MediaQuery.of(context);
+
     setSize();
 
     // Called in build statement to maintain state change ability
@@ -102,28 +120,39 @@ class _MutablePopupState extends State<MutablePopup> {
                 widget.onFreezeInteraction!();
               }
             : null,
-        child: CustomPaint(
-          // Will paint special border for Pannel popup
-          painter: widget.enableBorder
-              ? widget.type == PopupType.pannel
-                  ? PanelPopupPainter(
-                      borderColor: style.borderColor,
-                    )
-                  : null
-              : null,
-          child: widget.type == PopupType.pannel
-              ? widget.body
-              : NonPannelBody(
-                  size: size,
-                  style: style,
-                  body: widget.body,
-                ),
+        child: GestureDetector(
+          onTap: () {
+            controller.close();
+          },
+          child: Container(
+            color: Colors.transparent,
+            child: CustomPaint(
+              // Will paint special border for Pannel popup
+              painter: widget.enableBorder
+                  ? widget.type == PopupType.pannel
+                      ? PanelPopupPainter(
+                          borderColor: style.borderColor,
+                        )
+                      : null
+                  : null,
+              child: GestureDetector(
+                onTap: () {},
+                child: widget.type == PopupType.pannel
+                    ? widget.body
+                    : NonPannelBody(
+                        size: size,
+                        style: style,
+                        body: widget.body,
+                      ),
+              ),
+            ),
+          ),
         ),
       ),
       onPanelOpened: widget.onOpened,
       onPanelClosed: widget.onClosed,
       onPanelSlide: widget.onSlide,
-      controller: widget.controller,
+      controller: controller,
       defaultPanelState: widget.defaultState,
       backdropTapClosesPanel: widget.backdropTapClose,
       isDraggable: widget.draggable,
@@ -135,7 +164,9 @@ class _MutablePopupState extends State<MutablePopup> {
       maxHeight: widget.type == PopupType.pannel
           ? widget.maxHeight
           : widget.type == PopupType.input
-              ? (queryData.size.height / 2) + (size.height / 2)
+              ? ((queryData.size.height - widget.bottomInsets) / 2) +
+                  (size.height / 2) +
+                  widget.bottomInsets
               : size.height + kBottomMarginPreviewPopup,
 
       // Removes default shadows

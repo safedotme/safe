@@ -4,7 +4,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
-import 'package:safe/utils/capture/capture.util.dart';
 import 'package:safe/utils/constants/constants.util.dart';
 import 'package:safe/utils/credit/credit.util.dart';
 import 'package:safe/utils/icon/icon.util.dart';
@@ -100,7 +99,7 @@ class _IncidentLogNavBarState extends State<IncidentLogNavBar> {
       state: state,
     );
 
-    return percentage * 15;
+    return percentage * kNavBarBlur;
   }
 
   @override
@@ -157,13 +156,20 @@ class _IncidentLogNavBarState extends State<IncidentLogNavBar> {
                         mainAxisSize: MainAxisSize.max,
                         children: [
                           MutableButton(
+                            scale: 0.9,
                             onTap: () {
-                              print("navigate to settings");
+                              core.state.preferences.controller.open();
                             },
-                            child: MutableIcon(
-                              MutableIcons.gear,
-                              size: Size(24, 24),
-                              color: kColorMap[MutableColor.neutral2]!,
+                            child: Container(
+                              padding: EdgeInsets.fromLTRB(0, 8, 10, 8),
+                              color: Colors.transparent,
+                              child: Center(
+                                child: MutableIcon(
+                                  MutableIcons.gear,
+                                  size: Size(24, 24),
+                                  color: kColorMap[MutableColor.neutral2]!,
+                                ),
+                              ),
                             ),
                           ),
                           Spacer(),

@@ -41,6 +41,7 @@ class MutableAvatar extends StatelessWidget {
     Core core = Provider.of<Core>(context, listen: false);
     return MutableButton(
       onTap: onTap,
+      scale: 0.9,
       child: MutableGradientBorder(
         width: kBorderWidth,
         borderRadius: kNavButtonSize / 2,

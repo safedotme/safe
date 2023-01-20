@@ -4,8 +4,23 @@ import 'package:safe/services/analytics/helper_classes/analytics_insight.model.d
 import 'package:safe/services/analytics/helper_classes/analytics_log_model.service.dart';
 import 'dart:convert';
 
+enum ErrorLogType {
+  rtcFailed,
+  mediaServerFailed,
+  twilioFailed,
+  geocoderFailed,
+  timeout,
+}
+
 class AnalyticsService {
   final String endpoint = "https://api.logsnag.com/v1/";
+
+  static const Map<ErrorLogType, String> mapErrors = {
+    ErrorLogType.rtcFailed: "rtc-failed",
+    ErrorLogType.mediaServerFailed: "media-server-failed",
+    ErrorLogType.twilioFailed: "twilio-failed",
+    ErrorLogType.geocoderFailed: "geocoder-failed",
+  };
 
   Future<void> log(AnalyticsLog log) => _request(log.toMap(), "log");
 

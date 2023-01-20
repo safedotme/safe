@@ -11,9 +11,11 @@ import 'package:safe/models/incident/incident.model.dart';
 import 'package:safe/models/incident/location.model.dart';
 import 'package:safe/models/incident/notified_contact.model.dart';
 import 'package:safe/models/media_server/start_recording_response.model.dart';
-import 'package:safe/models/media_server/stop_recording_response.model.dart';
 import 'package:safe/models/user/user.model.dart';
+import 'package:safe/services/analytics/analytics.service.dart';
+import 'package:safe/services/analytics/helper_classes/analytics_log_model.service.dart';
 import 'package:safe/services/media_server/media_server.service.dart';
+import 'package:safe/services/server/incident_server.service.dart';
 import 'package:safe/utils/capture/messages.capture.dart';
 import 'package:safe/utils/constants/constants.util.dart';
 import 'package:uuid/uuid.dart';
@@ -35,6 +37,11 @@ class CaptureUtil {
     // Will be used to start & stop incident
     isActive = true;
 
+    // Resets error
+    if (_core!.state.capture.errorCapturing != null) {
+      _core!.state.capture.setErrorCapturing(null);
+    }
+
     // Prevents two banners from being open at same time
     if (_core!
         .state.capture.incidentRecordedBannerPanelController.isPanelOpen) {
@@ -43,20 +50,27 @@ class CaptureUtil {
 
     // ⬇️ INCIDENT CREATE
     await _uploadChanges(null);
+    _logIncident(_core!.state.capture.incident!, false);
 
     // ⬇️ STREAM / RECORDING
     _stream();
 
-    // // ⬇️ LOCATION + SMS
+    // ⬇️ LOCATION + SMS
     _locationListen();
 
-    // // ⬇️ BATTERY
+    // ⬇️ BATTERY
     _batteryListen();
+
+    // Auto Stop (will stop incident after 1 hour)
+    _timeout();
   }
 
-  void stop() async {
+  void stop({String? error}) async {
     // Used to stop location and battery streams
     isActive = false;
+
+    // Log Incident
+    _logIncident(_core!.state.capture.incident!, true);
 
     // Uploads immediate time user pressed stop
     await _uploadChanges(
@@ -74,7 +88,7 @@ class CaptureUtil {
     // STREAM
 
     await _core!.services.agora.stop(_core!.state.capture.engine!);
-    await _saveStreamRecording();
+    _saveStreamRecording();
     await Future.delayed(Duration(seconds: 1));
 
     // UI
@@ -85,7 +99,75 @@ class CaptureUtil {
 
     // Opens an error if user has reached credit limit
     if (_core!.state.capture.limErrState == null) {
+      if (error != null) {
+        _core!.state.capture.setErrorCapturing(error);
+      }
       _core!.state.capture.incidentRecordedBannerPanelController.open();
+    }
+  }
+
+  // ⬇️ TIMEOUT
+  void _timeout() async {
+    await Future.delayed(Duration(
+      seconds: _core!.state.capture.settings!.maxIdleTime,
+    ));
+
+    if (isActive) {
+      stop();
+    }
+  }
+
+  // ⬇️ ANALYTICS
+  Future<void> _logIncident(Incident i, bool stopped) {
+    return _core!.services.analytics.log(AnalyticsLog(
+      channel: "capture-incident",
+      event: "capture-${stopped ? "stopped" : "started"}",
+      description:
+          "User has begun ${stopped ? "stopped" : "started"} capturing the incident.",
+      icon: stopped ? "☁️" : "📸",
+      tags: {
+        "incidentid": i.id,
+        "userid": i.userId,
+      },
+    ));
+  }
+
+  Future<void> _logError({
+    required ErrorLogType event,
+    required String error,
+    bool crit = false,
+  }) async {
+    String body = """
+**ERROR**
+```
+$error
+```
+
+**INFORMATION**
+```
+ID: ${_core!.state.capture.incident!.id}
+DATETIME: ${DateTime.now().toIso8601String()}
+USER ID: ${_core!.state.capture.incident!.userId}
+```
+""";
+
+    await _core!.services.analytics.log(AnalyticsLog(
+      channel: "error",
+      event: AnalyticsService.mapErrors[event]!,
+      description: body,
+      icon: "🚨",
+      tags: {
+        "incidentid": _core!.state.capture.incident!.id,
+        "userid": _core!.state.capture.incident!.userId,
+      },
+    ));
+
+    if (isActive && crit) {
+      stop(
+        error: _core!.utils.language
+                .langMap[_core!.state.preferences.language]!["capture"]
+            ["errors"][event],
+      );
     }
   }
 
@@ -102,8 +184,11 @@ class CaptureUtil {
       _core!.state.capture.engine!,
       RtcEngineEventHandler(
         onError: (err, msg) {
-          // TODO: (LOG)
-          print("$err: $msg");
+          _logError(
+            event: ErrorLogType.rtcFailed,
+            crit: true,
+            error: {"error": err, "message": msg}.toString(),
+          );
         },
         onJoinChannelSuccess: (connection, elapsed) {
           _recordStream();
@@ -129,11 +214,17 @@ class CaptureUtil {
     _initEngine();
 
     String? token = await _core!.services.mediaServer.generateRTCToken(
-      channelName: _core!.state.capture.incident!.stream.channelName,
-      role: TokenRole.publisher,
-      type: TokenType.userAccount,
-      uid: _core!.state.capture.incident!.stream.userId,
-    );
+        channelName: _core!.state.capture.incident!.stream.channelName,
+        role: TokenRole.publisher,
+        type: TokenType.userAccount,
+        uid: _core!.state.capture.incident!.stream.userId,
+        onError: (e) {
+          _logError(
+            event: ErrorLogType.mediaServerFailed,
+            error: e,
+            crit: true,
+          );
+        });
 
     if (token == null) {
       _uploadChanges(_core!.state.capture.incident!.copyWith(
@@ -154,6 +245,9 @@ class CaptureUtil {
     String? resourceId = await _core!.services.mediaServer.getResourceID(
       channelName: _core!.state.capture.incident!.stream.channelName,
       recordingId: _core!.state.capture.incident!.stream.recordingId,
+      onError: (e) {
+        _logError(event: ErrorLogType.mediaServerFailed, error: e, crit: true);
+      },
     );
 
     if (resourceId == null) return;
@@ -164,15 +258,16 @@ class CaptureUtil {
       role: TokenRole.publisher,
       type: TokenType.userAccount,
       uid: _core!.state.capture.incident!.stream.recordingId,
+      onError: (e) {
+        _logError(event: ErrorLogType.mediaServerFailed, error: e, crit: true);
+      },
     );
 
     if (recordToken == null) return;
 
     StartRecordingResponse? response =
         await _core!.services.mediaServer.startRecording(
-      dir1: _core!.services.mediaServer.generateDirectory(
-        _core!.state.capture.incident!.id,
-      ),
+      dir1: _core!.state.capture.incident!.stream.channelName,
       dir2: "raw",
       userUid: _core!.state.capture.incident!.stream.userId.toString(),
       channelName: _core!.state.capture.incident!.stream.channelName,
@@ -180,6 +275,13 @@ class CaptureUtil {
       resourceId: resourceId,
       maxIdleTime: _core!.state.capture.settings!.maxIdleTime,
       token: recordToken,
+      onError: (e) {
+        _logError(
+          event: ErrorLogType.mediaServerFailed,
+          error: e,
+          crit: true,
+        );
+      },
     );
 
     if (response == null) return;
@@ -197,31 +299,29 @@ class CaptureUtil {
 
     if (_core!.state.capture.incident!.stream.sid == null) return;
 
+    Incident i = _core!.state.capture.incident!;
+
     // Call stop recording
-    StopRecordingResponse? response =
-        await _core!.services.mediaServer.stopRecording(
-      channelName: _core!.state.capture.incident!.stream.channelName,
-      recordingId: _core!.state.capture.incident!.stream.recordingId,
-      resourceId: _core!.state.capture.incident!.stream.resourceId!,
-      sid: _core!.state.capture.incident!.stream.sid!,
+    _core!.services.mediaServer.stopRecording(
+      channelName: i.stream.channelName,
+      collection: IncidentServer.path,
+      incidentId: i.id,
+      recordingId: i.stream.recordingId,
+      resourceId: i.stream.resourceId!,
+      sid: i.stream.sid!,
+      onError: (e) {
+        _logError(
+          event: ErrorLogType.mediaServerFailed,
+          error: e,
+          crit: true,
+        );
+      },
     );
-
-    if (response == null) return;
-
-    // Update Firebase values
-    await _uploadChanges(_core!.state.capture.incident!.copyWith(
-      cloudRecordingAvailable: true,
-      stream: _core!.state.capture.incident!.stream.copyWith(
-        filePath: response.fileName,
-      ),
-    ));
   }
 
   // ⬇️ LOCATION
 
   Future<String?> _generateAddress(Location location) async {
-    // Build better system for judging addresses based on whether one has been generated
-
     // Checks that received data is not null
     if (location.lat == null || location.long == null) {
       return null;
@@ -230,6 +330,12 @@ class CaptureUtil {
     var response = await _core!.services.geocoder.fetchAddress(
       lat: location.lat!,
       long: location.long!,
+      onError: (e) {
+        _logError(
+          event: ErrorLogType.geocoderFailed,
+          error: e.toString(),
+        );
+      },
     );
 
     if (response == null) {
@@ -318,7 +424,7 @@ class CaptureUtil {
         await _sendLocation(log);
       }
 
-      await Future.delayed(kCaptureStreamTimeout);
+      await Future.delayed(kLocationStreamTimeout);
     }
   }
 
@@ -348,7 +454,13 @@ class CaptureUtil {
   }) {
     String message = EmergencyMessages.messageMap[type]!;
 
-    final Map<String, String> replacementMap = {
+    Location? l = type == MessageType.end
+        ? incident.location?.last
+        : incident.location?.first;
+
+    message = EmergencyMessages.addLocation(message, l);
+
+    final Map<String, String?> replacementMap = {
       "{FULL_NAME}": user.name,
       "{NAME}": _core!.utils.name.genFirstName(user.name, false),
       "{FULL_CONTACT_NAME}": contact.name,
@@ -356,17 +468,19 @@ class CaptureUtil {
       "{TYPE}": _core!.utils.incident.generateType(incident.type[0])!,
       "{TIME_END}": DateFormat.jm().format(DateTime.now()),
       "{ADDRESS}": _core!.utils.geocoder.removeTag(
-        incident.location![0].address!,
+        l?.address,
       ),
-      "{LAT}": incident.location![0].lat!.toStringAsFixed(4),
-      "{LONG}": incident.location![0].long!.toStringAsFixed(4),
+      "{LAT}": l?.lat?.toStringAsFixed(4),
+      "{LONG}": l?.long?.toStringAsFixed(4),
       "{NAME_POSESSIVE}": _core!.utils.name.genFirstName(user.name, true),
       "{BATTERY}": battery.toString(),
       "{LINK}": "https://live.joinsafe.me/${incident.pubID}",
     };
 
     for (String key in replacementMap.keys) {
-      message = message.replaceAll(key, replacementMap[key]!);
+      if (replacementMap[key] != null) {
+        message = message.replaceAll(key, replacementMap[key]!);
+      }
     }
 
     return message;

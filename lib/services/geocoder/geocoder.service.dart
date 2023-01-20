@@ -9,6 +9,7 @@ class GeocoderService {
   Future<Map<String, dynamic>?> fetchAddress({
     required double lat,
     required double long,
+    required Function(Object e) onError,
   }) async {
     String key = dotenv.env['GOOGLE_MAPS_KEY']!;
     String loaded = endpoint
@@ -21,7 +22,7 @@ class GeocoderService {
     try {
       response = await http.get(Uri.parse(loaded));
     } catch (e) {
-      // (LOG) Not able to connect to GEOCODER
+      onError(e);
     }
 
     if (response == null) return null;
@@ -29,7 +30,10 @@ class GeocoderService {
     Map<String, dynamic> json = jsonDecode(response.body);
 
     if (json["status"] != "OK") {
-      return null;
+      onError({
+        "status": json["status"],
+        "body": json["body"].toString(),
+      });
     }
 
     return json;

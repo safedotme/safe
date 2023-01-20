@@ -79,60 +79,64 @@ class _MutableInputPanelState extends State<MutableInputPanel> {
     notifier = ValueNotifier(queryData.viewInsets.bottom);
     fetchSpacerSize();
 
-    return Container(
-      color: Colors.transparent,
-      padding: EdgeInsets.fromLTRB(
-        kSideScreenMargin,
-        kHandleTopMargin,
-        kSideScreenMargin,
-        kBottomScreenMargin,
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Center(child: MutableHandle()),
-          SizedBox(height: 38),
-          Center(
-            child: MutableIconSphere(
-              widget.icon,
-              size: widget.iconSize,
+    return OrientationBuilder(
+      builder: (_, orientation) => orientation == Orientation.landscape
+          ? SizedBox()
+          : Container(
+              color: Colors.transparent,
+              padding: EdgeInsets.fromLTRB(
+                kSideScreenMargin,
+                kHandleTopMargin,
+                kSideScreenMargin,
+                kBottomScreenMargin,
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Center(child: MutableHandle()),
+                  SizedBox(height: 38),
+                  Center(
+                    child: MutableIconSphere(
+                      widget.icon,
+                      size: widget.iconSize,
+                    ),
+                  ),
+                  SizedBox(height: 32),
+                  MutableText(
+                    widget.title,
+                    style: TypeStyle.h3,
+                    align: TextAlign.center,
+                  ),
+                  SizedBox(height: 10),
+                  MutableText(
+                    widget.description,
+                    style: TypeStyle.h5,
+                    color: MutableColor.neutral2,
+                    align: TextAlign.center,
+                  ),
+                  Spacer(),
+                  widget.body,
+                  widget.resizeToAvoidBottomInsets
+                      ? ValueListenableBuilder<double>(
+                          valueListenable: notifier,
+                          builder: (context, value, _) {
+                            if (value == 0) {
+                              return Spacer(key: key);
+                            } else {
+                              return SizedBox(height: animate(value));
+                            }
+                          },
+                        )
+                      : Spacer(),
+                  MutableLargeButton(
+                    onTap: widget.onTap,
+                    text: widget.buttonText,
+                    isActive: widget.isActive,
+                    shimmer: widget.shimmer,
+                  ),
+                ],
+              ),
             ),
-          ),
-          SizedBox(height: 32),
-          MutableText(
-            widget.title,
-            style: TypeStyle.h3,
-            align: TextAlign.center,
-          ),
-          SizedBox(height: 10),
-          MutableText(
-            widget.description,
-            style: TypeStyle.h5,
-            color: MutableColor.neutral2,
-            align: TextAlign.center,
-          ),
-          Spacer(),
-          widget.body,
-          widget.resizeToAvoidBottomInsets
-              ? ValueListenableBuilder<double>(
-                  valueListenable: notifier,
-                  builder: (context, value, _) {
-                    if (value == 0) {
-                      return Spacer(key: key);
-                    } else {
-                      return SizedBox(height: animate(value));
-                    }
-                  },
-                )
-              : Spacer(),
-          MutableLargeButton(
-            onTap: widget.onTap,
-            text: widget.buttonText,
-            isActive: widget.isActive,
-            shimmer: widget.shimmer,
-          ),
-        ],
-      ),
     );
   }
 }

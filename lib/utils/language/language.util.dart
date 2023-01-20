@@ -1,3 +1,6 @@
+import 'package:mobx/mobx.dart';
+import 'package:safe/services/analytics/analytics.service.dart';
+import 'package:safe/utils/capture/messages.capture.dart';
 import 'package:safe/utils/credit/credit.util.dart';
 import 'package:safe/widgets/mutable_permission_card/mutable_permission_card.widget.dart';
 
@@ -127,8 +130,15 @@ class LanguageUtil {
         "title": "Enter Phone Number",
         "desc": "We'll send you a SMS code to verify your\n account",
         "buttonText": "Send SMS",
+        "smsSentMsg": {
+          "header": "SMS sent to {PHONE}",
+          "body": "Check your SMS messages.",
+        },
         "loader": "Creating account"
       }
+    },
+    "widgets": {
+      "emergency_contacts_popup": {"no_name_hint_text": "Your contact name"}
     },
     "country_code_selector": {
       "search_hint": "Search",
@@ -149,22 +159,28 @@ class LanguageUtil {
     "home": {
       "header": "Tap to Safe",
       "header_disabled": "Safe Disabled",
-      "incident_recorded_header": "Last Incident",
+      "incident_recorded_header": {
+        true: "Error Capturing Incident",
+        false: "Incident Captured",
+      },
       "incident_limit": {
         "header": {
           LimitErrorState.emergency: "Incident Limit Reached",
           LimitErrorState.permissions: "Missing Permissions",
           LimitErrorState.maxed: "Incident Limit Reached",
           LimitErrorState.missingContacts: "Missing Contacts",
+          LimitErrorState.noConnection: "No Connection",
           null: "",
         },
         "body": {
           LimitErrorState.emergency:
               "You have one incident credit left. Spare it for an emergency. Tap here to activate Safe.",
+          LimitErrorState.noConnection:
+              "We cannot capture an incident without an internet connection. Try checking your connection.",
           LimitErrorState.maxed:
               "No worries, simply delete a previous incident to gain back the ability to capture one.",
           LimitErrorState.missingContacts:
-              "Without contacts, no one will be notified when you activate Safe. It's as easy as selecting from your existing contacts.",
+              "Without contacts, no one will be notified when you activate Safe.",
           LimitErrorState.permissions:
               "Enable the {permission} in Settings. Without them, we won't be able to capture incidents.",
           null: ""
@@ -174,9 +190,18 @@ class LanguageUtil {
           LimitErrorState.maxed: "Delete an Incident",
           LimitErrorState.missingContacts: "Add Contacts",
           LimitErrorState.permissions: "Go to Settings",
+          LimitErrorState.noConnection: "Go to Settings",
           null: ""
         },
       }
+    },
+    "contacts": {
+      "types": {
+        MessageType.start: "Incident Started ✅",
+        MessageType.end: "Incident Ended ✅",
+        MessageType.batteryCrit: "Battery Low Alert ✅",
+      },
+      "notified_msg": "{CONTACT} was notified at {TIME}",
     },
     "tutorial": {"button": "Add a Contact"},
     "incident_log": {
@@ -191,15 +216,167 @@ class LanguageUtil {
             "There are no inicdents tied to this account. Tap on the Safe button to document one.",
       }
     },
+    "play": {
+      "errors": {"load_failed": "Unable to load location."},
+      "data_box": {
+        "battery": {
+          "header": "Battery",
+          "state": {
+            "critical": "CRITICAL",
+            "low": "LOW",
+            "normal": "NORMAL",
+            "high": "HIGH",
+          }
+        },
+        "speed": {
+          "header": "Speed",
+        },
+      }
+    },
     "incident_card": {
       "secured": "Secured",
+    },
+    "settings": {
+      "marco": "In memory of Marco Calzada",
+      "header": "Settings",
+      "version": "Version {VERSION} - Production",
+      "preferences": {
+        "header": "Preferences",
+        "change_phone": {
+          "header": "Change Phone Number",
+          "popup": {
+            "header": "Change Phone",
+            "body":
+                "Changing your phone number is currently unavailable through the app. Notify the team and we'll help you out through SMS ({PHONE})!",
+            "cancel": "Cancel",
+            "notify_success": "The team has been notified!",
+            "notify": "Notify",
+          }
+        },
+        "quality": {
+          "header": "Livestream Quality",
+          "loading": "Loading quality...",
+          "template": "High ({DIMENSION}p)"
+        },
+        "biometrics": {
+          "header": "Enable Face ID",
+          "failed_msg": "Face ID failed. Try again",
+          "unavailable": "Face ID is unavailable",
+          "enable_reason": "Authenticate to enable service",
+          "disable_reason": "Authenticate to disable service",
+        }
+      },
+      "support": {
+        "header": "Support",
+        "about": {
+          "header": "About",
+          "terms": "Terms of Service",
+          "privacy": "Privacy Policy",
+          "collaborators": "Collaborators",
+          "media_kit": "Media Kit",
+        },
+        "help": "Help",
+        "feedback": "Give feedback"
+      },
+      "danger": {
+        "header": "Danger Zone",
+        "sign_out": {
+          "header": "Sign Out",
+          "modal": {
+            "header": "Sign Out",
+            "desc": "Are you sure you want to sign out?",
+            "button": "Sign Out",
+            "cancel": "Cancel",
+          },
+          "overlay": "Signing out",
+        },
+        "delete_acc": {
+          "header": "Delete Account",
+          "modal": {
+            "header": "Delete Account",
+            "desc":
+                "Deleting an account is currently unavailable due to the highly sensitive nature of Safe accounts and the information they store. We're actively working on finding a secure way make this possible.",
+            "button": "Ok",
+          },
+        },
+      },
+      "story": {
+        "header": "The Safe Story",
+        "body":
+            "The Safe App is a social impact venture developed by Mark Music (a high school student). Tap here to learn more.",
+      },
+      "reach_out": {
+        "header": "Reach Out",
+        "rate": "❤️\tRate the app",
+        "twitter": "🐦\tFollow on Twitter",
+        "github": "💫\tStar on GitHub",
+        "email": "📧\tShoot us an email",
+      },
+    },
+    "incident": {
+      "loading": "Loading incident",
+      "downloading_loader": "Exporting incident",
+      "downloading_failed": "Exporting failed",
+      "contacts": {
+        "header": "Notified Contacts",
+        "notify_tag": "Notified",
+      },
+      "processing_loader": {
+        "header": "Processing Incident",
+        "description": {
+          true:
+              "The team has been notified! We'll get back to you shortly through SMS ({PHONE}).",
+          false:
+              "This usually takes between {MIN} to {MAX} minutes.\nBeen a while? Let us know by tapping here and we'll get back to you with an update through SMS.",
+        }
+      },
+      "play_button": {
+        "timeline": "Play Timeline",
+        "video": "Play Video",
+        "map_view": "Play Map View",
+      },
+      "location_opt": {"copy": "Copy"},
+      "recorded_data": {
+        "download": "Download",
+        "header": "Recorded Data",
+        "location": {
+          "key": "Location",
+          "clipboard_msg":
+              "Address: {address}\nLatitude: {lat}\nLongitude:{long}",
+          "copied_msg": {
+            "success": "Copied address",
+          }
+        },
+        "date": {
+          "key": "Date & Time",
+          "clipboard_msg":
+              "Date: {DATE}\nIncident began at {TIME_START} \nIncident ended at {TIME_END}",
+          "copied_msg": {
+            "err": "Unable to copy time",
+            "success": "Copied time",
+          },
+        },
+        "backup": {
+          "key": "BACKUPS",
+          "header": "Fully Secure",
+          "subheader": "Powered by Google"
+        },
+      },
     },
     "capture": {
       "hint": [
         "Swipe down to hide the controls",
-        "Long press camera feed to enlarge",
+        "Tap on camera feed to enlarge it",
         "Safe has activated. Stay safe",
       ],
+      "errors": {
+        ErrorLogType.rtcFailed:
+            "The video stream could not be initialized. Check your internet connection and try capturing again.",
+        ErrorLogType.mediaServerFailed:
+            "The video stream ended abruptly. Check your internet connection and try capturing again.",
+        ErrorLogType.twilioFailed:
+            "Your contacts could not be notified. Check your internet connection and try capturing again.",
+      },
       "controls": {
         "flip_camera": {"header": "Flip Camera"},
         "flash": {"header": "Flashlight {STATE}"},

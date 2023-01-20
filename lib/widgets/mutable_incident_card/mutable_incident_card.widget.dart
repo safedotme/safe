@@ -1,18 +1,63 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:safe/core.dart';
 import 'package:safe/models/incident/incident.model.dart';
 import 'package:safe/utils/constants/constants.util.dart';
+import 'package:safe/widgets/mutable_banner/mutable_banner.widget.dart';
 import 'package:safe/widgets/mutable_button/mutable_button.widget.dart';
 import 'package:safe/widgets/mutable_incident_card/local_widgets/incident_card_body.widget.dart';
 import 'package:safe/widgets/mutable_incident_card/local_widgets/incident_card_image.widget.dart';
 
-class MutableIncidentCard extends StatelessWidget {
+class MutableIncidentCard extends StatefulWidget {
   final Incident incident;
 
   MutableIncidentCard(this.incident);
 
   @override
+  State<MutableIncidentCard> createState() => _MutableIncidentCardState();
+}
+
+class _MutableIncidentCardState extends State<MutableIncidentCard> {
+  late Core core;
+
+  @override
+  void initState() {
+    super.initState();
+    core = Provider.of<Core>(context, listen: false);
+  }
+
+  Future<bool> authenticate() async {
+    bool auth = core.state.preferences.biometricsEnabled ?? false;
+
+    if (auth) {
+      bool passed = await core.services.localAuth.authenticate(
+        "Authenticate to view incident", // TODO: Extract
+      );
+
+      if (!passed) {
+        core.state.preferences.actionController.trigger(
+          "Unable to authenticate. Try again.", // TODO: Extract
+          MessageType.error,
+        );
+
+        return false;
+      }
+    }
+
+    return true;
+  }
+
+  @override
   Widget build(BuildContext context) {
     return MutableButton(
+      onTap: () async {
+        bool pass = await authenticate();
+
+        if (!pass) return;
+
+        core.state.incident.setIncidentId(widget.incident.id);
+        core.state.incident.controller.open();
+      },
       child: Container(
         decoration: BoxDecoration(
           color: kColorMap[kIncidentCardBgColor],
@@ -28,15 +73,17 @@ class MutableIncidentCard extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               IncidentCardImage(
-                incident,
-                onPlayTap: () {
-                  print("play");
-                },
-                onMenuTap: () {
-                  print("menu");
+                widget.incident,
+                onPlayTap: () async {
+                  bool pass = await authenticate();
+
+                  if (!pass) return;
+
+                  core.state.incident.setIncidentId(widget.incident.id);
+                  core.state.incident.playController.open();
                 },
               ),
-              IncidentCardBody(incident),
+              IncidentCardBody(widget.incident),
             ],
           ),
         ),

@@ -34,6 +34,12 @@ abstract class _IncidentLogStore with Store {
   setIncidents(List<Incident>? i) => incidents = i;
 
   @observable
+  Map<String, String> thumbnails = {};
+
+  @action
+  void setThumbnail(Map<String, String> t) => thumbnails = t;
+
+  @observable
   double scrollOffset = 0;
 
   @action

@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:provider/provider.dart';
+import 'package:safe/core.dart';
 import 'package:safe/models/incident/incident.model.dart';
 import 'package:safe/utils/constants/constants.util.dart';
 import 'package:safe/utils/icon/icon.util.dart';
@@ -10,102 +13,59 @@ import 'package:safe/widgets/mutable_incident_card/local_widgets/incident_card_p
 class IncidentCardImage extends StatefulWidget {
   final Incident incident;
   final void Function() onPlayTap;
-  final void Function() onMenuTap;
 
   IncidentCardImage(
     this.incident, {
     required this.onPlayTap,
-    required this.onMenuTap,
   });
 
   @override
   State<IncidentCardImage> createState() => _IncidentCardImageState();
 }
 
-class _IncidentCardImageState extends State<IncidentCardImage>
-    with TickerProviderStateMixin {
-  late Animation animation;
+class _IncidentCardImageState extends State<IncidentCardImage> {
+  late Core core;
 
   @override
   void initState() {
-    animate();
     super.initState();
+    core = Provider.of<Core>(context, listen: false);
   }
 
-  void animate() async {
-    var controller = AnimationController(
-      vsync: this,
-      duration: Duration(milliseconds: kCachedImageLoadDuration),
-    );
+  String? fetchThumbnail(Map map) {
+    bool keyExists = map.containsKey(widget.incident.id);
 
-    animation = Tween<double>(begin: 0, end: 0.6).animate(
-      CurvedAnimation(parent: controller, curve: Curves.easeOut),
-    );
+    if (!keyExists) return null;
 
-    controller.addListener(() {
-      setState(() {});
-    });
-
-    await Future.delayed(Duration(milliseconds: kCachedImageLoadDuration));
-
-    controller.forward();
+    return map[widget.incident.id];
   }
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: kIncidentCardImageHeight,
-      child: Stack(
-        children: [
-          Container(
-            width: double.infinity,
-            color: kColorMap[kIncidentCardLoaderColor],
-            child: widget.incident.thumbnail != null
-                ? MutableCachedImage(
-                    widget.incident.thumbnail!,
-                    backgroundColor: kColorMap[kIncidentCardLoaderColor]!,
-                    fit: BoxFit.cover,
-                    shimmerColor: kBoxLoaderShimmerColor,
-                  )
-                : Container(
-                    color: kColorMap[kIncidentCardLoaderColor]!,
-                  ),
-          ),
-
-          // Gradient Overlay
-
-          widget.incident.thumbnail != null
-              ? Container(
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      colors: [
-                        Colors.black.withOpacity(animation.value),
-                        Colors.transparent
-                      ],
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                    ),
-                  ),
-                )
-              : SizedBox(),
-
-          IncidentCardPlayButton(onTap: widget.onPlayTap),
-
-          Align(
-            alignment: Alignment.topRight,
-            child: MutableButton(
-              onTap: widget.onMenuTap,
-              child: Container(
-                padding: EdgeInsets.all(14),
-                color: Colors.transparent,
-                child: MutableIcon(
-                  MutableIcons.menu,
-                  size: Size(15, 30),
-                ),
+    return Observer(
+      builder: (_) => SizedBox(
+        height: kIncidentCardImageHeight,
+        child: Stack(
+          children: [
+            Container(
+              width: double.infinity,
+              color: kColorMap[kIncidentCardLoaderColor],
+              child: MutableCachedImage(
+                fetchThumbnail(core.state.incidentLog.thumbnails),
+                backgroundColor: kColorMap[kIncidentCardLoaderColor]!,
+                fit: BoxFit.cover,
+                shimmerColor: kBoxLoaderShimmerColor,
               ),
             ),
-          ),
-        ],
+            Visibility(
+              visible:
+                  fetchThumbnail(core.state.incidentLog.thumbnails) != null,
+              child: IncidentCardPlayButton(
+                onTap: widget.onPlayTap,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
