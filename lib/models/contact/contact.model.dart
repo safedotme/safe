@@ -36,6 +36,20 @@ class Contact {
         phone: json["phone"],
       );
 
+  Contact copyWith({
+    String? id,
+    String? name,
+    String? phone,
+    String? userId,
+  }) {
+    return Contact(
+      id: id ?? this.id,
+      userId: userId ?? this.userId,
+      name: name ?? this.name,
+      phone: phone ?? this.phone,
+    );
+  }
+
   Map<String, dynamic> toMap() => {
         "id": id,
         "user_id": userId,

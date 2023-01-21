@@ -107,6 +107,39 @@ mixin _$ContactStore on _ContactStore, Store {
     });
   }
 
+  late final _$editableAtom =
+      Atom(name: '_ContactStore.editable', context: context);
+
+  @override
+  Contact? get editable {
+    _$editableAtom.reportRead();
+    return super.editable;
+  }
+
+  @override
+  set editable(Contact? value) {
+    _$editableAtom.reportWrite(value, super.editable, () {
+      super.editable = value;
+    });
+  }
+
+  late final _$countryCodeSelectorControllerAtom = Atom(
+      name: '_ContactStore.countryCodeSelectorController', context: context);
+
+  @override
+  PanelController get countryCodeSelectorController {
+    _$countryCodeSelectorControllerAtom.reportRead();
+    return super.countryCodeSelectorController;
+  }
+
+  @override
+  set countryCodeSelectorController(PanelController value) {
+    _$countryCodeSelectorControllerAtom
+        .reportWrite(value, super.countryCodeSelectorController, () {
+      super.countryCodeSelectorController = value;
+    });
+  }
+
   late final _$_ContactStoreActionController =
       ActionController(name: '_ContactStore', context: context);
 
@@ -133,6 +166,17 @@ mixin _$ContactStore on _ContactStore, Store {
   }
 
   @override
+  void setEditable(Contact c) {
+    final _$actionInfo = _$_ContactStoreActionController.startAction(
+        name: '_ContactStore.setEditable');
+    try {
+      return super.setEditable(c);
+    } finally {
+      _$_ContactStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 contacts: ${contacts},
@@ -140,7 +184,9 @@ homeWariningController: ${homeWariningController},
 isEditing: ${isEditing},
 controller: ${controller},
 editorController: ${editorController},
-editorContactController: ${editorContactController}
+editorContactController: ${editorContactController},
+editable: ${editable},
+countryCodeSelectorController: ${countryCodeSelectorController}
     ''';
   }
 }

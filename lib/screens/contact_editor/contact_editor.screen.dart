@@ -33,14 +33,24 @@ class _ContactEditorScreenState extends State<ContactEditorScreen> {
       controller: core.state.contact.editorContactController,
       immutable: false,
       onNameChange: (name) {
-        print(name);
+        final contact = core.state.contact.editable!.copyWith(
+          name: name,
+        );
+
+        core.state.contact.setEditable(contact);
       },
       height: 316,
       onCodeTap: () {
-        print("here");
+        core.state.contact.countryCodeSelectorController.open();
       },
       onPhoneChange: (phone) {
-        print(phone);
+        final contact = core.state.contact.editable!;
+
+        final comps = contact.parsePhone();
+
+        core.state.contact.setEditable(contact.copyWith(
+          phone: "${comps["code"]} $phone",
+        ));
       },
       body: Expanded(
         child: Column(

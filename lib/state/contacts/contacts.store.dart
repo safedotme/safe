@@ -32,4 +32,13 @@ abstract class _ContactStore with Store {
   @observable
   EmergencyContactPopupController editorContactController =
       EmergencyContactPopupController();
+
+  @observable
+  Contact? editable;
+
+  @action
+  void setEditable(Contact c) => editable = c;
+
+  @observable
+  PanelController countryCodeSelectorController = PanelController();
 }

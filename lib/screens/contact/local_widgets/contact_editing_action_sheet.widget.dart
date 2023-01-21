@@ -68,6 +68,8 @@ class _ContactEditingActionSheetState extends State<ContactEditingActionSheet> {
       code: data["code"],
     );
 
+    core.state.contact.setEditable(widget.contact);
+
     core.state.contact.editorController.open();
   }
 
