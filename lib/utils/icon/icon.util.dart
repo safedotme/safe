@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:safe/widgets/mutable_icon/local_widgets/backward.icon.dart';
 import 'package:safe/widgets/mutable_icon/local_widgets/battery.icon.dart';
@@ -26,6 +27,7 @@ import 'package:safe/widgets/mutable_icon/local_widgets/map.icon.dart';
 import 'package:safe/widgets/mutable_icon/local_widgets/menu.icon.dart';
 import 'package:safe/widgets/mutable_icon/local_widgets/next.icon.dart';
 import 'package:safe/widgets/mutable_icon/local_widgets/next_borderless.icon.dart';
+import 'package:safe/widgets/mutable_icon/local_widgets/options.widget.dart';
 import 'package:safe/widgets/mutable_icon/local_widgets/pause.icon.dart';
 import 'package:safe/widgets/mutable_icon/local_widgets/phone.icon.dart';
 import 'package:safe/widgets/mutable_icon/local_widgets/play.icon.dart';
@@ -67,6 +69,7 @@ enum MutableIcons {
   calendar,
   cloud,
   stopRecording,
+  options,
   key,
   plus,
   safe,
@@ -105,6 +108,7 @@ class IconUtil {
       MutableIcons.location: (c) => LocationIcon(c),
       MutableIcons.cloud: (c) => CloudIcon(c),
       MutableIcons.checkmark: (c) => CheckmarkIcon(c),
+      MutableIcons.options: (c) => OptionsIcon(c),
       MutableIcons.share: (c) => ShareIcon(c),
       MutableIcons.key: (c) => KeyIcon(c),
       MutableIcons.gear: (c) => GearIcon(c),
