@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
 import 'package:safe/utils/constants/constants.util.dart';
 import 'package:safe/utils/icon/icon.util.dart';
+import 'package:safe/widgets/mutable_banner/mutable_banner.widget.dart';
 import 'package:safe/widgets/mutable_button/mutable_button.widget.dart';
 import 'package:safe/widgets/mutable_icon/mutable_icon.widget.dart';
 import 'package:safe/widgets/mutable_text/mutable_text.widget.dart';
@@ -31,7 +32,7 @@ class _AddContactButtonState extends State<AddContactButton>
   void initAnimation() {
     controller = AnimationController(
       vsync: this,
-      duration: Duration(milliseconds: 250),
+      duration: Duration(milliseconds: 200),
     );
   }
 
@@ -44,7 +45,7 @@ class _AddContactButtonState extends State<AddContactButton>
       begin: state,
       end: (state - 1).abs(),
     ).animate(
-      CurvedAnimation(parent: controller, curve: Curves.ease),
+      CurvedAnimation(parent: controller, curve: Curves.decelerate),
     );
 
     controller.addListener(() {
@@ -86,13 +87,26 @@ class _AddContactButtonState extends State<AddContactButton>
   Widget build(BuildContext context) {
     return Observer(
       builder: (_) {
-        animate(core.state.contact.isEditing);
+        animate(core.state.contact.isEditing ||
+            core.state.contact.contacts?.length == 2);
         return MutableButton(
+          scale: 0.9,
           onTap: () {
+            if (core.state.contact.contacts?.length == 2) {
+              core.state.preferences.actionController.trigger(
+                "Sorry! Contacts are capped at {AMMOUNT} per person."
+                    .replaceAll(
+                  "{AMMOUNT}",
+                  3.toString(),
+                ), //TODO: Extract
+                MessageType.error,
+              );
+              return;
+            }
             HapticFeedback.lightImpact();
+
             //TODO: Implement add a contact flow
           },
-          scale: 0.9,
           child: Padding(
             padding: EdgeInsets.symmetric(vertical: 8.0),
             child: Row(
