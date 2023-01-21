@@ -83,21 +83,29 @@ class _AddContactButtonState extends State<AddContactButton>
     );
   }
 
+  bool checkCap() {
+    final cap = core.state.capture.settings?.defaultContactCap;
+    final amm = core.state.contact.contacts?.length;
+    return cap == amm;
+  }
+
+  int? fetchCap() => core.state.capture.settings?.defaultContactCap;
+
   @override
   Widget build(BuildContext context) {
     return Observer(
       builder: (_) {
-        animate(core.state.contact.isEditing ||
-            core.state.contact.contacts?.length == 2);
+        animate(core.state.contact.isEditing || checkCap());
+
         return MutableButton(
           scale: 0.9,
           onTap: () {
-            if (core.state.contact.contacts?.length == 2) {
+            if (checkCap()) {
               core.state.preferences.actionController.trigger(
                 "Sorry! Contacts are capped at {AMMOUNT} per person."
                     .replaceAll(
                   "{AMMOUNT}",
-                  3.toString(),
+                  "${fetchCap()}",
                 ), //TODO: Extract
                 MessageType.error,
               );
