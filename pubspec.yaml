@@ -55,6 +55,7 @@ dependencies:
   cloud_firestore: ^4.2.0
   pin_code_fields: ^7.4.0
   firebase_storage: ^11.0.7
+  fluttercontactpicker: ^4.7.0
   flutter_inset_box_shadow: ^1.0.8
   firebase_core: ^2.4.0
   firebase_auth: ^4.2.0

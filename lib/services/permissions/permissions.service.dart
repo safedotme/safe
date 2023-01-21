@@ -69,6 +69,18 @@ class PermissionsService {
     core.state.auth.bannerController.show();
   }
 
+  Future<bool> requestContact() async {
+    final check = await Permission.contacts.isGranted;
+
+    if (check) return true;
+
+    final res = await Permission.contacts.request();
+
+    if (res.isGranted) return true;
+
+    return false;
+  }
+
   Future<Map<String, dynamic>> requestLocation(Core core, bool request) async {
     PermissionStatus status = await Permission.locationWhenInUse.status;
 
