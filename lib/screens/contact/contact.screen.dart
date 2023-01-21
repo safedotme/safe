@@ -54,6 +54,8 @@ class _ContactScreenState extends State<ContactScreen> {
     // Trigger format
     if (local == null || local!.isEmpty) return;
 
+    print("here");
+    print(local!.length);
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       fetchHeight();
     });
@@ -62,6 +64,9 @@ class _ContactScreenState extends State<ContactScreen> {
   @override
   Widget build(BuildContext context) {
     return MutablePopup(
+      onClosed: () {
+        core.state.contact.setIsEditing(false);
+      },
       controller: core.state.contact.controller,
       minHeight: 0,
       maxHeight: height + kContactTopMargin + kContactBottomMargin,
@@ -78,34 +83,36 @@ class _ContactScreenState extends State<ContactScreen> {
             child: core.state.contact.contacts == null ||
                     core.state.contact.contacts!.isEmpty
                 ? SizedBox()
-                : Center(
-                    child: Column(
-                      key: key,
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        Center(child: MutableHandle()),
-                        SizedBox(height: 10),
-                        ContactScreenHeader(),
-                        SizedBox(height: 16),
-                        ...List.generate(
-                          (core.state.contact.contacts!.length * 2) - 1,
-                          (i) {
-                            if (i.isOdd) {
-                              return SizedBox(height: 18);
-                            }
+                : SingleChildScrollView(
+                    child: Center(
+                      child: Column(
+                        key: key,
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          Center(child: MutableHandle()),
+                          SizedBox(height: 10),
+                          ContactScreenHeader(),
+                          SizedBox(height: 16),
+                          ...List.generate(
+                            (core.state.contact.contacts!.length * 2) - 1,
+                            (i) {
+                              if (i.isOdd) {
+                                return SizedBox(height: 18);
+                              }
 
-                            return ContactTab(
-                              core.state.contact.contacts![i ~/ 2],
-                            );
-                          },
-                        ),
-                        SizedBox(height: 22),
-                        Align(
-                          alignment: Alignment.centerLeft,
-                          child: AddContactButton(),
-                        ),
-                      ],
+                              return ContactTab(
+                                core.state.contact.contacts![i ~/ 2],
+                              );
+                            },
+                          ),
+                          SizedBox(height: 22),
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: AddContactButton(),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
           );

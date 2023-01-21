@@ -1,9 +1,11 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
 import 'package:safe/models/contact/contact.model.dart';
+import 'package:safe/screens/contact/local_widgets/contact_editing_action_sheet.widget.dart';
 import 'package:safe/utils/constants/constants.util.dart';
 import 'package:safe/utils/icon/icon.util.dart';
 import 'package:safe/widgets/mutable_button/mutable_button.widget.dart';
@@ -65,6 +67,10 @@ class _ContactTabState extends State<ContactTab> {
                 if (!core.state.contact.isEditing) return;
 
                 HapticFeedback.selectionClick();
+                showCupertinoModalPopup(
+                  context: context,
+                  builder: (_) => ContactEditingActionSheet(widget.contact),
+                );
               },
               scale: 0.9,
               child: Container(
