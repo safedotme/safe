@@ -27,6 +27,15 @@ class _ContactEditingActionSheetState extends State<ContactEditingActionSheet> {
   Future<void> handleRemove() async {
     core.state.contact.setIsEditing(false);
 
+    if (core.state.contact.contacts!.length == 1) {
+      core.state.preferences.actionController.trigger(
+        "You must have at least one contact.", //TODO: Extract
+        MessageType.error,
+      );
+
+      return;
+    }
+
     final shouldAuth = core.state.preferences.biometricsEnabled;
 
     if (!(shouldAuth == null || !shouldAuth)) {
@@ -44,6 +53,7 @@ class _ContactEditingActionSheetState extends State<ContactEditingActionSheet> {
     }
 
     // ⬇️ Remove User
+
     await core.services.server.contacts.delete(widget.contact.id);
   }
 
@@ -52,9 +62,6 @@ class _ContactEditingActionSheetState extends State<ContactEditingActionSheet> {
     return CupertinoActionSheet(
       title: Text(
         widget.contact.name,
-        style: TextStyle(
-          fontWeight: FontWeight.w600,
-        ),
       ),
       actions: [
         CupertinoActionSheetAction(
