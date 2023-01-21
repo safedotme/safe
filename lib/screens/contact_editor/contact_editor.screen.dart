@@ -23,12 +23,34 @@ class _ContactEditorScreenState extends State<ContactEditorScreen> {
     core = Provider.of<Core>(context, listen: false);
   }
 
+  Future<bool> authenticate() async {
+    final enabled = core.state.preferences.biometricsEnabled;
+    if (enabled == null || !enabled) return true;
+
+    final authenticate = await core.services.localAuth.authenticate(
+      "Authenticate to add contact", //TODO: Extract
+    );
+
+    return authenticate;
+  }
+
   void handleSave() async {
     HapticFeedback.lightImpact();
 
     // Unfocus
     core.state.contact.editorContactController.unfocus(true);
     core.state.contact.editorContactController.unfocus(false);
+
+    final auth = await authenticate();
+
+    if (!auth) {
+      core.state.preferences.actionController.trigger(
+        "Face ID failed. Try again", //TODO: Extract
+        MessageType.error,
+      );
+
+      return;
+    }
 
     // Check if phone is valid
     final contact = core.state.contact.editable!;
@@ -54,13 +76,32 @@ class _ContactEditorScreenState extends State<ContactEditorScreen> {
     }
 
     // Check if name is valid
+    final res = core.utils.name.validateName(contact.name);
 
-    // Show success
-    core.state.contact.editorController.close();
+    if (!res["error"]) {
+      // Show success
+      core.state.contact.editorController.close();
+      core.state.preferences.actionController.trigger(
+        "Contact saved!", //TODO: Extract
+        MessageType.success,
+      );
+
+      core.services.server.contacts.upsert(contact);
+      return;
+    }
+
+    Map<String, String> errors = {
+      //TODO: Extract
+      "error-emptyField": "To save, name your contact.",
+      "error-lastName": "To save, add a last name.",
+    };
+
     core.state.preferences.actionController.trigger(
-      "Contact saved!", //TODO: Extract
-      MessageType.success,
+      errors[res["reason"]]!,
+      MessageType.error,
     );
+
+    return;
   }
 
   @override
