@@ -36,6 +36,9 @@ class _ContactEditorScreenState extends State<ContactEditorScreen> {
         print(name);
       },
       height: 316,
+      onCodeTap: () {
+        print("here");
+      },
       onPhoneChange: (phone) {
         print(phone);
       },

@@ -83,7 +83,10 @@ class _MutableEmergencyContactPopupState
                   widget.onNameChange?.call(name);
                 },
                 onCodeTap: () {
-                  widget.onCodeTap?.call();
+                  if (widget.onCodeTap == null) return;
+                  widget.onCodeTap!();
+                  controller.unfocus(true);
+                  controller.unfocus(false);
                 },
                 onPhoneChange: (phone) {
                   widget.onPhoneChange?.call(phone);

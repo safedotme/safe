@@ -338,6 +338,7 @@ class EmergencyContactPopupController {
 
   bool get isAttached => _state != null;
 
+  /// [name] refers to unfocusing the name keyboard
   void unfocus(bool name) {
     assert(_state != null, "Controller has not been attached");
 
