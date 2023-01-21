@@ -9,6 +9,7 @@ import 'package:safe/core.dart';
 import 'package:safe/models/admin/admin.model.dart';
 import 'package:safe/models/contact/contact.model.dart';
 import 'package:safe/models/user/user.model.dart';
+import 'package:safe/screens/add_contact/local_widgets/import_contact_popup.widget.dart';
 import 'package:safe/screens/capture/capture.screen.dart';
 import 'package:safe/screens/contact/contact.screen.dart';
 import 'package:safe/screens/contact/local_widgets/contact_country_code_selector_controller.widget.dart';
@@ -23,6 +24,7 @@ import 'package:safe/screens/tutorial/tutorial.screen.dart';
 import 'package:safe/utils/constants/constants.util.dart';
 import 'package:safe/utils/credit/credit.util.dart';
 import 'package:safe/widgets/mutable_action_banner/mutable_action_banner.widget.dart';
+import 'package:safe/widgets/mutable_popup/mutable_popup.widget.dart';
 import 'package:safe/widgets/mutable_safe_button/mutable_safe_button.widget.dart';
 import 'package:safe/widgets/mutable_scaffold/mutable_scaffold.widget.dart';
 import 'package:safe/widgets/mutable_text/mutable_text.widget.dart';
@@ -135,6 +137,7 @@ class _HomeScreenState extends State<HomeScreen> {
         SettingsScreen(),
         ContactScreen(),
         ContactEditorScreen(),
+        ImportContactPopup(),
         ContactCountryCodeSelector(),
         CaptureScreen(),
         TutorialScreen(),

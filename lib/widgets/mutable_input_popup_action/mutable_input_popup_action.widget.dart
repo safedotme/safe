@@ -3,12 +3,12 @@ import 'package:safe/utils/constants/constants.util.dart';
 import 'package:safe/widgets/mutable_button/mutable_button.widget.dart';
 import 'package:safe/widgets/mutable_text/mutable_text.widget.dart';
 
-class ContactEditorAction extends StatelessWidget {
+class MutableInputPopupAction extends StatelessWidget {
   final bool active;
   final void Function()? onTap;
   final String text;
 
-  ContactEditorAction({
+  MutableInputPopupAction({
     required this.text,
     this.onTap,
     this.active = false,

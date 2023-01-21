@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
-import 'package:safe/screens/contact_editor/local_widgets/contact_editor_action.widget.dart';
 import 'package:safe/utils/constants/constants.util.dart';
 import 'package:safe/utils/phone/codes.util.dart';
 import 'package:safe/widgets/mutable_banner/mutable_banner.widget.dart';
 import 'package:safe/widgets/mutable_divider/mutable_divider.widget.dart';
 import 'package:safe/widgets/mutable_emergency_contact_popup/mutable_emergency_contact_popup.widget.dart';
+import 'package:safe/widgets/mutable_input_popup_action/mutable_input_popup_action.widget.dart';
 
 class ContactEditorScreen extends StatefulWidget {
   @override
@@ -135,13 +135,13 @@ class _ContactEditorScreenState extends State<ContactEditorScreen> {
           children: [
             SizedBox(height: 34),
             MutableDivider(color: MutableColor.neutral7),
-            ContactEditorAction(
+            MutableInputPopupAction(
               text: "Save", // TODO: Extract
               active: true,
               onTap: handleSave,
             ),
             MutableDivider(color: MutableColor.neutral7),
-            ContactEditorAction(
+            MutableInputPopupAction(
               text: "Cancel", // TODO: Extract
               onTap: () {
                 HapticFeedback.lightImpact();
