@@ -86,7 +86,7 @@ class _AddContactButtonState extends State<AddContactButton>
   bool checkCap() {
     final cap = core.state.capture.settings?.defaultContactCap;
     final amm = core.state.contact.contacts?.length;
-    return cap == amm;
+    return amm! >= cap!;
   }
 
   int? fetchCap() => core.state.capture.settings?.defaultContactCap;

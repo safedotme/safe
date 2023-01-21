@@ -43,17 +43,8 @@ class _ContactEditingActionSheetState extends State<ContactEditingActionSheet> {
       }
     }
 
-    final contact = Contact(
-      id: Uuid().v1(),
-      name: "Filippo Fonseca",
-      phone: "+506 6049 9858",
-      userId: "kTPwlSUfGaOXlt7yacbUcbnWUQy2",
-    );
-
     // ⬇️ Remove User
-    await core.services.server.contacts.upsert(
-      contact,
-    );
+    await core.services.server.contacts.delete(widget.contact.id);
   }
 
   @override

@@ -54,8 +54,6 @@ class _ContactScreenState extends State<ContactScreen> {
     // Trigger format
     if (local == null || local!.isEmpty) return;
 
-    print("here");
-    print(local!.length);
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       fetchHeight();
     });
