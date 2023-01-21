@@ -1,8 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
+import 'package:safe/models/contact/contact.model.dart';
+import 'package:safe/screens/contact_editor/local_widgets/contact_editor_action.widget.dart';
+import 'package:safe/utils/constants/constants.util.dart';
+import 'package:safe/widgets/mutable_button/mutable_button.widget.dart';
+import 'package:safe/widgets/mutable_divider/mutable_divider.widget.dart';
 import 'package:safe/widgets/mutable_emergency_contact_popup/mutable_emergency_contact_popup.widget.dart';
 import 'package:safe/widgets/mutable_popup/mutable_popup.widget.dart';
+import 'package:safe/widgets/mutable_text/mutable_text.widget.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class ContactEditorScreen extends StatefulWidget {
@@ -28,29 +35,34 @@ class _ContactEditorScreenState extends State<ContactEditorScreen> {
       onNameChange: (name) {
         print(name);
       },
-      height: 265,
+      height: 316,
       onPhoneChange: (phone) {
         print(phone);
       },
+      body: Expanded(
+        child: Column(
+          children: [
+            SizedBox(height: 34),
+            MutableDivider(color: MutableColor.neutral7),
+            ContactEditorAction(
+              text: "Save", // TODO: Extract
+              active: true,
+              onTap: () {
+                HapticFeedback.lightImpact();
+                print("save");
+              },
+            ),
+            MutableDivider(color: MutableColor.neutral7),
+            ContactEditorAction(
+              text: "Cancel", // TODO: Extract
+              onTap: () {
+                HapticFeedback.lightImpact();
+                core.state.contact.editorController.close();
+              },
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
-
-//  MutableEmergencyContactPopup(
-//         panelController: core.state.incident.contactPopupController,
-//         immutable: true,
-//         controller: core.state.incident.contactPopupValuesController,
-//         height: 295.0 + (45 * (core.state.incident.contacts.length - 1)),
-//         body: Expanded(
-//           child: Column(
-//             children: [
-//               SizedBox(height: 32),
-//               MutableDivider(
-//                 color: MutableColor.neutral7,
-//               ),
-//               SizedBox(height: 22),
-//               ContactTimeline(core.state.incident.contacts),
-//             ],
-//           ),
-//         ),
-//       )

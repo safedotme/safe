@@ -57,6 +57,20 @@ class _ContactEditingActionSheetState extends State<ContactEditingActionSheet> {
     await core.services.server.contacts.delete(widget.contact.id);
   }
 
+  Future<void> handleEdit() async {
+    await core.state.contact.controller.close();
+
+    final data = widget.contact.parsePhone();
+
+    core.state.contact.editorContactController.setValues(
+      name: widget.contact.name,
+      phone: data["phone"],
+      code: data["code"],
+    );
+
+    core.state.contact.editorController.open();
+  }
+
   @override
   Widget build(BuildContext context) {
     return CupertinoActionSheet(
@@ -68,6 +82,8 @@ class _ContactEditingActionSheetState extends State<ContactEditingActionSheet> {
           onPressed: () async {
             core.state.contact.setIsEditing(false);
             Navigator.pop(context);
+
+            handleEdit();
           },
           child: Text("Edit Info"), //TODO: Extract
         ),
