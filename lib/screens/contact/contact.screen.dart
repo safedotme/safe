@@ -63,7 +63,6 @@ class _ContactScreenState extends State<ContactScreen> {
   Widget build(BuildContext context) {
     return MutablePopup(
       controller: core.state.contact.controller,
-      defaultState: PanelState.OPEN,
       minHeight: 0,
       maxHeight: height + kContactTopMargin + kContactBottomMargin,
       body: Observer(

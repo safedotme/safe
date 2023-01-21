@@ -74,6 +74,39 @@ mixin _$ContactStore on _ContactStore, Store {
     });
   }
 
+  late final _$editorControllerAtom =
+      Atom(name: '_ContactStore.editorController', context: context);
+
+  @override
+  PanelController get editorController {
+    _$editorControllerAtom.reportRead();
+    return super.editorController;
+  }
+
+  @override
+  set editorController(PanelController value) {
+    _$editorControllerAtom.reportWrite(value, super.editorController, () {
+      super.editorController = value;
+    });
+  }
+
+  late final _$editorContactControllerAtom =
+      Atom(name: '_ContactStore.editorContactController', context: context);
+
+  @override
+  EmergencyContactPopupController get editorContactController {
+    _$editorContactControllerAtom.reportRead();
+    return super.editorContactController;
+  }
+
+  @override
+  set editorContactController(EmergencyContactPopupController value) {
+    _$editorContactControllerAtom
+        .reportWrite(value, super.editorContactController, () {
+      super.editorContactController = value;
+    });
+  }
+
   late final _$_ContactStoreActionController =
       ActionController(name: '_ContactStore', context: context);
 
@@ -105,7 +138,9 @@ mixin _$ContactStore on _ContactStore, Store {
 contacts: ${contacts},
 homeWariningController: ${homeWariningController},
 isEditing: ${isEditing},
-controller: ${controller}
+controller: ${controller},
+editorController: ${editorController},
+editorContactController: ${editorContactController}
     ''';
   }
 }

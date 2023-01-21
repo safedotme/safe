@@ -10,6 +10,7 @@ import 'package:safe/models/contact/contact.model.dart';
 import 'package:safe/models/user/user.model.dart';
 import 'package:safe/screens/capture/capture.screen.dart';
 import 'package:safe/screens/contact/contact.screen.dart';
+import 'package:safe/screens/contact_editor/contact_editor.screen.dart';
 import 'package:safe/screens/home/local_widgets/incident_limit_home_banner.widget.dart';
 import 'package:safe/screens/home/local_widgets/incident_recorded_home_banner.widget.dart';
 import 'package:safe/screens/incident/incident.screen.dart';
@@ -132,6 +133,7 @@ class _HomeScreenState extends State<HomeScreen> {
       overlays: [
         SettingsScreen(),
         ContactScreen(),
+        ContactEditorScreen(),
         CaptureScreen(),
         TutorialScreen(),
         IncidentScreen(),
