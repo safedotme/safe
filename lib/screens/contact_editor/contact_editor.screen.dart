@@ -2,15 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
-import 'package:safe/models/contact/contact.model.dart';
 import 'package:safe/screens/contact_editor/local_widgets/contact_editor_action.widget.dart';
 import 'package:safe/utils/constants/constants.util.dart';
-import 'package:safe/widgets/mutable_button/mutable_button.widget.dart';
+import 'package:safe/utils/phone/codes.util.dart';
+import 'package:safe/widgets/mutable_banner/mutable_banner.widget.dart';
 import 'package:safe/widgets/mutable_divider/mutable_divider.widget.dart';
 import 'package:safe/widgets/mutable_emergency_contact_popup/mutable_emergency_contact_popup.widget.dart';
-import 'package:safe/widgets/mutable_popup/mutable_popup.widget.dart';
-import 'package:safe/widgets/mutable_text/mutable_text.widget.dart';
-import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class ContactEditorScreen extends StatefulWidget {
   @override
@@ -24,6 +21,46 @@ class _ContactEditorScreenState extends State<ContactEditorScreen> {
   void initState() {
     super.initState();
     core = Provider.of<Core>(context, listen: false);
+  }
+
+  void handleSave() async {
+    HapticFeedback.lightImpact();
+
+    // Unfocus
+    core.state.contact.editorContactController.unfocus(true);
+    core.state.contact.editorContactController.unfocus(false);
+
+    // Check if phone is valid
+    final contact = core.state.contact.editable!;
+    final phone = contact.parsePhone();
+
+    final code = kCountryCodes
+        .where(
+          (c) => c["dial_code"] == phone["code"],
+        )
+        .toList();
+
+    final valid = await core.utils.phone.validate(
+      phone["phone"]!,
+      code.first["code"]!,
+    );
+
+    if (!valid) {
+      core.state.preferences.actionController.trigger(
+        "Phone number is invalid", //TODO: Extract
+        MessageType.error,
+      );
+      return;
+    }
+
+    // Check if name is valid
+
+    // Show success
+    core.state.contact.editorController.close();
+    core.state.preferences.actionController.trigger(
+      "Contact saved!", //TODO: Extract
+      MessageType.success,
+    );
   }
 
   @override
@@ -60,10 +97,7 @@ class _ContactEditorScreenState extends State<ContactEditorScreen> {
             ContactEditorAction(
               text: "Save", // TODO: Extract
               active: true,
-              onTap: () {
-                HapticFeedback.lightImpact();
-                print("save");
-              },
+              onTap: handleSave,
             ),
             MutableDivider(color: MutableColor.neutral7),
             ContactEditorAction(

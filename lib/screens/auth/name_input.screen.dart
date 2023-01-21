@@ -79,32 +79,19 @@ class _NameInputScreenState extends State<NameInputScreen>
     bool error = false;
 
     // Check if there is a name
-    if (core.state.auth.name.isEmpty) {
+    final res = core.utils.name.validateName(core.state.auth.name);
+
+    if (res["error"]) {
       error = true;
 
       core.state.auth.setBannerState(MessageType.error);
       core.state.auth.setBannerTitle(
         core.utils.language.langMap[core.state.preferences.language]!["auth"]
-            ["name_input"]["error-emptyField/title"],
+            ["name_input"]["${res["reason"]}/title"],
       );
       core.state.auth.setBannerMessage(
         core.utils.language.langMap[core.state.preferences.language]!["auth"]
-            ["name_input"]["error-emptyField/desc"],
-      );
-      core.state.auth.bannerController.show();
-    }
-
-    // Checks if there is a last name
-    if (!core.state.auth.name.contains(" ") && !error) {
-      error = true;
-      core.state.auth.setBannerState(MessageType.error);
-      core.state.auth.setBannerTitle(
-        core.utils.language.langMap[core.state.preferences.language]!["auth"]
-            ["name_input"]["error-lastName/title"],
-      );
-      core.state.auth.setBannerMessage(
-        core.utils.language.langMap[core.state.preferences.language]!["auth"]
-            ["name_input"]["error-lastName/desc"],
+            ["name_input"]["${res["reason"]}/desc"],
       );
       core.state.auth.bannerController.show();
     }

@@ -74,7 +74,9 @@ class _MutableCountryCodeSelectorState extends State<MutableCountryCodeSelector>
       return;
     }
 
-    List<Map<String, String>> resp = core.utils.phone.searchCountry(query);
+    List<Map<String, String>> resp = core.utils.phone.searchCountryFromName(
+      query,
+    );
 
     if (resp.isEmpty) {
       setState(() {

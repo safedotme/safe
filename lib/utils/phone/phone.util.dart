@@ -26,7 +26,7 @@ class PhoneUtil {
         : "9999 9999"; //TODO: Fix later on
   }
 
-  List<Map<String, String>> searchCountry(String query) {
+  List<Map<String, String>> searchCountryFromName(String query) {
     List<Map<String, String>> result = [];
 
     for (Map<String, String> country in kCountryCodes) {
