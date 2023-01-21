@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
 import 'package:safe/screens/contact/local_widgets/add_contact_button.widget.dart';
@@ -49,46 +50,51 @@ class _ContactScreenState extends State<ContactScreen> {
   @override
   Widget build(BuildContext context) {
     return MutablePopup(
-      defaultState: PanelState.OPEN, // TODO: Change me
+      controller: core.state.contact.controller,
+      defaultState: PanelState.OPEN,
       minHeight: 0,
       maxHeight: height + kContactTopMargin + kContactBottomMargin,
-      body: Padding(
-        padding: EdgeInsets.fromLTRB(
-          kSideScreenMargin,
-          kContactTopMargin,
-          kSideScreenMargin,
-          kContactBottomMargin,
-        ),
-        child: Center(
-          child: Column(
-            key: key,
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Center(child: MutableHandle()),
-              SizedBox(height: 10),
-              ContactScreenHeader(),
-              SizedBox(height: 22),
-              ...List.generate(
-                (core.state.contact.contacts!.length * 2) - 1,
-                (index) {
-                  if (index.isOdd) {
-                    return SizedBox(height: 18);
-                  }
-
-                  return ContactTab(
-                    core.state.contact
-                        .contacts![core.state.contact.contacts!.length ~/ 2],
-                  );
-                },
-              ),
-              SizedBox(height: 22),
-              Align(
-                alignment: Alignment.centerLeft,
-                child: AddContactButton(),
-              ),
-            ],
+      body: Observer(
+        builder: (_) => Padding(
+          padding: EdgeInsets.fromLTRB(
+            kSideScreenMargin,
+            kContactTopMargin,
+            kSideScreenMargin,
+            kContactBottomMargin,
           ),
+          child: core.state.contact.contacts == null ||
+                  core.state.contact.contacts!.isEmpty
+              ? SizedBox()
+              : Center(
+                  child: Column(
+                    key: key,
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Center(child: MutableHandle()),
+                      SizedBox(height: 10),
+                      ContactScreenHeader(),
+                      SizedBox(height: 16),
+                      ...List.generate(
+                        (core.state.contact.contacts!.length * 2) - 1,
+                        (i) {
+                          if (i.isOdd) {
+                            return SizedBox(height: 18);
+                          }
+
+                          return ContactTab(
+                            core.state.contact.contacts![i ~/ 2],
+                          );
+                        },
+                      ),
+                      SizedBox(height: 22),
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: AddContactButton(),
+                      ),
+                    ],
+                  ),
+                ),
         ),
       ),
     );

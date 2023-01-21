@@ -58,6 +58,22 @@ mixin _$ContactStore on _ContactStore, Store {
     });
   }
 
+  late final _$controllerAtom =
+      Atom(name: '_ContactStore.controller', context: context);
+
+  @override
+  PanelController get controller {
+    _$controllerAtom.reportRead();
+    return super.controller;
+  }
+
+  @override
+  set controller(PanelController value) {
+    _$controllerAtom.reportWrite(value, super.controller, () {
+      super.controller = value;
+    });
+  }
+
   late final _$_ContactStoreActionController =
       ActionController(name: '_ContactStore', context: context);
 
@@ -88,7 +104,8 @@ mixin _$ContactStore on _ContactStore, Store {
     return '''
 contacts: ${contacts},
 homeWariningController: ${homeWariningController},
-isEditing: ${isEditing}
+isEditing: ${isEditing},
+controller: ${controller}
     ''';
   }
 }

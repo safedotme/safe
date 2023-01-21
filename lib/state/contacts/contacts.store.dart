@@ -21,4 +21,7 @@ abstract class _ContactStore with Store {
 
   @action
   void setIsEditing(bool v) => isEditing = v;
+
+  @observable
+  PanelController controller = PanelController();
 }
