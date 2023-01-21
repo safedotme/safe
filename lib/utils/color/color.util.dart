@@ -8,6 +8,20 @@ class ColorUtils {
         kTransparencyMap[tspcy]!,
       );
 
+  Color generateColor(Color base, Color animateTo, double state) {
+    int rDiff = animateTo.red - base.red;
+    int gDiff = animateTo.green - base.green;
+    int bDiff = animateTo.blue - base.blue;
+    double oDiff = animateTo.opacity - base.opacity;
+
+    return Color.fromRGBO(
+      base.red + (rDiff * state).round(),
+      base.green + (gDiff * state).round(),
+      base.blue + (bDiff * state).round(),
+      base.opacity + (oDiff * state),
+    );
+  }
+
   List<BoxShadow> applyGradientShadow(
     double size, {
     bool isColorful = true,

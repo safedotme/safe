@@ -8,6 +8,7 @@ class MutableText extends StatefulWidget {
   final TypeStyle? style;
   final LetterSpacingType? letterSpacing;
   final double? size;
+  final Color? customColor;
   final MutableColor? color;
   final TypeWeight? weight;
   final TextAlign align;
@@ -23,6 +24,7 @@ class MutableText extends StatefulWidget {
     this.data, {
     this.overrideStyle,
     this.style,
+    this.customColor,
     this.decoration,
     this.overflow,
     this.letterSpacing,
@@ -40,6 +42,7 @@ class MutableText extends StatefulWidget {
     double? size,
     TypeStyle? style,
     MutableColor? color,
+    Color? customColor,
     TypeWeight? weight,
     TextDecoration? decoration,
     LetterSpacingType? letterSpacing,
@@ -48,7 +51,7 @@ class MutableText extends StatefulWidget {
     return TextStyle(
       height: height,
       fontSize: size ?? kTypeStyleSize[style]!.toDouble(),
-      color: kColorMap[color ?? MutableColor.neutral1],
+      color: customColor ?? kColorMap[color ?? MutableColor.neutral1],
       fontFamily: kFontFamilyGen(
         weight: weight ?? kTypeStyleMap[style]["weight"],
       ),
@@ -75,6 +78,7 @@ class _MutableTextState extends State<MutableText> {
         size: widget.size,
         style: widget.style,
         color: widget.color,
+        customColor: widget.customColor,
         weight: widget.weight,
         decoration: widget.decoration,
         letterSpacing: widget.letterSpacing,

@@ -64,7 +64,7 @@ class _ContactTabState extends State<ContactTab> {
               onTap: () {
                 if (!core.state.contact.isEditing) return;
 
-                HapticFeedback.lightImpact();
+                HapticFeedback.selectionClick();
               },
               scale: 0.9,
               child: Container(

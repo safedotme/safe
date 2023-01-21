@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:provider/provider.dart';
+import 'package:safe/core.dart';
 import 'package:safe/utils/constants/constants.util.dart';
 import 'package:safe/utils/icon/icon.util.dart';
 import 'package:safe/widgets/mutable_button/mutable_button.widget.dart';
@@ -11,49 +14,128 @@ class AddContactButton extends StatefulWidget {
   State<AddContactButton> createState() => _AddContactButtonState();
 }
 
-class _AddContactButtonState extends State<AddContactButton> {
+class _AddContactButtonState extends State<AddContactButton>
+    with TickerProviderStateMixin {
+  late Core core;
+  late AnimationController controller;
+  bool local = false;
+  double state = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    core = Provider.of<Core>(context, listen: false);
+    initAnimation();
+  }
+
+  void initAnimation() {
+    controller = AnimationController(
+      vsync: this,
+      duration: Duration(milliseconds: 250),
+    );
+  }
+
+  void animate(bool global) {
+    if (global == local) return;
+    local = global;
+
+    // ⬇️ Animate
+    final animation = Tween<double>(
+      begin: state,
+      end: (state - 1).abs(),
+    ).animate(
+      CurvedAnimation(parent: controller, curve: Curves.ease),
+    );
+
+    controller.addListener(() {
+      WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+        setState(() {
+          state = animation.value;
+        });
+      });
+    });
+
+    controller.forward(from: 0);
+  }
+
+  @override
+  void dispose() {
+    if (controller.isAnimating) {
+      controller.stop();
+    }
+
+    controller.dispose();
+    super.dispose();
+  }
+
+  Color generateColor(Color c, double state) {
+    final color = kColorMap[MutableColor.neutral4]!;
+    int rDiff = color.red - c.red;
+    int gDiff = color.green - c.green;
+    int bDiff = color.blue - c.blue;
+
+    return Color.fromRGBO(
+      c.red + (rDiff * state).round(),
+      c.green + (gDiff * state).round(),
+      c.blue + (bDiff * state).round(),
+      1,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    return MutableButton(
-      onTap: () {
-        HapticFeedback.lightImpact();
-        //TODO: Implement add a contact flow
+    return Observer(
+      builder: (_) {
+        animate(core.state.contact.isEditing);
+        return MutableButton(
+          onTap: () {
+            HapticFeedback.lightImpact();
+            //TODO: Implement add a contact flow
+          },
+          scale: 0.9,
+          child: Padding(
+            padding: EdgeInsets.symmetric(vertical: 8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Container(
+                  height: 18,
+                  width: 18,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    gradient: LinearGradient(
+                      colors: kPrimaryGradientColors
+                          .map(
+                            (c) => generateColor(c, state),
+                          )
+                          .toList(),
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                    ),
+                  ),
+                  child: Center(
+                    child: MutableIcon(
+                      MutableIcons.plus,
+                      color: Colors.white.withOpacity(
+                        0.3 + (0.7 * (1 - state).abs()),
+                      ),
+                      size: Size(10, 10),
+                    ),
+                  ),
+                ),
+                SizedBox(width: 6),
+                MutableText(
+                  "Add contact", // TODO: Extract
+                  align: TextAlign.left,
+                  customColor: generateColor(Colors.white, state),
+                  weight: TypeWeight.semiBold,
+                ),
+              ],
+            ),
+          ),
+        );
       },
-      scale: 0.9,
-      child: Padding(
-        padding: EdgeInsets.symmetric(vertical: 8.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Container(
-              height: 18,
-              width: 18,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                gradient: LinearGradient(
-                  colors: kPrimaryGradientColors,
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                ),
-              ),
-              child: Center(
-                child: MutableIcon(
-                  MutableIcons.plus,
-                  color: Colors.white,
-                  size: Size(10, 10),
-                ),
-              ),
-            ),
-            SizedBox(width: 6),
-            MutableText(
-              "Add contact", // TODO: Extract
-              align: TextAlign.left,
-              weight: TypeWeight.semiBold,
-            ),
-          ],
-        ),
-      ),
     );
   }
 }
