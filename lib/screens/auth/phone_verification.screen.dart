@@ -148,6 +148,7 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen>
 
     // Removes all symbols from fieldController value
     String pure = core.utils.text.removeSymbols(comps["phone"]);
+    pure = core.utils.text.removeSpaces(pure);
 
     fieldController.text = await core.utils.phone.format(
       pure,

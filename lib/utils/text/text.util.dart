@@ -1,6 +1,8 @@
 class TextUtil {
   String removeSymbols(String value) =>
-      value.replaceAll(RegExp(r'[^\w\s]+'), '').replaceAll(" ", "");
+      value.replaceAll(RegExp(r'[^\w\s]+'), '');
+
+  String removeSpaces(String value) => value.replaceAll(" ", "");
 
   String removeNumbers(String value) => value.replaceAll(RegExp(r'[\d-]'), '');
 
