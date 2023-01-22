@@ -350,6 +350,7 @@ const double kIncidentLogCardSpacing = 25;
 // -> AVATAR
 const double kEmergencyContactAvatarSize = 24;
 const double kEmergencyContactAvatarSpacing = 3;
+const double kEmergencyContactAvatarPopupSize = 65;
 
 // MAP
 const EdgeInsets kMapPadding = EdgeInsets.only(bottom: 100, left: 15);

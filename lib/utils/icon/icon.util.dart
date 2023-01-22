@@ -1,4 +1,3 @@
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:safe/widgets/mutable_icon/local_widgets/backward.icon.dart';
 import 'package:safe/widgets/mutable_icon/local_widgets/battery.icon.dart';
@@ -12,6 +11,7 @@ import 'package:safe/widgets/mutable_icon/local_widgets/checkmark.icon.dart';
 import 'package:safe/widgets/mutable_icon/local_widgets/cloud.icon.dart';
 import 'package:safe/widgets/mutable_icon/local_widgets/compass.icon.dart';
 import 'package:safe/widgets/mutable_icon/local_widgets/doc.icon.dart';
+import 'package:safe/widgets/mutable_icon/local_widgets/face_id.icon.dart';
 import 'package:safe/widgets/mutable_icon/local_widgets/film.icon.dart';
 import 'package:safe/widgets/mutable_icon/local_widgets/flashlight.icon.dart';
 import 'package:safe/widgets/mutable_icon/local_widgets/forward.widget.dart';
@@ -48,6 +48,7 @@ enum MutableIcons {
   camera,
   film,
   compass,
+  faceID,
   map,
   battery,
   checkmark,
@@ -92,6 +93,7 @@ class IconUtil {
       MutableIcons.profile: (c) => ProfileIcon(c),
       MutableIcons.playLarge: (c) => PlayLargeIcon(c),
       MutableIcons.safe: (c) => SafeIcon(c),
+      MutableIcons.faceID: (c) => FaceIDIcon(c),
       MutableIcons.heart: (c) => HeartIcon(c),
       MutableIcons.lockCloud: (c) => LockCloudIcon(c),
       MutableIcons.doc: (c) => DocIcon(c),

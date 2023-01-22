@@ -13,10 +13,12 @@ class EmergencyContactPopupHeader extends StatefulWidget {
   final Function(String s) onPhoneChange;
   final Function()? onCodeTap;
   final EmergencyContactPopupController? controller;
+  final bool showInitials;
 
   EmergencyContactPopupHeader({
     this.controller,
     this.immutable = false,
+    this.showInitials = true,
     this.onCodeTap,
     required this.onNameChange,
     required this.onPhoneChange,
@@ -230,9 +232,12 @@ class _EmergencyContactPopupHeaderState
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        MutableEmergencyContactAvatar(
-          name,
-          size: 65,
+        Visibility(
+          visible: widget.showInitials,
+          child: MutableEmergencyContactAvatar(
+            name,
+            size: kEmergencyContactAvatarPopupSize,
+          ),
         ),
         SizedBox(height: 13),
         Theme(

@@ -14,12 +14,14 @@ class MutableEmergencyContactPopup extends StatefulWidget {
   final void Function()? onCodeTap;
   final Function(String s)? onNameChange;
   final Function(String p)? onPhoneChange;
+  final bool showInitials;
 
   MutableEmergencyContactPopup({
     this.body = const SizedBox(),
     this.panelController,
     this.onCodeTap,
     this.onNameChange,
+    this.showInitials = true,
     this.height,
     this.controller,
     this.onPhoneChange,
@@ -79,6 +81,7 @@ class _MutableEmergencyContactPopupState
               EmergencyContactPopupHeader(
                 controller: controller,
                 immutable: widget.immutable,
+                showInitials: widget.showInitials,
                 onNameChange: (name) {
                   widget.onNameChange?.call(name);
                 },

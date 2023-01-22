@@ -110,6 +110,7 @@ class _ContactEditorScreenState extends State<ContactEditorScreen> {
       panelController: core.state.contact.editorController,
       controller: core.state.contact.editorContactController,
       immutable: false,
+      showInitials: !core.state.contact.isAdding,
       onNameChange: (name) {
         final contact = core.state.contact.editable!.copyWith(
           name: name,
@@ -117,7 +118,9 @@ class _ContactEditorScreenState extends State<ContactEditorScreen> {
 
         core.state.contact.setEditable(contact);
       },
-      height: 316,
+      height: 316 -
+          (kEmergencyContactAvatarPopupSize *
+              (core.state.contact.isAdding ? 1 : 0)),
       onCodeTap: () {
         core.state.contact.countryCodeSelectorController.open();
       },
@@ -136,7 +139,9 @@ class _ContactEditorScreenState extends State<ContactEditorScreen> {
             SizedBox(height: 34),
             MutableDivider(color: MutableColor.neutral7),
             MutableInputPopupAction(
-              text: "Save", // TODO: Extract
+              text: core.state.contact.isAdding
+                  ? "Add Contact"
+                  : "Save", // TODO: Extract
               active: true,
               onTap: handleSave,
             ),
