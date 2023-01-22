@@ -132,10 +132,8 @@ class _ContactEditorScreenState extends State<ContactEditorScreen> {
         onPhoneChange: (phone) {
           final contact = core.state.contact.editable!;
 
-          final comps = contact.parsePhone();
-
           core.state.contact.setEditable(contact.copyWith(
-            phone: "${comps["code"]} $phone",
+            phone: phone,
           ));
         },
         body: Expanded(

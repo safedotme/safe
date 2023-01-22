@@ -84,6 +84,7 @@ class _EmergencyContactPopupHeaderState
       phone = formatted;
       isPhoneEmpty = true;
       code = country["dial_code"]!;
+      phoneController.text = "";
     });
   }
 
@@ -102,14 +103,34 @@ class _EmergencyContactPopupHeaderState
       return;
     }
 
+    setState(() {
+      this.code = code;
+    });
+
+    final comps = core.utils.phone.extractCountryCode(ph);
+
+    if (comps["containing"]) {
+      return;
+    }
+
+    if (comps["contains"]) {
+      setState(() {
+        this.code = comps["dial_code"];
+      });
+    }
+
+    if (comps["phone"].isEmpty) {
+      handleEmptyPhone(comps, comps["phone"]);
+      return;
+    }
+
     var formattedPhone = await core.utils.phone.format(
-      core.utils.text.removeSymbols(ph),
+      core.utils.text.removeSymbols(comps["phone"]),
       country["code"],
     );
 
     setState(() {
       phoneLen = "($code) $formattedPhone".length;
-      this.code = code;
       isPhoneEmpty = false;
       phone = formattedPhone;
     });
@@ -332,7 +353,7 @@ class _EmergencyContactPopupHeaderState
                       readOnly: widget.immutable,
                       onChanged: (s) {
                         formatPhone(code, s);
-                        widget.onPhoneChange(s);
+                        widget.onPhoneChange("$code $s");
                       },
                       keyboardType: TextInputType.phone,
                       decoration: InputDecoration(
