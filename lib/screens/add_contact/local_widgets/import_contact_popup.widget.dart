@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:safe/core.dart';
+import 'package:safe/models/contact/contact.model.dart';
 import 'package:safe/utils/constants/constants.util.dart';
 import 'package:safe/widgets/mutable_divider/mutable_divider.widget.dart';
 import 'package:safe/widgets/mutable_input_popup_action/mutable_input_popup_action.widget.dart';
 import 'package:safe/widgets/mutable_popup/mutable_popup.widget.dart';
 import 'package:safe/widgets/mutable_text/mutable_text.widget.dart';
+import 'package:uuid/uuid.dart';
 
 class ImportContactPopup extends StatefulWidget {
   @override
@@ -11,11 +15,34 @@ class ImportContactPopup extends StatefulWidget {
 }
 
 class _ImportContactPopupState extends State<ImportContactPopup> {
+  late Core core;
+
+  @override
+  void initState() {
+    super.initState();
+    core = Provider.of<Core>(context, listen: false);
+  }
+
+  void handleManualAdd() async {
+    await core.state.contact.importContactPopupController.close();
+
+    final contact = Contact(
+      id: Uuid().v1(),
+      userId: core.services.auth.currentUser!.uid,
+      name: "",
+      phone: "",
+    );
+
+    core.state.contact.setEditable(contact);
+    core.state.contact.setIsAdding(true);
+    core.state.contact.editorController.open();
+  }
+
   @override
   Widget build(BuildContext context) {
     return MutablePopup(
       type: PopupType.input,
-      // defaultState: PanelState.OPEN,
+      controller: core.state.contact.importContactPopupController,
       height: 374,
       body: Padding(
         padding: EdgeInsets.fromLTRB(
@@ -50,7 +77,7 @@ class _ImportContactPopupState extends State<ImportContactPopup> {
             MutableDivider(color: MutableColor.neutral7),
             MutableInputPopupAction(
               text: "Add manually",
-              onTap: () {},
+              onTap: handleManualAdd,
             ),
           ],
         ),

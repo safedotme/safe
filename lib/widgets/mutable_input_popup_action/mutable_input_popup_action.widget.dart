@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:safe/utils/constants/constants.util.dart';
 import 'package:safe/widgets/mutable_button/mutable_button.widget.dart';
+import 'package:safe/widgets/mutable_icon/mutable_icon.widget.dart';
 import 'package:safe/widgets/mutable_text/mutable_text.widget.dart';
 
 class MutableInputPopupAction extends StatelessWidget {
   final bool active;
   final void Function()? onTap;
   final String text;
+  final MutableIcon? icon;
 
   MutableInputPopupAction({
     required this.text,
     this.onTap,
+    this.icon,
     this.active = false,
   });
 
@@ -35,10 +38,21 @@ class MutableInputPopupAction extends StatelessWidget {
                       kColorMap[MutableColor.neutral3]!,
                     ],
             ).createShader(rect),
-            child: MutableText(
-              text,
-              size: 20,
-              weight: active ? TypeWeight.bold : TypeWeight.medium,
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                icon == null
+                    ? SizedBox()
+                    : Padding(
+                        padding: EdgeInsets.only(right: 4),
+                        child: icon,
+                      ),
+                MutableText(
+                  text,
+                  size: 20,
+                  weight: active ? TypeWeight.bold : TypeWeight.medium,
+                ),
+              ],
             ),
           ),
         ),

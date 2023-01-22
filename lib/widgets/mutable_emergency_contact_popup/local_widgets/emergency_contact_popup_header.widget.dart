@@ -41,6 +41,7 @@ class _EmergencyContactPopupHeaderState
   String name = "";
   String phone = "";
   String code = kDefaultCountryCode;
+  bool isEmpty = false;
 
   // Used only to determine size of phone textfield
   late int phoneLen;
@@ -67,6 +68,20 @@ class _EmergencyContactPopupHeaderState
     phoneNode.nextFocus();
   }
 
+  Future<void> handleEmptyPhone(Map country, String ph) async {
+    final formatted = await core.utils.phone.format(
+      core.utils.phone.generateHint(country["code"]!),
+      code,
+    );
+
+    setState(() {
+      phoneLen = "(${country["dial_code"]}) $formatted".length;
+      phone = formatted;
+      isEmpty = true;
+      code = country["dial_code"]!;
+    });
+  }
+
   void formatPhone(String code, String ph) async {
     Map? country;
 
@@ -77,20 +92,25 @@ class _EmergencyContactPopupHeaderState
       return;
     }
 
+    if (ph.isEmpty) {
+      handleEmptyPhone(country, ph);
+      return;
+    }
+
     var formattedPhone = await core.utils.phone.format(
-      core.utils.text.removeSymbols(
-        ph.isEmpty ? core.utils.phone.generateHint(country["code"]) : ph,
-      ),
+      core.utils.text.removeSymbols(ph),
       country["code"],
     );
 
     setState(() {
       phoneLen = "($code) $formattedPhone".length;
       this.code = code;
+      isEmpty = false;
       phone = formattedPhone;
     });
 
     phoneController.text = formattedPhone;
+
     phoneController.selection = TextSelection.fromPosition(
       TextPosition(
         offset: phoneController.text.length,
@@ -207,7 +227,7 @@ class _EmergencyContactPopupHeaderState
     setState(() {
       this.name = name ?? this.name;
       nameController.text = name ?? nameController.text;
-      formatPhone(code ?? this.code, phone ?? this.phone);
+      formatPhone(code ?? this.code, phone ?? (isEmpty ? "" : this.phone));
     });
   }
 
@@ -287,7 +307,7 @@ class _EmergencyContactPopupHeaderState
                   child: MutableText(
                     "($code)",
                     overrideStyle: phoneStyle.copyWith(
-                      color: kColorMap[phone == ""
+                      color: kColorMap[isEmpty
                           ? MutableColor.neutral5
                           : MutableColor.neutral2],
                     ),
@@ -308,7 +328,7 @@ class _EmergencyContactPopupHeaderState
                       keyboardType: TextInputType.phone,
                       decoration: InputDecoration(
                         hintStyle: phoneStyle.copyWith(
-                          color: kColorMap[phone == ""
+                          color: kColorMap[isEmpty
                               ? MutableColor.neutral5
                               : MutableColor.neutral2],
                         ),

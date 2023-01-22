@@ -47,4 +47,7 @@ abstract class _ContactStore with Store {
 
   @action
   void setIsAdding(bool v) => isAdding = v;
+
+  @observable
+  PanelController importContactPopupController = PanelController();
 }

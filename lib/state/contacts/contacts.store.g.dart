@@ -156,6 +156,23 @@ mixin _$ContactStore on _ContactStore, Store {
     });
   }
 
+  late final _$importContactPopupControllerAtom = Atom(
+      name: '_ContactStore.importContactPopupController', context: context);
+
+  @override
+  PanelController get importContactPopupController {
+    _$importContactPopupControllerAtom.reportRead();
+    return super.importContactPopupController;
+  }
+
+  @override
+  set importContactPopupController(PanelController value) {
+    _$importContactPopupControllerAtom
+        .reportWrite(value, super.importContactPopupController, () {
+      super.importContactPopupController = value;
+    });
+  }
+
   late final _$_ContactStoreActionController =
       ActionController(name: '_ContactStore', context: context);
 
@@ -214,7 +231,8 @@ editorController: ${editorController},
 editorContactController: ${editorContactController},
 editable: ${editable},
 countryCodeSelectorController: ${countryCodeSelectorController},
-isAdding: ${isAdding}
+isAdding: ${isAdding},
+importContactPopupController: ${importContactPopupController}
     ''';
   }
 }

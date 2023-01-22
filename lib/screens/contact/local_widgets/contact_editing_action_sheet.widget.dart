@@ -1,10 +1,8 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
 import 'package:safe/models/contact/contact.model.dart';
 import 'package:safe/widgets/mutable_banner/mutable_banner.widget.dart';
-import 'package:uuid/uuid.dart';
 
 class ContactEditingActionSheet extends StatefulWidget {
   final Contact contact;

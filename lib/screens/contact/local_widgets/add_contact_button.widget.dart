@@ -99,7 +99,7 @@ class _AddContactButtonState extends State<AddContactButton>
 
         return MutableButton(
           scale: 0.9,
-          onTap: () {
+          onTap: () async {
             if (checkCap()) {
               core.state.preferences.actionController.trigger(
                 "Sorry! Contacts are capped at {AMMOUNT} per person."
@@ -113,7 +113,8 @@ class _AddContactButtonState extends State<AddContactButton>
             }
             HapticFeedback.lightImpact();
 
-            //TODO: Implement add a contact flow
+            await core.state.contact.controller.close();
+            core.state.contact.importContactPopupController.open();
           },
           child: Padding(
             padding: EdgeInsets.symmetric(vertical: 8.0),
