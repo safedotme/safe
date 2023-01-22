@@ -9,6 +9,45 @@ class PhoneUtil {
     return valid;
   }
 
+  Map<String, dynamic> extractCountryCode(String phone) {
+    Map<String, dynamic> res = {
+      "contains": false,
+      "containing": false,
+      "phone": null,
+      "code": null,
+      "dial_code": null,
+    };
+
+    if (!phone.contains("+")) {
+      res["phone"] = phone;
+      return res;
+    }
+
+    String? code;
+    String? dialCode;
+
+    for (final country in kCountryCodes) {
+      final contains = phone.contains(country["dial_code"]!);
+
+      if (contains) {
+        code = country["code"];
+        dialCode = country["dial_code"];
+      }
+    }
+
+    if (code == null) {
+      res["containing"] = true;
+      return res;
+    }
+
+    res["contains"] = true;
+    res["code"] = code;
+    res["phone"] = phone.replaceAll(dialCode!, "");
+    res["dial_code"] = dialCode;
+
+    return res;
+  }
+
   Future<String> format(String phone, String code) async {
     String formatted = await util.format(phone, code);
     return formatted;

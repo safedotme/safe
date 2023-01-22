@@ -2,12 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
 import 'package:safe/utils/constants/constants.util.dart';
-import 'package:safe/utils/icon/icon.util.dart';
-import 'package:safe/widgets/mutable_icon/mutable_icon.widget.dart';
 
 class MutableTextField extends StatelessWidget {
   final FocusNode? focusNode;
   final TextInputType type;
+  final List<String>? hints;
   final Widget leadingLeft;
   final String hintText;
   final Widget leadingRight;
@@ -18,6 +17,7 @@ class MutableTextField extends StatelessWidget {
   MutableTextField({
     required this.onChange,
     this.onSubmit,
+    this.hints,
     this.leadingRight = const SizedBox(),
     this.controller,
     this.leadingLeft = const SizedBox(),
@@ -56,6 +56,7 @@ class MutableTextField extends StatelessWidget {
               cursorHeight: 18,
               keyboardAppearance: kKeyboardAppearance,
               focusNode: focusNode,
+              autofillHints: hints,
               onSubmitted: onSubmit,
               style: kTextInputStyle,
               keyboardType: type,

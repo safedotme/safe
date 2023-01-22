@@ -4,11 +4,11 @@ import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
 import 'package:safe/utils/constants/constants.util.dart';
 import 'package:safe/utils/icon/icon.util.dart';
+import 'package:safe/utils/phone/codes.util.dart';
 import 'package:safe/widgets/mutable_banner/mutable_banner.widget.dart';
 import 'package:safe/widgets/mutable_input_panel/mutable_input_panel.widget.dart';
 import 'package:safe/widgets/mutable_popup/mutable_popup.widget.dart';
 import 'package:safe/widgets/mutable_submit_textfield_button/mutable_submit_textfield_button.widget.dart';
-import 'package:safe/widgets/mutable_text/mutable_text.widget.dart';
 import 'package:safe/widgets/mutable_text_field/local_widgets/phone_extention_display.widget.dart';
 import 'package:safe/widgets/mutable_text_field/mutable_text_field.widget.dart';
 
@@ -130,13 +130,24 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen>
   }
 
   // Formats a phone while is being typed
-  void format(String? phone) async {
-    if (phone == null) {
+  void format(String? raw) async {
+    if (raw == null) {
       return;
     }
 
+    final comps = core.utils.phone.extractCountryCode(raw);
+
+    if (comps["containing"]) {
+      return;
+    }
+
+    if (comps["contains"]) {
+      core.state.auth.setCountryCode(comps["code"]);
+      core.state.auth.setCountryDialCode(comps["dial_code"]);
+    }
+
     // Removes all symbols from fieldController value
-    String pure = core.utils.text.removeSymbols(phone);
+    String pure = core.utils.text.removeSymbols(comps["phone"]);
 
     fieldController.text = await core.utils.phone.format(
       pure,
@@ -198,6 +209,7 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen>
                   onSubmit: (_) {
                     submit();
                   },
+                  hints: [AutofillHints.telephoneNumber],
                   controller: fieldController,
                   type: TextInputType.phone,
                   focusNode: node,

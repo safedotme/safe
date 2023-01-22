@@ -179,6 +179,7 @@ class _NameInputScreenState extends State<NameInputScreen>
       body: Observer(
         builder: (_) => MutableInputPanel(
           body: MutableTextField(
+            hints: [AutofillHints.name],
             controller: fieldController,
             leadingRight: MutableSubmitTextFieldButton(submit),
             type: TextInputType.name,

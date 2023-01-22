@@ -140,6 +140,22 @@ mixin _$ContactStore on _ContactStore, Store {
     });
   }
 
+  late final _$isAddingAtom =
+      Atom(name: '_ContactStore.isAdding', context: context);
+
+  @override
+  bool get isAdding {
+    _$isAddingAtom.reportRead();
+    return super.isAdding;
+  }
+
+  @override
+  set isAdding(bool value) {
+    _$isAddingAtom.reportWrite(value, super.isAdding, () {
+      super.isAdding = value;
+    });
+  }
+
   late final _$_ContactStoreActionController =
       ActionController(name: '_ContactStore', context: context);
 
@@ -177,6 +193,17 @@ mixin _$ContactStore on _ContactStore, Store {
   }
 
   @override
+  void setIsAdding(bool v) {
+    final _$actionInfo = _$_ContactStoreActionController.startAction(
+        name: '_ContactStore.setIsAdding');
+    try {
+      return super.setIsAdding(v);
+    } finally {
+      _$_ContactStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 contacts: ${contacts},
@@ -186,7 +213,8 @@ controller: ${controller},
 editorController: ${editorController},
 editorContactController: ${editorContactController},
 editable: ${editable},
-countryCodeSelectorController: ${countryCodeSelectorController}
+countryCodeSelectorController: ${countryCodeSelectorController},
+isAdding: ${isAdding}
     ''';
   }
 }

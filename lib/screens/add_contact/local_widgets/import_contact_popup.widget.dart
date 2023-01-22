@@ -4,7 +4,6 @@ import 'package:safe/widgets/mutable_divider/mutable_divider.widget.dart';
 import 'package:safe/widgets/mutable_input_popup_action/mutable_input_popup_action.widget.dart';
 import 'package:safe/widgets/mutable_popup/mutable_popup.widget.dart';
 import 'package:safe/widgets/mutable_text/mutable_text.widget.dart';
-import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class ImportContactPopup extends StatefulWidget {
   @override
@@ -16,7 +15,7 @@ class _ImportContactPopupState extends State<ImportContactPopup> {
   Widget build(BuildContext context) {
     return MutablePopup(
       type: PopupType.input,
-      defaultState: PanelState.OPEN,
+      // defaultState: PanelState.OPEN,
       height: 374,
       body: Padding(
         padding: EdgeInsets.fromLTRB(
@@ -46,10 +45,12 @@ class _ImportContactPopupState extends State<ImportContactPopup> {
             MutableInputPopupAction(
               text: "Import", // TODO: Extract
               active: true,
+              onTap: () {},
             ),
             MutableDivider(color: MutableColor.neutral7),
             MutableInputPopupAction(
               text: "Add manually",
+              onTap: () {},
             ),
           ],
         ),

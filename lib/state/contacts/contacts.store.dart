@@ -41,4 +41,10 @@ abstract class _ContactStore with Store {
 
   @observable
   PanelController countryCodeSelectorController = PanelController();
+
+  @observable
+  bool isAdding = false;
+
+  @action
+  void setIsAdding(bool v) => isAdding = v;
 }
