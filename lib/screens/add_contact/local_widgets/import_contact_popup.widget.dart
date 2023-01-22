@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:fluttercontactpicker/fluttercontactpicker.dart' as api;
 import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
 import 'package:safe/models/contact/contact.model.dart';
 import 'package:safe/utils/constants/constants.util.dart';
+import 'package:safe/widgets/mutable_banner/mutable_banner.widget.dart';
 import 'package:safe/widgets/mutable_divider/mutable_divider.widget.dart';
 import 'package:safe/widgets/mutable_input_popup_action/mutable_input_popup_action.widget.dart';
 import 'package:safe/widgets/mutable_popup/mutable_popup.widget.dart';
@@ -21,6 +23,39 @@ class _ImportContactPopupState extends State<ImportContactPopup> {
   void initState() {
     super.initState();
     core = Provider.of<Core>(context, listen: false);
+  }
+
+  void handleImportAdd() async {
+    await core.state.contact.importContactPopupController.close();
+    api.PhoneContact? rawC;
+
+    try {
+      rawC = await api.FlutterContactPicker.pickPhoneContact();
+    } catch (e) {
+      core.state.preferences.actionController.trigger(
+        "Unable to load contact.", // TODO: Extract
+        MessageType.error,
+      );
+
+      return;
+    }
+
+    final contact = Contact(
+      id: Uuid().v1(),
+      userId: core.services.auth.currentUser!.uid,
+      name: rawC.fullName ?? "",
+      phone: rawC.phoneNumber!.number ?? "",
+    );
+
+    core.state.contact.setEditable(contact);
+    core.state.contact.editorContactController.setValues(
+      phone: contact.phone,
+      name: contact.name,
+      code: contact.parsePhone()["code"],
+    );
+    core.state.contact.editorContactController.focus(true);
+    core.state.contact.setIsAdding(true);
+    core.state.contact.editorController.open();
   }
 
   void handleManualAdd() async {
@@ -79,7 +114,7 @@ class _ImportContactPopupState extends State<ImportContactPopup> {
             MutableInputPopupAction(
               text: "Import", // TODO: Extract
               active: true,
-              onTap: () {},
+              onTap: handleImportAdd,
             ),
             MutableDivider(color: MutableColor.neutral7),
             MutableInputPopupAction(

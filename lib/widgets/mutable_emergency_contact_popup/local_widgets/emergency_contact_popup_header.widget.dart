@@ -124,8 +124,10 @@ class _EmergencyContactPopupHeaderState
       return;
     }
 
+    final noSym = core.utils.text.removeSymbols(comps["phone"]);
+
     var formattedPhone = await core.utils.phone.format(
-      core.utils.text.removeSymbols(comps["phone"]),
+      core.utils.text.removeSpaces(noSym),
       country["code"],
     );
 
