@@ -34,6 +34,13 @@ class _ImportContactPopupState extends State<ImportContactPopup> {
     );
 
     core.state.contact.setEditable(contact);
+    core.state.contact.editorContactController.reset();
+    core.state.contact.editorContactController.setValues(
+      phone: "",
+      name: "",
+      code: kDefaultCountryCode,
+    );
+    core.state.contact.editorContactController.focus(true);
     core.state.contact.setIsAdding(true);
     core.state.contact.editorController.open();
   }

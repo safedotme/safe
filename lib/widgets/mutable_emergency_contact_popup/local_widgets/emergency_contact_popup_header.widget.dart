@@ -41,10 +41,15 @@ class _EmergencyContactPopupHeaderState
   String name = "";
   String phone = "";
   String code = kDefaultCountryCode;
-  bool isEmpty = false;
+  bool isPhoneEmpty = false;
 
   // Used only to determine size of phone textfield
   late int phoneLen;
+
+  void reset() {
+    phoneController.text = "";
+    formatPhone(kDefaultCountryCode, "");
+  }
 
   void triggerFormat(String code) {
     formatPhone(code, phoneController.text);
@@ -61,11 +66,11 @@ class _EmergencyContactPopupHeaderState
 
   void focus(bool name) {
     if (name) {
-      nameNode.nextFocus();
+      nameNode.requestFocus();
       return;
     }
 
-    phoneNode.nextFocus();
+    phoneNode.requestFocus();
   }
 
   Future<void> handleEmptyPhone(Map country, String ph) async {
@@ -77,7 +82,7 @@ class _EmergencyContactPopupHeaderState
     setState(() {
       phoneLen = "(${country["dial_code"]}) $formatted".length;
       phone = formatted;
-      isEmpty = true;
+      isPhoneEmpty = true;
       code = country["dial_code"]!;
     });
   }
@@ -89,7 +94,7 @@ class _EmergencyContactPopupHeaderState
       country =
           kCountryCodes.where((element) => element["dial_code"] == code).first;
     } catch (e) {
-      return;
+      throw "Unable to find dial code $code";
     }
 
     if (ph.isEmpty) {
@@ -105,7 +110,7 @@ class _EmergencyContactPopupHeaderState
     setState(() {
       phoneLen = "($code) $formattedPhone".length;
       this.code = code;
-      isEmpty = false;
+      isPhoneEmpty = false;
       phone = formattedPhone;
     });
 
@@ -227,7 +232,7 @@ class _EmergencyContactPopupHeaderState
     setState(() {
       this.name = name ?? this.name;
       nameController.text = name ?? nameController.text;
-      formatPhone(code ?? this.code, phone ?? (isEmpty ? "" : this.phone));
+      formatPhone(code ?? this.code, phone ?? (isPhoneEmpty ? "" : this.phone));
     });
   }
 
@@ -271,6 +276,10 @@ class _EmergencyContactPopupHeaderState
                 name = s;
               });
             },
+            onSubmitted: (_) {
+              if (!isPhoneEmpty) return;
+              phoneNode.requestFocus();
+            },
             readOnly: widget.immutable,
             keyboardType: TextInputType.name,
             decoration: InputDecoration(
@@ -307,7 +316,7 @@ class _EmergencyContactPopupHeaderState
                   child: MutableText(
                     "($code)",
                     overrideStyle: phoneStyle.copyWith(
-                      color: kColorMap[isEmpty
+                      color: kColorMap[isPhoneEmpty
                           ? MutableColor.neutral5
                           : MutableColor.neutral2],
                     ),
@@ -328,7 +337,7 @@ class _EmergencyContactPopupHeaderState
                       keyboardType: TextInputType.phone,
                       decoration: InputDecoration(
                         hintStyle: phoneStyle.copyWith(
-                          color: kColorMap[isEmpty
+                          color: kColorMap[isPhoneEmpty
                               ? MutableColor.neutral5
                               : MutableColor.neutral2],
                         ),
@@ -380,6 +389,12 @@ class EmergencyContactPopupController {
     assert(_state != null, "Controller has not been attached");
 
     _state!.triggerFormat(code);
+  }
+
+  void reset() {
+    assert(_state != null, "Controller has not been attached");
+
+    _state!.reset();
   }
 
   void setValues({
