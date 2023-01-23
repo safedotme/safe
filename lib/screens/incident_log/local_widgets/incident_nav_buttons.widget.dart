@@ -32,7 +32,7 @@ class _NavigationButtonsState extends State<NavigationButtons> {
               final contacts = core.state.contact.contacts;
 
               if (contacts == null || contacts.isEmpty) {
-                //TODO: Create contact
+                core.state.contact.importContactPopupController.open();
                 return;
               }
 

@@ -352,6 +352,9 @@ const double kEmergencyContactAvatarSize = 24;
 const double kEmergencyContactAvatarSpacing = 3;
 const double kEmergencyContactAvatarPopupSize = 65;
 
+// CONFETTI
+const Duration kConfettiDuration = Duration(seconds: 3);
+
 // MAP
 const EdgeInsets kMapPadding = EdgeInsets.only(bottom: 100, left: 15);
 

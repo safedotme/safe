@@ -306,11 +306,15 @@ class _TutorialScreenState extends State<TutorialScreen> {
                         },
                       ));
 
+                      // Opens Incident Log for user to not see contact error
+                      core.state.incidentLog.controller.open();
+
                       // Close tutorial
                       await core.state.auth.tutorialController.close();
                       core.state.auth.setIsTutorialOpen(false);
+                      core.state.preferences.setIsFirstTime(true);
 
-                      // TODO: Implement with contact flow
+                      core.state.contact.importContactPopupController.open();
                     },
                     text: core.utils.language.langMap[
                         core.state.preferences.language]!["tutorial"]["button"],

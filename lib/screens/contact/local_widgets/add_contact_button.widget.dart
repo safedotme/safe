@@ -86,7 +86,9 @@ class _AddContactButtonState extends State<AddContactButton>
   bool checkCap() {
     final cap = core.state.capture.settings?.defaultContactCap;
     final amm = core.state.contact.contacts?.length;
-    return amm! >= cap!;
+
+    if (amm == null || cap == null) return false;
+    return amm >= cap;
   }
 
   int? fetchCap() => core.state.capture.settings?.defaultContactCap;
@@ -111,6 +113,9 @@ class _AddContactButtonState extends State<AddContactButton>
               );
               return;
             }
+
+            if (core.state.contact.isEditing) return;
+
             HapticFeedback.lightImpact();
 
             await core.state.contact.controller.close();

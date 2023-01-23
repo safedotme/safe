@@ -176,9 +176,7 @@ class _IncidentLogNavBarState extends State<IncidentLogNavBar> {
                           Observer(
                             builder: (_) => MutableAvatar(
                               core.state.incidentLog.user,
-                              onTap: () {
-                                print("Open profile");
-                              },
+                              onTap: () {},
                             ),
                           ),
                           SizedBox(width: 15),

@@ -15,6 +15,7 @@ class MutableEmergencyContactPopup extends StatefulWidget {
   final Function(String s)? onNameChange;
   final Function(String p)? onPhoneChange;
   final bool showInitials;
+  final void Function()? onClosed;
 
   MutableEmergencyContactPopup({
     this.body = const SizedBox(),
@@ -22,6 +23,7 @@ class MutableEmergencyContactPopup extends StatefulWidget {
     this.onCodeTap,
     this.onNameChange,
     this.showInitials = true,
+    this.onClosed,
     this.height,
     this.controller,
     this.onPhoneChange,
@@ -61,6 +63,7 @@ class _MutableEmergencyContactPopupState
         onClosed: () {
           controller.unfocus(true);
           controller.unfocus(false);
+          widget.onClosed?.call();
         },
         style: MutablePopupStyle(
           backgroundColor: kColorMap[kInputPopupColor],

@@ -23,11 +23,9 @@ class CreditUtil {
     Core core, {
     User? user,
     int? incidents,
-    int? contacts,
   }) async {
     await _base(
       core,
-      contacts: contacts,
       onDisconnected: () {
         core.state.capture.setLimErrState(LimitErrorState.noConnection);
         core.state.capture.limErrorBannerController.open();
@@ -110,7 +108,6 @@ class CreditUtil {
     required Function onDisabledPermissions,
     required Function onDisconnected,
     User? user,
-    int? contacts,
     int? incidents,
   }) async {
     if (!core.state.preferences.isConnected) {
@@ -140,7 +137,10 @@ class CreditUtil {
       return;
     }
 
-    if (contacts == 0) {
+    final contacts = core.state.contact.contacts;
+
+    // ignore: prefer_is_empty
+    if (contacts?.length == 0) {
       onMissingContacts();
       return;
     }

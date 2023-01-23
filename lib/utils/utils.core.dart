@@ -13,6 +13,7 @@ import 'package:safe/utils/phone/phone.util.dart';
 import 'package:safe/utils/play/play.util.dart';
 import 'package:safe/utils/popup_navigation/popup_navigation.util.dart';
 import 'package:safe/utils/text/text.util.dart';
+import 'package:safe/utils/tutorial/tutorial.util.dart';
 
 class Utils {
   ColorUtils color = ColorUtils();
@@ -22,6 +23,7 @@ class Utils {
   PopupNavigationUtil popupNavigation = PopupNavigationUtil();
   PhoneUtil phone = PhoneUtil();
   TextUtil text = TextUtil();
+  TutorialUtil tutorial = TutorialUtil();
   AnimationUtil animation = AnimationUtil();
   NameUtil name = NameUtil();
   CaptureUtil capture = CaptureUtil();

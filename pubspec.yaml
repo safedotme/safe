@@ -47,6 +47,7 @@ dependencies:
   animated_text_kit: ^4.2.2
   rive: ^0.9.0
   location: ^4.4.0
+  confetti: ^0.7.0
   flip_card: ^0.6.0
   flutter_dotenv: ^5.0.2
   image_picker: ^0.8.5+3

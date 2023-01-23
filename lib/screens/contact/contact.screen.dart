@@ -63,6 +63,7 @@ class _ContactScreenState extends State<ContactScreen> {
   Widget build(BuildContext context) {
     return MutablePopup(
       onClosed: () {
+        core.utils.tutorial.handleOnLeave(core);
         core.state.contact.setIsEditing(false);
       },
       controller: core.state.contact.controller,

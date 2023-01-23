@@ -94,8 +94,7 @@ class _IncidentLimitHomeBannerState extends State<IncidentLimitHomeBanner> {
 
           if (core.state.capture.limErrState ==
               LimitErrorState.missingContacts) {
-            print("GO TO CONTACTS");
-            // TODO: Implement Add contact
+            core.state.contact.importContactPopupController.open();
             return;
           }
 

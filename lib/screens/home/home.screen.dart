@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:confetti/confetti.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart' hide BoxShadow;
 import 'package:flutter/services.dart';
@@ -24,6 +25,7 @@ import 'package:safe/screens/tutorial/tutorial.screen.dart';
 import 'package:safe/utils/constants/constants.util.dart';
 import 'package:safe/utils/credit/credit.util.dart';
 import 'package:safe/widgets/mutable_action_banner/mutable_action_banner.widget.dart';
+import 'package:safe/widgets/mutable_confetti_overlay/mutable_confetti_overlay.widget.dart';
 import 'package:safe/widgets/mutable_popup/mutable_popup.widget.dart';
 import 'package:safe/widgets/mutable_safe_button/mutable_safe_button.widget.dart';
 import 'package:safe/widgets/mutable_scaffold/mutable_scaffold.widget.dart';
@@ -61,8 +63,8 @@ class _HomeScreenState extends State<HomeScreen> {
     stream.listen(
       (event) {
         WidgetsBinding.instance.addPostFrameCallback((_) async {
-          await core.utils.credit.obtainState(core, contacts: event.length);
           core.state.contact.setContacts(event);
+          await core.utils.credit.obtainState(core);
         });
       },
     );
@@ -146,6 +148,7 @@ class _HomeScreenState extends State<HomeScreen> {
         MutableActionBanner(
           controller: core.state.preferences.actionController,
         ),
+        MutableConfettiOverlay(),
       ],
       underlays: [
         Padding(
@@ -163,9 +166,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: MutableText(
                   core.utils.language
                           .langMap[core.state.preferences.language]!["home"][
-                      core.state.capture.limErrState != null
-                          ? "header_disabled"
-                          : "header"],
+                      core.state.capture.limErrState == null
+                          ? "header"
+                          : "header_disabled"],
                   style: TypeStyle.h2,
                 ),
               ),

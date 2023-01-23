@@ -20,6 +20,7 @@ class ContactEditorScreen extends StatefulWidget {
 
 class _ContactEditorScreenState extends State<ContactEditorScreen> {
   late Core core;
+  bool tappedOut = true;
 
   @override
   void initState() {
@@ -39,6 +40,7 @@ class _ContactEditorScreenState extends State<ContactEditorScreen> {
   }
 
   void handleSave() async {
+    tappedOut = false;
     HapticFeedback.lightImpact();
 
     // Unfocus
@@ -84,13 +86,16 @@ class _ContactEditorScreenState extends State<ContactEditorScreen> {
 
     if (!res["error"]) {
       // Show success
-      core.state.contact.editorController.close();
+
+      await core.services.server.contacts.upsert(contact);
+
       core.state.preferences.actionController.trigger(
         "Contact saved!", //TODO: Extract
         MessageType.success,
       );
 
-      core.services.server.contacts.upsert(contact);
+      await core.state.contact.editorController.close();
+      core.state.contact.controller.open();
       return;
     }
 
@@ -128,6 +133,9 @@ class _ContactEditorScreenState extends State<ContactEditorScreen> {
                 (core.state.contact.isAdding ? 1 : 0)),
         onCodeTap: () {
           core.state.contact.countryCodeSelectorController.open();
+        },
+        onClosed: () {
+          if (tappedOut) core.utils.tutorial.handleOnLeave(core);
         },
         onPhoneChange: (phone) {
           final contact = core.state.contact.editable!;

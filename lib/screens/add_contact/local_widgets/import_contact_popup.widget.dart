@@ -18,6 +18,7 @@ class ImportContactPopup extends StatefulWidget {
 
 class _ImportContactPopupState extends State<ImportContactPopup> {
   late Core core;
+  bool tappedOut = true;
 
   @override
   void initState() {
@@ -26,6 +27,7 @@ class _ImportContactPopupState extends State<ImportContactPopup> {
   }
 
   void handleImportAdd() async {
+    tappedOut = false;
     await core.state.contact.importContactPopupController.close();
     api.PhoneContact? rawC;
 
@@ -59,6 +61,7 @@ class _ImportContactPopupState extends State<ImportContactPopup> {
   }
 
   void handleManualAdd() async {
+    tappedOut = false;
     await core.state.contact.importContactPopupController.close();
 
     final contact = Contact(
@@ -86,6 +89,9 @@ class _ImportContactPopupState extends State<ImportContactPopup> {
       type: PopupType.input,
       controller: core.state.contact.importContactPopupController,
       height: 374,
+      onClosed: () {
+        if (tappedOut) core.utils.tutorial.handleOnLeave(core);
+      },
       body: Padding(
         padding: EdgeInsets.fromLTRB(
           kSideScreenMargin,

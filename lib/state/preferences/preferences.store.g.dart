@@ -25,6 +25,38 @@ mixin _$PreferencesStore on _PreferencesStore, Store {
     });
   }
 
+  late final _$isFirstTimeAtom =
+      Atom(name: '_PreferencesStore.isFirstTime', context: context);
+
+  @override
+  bool get isFirstTime {
+    _$isFirstTimeAtom.reportRead();
+    return super.isFirstTime;
+  }
+
+  @override
+  set isFirstTime(bool value) {
+    _$isFirstTimeAtom.reportWrite(value, super.isFirstTime, () {
+      super.isFirstTime = value;
+    });
+  }
+
+  late final _$confettiControllerAtom =
+      Atom(name: '_PreferencesStore.confettiController', context: context);
+
+  @override
+  ConfettiController get confettiController {
+    _$confettiControllerAtom.reportRead();
+    return super.confettiController;
+  }
+
+  @override
+  set confettiController(ConfettiController value) {
+    _$confettiControllerAtom.reportWrite(value, super.confettiController, () {
+      super.confettiController = value;
+    });
+  }
+
   late final _$disabledPermissionsAtom =
       Atom(name: '_PreferencesStore.disabledPermissions', context: context);
 
@@ -201,6 +233,17 @@ mixin _$PreferencesStore on _PreferencesStore, Store {
   }
 
   @override
+  void setIsFirstTime(bool v) {
+    final _$actionInfo = _$_PreferencesStoreActionController.startAction(
+        name: '_PreferencesStore.setIsFirstTime');
+    try {
+      return super.setIsFirstTime(v);
+    } finally {
+      _$_PreferencesStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   void setDisabledPermissions(List<Permission> p) {
     final _$actionInfo = _$_PreferencesStoreActionController.startAction(
         name: '_PreferencesStore.setDisabledPermissions');
@@ -259,6 +302,8 @@ mixin _$PreferencesStore on _PreferencesStore, Store {
   String toString() {
     return '''
 language: ${language},
+isFirstTime: ${isFirstTime},
+confettiController: ${confettiController},
 disabledPermissions: ${disabledPermissions},
 actionController: ${actionController},
 isConnected: ${isConnected},
