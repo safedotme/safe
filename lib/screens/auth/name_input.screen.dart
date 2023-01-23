@@ -54,7 +54,9 @@ class _NameInputScreenState extends State<NameInputScreen>
 
     core = Provider.of<Core>(context, listen: false);
 
-    hintName = generateRandomName();
+    hintName =
+        core.utils.language.langMap[core.state.preferences.language]!["auth"]
+            ["name_input"]["hintName"];
 
     // Sync forward & reverse functionality with banner
     core.state.auth.setOnBannerForward(() {
@@ -144,14 +146,6 @@ class _NameInputScreenState extends State<NameInputScreen>
     }
 
     core.state.auth.setName(capitalized);
-  }
-
-  String generateRandomName() {
-    List<String> names =
-        core.utils.language.langMap[core.state.preferences.language]!["auth"]
-            ["name_input"]["hintNames"];
-
-    return names[Random().nextInt(names.length)];
   }
 
   @override

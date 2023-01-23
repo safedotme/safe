@@ -217,7 +217,7 @@ class _MutableOtpInputPanelState extends State<MutableOtpInputPanel> {
                           return;
                         }
 
-                        // TODO: Handle "Run out of attempts"
+                        // TODO: Handle "Run out of attempts" -> Add trigger to welcome
                         return;
                       }
                     },

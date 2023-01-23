@@ -47,17 +47,7 @@ class LanguageUtil {
         "error-emptyField/desc": "Please provide your full real name",
         "error-lastName/title": "Hold up! You forgot to add your last name",
         "error-lastName/desc": "Please provide your full real name",
-        "hintNames": [
-          "Chandler Bing",
-          "Ted Mosby",
-          "Eleven Hopper",
-          "Elle Woods",
-          "Regina George",
-          "Merideth Grey",
-          "Derek Shepard",
-          "Daenerys Targaryen",
-          "Erlich Bachman",
-        ],
+        "hintName": "Your name",
         "title": "What should we call you?",
         "desc":
             "Please provide your full real name. It's\nimportant for others to identify you.",

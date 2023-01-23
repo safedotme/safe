@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
 import 'package:safe/models/user/user.model.dart';
+import 'package:safe/services/analytics/helper_classes/analytics_insight.model.dart';
 import 'package:safe/services/analytics/helper_classes/analytics_log_model.service.dart';
 
 class MutableAuthWrapper extends StatefulWidget {
@@ -32,13 +33,21 @@ class _MutableAuthWrapperState extends State<MutableAuthWrapper> {
     core.services.analytics.log(
       AnalyticsLog(
         channel: "user-register",
-        event: "create_account",
+        event: "create-account",
         icon: "⭐️",
         description: "${user.name} has created an account!",
         tags: {
           "userid": user.id,
           "datetime": DateTime.now().toIso8601String(),
         },
+      ),
+    );
+
+    core.services.analytics.insight(
+      AnalyticsInsight(
+        title: "Users",
+        value: {"\$inc": 1},
+        icon: "🦄",
       ),
     );
   }
