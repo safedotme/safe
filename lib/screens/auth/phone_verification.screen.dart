@@ -107,6 +107,8 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen>
         return;
       }
 
+      print(response);
+
       node.unfocus();
       core.state.auth.otpInputPanelController.open();
       return;

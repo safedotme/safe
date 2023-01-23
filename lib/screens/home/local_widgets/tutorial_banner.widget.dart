@@ -31,7 +31,7 @@ class _TutorialBannerState extends State<TutorialBanner> {
         header: "Account Created", // TODO: Extract all
         height: 125,
         onTap: () {
-          core.state.preferences.setIsFirstTime(false);
+          core.utils.tutorial.handleCaptureTutorial(core);
         },
         body: Align(
           alignment: Alignment.bottomCenter,
@@ -58,7 +58,7 @@ class _TutorialBannerState extends State<TutorialBanner> {
                       ),
                       SizedBox(height: 5),
                       MutableText(
-                        "This way, you'll know what to expect in the case of an incident.",
+                        "This way, you'll know what to expect in an incident. PS, we won't notify anyone. ",
                         size: 13,
                         color: MutableColor.neutral2,
                       ),

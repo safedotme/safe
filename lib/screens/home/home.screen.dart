@@ -209,7 +209,14 @@ class _HomeScreenState extends State<HomeScreen> {
                       return;
                     }
 
-                    core.utils.capture.start();
+                    if (core.state.preferences.isFirstTime) {
+                      core.utils.capture.tutorial();
+                      core.state.preferences.setIsFirstTime(false);
+                      core.state.preferences.tutorialBannerController.close();
+                    } else {
+                      core.utils.capture.start();
+                    }
+
                     core.state.capture.controller.open();
                   },
                 ),

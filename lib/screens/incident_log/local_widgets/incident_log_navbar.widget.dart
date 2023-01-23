@@ -184,6 +184,11 @@ class _IncidentLogNavBarState extends State<IncidentLogNavBar> {
                             onTap: () async {
                               HapticFeedback.lightImpact();
 
+                              if (core.state.preferences.isFirstTime) {
+                                core.state.incidentLog.controller.close();
+                                return;
+                              }
+
                               // Checks if incident should be captured
                               bool shouldCapture =
                                   await core.utils.credit.shouldCapture(

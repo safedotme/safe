@@ -26,9 +26,47 @@ class CaptureUtil {
   bool isActive = false;
   // Used to prevent an infinity loop of camera flips
   bool initFlip = false;
+  // Used to differenciate between real and fake incidents
+  bool isTutorial = false;
 
   void initialize(Core core) {
     _core = core;
+  }
+
+  //
+  void tutorial() async {
+    assert(_core != null, "CaptureUtil must be initialized");
+
+    // Will be used to start & stop incident
+    isTutorial = true;
+    isActive = true;
+
+    // Resets error
+    if (_core!.state.capture.errorCapturing != null) {
+      _core!.state.capture.setErrorCapturing(null);
+    }
+
+    // Prevents two banners from being open at same time
+    if (_core!
+        .state.capture.incidentRecordedBannerPanelController.isPanelOpen) {
+      _core!.state.capture.incidentRecordedBannerPanelController.close();
+    }
+
+    // ⬇️ INCIDENT CREATE
+    await _uploadChanges(null);
+    _logTutorial(_core!.state.capture.incident!, false);
+
+    // ⬇️ STREAM / RECORDING
+    _stream();
+
+    // ⬇️ LOCATION + SMS
+    _locationListen();
+
+    // ⬇️ BATTERY
+    _batteryListen();
+
+    // Auto Stop (will stop incident after 30 seconds)
+    _timeout(wait: Duration(seconds: 30));
   }
 
   void start() async {
@@ -70,7 +108,11 @@ class CaptureUtil {
     isActive = false;
 
     // Log Incident
-    _logIncident(_core!.state.capture.incident!, true);
+    if (isTutorial) {
+      _logTutorial(_core!.state.capture.incident!, true);
+    } else {
+      _logIncident(_core!.state.capture.incident!, true);
+    }
 
     // Uploads immediate time user pressed stop
     await _uploadChanges(
@@ -96,6 +138,7 @@ class CaptureUtil {
     _core!.state.capture.overlayController.hide();
     _core!.state.capture.controller.close();
     initFlip = false;
+    isTutorial = false;
 
     // Opens an error if user has reached credit limit
     if (_core!.state.capture.limErrState == null) {
@@ -107,10 +150,11 @@ class CaptureUtil {
   }
 
   // ⬇️ TIMEOUT
-  void _timeout() async {
-    await Future.delayed(Duration(
-      seconds: _core!.state.capture.settings!.maxIdleTime,
-    ));
+  void _timeout({Duration? wait}) async {
+    await Future.delayed(wait ??
+        Duration(
+          seconds: _core!.state.capture.settings!.maxIdleTime,
+        ));
 
     if (isActive) {
       stop();
@@ -118,6 +162,20 @@ class CaptureUtil {
   }
 
   // ⬇️ ANALYTICS
+  Future<void> _logTutorial(Incident i, bool stopped) {
+    return _core!.services.analytics.log(AnalyticsLog(
+      channel: "user-register",
+      event: "capture-${stopped ? "stopped" : "started"}-tutorial",
+      description:
+          "User has ${stopped ? "stopped" : "started"} the capture tutorial.",
+      icon: stopped ? "☁️" : "📲",
+      tags: {
+        "incidentid": i.id,
+        "userid": i.userId,
+      },
+    ));
+  }
+
   Future<void> _logIncident(Incident i, bool stopped) {
     return _core!.services.analytics.log(AnalyticsLog(
       channel: "capture-incident",
@@ -350,10 +408,11 @@ USER ID: ${_core!.state.capture.incident!.userId}
     Incident? incident;
     // If incident does not exist, create it
     if (i == null) {
+      final incidents = _core!.state.incidentLog.incidents?.where(
+        (i) => !i.isTutorial,
+      );
       // Generates incident number
-      int incidentNumber = _core!.state.incidentLog.incidents == null
-          ? 1
-          : _core!.state.incidentLog.incidents!.length + 1;
+      int incidentNumber = incidents == null ? 1 : incidents.length + 1;
 
       String incidentId = Uuid().v1();
 
@@ -370,8 +429,9 @@ USER ID: ${_core!.state.capture.incident!.userId}
         id: incidentId,
         pubID: Uuid().v4(),
         stream: stream,
+        isTutorial: isTutorial,
         userId: _core!.services.auth.currentUser!.uid,
-        name: "Incident #$incidentNumber",
+        name: isTutorial ? "Tutorial" : "Incident #$incidentNumber",
         type: [_core!.state.capture.type],
         datetime: DateTime.now(),
       );
@@ -436,7 +496,7 @@ USER ID: ${_core!.state.capture.incident!.userId}
 
   // ⬇️ SMS
   Future<void> _notifyContacts(MessageType type, {int? battery}) async {
-    var contacts = await _core!.services.server.contacts.readFromUserIdOnce(
+    final contacts = await _core!.services.server.contacts.readFromUserIdOnce(
       id: _core!.services.auth.currentUser!.uid,
     );
 
@@ -497,12 +557,13 @@ USER ID: ${_core!.state.capture.incident!.userId}
     var message =
         _generateMessage(contact, user!, incident, type, battery: battery);
 
-    await _core!.services.twilio.messageSMS(
-      phone: contact.phone,
-      message: message,
-    );
-
-    print("CAPTURE ($type): Notified ${contact.name}");
+    // Prevents contacts from being notified during a tutorial
+    if (!isTutorial) {
+      await _core!.services.twilio.messageSMS(
+        phone: contact.phone,
+        message: message,
+      );
+    }
 
     var notified = NotifiedContact(
       id: contact.id,
