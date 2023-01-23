@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
 import 'package:safe/models/contact/contact.model.dart';
 import 'package:safe/utils/constants/constants.util.dart';
+import 'package:safe/utils/phone/codes.util.dart';
 import 'package:safe/widgets/mutable_banner/mutable_banner.widget.dart';
 import 'package:safe/widgets/mutable_divider/mutable_divider.widget.dart';
 import 'package:safe/widgets/mutable_input_popup_action/mutable_input_popup_action.widget.dart';
@@ -26,6 +27,22 @@ class _ImportContactPopupState extends State<ImportContactPopup> {
     core = Provider.of<Core>(context, listen: false);
   }
 
+  String? formatPhone(String ph) {
+    Map? country;
+
+    for (final c in kCountryCodes) {
+      if (ph.contains(c["dial_code"]!)) {
+        country = c;
+      }
+    }
+
+    country ??= {
+      "dial_code": kDefaultCountryCode,
+    };
+
+    return "${country["dial_code"]} ${ph.replaceAll(country["dial_code"], "")}";
+  }
+
   void handleImportAdd() async {
     tappedOut = false;
     await core.state.contact.importContactPopupController.close();
@@ -42,11 +59,31 @@ class _ImportContactPopupState extends State<ImportContactPopup> {
       return;
     }
 
+    if (rawC.phoneNumber?.number == null) {
+      core.state.preferences.actionController.trigger(
+        "Unable to load contact.", // TODO: Extract
+        MessageType.error,
+      );
+
+      return;
+    }
+
+    final phone = formatPhone(rawC.phoneNumber!.number!);
+
+    if (phone == null) {
+      core.state.preferences.actionController.trigger(
+        "Unable to load contact.", // TODO: Extract
+        MessageType.error,
+      );
+
+      return;
+    }
+
     final contact = Contact(
       id: Uuid().v1(),
       userId: core.services.auth.currentUser!.uid,
       name: rawC.fullName ?? "",
-      phone: rawC.phoneNumber!.number ?? "",
+      phone: phone,
     );
 
     core.state.contact.setEditable(contact);

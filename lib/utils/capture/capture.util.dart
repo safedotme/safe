@@ -427,7 +427,9 @@ USER ID: ${_core!.state.capture.incident!.userId}
 
       incident = Incident(
         id: incidentId,
-        pubID: Uuid().v4(),
+        pubID: _core!.utils.text.removeSymbols(
+          Uuid().v4(),
+        ),
         stream: stream,
         isTutorial: isTutorial,
         userId: _core!.services.auth.currentUser!.uid,
