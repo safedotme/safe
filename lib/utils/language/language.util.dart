@@ -140,6 +140,7 @@ class LanguageUtil {
       }
     },
     "otp_input_panel": {
+      "attempts_error": "Run out of SMS attempts. Try again later",
       "header": "Enter Code",
       "desc": "Please enter the code sent to\n {phone}",
       "secured_by_stamp": "Secured by Google",
