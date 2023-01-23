@@ -13,6 +13,7 @@ import 'package:safe/models/incident/notified_contact.model.dart';
 import 'package:safe/models/media_server/start_recording_response.model.dart';
 import 'package:safe/models/user/user.model.dart';
 import 'package:safe/services/analytics/analytics.service.dart';
+import 'package:safe/services/analytics/helper_classes/analytics_insight.model.dart';
 import 'package:safe/services/analytics/helper_classes/analytics_log_model.service.dart';
 import 'package:safe/services/media_server/media_server.service.dart';
 import 'package:safe/services/server/incident_server.service.dart';
@@ -89,6 +90,13 @@ class CaptureUtil {
     // ⬇️ INCIDENT CREATE
     await _uploadChanges(null);
     _logIncident(_core!.state.capture.incident!, false);
+    _core!.services.analytics.insight(
+      AnalyticsInsight(
+        title: "Incidents",
+        value: {"\$inc": 1},
+        icon: "📸",
+      ),
+    );
 
     // ⬇️ STREAM / RECORDING
     _stream();
