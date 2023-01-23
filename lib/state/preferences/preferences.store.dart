@@ -8,6 +8,7 @@ import 'package:safe/widgets/mutable_action_banner/mutable_action_banner.widget.
 import 'package:safe/widgets/mutable_context_menu/mutable_context_menu.widget.dart';
 import 'package:safe/widgets/mutable_overlay/mutable_overlay.widget.dart';
 import 'package:safe/widgets/mutable_screen_transition/mutable_screen_transition.widget.dart';
+import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 part 'preferences.store.g.dart';
 
@@ -30,6 +31,9 @@ abstract class _PreferencesStore with Store {
   ConfettiController confettiController = ConfettiController(
     duration: kConfettiDuration,
   );
+
+  @observable
+  PanelController tutorialBannerController = PanelController();
 
   @observable
   List<Permission> disabledPermissions = [];

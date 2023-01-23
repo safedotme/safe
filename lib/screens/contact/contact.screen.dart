@@ -22,6 +22,7 @@ class _ContactScreenState extends State<ContactScreen> {
   final key = GlobalKey();
   double height = 383;
   List<Contact>? local;
+  bool tappedOut = true;
 
   @override
   void initState() {
@@ -63,8 +64,11 @@ class _ContactScreenState extends State<ContactScreen> {
   Widget build(BuildContext context) {
     return MutablePopup(
       onClosed: () {
-        core.utils.tutorial.handleOnLeave(core);
+        if (tappedOut) core.utils.tutorial.handleOnLeave(core);
         core.state.contact.setIsEditing(false);
+      },
+      onOpened: () {
+        tappedOut = true;
       },
       controller: core.state.contact.controller,
       minHeight: 0,
@@ -101,14 +105,21 @@ class _ContactScreenState extends State<ContactScreen> {
                               }
 
                               return ContactTab(
-                                core.state.contact.contacts![i ~/ 2],
+                                contact: core.state.contact.contacts![i ~/ 2],
+                                onEdit: () {
+                                  tappedOut = false;
+                                },
                               );
                             },
                           ),
                           SizedBox(height: 22),
                           Align(
                             alignment: Alignment.centerLeft,
-                            child: AddContactButton(),
+                            child: AddContactButton(
+                              onTap: () {
+                                tappedOut = false;
+                              },
+                            ),
                           ),
                         ],
                       ),

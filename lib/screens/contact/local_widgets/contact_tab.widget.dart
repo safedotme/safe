@@ -15,7 +15,11 @@ import 'package:safe/widgets/mutable_text/mutable_text.widget.dart';
 
 class ContactTab extends StatefulWidget {
   final Contact contact;
-  ContactTab(this.contact);
+  final void Function()? onEdit;
+  ContactTab({
+    required this.contact,
+    this.onEdit,
+  });
 
   @override
   State<ContactTab> createState() => _ContactTabState();
@@ -69,7 +73,10 @@ class _ContactTabState extends State<ContactTab> {
                 HapticFeedback.selectionClick();
                 showCupertinoModalPopup(
                   context: context,
-                  builder: (_) => ContactEditingActionSheet(widget.contact),
+                  builder: (_) => ContactEditingActionSheet(
+                    contact: widget.contact,
+                    onEdit: widget.onEdit,
+                  ),
                 );
               },
               scale: 0.9,

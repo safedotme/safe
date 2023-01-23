@@ -11,6 +11,8 @@ import 'package:safe/widgets/mutable_icon/mutable_icon.widget.dart';
 import 'package:safe/widgets/mutable_text/mutable_text.widget.dart';
 
 class AddContactButton extends StatefulWidget {
+  final void Function()? onTap;
+  AddContactButton({this.onTap});
   @override
   State<AddContactButton> createState() => _AddContactButtonState();
 }
@@ -116,6 +118,7 @@ class _AddContactButtonState extends State<AddContactButton>
 
             if (core.state.contact.isEditing) return;
 
+            widget.onTap?.call();
             HapticFeedback.lightImpact();
 
             await core.state.contact.controller.close();

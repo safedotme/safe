@@ -92,6 +92,7 @@ class _ContactEditorScreenState extends State<ContactEditorScreen> {
       core.state.preferences.actionController.trigger(
         "Contact saved!", //TODO: Extract
         MessageType.success,
+        wait: Duration(milliseconds: 1500),
       );
 
       await core.state.contact.editorController.close();

@@ -57,6 +57,23 @@ mixin _$PreferencesStore on _PreferencesStore, Store {
     });
   }
 
+  late final _$tutorialBannerControllerAtom = Atom(
+      name: '_PreferencesStore.tutorialBannerController', context: context);
+
+  @override
+  PanelController get tutorialBannerController {
+    _$tutorialBannerControllerAtom.reportRead();
+    return super.tutorialBannerController;
+  }
+
+  @override
+  set tutorialBannerController(PanelController value) {
+    _$tutorialBannerControllerAtom
+        .reportWrite(value, super.tutorialBannerController, () {
+      super.tutorialBannerController = value;
+    });
+  }
+
   late final _$disabledPermissionsAtom =
       Atom(name: '_PreferencesStore.disabledPermissions', context: context);
 
@@ -304,6 +321,7 @@ mixin _$PreferencesStore on _PreferencesStore, Store {
 language: ${language},
 isFirstTime: ${isFirstTime},
 confettiController: ${confettiController},
+tutorialBannerController: ${tutorialBannerController},
 disabledPermissions: ${disabledPermissions},
 actionController: ${actionController},
 isConnected: ${isConnected},

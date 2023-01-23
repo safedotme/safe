@@ -252,6 +252,7 @@ const Curve kScrollAnimationCurve = Curves.decelerate;
 // MARGINS
 const double kSideScreenMargin = 15;
 const double kBottomScreenMargin = 40;
+const double kHomeBannerHorizontalSpacing = 15;
 
 // BORDERS
 const double kBorderWidth = 1.5;

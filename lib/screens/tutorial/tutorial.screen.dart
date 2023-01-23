@@ -307,7 +307,7 @@ class _TutorialScreenState extends State<TutorialScreen> {
                       ));
 
                       // Opens Incident Log for user to not see contact error
-                      core.state.incidentLog.controller.open();
+                      await core.state.incidentLog.controller.open();
 
                       // Close tutorial
                       await core.state.auth.tutorialController.close();

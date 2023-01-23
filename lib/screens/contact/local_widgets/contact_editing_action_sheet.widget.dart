@@ -6,8 +6,9 @@ import 'package:safe/widgets/mutable_banner/mutable_banner.widget.dart';
 
 class ContactEditingActionSheet extends StatefulWidget {
   final Contact contact;
+  final void Function()? onEdit;
 
-  ContactEditingActionSheet(this.contact);
+  ContactEditingActionSheet({required this.contact, this.onEdit});
   @override
   State<ContactEditingActionSheet> createState() =>
       _ContactEditingActionSheetState();
@@ -68,6 +69,7 @@ class _ContactEditingActionSheetState extends State<ContactEditingActionSheet> {
 
     core.state.contact.setEditable(widget.contact);
 
+    widget.onEdit?.call();
     core.state.contact.editorController.open();
   }
 

@@ -5,18 +5,17 @@ import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
 import 'package:safe/models/incident/incident.model.dart';
 import 'package:safe/utils/constants/constants.util.dart';
+import 'package:safe/widgets/mutable_emoji_box/mutable_emoji_box.widget.dart';
 import 'package:safe/widgets/mutable_home_message.widget.dart/mutable_home_banner.widget.dart';
 import 'package:safe/widgets/mutable_text/mutable_text.widget.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
-class IncidentRecordedHomeBanner extends StatefulWidget {
+class EventHomeBanner extends StatefulWidget {
   @override
-  State<IncidentRecordedHomeBanner> createState() =>
-      _IncidentRecordedHomeBannerState();
+  State<EventHomeBanner> createState() => _EventHomeBannerState();
 }
 
-class _IncidentRecordedHomeBannerState
-    extends State<IncidentRecordedHomeBanner> {
+class _EventHomeBannerState extends State<EventHomeBanner> {
   late Core core;
   bool imgLoaded = false;
 
@@ -84,25 +83,16 @@ class _IncidentRecordedHomeBannerState
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                Container(
-                  height: 60,
-                  width: 60,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8),
-                    color: kColorMap[core.state.capture.errorCapturing == null
-                            ? MutableColor.secondaryGreen
-                            : MutableColor.secondaryYellow]!
-                        .withOpacity(0.10),
-                  ),
-                  child: Center(
-                    child: Image.asset(
-                      "assets/images/${core.state.capture.errorCapturing == null ? "checkmark" : "warning"}.png",
-                      height: 30,
-                      width: 30,
-                    ),
-                  ),
+                MutableEmojiBox(
+                  color: kColorMap[core.state.capture.errorCapturing == null
+                          ? MutableColor.secondaryGreen
+                          : MutableColor.secondaryYellow]!
+                      .withOpacity(0.10),
+                  emoji: core.state.capture.errorCapturing == null
+                      ? "checkmark"
+                      : "warning",
                 ),
-                SizedBox(width: 15),
+                SizedBox(width: kHomeBannerHorizontalSpacing),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,

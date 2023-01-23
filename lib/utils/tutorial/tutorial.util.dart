@@ -11,5 +11,6 @@ class TutorialUtil {
 
     // Trigger fireworks and success message
     core.state.preferences.confettiController.play();
+    core.state.preferences.tutorialBannerController.open();
   }
 }

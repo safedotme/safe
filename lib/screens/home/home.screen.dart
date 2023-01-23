@@ -16,7 +16,8 @@ import 'package:safe/screens/contact/contact.screen.dart';
 import 'package:safe/screens/contact/local_widgets/contact_country_code_selector_controller.widget.dart';
 import 'package:safe/screens/contact_editor/contact_editor.screen.dart';
 import 'package:safe/screens/home/local_widgets/incident_limit_home_banner.widget.dart';
-import 'package:safe/screens/home/local_widgets/incident_recorded_home_banner.widget.dart';
+import 'package:safe/screens/home/local_widgets/event_home_banner.widget.dart.dart';
+import 'package:safe/screens/home/local_widgets/tutorial_banner.widget.dart';
 import 'package:safe/screens/incident/incident.screen.dart';
 import 'package:safe/screens/incident_log/incident_log.screen.dart';
 import 'package:safe/screens/play/play.screen.dart';
@@ -222,7 +223,11 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         Align(
           alignment: Alignment.bottomCenter,
-          child: IncidentRecordedHomeBanner(),
+          child: EventHomeBanner(),
+        ),
+        Align(
+          alignment: Alignment.bottomCenter,
+          child: TutorialBanner(),
         ),
       ],
       body: IncidentLog(),
