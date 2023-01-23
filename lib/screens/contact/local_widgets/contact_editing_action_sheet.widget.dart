@@ -28,7 +28,8 @@ class _ContactEditingActionSheetState extends State<ContactEditingActionSheet> {
 
     if (core.state.contact.contacts!.length == 1) {
       core.state.preferences.actionController.trigger(
-        "You must have at least one contact.", //TODO: Extract
+        core.utils.language.langMap[core.state.preferences.language]!["contact"]
+            ["errors"]["min"],
         MessageType.error,
       );
 
@@ -39,12 +40,15 @@ class _ContactEditingActionSheetState extends State<ContactEditingActionSheet> {
 
     if (!(shouldAuth == null || !shouldAuth)) {
       final passed = await core.services.localAuth.authenticate(
-        "Authenticate to remove contact", //TODO: Extract
+        core.utils.language.langMap[core.state.preferences.language]!["contact"]
+            ["action_sheet"]["auth_reason"],
       );
 
       if (!passed) {
         core.state.preferences.actionController.trigger(
-          "Unable to authenticate. Try again", //TODO: Extract
+          core.utils.language
+                  .langMap[core.state.preferences.language]!["contact"]
+              ["action_sheet"]["auth_unavailable"],
           MessageType.error,
         );
         return;
@@ -87,7 +91,9 @@ class _ContactEditingActionSheetState extends State<ContactEditingActionSheet> {
 
             handleEdit();
           },
-          child: Text("Edit Info"), //TODO: Extract
+          child: Text(core.utils.language
+                  .langMap[core.state.preferences.language]!["contact"]
+              ["action_sheet"]["edit"]),
         ),
         CupertinoActionSheetAction(
           isDestructiveAction: true,
@@ -96,7 +102,11 @@ class _ContactEditingActionSheetState extends State<ContactEditingActionSheet> {
 
             handleRemove();
           },
-          child: Text("Remove"), //TODO: Extract
+          child: Text(
+            core.utils.language
+                    .langMap[core.state.preferences.language]!["contact"]
+                ["action_sheet"]["remove"],
+          ),
         ),
       ],
       cancelButton: CupertinoActionSheetAction(
@@ -104,7 +114,9 @@ class _ContactEditingActionSheetState extends State<ContactEditingActionSheet> {
         onPressed: () {
           Navigator.pop(context);
         },
-        child: Text("Cancel"),
+        child: Text(core.utils.language
+                .langMap[core.state.preferences.language]!["contact"]
+            ["action_sheet"]["cancel"]),
       ),
     );
   }

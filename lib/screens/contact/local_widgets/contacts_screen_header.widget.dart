@@ -28,7 +28,8 @@ class _ContactScreenHeaderState extends State<ContactScreenHeader> {
       children: [
         Center(
           child: MutableText(
-            "Contacts", //TODO: Extract
+            core.utils.language
+                .langMap[core.state.preferences.language]!["contact"]["header"],
             weight: TypeWeight.heavy,
             size: 18,
           ),

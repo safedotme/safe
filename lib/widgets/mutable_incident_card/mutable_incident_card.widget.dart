@@ -31,12 +31,16 @@ class _MutableIncidentCardState extends State<MutableIncidentCard> {
 
     if (auth) {
       bool passed = await core.services.localAuth.authenticate(
-        "Authenticate to view incident", // TODO: Extract
+        core.utils.language
+                .langMap[core.state.preferences.language]!["incident"]["auth"]
+            ["reason"],
       );
 
       if (!passed) {
         core.state.preferences.actionController.trigger(
-          "Unable to authenticate. Try again.", // TODO: Extract
+          core.utils.language
+                  .langMap[core.state.preferences.language]!["incident"]["auth"]
+              ["error"],
           MessageType.error,
         );
 

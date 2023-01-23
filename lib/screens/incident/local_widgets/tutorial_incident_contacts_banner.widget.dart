@@ -1,9 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:safe/core.dart';
+import 'package:safe/utils/constants/constants.util.dart';
 import 'package:safe/widgets/mutable_text/mutable_text.widget.dart';
 
-import '../../../utils/constants/constants.util.dart';
+class TutorialIncidentContactsBanner extends StatefulWidget {
+  @override
+  State<TutorialIncidentContactsBanner> createState() =>
+      _TutorialIncidentContactsBannerState();
+}
 
-class TutorialIncidentContactsBanner extends StatelessWidget {
+class _TutorialIncidentContactsBannerState
+    extends State<TutorialIncidentContactsBanner> {
+  late Core core;
+
+  @override
+  void initState() {
+    super.initState();
+    core = Provider.of<Core>(context, listen: false);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -21,7 +37,9 @@ class TutorialIncidentContactsBanner extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             MutableText(
-              "⚠️ NOTE", // TODO: Extract
+              core.utils.language
+                      .langMap[core.state.preferences.language]!["incident"]
+                  ["tutorial_contact_warning"]["header"],
               align: TextAlign.left,
               size: 14,
               weight: TypeWeight.bold,

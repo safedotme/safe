@@ -32,12 +32,16 @@ class _ActivelyEditingIndicatorState extends State<ActivelyEditingIndicator> {
                 ),
               ).createShader(rect),
               child: MutableText(
-                "Done", //TODO: Extract
+                core.utils.language
+                        .langMap[core.state.preferences.language]!["contact"]
+                    ["edit_button"]["done"],
                 weight: TypeWeight.bold,
               ),
             )
           : MutableText(
-              "Edit", //TODO: Extract
+              core.utils.language
+                      .langMap[core.state.preferences.language]!["contact"]
+                  ["edit_button"]["edit"],
               color: MutableColor.neutral3,
               weight: TypeWeight.bold,
             ),

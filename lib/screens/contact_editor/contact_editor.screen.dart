@@ -33,7 +33,8 @@ class _ContactEditorScreenState extends State<ContactEditorScreen> {
     if (enabled == null || !enabled) return true;
 
     final authenticate = await core.services.localAuth.authenticate(
-      "Authenticate to add contact", //TODO: Extract
+      core.utils.language.langMap[core.state.preferences.language]!["contact"]
+          ["editor"]["auth_reason"],
     );
 
     return authenticate;
@@ -51,7 +52,8 @@ class _ContactEditorScreenState extends State<ContactEditorScreen> {
 
     if (!auth) {
       core.state.preferences.actionController.trigger(
-        "Face ID failed. Try again", //TODO: Extract
+        core.utils.language.langMap[core.state.preferences.language]!["contact"]
+            ["editor"]["auth_failed"],
         MessageType.error,
       );
 
@@ -75,7 +77,8 @@ class _ContactEditorScreenState extends State<ContactEditorScreen> {
 
     if (!valid) {
       core.state.preferences.actionController.trigger(
-        "Phone number is invalid", //TODO: Extract
+        core.utils.language.langMap[core.state.preferences.language]!["contact"]
+            ["editor"]["phone_invalid"],
         MessageType.error,
       );
       return;
@@ -90,7 +93,8 @@ class _ContactEditorScreenState extends State<ContactEditorScreen> {
       await core.services.server.contacts.upsert(contact);
 
       core.state.preferences.actionController.trigger(
-        "Contact saved!", //TODO: Extract
+        core.utils.language.langMap[core.state.preferences.language]!["contact"]
+            ["editor"]["success"],
         MessageType.success,
         wait: Duration(milliseconds: 1500),
       );
@@ -100,14 +104,9 @@ class _ContactEditorScreenState extends State<ContactEditorScreen> {
       return;
     }
 
-    Map<String, String> errors = {
-      //TODO: Extract
-      "error-emptyField": "To save, name your contact.",
-      "error-lastName": "To save, add a last name.",
-    };
-
     core.state.preferences.actionController.trigger(
-      errors[res["reason"]]!,
+      core.utils.language.langMap[core.state.preferences.language]!["contact"]
+          ["editor"]["contact_errors"][res["reason"]]!,
       MessageType.error,
     );
 
@@ -149,9 +148,9 @@ class _ContactEditorScreenState extends State<ContactEditorScreen> {
               SizedBox(height: 34),
               MutableDivider(color: MutableColor.neutral7),
               MutableInputPopupAction(
-                text: core.state.contact.isAdding
-                    ? "Add Contact"
-                    : "Save", // TODO: Extract
+                text: core.utils.language.langMap[core.state.preferences
+                        .language]!["contact"]["editor"]["primary_button"]
+                    [core.state.contact.isAdding ? "add" : "save"],
                 active: true,
                 onTap: handleSave,
                 icon: MutableIcon(
@@ -161,7 +160,9 @@ class _ContactEditorScreenState extends State<ContactEditorScreen> {
               ),
               MutableDivider(color: MutableColor.neutral7),
               MutableInputPopupAction(
-                text: "Cancel", // TODO: Extract
+                text: core.utils.language
+                        .langMap[core.state.preferences.language]!["contact"]
+                    ["editor"]["cancel"],
                 onTap: () {
                   HapticFeedback.lightImpact();
                   core.state.contact.editorController.close();

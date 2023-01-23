@@ -5,6 +5,7 @@ import 'package:rive/rive.dart';
 import 'package:safe/core.dart';
 import 'package:safe/screens/welcome/local_widgets/auth_button.welcome.dart';
 import 'package:safe/utils/constants/constants.util.dart';
+import 'package:safe/widgets/mutable_action_banner/mutable_action_banner.widget.dart';
 import 'package:safe/widgets/mutable_scaffold/mutable_scaffold.widget.dart';
 import 'package:safe/widgets/mutable_text/mutable_text.widget.dart';
 
@@ -30,7 +31,12 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
   Widget build(BuildContext context) {
     queryData = MediaQuery.of(context);
     return MutableScaffold(
-      overlays: core.utils.flows.auth.widgets,
+      overlays: [
+        ...core.utils.flows.auth.widgets,
+        MutableActionBanner(
+          controller: core.state.auth.actionController,
+        ),
+      ],
       body: Column(
         children: [
           Spacer(flex: 3),

@@ -52,7 +52,8 @@ class _ImportContactPopupState extends State<ImportContactPopup> {
       rawC = await api.FlutterContactPicker.pickPhoneContact();
     } catch (e) {
       core.state.preferences.actionController.trigger(
-        "Unable to load contact.", // TODO: Extract
+        core.utils.language.langMap[core.state.preferences.language]!["contact"]
+            ["input"]["errors"]["load"],
         MessageType.error,
       );
 
@@ -61,7 +62,8 @@ class _ImportContactPopupState extends State<ImportContactPopup> {
 
     if (rawC.phoneNumber?.number == null) {
       core.state.preferences.actionController.trigger(
-        "Unable to load contact.", // TODO: Extract
+        core.utils.language.langMap[core.state.preferences.language]!["contact"]
+            ["input"]["errors"]["load"],
         MessageType.error,
       );
 
@@ -72,7 +74,8 @@ class _ImportContactPopupState extends State<ImportContactPopup> {
 
     if (phone == null) {
       core.state.preferences.actionController.trigger(
-        "Unable to load contact.", // TODO: Extract
+        core.utils.language.langMap[core.state.preferences.language]!["contact"]
+            ["input"]["errors"]["load"],
         MessageType.error,
       );
 
@@ -141,13 +144,17 @@ class _ImportContactPopupState extends State<ImportContactPopup> {
             Image.asset("assets/images/contacts.png"),
             SizedBox(height: 16),
             MutableText(
-              "Import Contacts", //TODO: Extract
+              core.utils.language
+                      .langMap[core.state.preferences.language]!["contact"]
+                  ["input"]["header"],
               size: 20,
               weight: TypeWeight.heavy,
             ),
             SizedBox(height: 5),
             MutableText(
-              "To import, press on the contact's phone number", //TODO: Extract
+              core.utils.language
+                      .langMap[core.state.preferences.language]!["contact"]
+                  ["input"]["desc"],
               size: 14,
               align: TextAlign.center,
               color: MutableColor.neutral2,
@@ -155,13 +162,17 @@ class _ImportContactPopupState extends State<ImportContactPopup> {
             SizedBox(height: 30),
             MutableDivider(color: MutableColor.neutral7),
             MutableInputPopupAction(
-              text: "Import", // TODO: Extract
+              text: core.utils.language
+                      .langMap[core.state.preferences.language]!["contact"]
+                  ["input"]["buttons"]["import"],
               active: true,
               onTap: handleImportAdd,
             ),
             MutableDivider(color: MutableColor.neutral7),
             MutableInputPopupAction(
-              text: "Add manually",
+              text: core.utils.language
+                      .langMap[core.state.preferences.language]!["contact"]
+                  ["input"]["buttons"]["manual"],
               onTap: handleManualAdd,
             ),
           ],

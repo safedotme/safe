@@ -106,11 +106,15 @@ class _AddContactButtonState extends State<AddContactButton>
           onTap: () async {
             if (checkCap()) {
               core.state.preferences.actionController.trigger(
-                "Sorry! Contacts are capped at {AMMOUNT} per person."
+                core
+                    .utils
+                    .language
+                    .langMap[core.state.preferences.language]!["contact"]
+                        ["errors"]["capped"]
                     .replaceAll(
                   "{AMMOUNT}",
                   "${fetchCap()}",
-                ), //TODO: Extract
+                ),
                 MessageType.error,
               );
               return;
@@ -157,7 +161,9 @@ class _AddContactButtonState extends State<AddContactButton>
                 ),
                 SizedBox(width: 6),
                 MutableText(
-                  "Add contact", // TODO: Extract
+                  core.utils.language
+                          .langMap[core.state.preferences.language]!["contact"]
+                      ["add_button"],
                   align: TextAlign.left,
                   customColor: generateColor(Colors.white, state),
                   weight: TypeWeight.semiBold,

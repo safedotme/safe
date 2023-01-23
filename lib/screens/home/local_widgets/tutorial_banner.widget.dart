@@ -28,7 +28,9 @@ class _TutorialBannerState extends State<TutorialBanner> {
       builder: (context) => MutableHomeBanner(
         state: PanelState.CLOSED,
         controller: core.state.preferences.tutorialBannerController,
-        header: "Account Created", // TODO: Extract all
+        header: core.utils.language
+                .langMap[core.state.preferences.language]!["home"]
+            ["acc_created"]["header"],
         height: 125,
         onTap: () {
           core.utils.tutorial.handleCaptureTutorial(core);
@@ -52,13 +54,15 @@ class _TutorialBannerState extends State<TutorialBanner> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       MutableText(
-                        "Try activating Safe",
+                        core.utils.language.langMap[core.state.preferences
+                            .language]!["home"]["acc_created"]["subheader"],
                         size: 15,
                         weight: TypeWeight.bold,
                       ),
                       SizedBox(height: 5),
                       MutableText(
-                        "This way, you'll know what to expect in an incident. PS, we won't notify anyone. ",
+                        core.utils.language.langMap[core.state.preferences
+                            .language]!["home"]["acc_created"]["desc"],
                         size: 13,
                         color: MutableColor.neutral2,
                       ),
