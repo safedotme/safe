@@ -29,9 +29,14 @@ class EmergencyMessages {
 
     String lString = "";
 
+    String lats = l.lat!.isNegative ? "S" : "N";
+    String longs = l.long!.isNegative ? "W" : "E";
+
     if (shouldAddLocation) {
       lString =
-          "\n{NAME_POSESSIVE} last recorded location was {ADDRESS} ({LAT}° N, {LONG}° W).\n";
+          "\n{NAME_POSESSIVE} last recorded location was {ADDRESS} ({LAT}° {LAT_S}, {LONG}° {LONG_S}).\n"
+              .replaceAll("{LAT_S}", lats)
+              .replaceAll("{LONG_S}", longs);
     }
 
     return base.replaceAll(key, lString);
