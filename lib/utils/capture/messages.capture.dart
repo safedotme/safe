@@ -16,8 +16,16 @@ class EmergencyMessages {
 
   static String addLocation(String base, Location? l) {
     String key = "{LOCATION}";
+    String sayKey = "{LOCATION_SAY}";
+    bool say = false;
 
-    if (!base.contains(key)) return base;
+    if (base.contains(sayKey)) {
+      say = true;
+    } else if (base.contains(key)) {
+      say = false;
+    } else {
+      return base.replaceAll(key, "");
+    }
 
     bool shouldAddLocation = true;
 
@@ -34,7 +42,12 @@ class EmergencyMessages {
 
     if (shouldAddLocation) {
       lString =
-          "\n{NAME_POSESSIVE} last recorded location was {ADDRESS} ({LAT} {LAT_S}, {LONG} {LONG_S}).\n"
+          "\n{NAME_POSESSIVE} last recorded location was {ADDRESS}{COORDINATES}.\n";
+
+      lString = say
+          ? lString.replaceAll("{COORDINATES}", "")
+          : lString
+              .replaceAll("{COORDINATES}", "({LAT} {LAT_S}, {LONG} {LONG_S})")
               .replaceAll("{LAT_S}", lats)
               .replaceAll("{LONG_S}", longs);
     }
@@ -68,16 +81,48 @@ class EmergencyMessages {
     }
   }
 
+  static const String contactPhoneTemplateStart = """
+{FULL_NAME} is actively in an emergency.
+
+{NAME} listed you, {FULL_CONTACT_NAME}, as an emergency contact.
+
+The emergency began at {TIME} and is listed as a {TYPE}.
+
+{LOCATION_SAY}
+
+We have sent you an SMS message with more information. Watch a livestream of the incident by opening the SMS message.
+
+The app continues to record {NAME_POSESSIVE} camera and track {NAME_POSESSIVE} exact location. You will recieve a message when {NAME} stops capturing the incident.
+
+This message was sent by the Safe app. Learn more about Safe at joinsafe dot me.
+
+This message will now be repeated.
+
+{FULL_NAME} is actively in an emergency.
+
+{NAME} listed you, {FULL_CONTACT_NAME}, as an emergency contact.
+
+The emergency began at {TIME} and is listed as a {TYPE}.
+
+{LOCATION_SAY}
+
+We have sent you an SMS message with more information. Watch a livestream of the incident by opening the SMS message.
+
+The app continues to record {NAME_POSESSIVE} camera and track {NAME_POSESSIVE} exact location. You will recieve a message when {NAME} stops capturing the incident.
+
+This message was sent by the Safe app. Learn more about Safe at joinsafe dot me.
+""";
+
   static const String contactMessageTemplateStart = """
 {FULL_NAME} is actively in an emergency.
 
-{NAME} listed you, {FULL_CONTACT_NAME}, as an emergency contacts.
+{NAME} listed you, {FULL_CONTACT_NAME}, as an emergency contact.
 
 The emergency began at {TIME} and is listed as a {TYPE}.
 {LOCATION}
 Watch a livestream of the incident: {LINK}
 
-The app continues to record {NAME} camera and track {NAME_POSESSIVE} exact location. You will recieve a message when {NAME} stops capturing the incident.
+The app continues to record {NAME_POSESSIVE} camera and track {NAME_POSESSIVE} exact location. You will recieve a message when {NAME} stops capturing the incident.
 
 This message was sent by the Safe app. Learn more about Safe at https://joinsafe.me.
 """;
@@ -95,7 +140,7 @@ This message was sent by the Safe app. Learn more about Safe at https://joinsafe
 
 When it runs out, the app will stop capturing the incident.
 
-The app continues to record {NAME} camera and track {NAME_POSESSIVE} exact location.
+The app continues to record {NAME_POSESSIVE} camera and track {NAME_POSESSIVE} exact location.
 
 You will recieve a message when {NAME} stops capturing the incident.
 

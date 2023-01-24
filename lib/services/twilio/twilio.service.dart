@@ -7,9 +7,9 @@ class TwilioService {
   static const String endpoint = "https://api.twilio.com";
   static const String version = "2010-04-01";
 
-  Uri _generateUri({required String sid}) {
+  Uri _generateUri({required String sid, required String type}) {
     return Uri.parse(
-      "$endpoint/$version/Accounts/$sid/Messages.json", //TODO: Change messages.json for calls
+      "$endpoint/$version/Accounts/$sid/$type.json",
     );
   }
 
@@ -20,8 +20,12 @@ class TwilioService {
     final body = {
       "To": phone,
       "From": dotenv.env["TWILIO_PHONE"],
-      "Twiml": message,
+      "Twiml": "<Response><Say>$message<Say><Response>",
     };
+
+    final response = await _request(body, "Calls");
+
+    return jsonDecode(response.body);
   }
 
   Future<Map<String, dynamic>?> messageSMS({
@@ -35,12 +39,12 @@ class TwilioService {
       "Body": TextUtil.removeNonUSCChars(message),
     };
 
-    final response = await _request(body);
+    final response = await _request(body, "Messages");
 
     return jsonDecode(response.body);
   }
 
-  Future<http.Response> _request(Map body) async {
+  Future<http.Response> _request(Map body, String type) async {
     // Generates headers in propper format
     final bytes = utf8.encode(
       "${dotenv.env["TWILIO_SID"]}:${dotenv.env["TWILIO_TOKEN"]}",
@@ -54,7 +58,7 @@ class TwilioService {
     };
 
     return http.post(
-      _generateUri(sid: dotenv.env["TWILIO_SID"]!),
+      _generateUri(sid: dotenv.env["TWILIO_SID"]!, type: type),
       headers: headers,
       body: body,
     );
