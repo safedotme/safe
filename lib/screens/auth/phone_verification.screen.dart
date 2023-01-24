@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
+import 'package:safe/neuances.dart';
 import 'package:safe/utils/constants/constants.util.dart';
 import 'package:safe/utils/icon/icon.util.dart';
 import 'package:safe/utils/phone/codes.util.dart';
@@ -11,6 +12,7 @@ import 'package:safe/widgets/mutable_popup/mutable_popup.widget.dart';
 import 'package:safe/widgets/mutable_submit_textfield_button/mutable_submit_textfield_button.widget.dart';
 import 'package:safe/widgets/mutable_text_field/local_widgets/phone_extention_display.widget.dart';
 import 'package:safe/widgets/mutable_text_field/mutable_text_field.widget.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class PhoneVerificationScreen extends StatefulWidget {
   @override
@@ -224,6 +226,11 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen>
             ],
           ),
         ),
+        aboveButtonText:
+            "By creating an account, you agree to Safe's terms of service. Click here to read them.", // TODO: Extract,
+        aboveButtonOnTap: () {
+          launchUrl(kTermsOfService);
+        },
         resizeToAvoidBottomInsets: true,
         // Display related properties
         title: core.utils.language

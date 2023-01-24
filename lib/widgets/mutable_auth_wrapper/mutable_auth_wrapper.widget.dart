@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart' as Firebase;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -71,6 +72,18 @@ class _MutableAuthWrapperState extends State<MutableAuthWrapper> {
     core.services.server.user.upsert(gen);
   }
 
+  Future<void> createUser(Firebase.User fbUser) async {
+    try {
+      final user = await core.services.server.user.readFromIdOnce(
+        id: fbUser.uid,
+      );
+
+      genUser(user, fbUser);
+    } catch (e) {
+      genUser(null, fbUser);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<Firebase.User?>(
@@ -78,10 +91,7 @@ class _MutableAuthWrapperState extends State<MutableAuthWrapper> {
       builder: (_, snapshot) {
         if (snapshot.connectionState == ConnectionState.active) {
           if (snapshot.data != null) {
-            // Generate data if it doesn't already
-            core.services.server.user
-                .readFromIdOnce(id: snapshot.data!.uid)
-                .then((value) => genUser(value, snapshot.data!));
+            createUser(snapshot.data!);
 
             return widget.home;
           }
