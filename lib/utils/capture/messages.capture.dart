@@ -34,7 +34,7 @@ class EmergencyMessages {
 
     if (shouldAddLocation) {
       lString =
-          "\n{NAME_POSESSIVE} last recorded location was {ADDRESS} ({LAT}° {LAT_S}, {LONG}° {LONG_S}).\n"
+          "\n{NAME_POSESSIVE} last recorded location was {ADDRESS} ({LAT} {LAT_S}, {LONG} {LONG_S}).\n"
               .replaceAll("{LAT_S}", lats)
               .replaceAll("{LONG_S}", longs);
     }
@@ -69,7 +69,7 @@ class EmergencyMessages {
   }
 
   static const String contactMessageTemplateStart = """
-🚨🚨 {FULL_NAME} is actively in an emergency. 🚨🚨 
+{FULL_NAME} is actively in an emergency.
 
 {NAME} listed you, {FULL_CONTACT_NAME}, as an emergency contacts.
 
@@ -91,7 +91,7 @@ This message was sent by the Safe app. Learn more about Safe at https://joinsafe
 """;
 
   static const String contactMessageBatteryTemplate = """
-⚠️⚠️ {NAME_POSESSIVE} battery is at {BATTERY}%, which is dangerously low.  ⚠️⚠️
+{NAME_POSESSIVE} battery is at {BATTERY}%, which is dangerously low.
 
 When it runs out, the app will stop capturing the incident.
 
