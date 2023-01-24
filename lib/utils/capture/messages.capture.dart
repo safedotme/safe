@@ -4,6 +4,7 @@ import 'package:safe/models/incident/location.model.dart';
 enum MessageType {
   start,
   batteryCrit,
+  voice,
   end,
 }
 
@@ -12,6 +13,7 @@ class EmergencyMessages {
     MessageType.start: contactMessageTemplateStart,
     MessageType.batteryCrit: contactMessageBatteryTemplate,
     MessageType.end: contactMessageTemplateEnd,
+    MessageType.voice: contactPhoneTemplateStart,
   };
 
   static String addLocation(String base, Location? l) {
@@ -21,6 +23,7 @@ class EmergencyMessages {
 
     if (base.contains(sayKey)) {
       say = true;
+      key = sayKey;
     } else if (base.contains(key)) {
       say = false;
     } else {

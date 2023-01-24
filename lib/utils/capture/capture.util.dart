@@ -537,9 +537,11 @@ USER ID: ${_core!.state.capture.incident!.userId}
       "{FULL_NAME}": user.name,
       "{NAME}": _core!.utils.name.genFirstName(user.name, false),
       "{FULL_CONTACT_NAME}": contact.name,
-      "{TIME}": DateFormat.jm().format(incident.datetime),
+      "{TIME}":
+          "${DateFormat.jm().format(incident.datetime)} ${incident.datetime.timeZoneName}",
       "{TYPE}": _core!.utils.incident.generateType(incident.type[0])!,
-      "{TIME_END}": DateFormat.jm().format(DateTime.now()),
+      "{TIME_END}":
+          "${DateFormat.jm().format(DateTime.now())} ${DateTime.now().timeZoneName}",
       "{ADDRESS}": _core!.utils.geocoder.removeTag(
         l?.address,
       ),
@@ -571,6 +573,24 @@ USER ID: ${_core!.state.capture.incident!.userId}
         _generateMessage(contact, user!, incident, type, battery: battery);
 
     // Prevents contacts from being notified during a tutorial
+
+    if (!isTutorial && type == MessageType.start) {
+      final voiceMsg = _generateMessage(
+        contact,
+        user,
+        incident,
+        MessageType.voice,
+        battery: battery,
+      );
+
+      print(voiceMsg);
+
+      await _core!.services.twilio.call(
+        phone: contact.phone,
+        message: voiceMsg,
+      );
+    }
+
     if (!isTutorial) {
       await _core!.services.twilio.messageSMS(
         phone: contact.phone,
