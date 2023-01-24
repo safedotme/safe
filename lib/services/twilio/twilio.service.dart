@@ -20,7 +20,7 @@ class TwilioService {
     final body = {
       "To": phone,
       "From": dotenv.env["TWILIO_PHONE"],
-      "Twiml": "<Response><Say>$message<Say><Response>",
+      "Twiml": "<Response><Say>$message</Say></Response>",
     };
 
     final response = await _request(body, "Calls");
