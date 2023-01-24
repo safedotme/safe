@@ -116,9 +116,13 @@ class CreditUtil {
     }
 
     // Load all credits
-    user ??= await core.services.server.user.readFromIdOnce(
-      id: core.services.auth.currentUser!.uid,
-    );
+    try {
+      user ??= await core.services.server.user.readFromIdOnce(
+        id: core.services.auth.currentUser!.uid,
+      );
+    } catch (e) {
+      return;
+    }
 
     if (user == null) return;
 

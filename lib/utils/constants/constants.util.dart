@@ -300,6 +300,7 @@ const MutableColor kPanelPopupSubheaderColor = MutableColor.neutral2;
 // AUTH
 const Duration kSMSTimeout = Duration(seconds: 30);
 const int kSMSRetryAttempts = 5;
+const int kUserServerLoadRetries = 5;
 
 enum AuthType {
   signup,

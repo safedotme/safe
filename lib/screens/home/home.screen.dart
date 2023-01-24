@@ -39,6 +39,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   late Core core;
   late MediaQueryData queryData;
+  int userRetries = kUserServerLoadRetries;
 
   @override
   void initState() {
@@ -82,10 +83,25 @@ class _HomeScreenState extends State<HomeScreen> {
     await core.utils.credit.obtainState(core);
   }
 
-  void userSubscribe() {
-    Stream<User?> stream = core.services.server.user.readFromId(
-      id: core.services.auth.currentUser!.uid,
+  void userSubscribe() async {
+    final uid = core.services.auth.currentUser!.uid;
+
+    final exists = await core.services.server.user.userExists(uid);
+
+    if (!exists) {
+      if (userRetries == 0) return;
+      await Future.delayed(Duration(seconds: 1));
+      userSubscribe();
+      userRetries--;
+
+      return;
+    }
+
+    final stream = core.services.server.user.readFromId(
+      id: uid,
     );
+
+    userRetries = kUserServerLoadRetries;
 
     stream.listen((event) {
       WidgetsBinding.instance.addPostFrameCallback((_) async {
