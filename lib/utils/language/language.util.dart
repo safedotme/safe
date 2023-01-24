@@ -120,6 +120,8 @@ class LanguageUtil {
         "title": "Enter Phone Number",
         "desc": "We'll send you a SMS code to verify your\n account",
         "buttonText": "Send SMS",
+        "terms":
+            "By creating an account, you agree to Safe's terms of service. Click here to read them.",
         "smsSentMsg": {
           "header": "SMS sent to {PHONE}",
           "body": "Check your SMS messages.",

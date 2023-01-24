@@ -226,8 +226,9 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen>
             ],
           ),
         ),
-        aboveButtonText:
-            "By creating an account, you agree to Safe's terms of service. Click here to read them.", // TODO: Extract,
+        aboveButtonText: core.utils.language
+                .langMap[core.state.preferences.language]!["auth"]
+            ["phone_verification"]["terms"],
         aboveButtonOnTap: () {
           launchUrl(kTermsOfService);
         },
