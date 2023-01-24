@@ -122,18 +122,21 @@ class CaptureUtil {
       _logIncident(_core!.state.capture.incident!, true);
     }
 
-    // Uploads immediate time user pressed stop
-    await _uploadChanges(
-      _core!.state.capture.incident!.copyWith(
-        stopTime: DateTime.now(),
-      ),
-    );
+    // Stores stop time to be uploaded later
+    final stopTime = DateTime.now();
 
     // UI
     _core!.state.capture.overlayController.show();
 
     // Notifies contacts that incident has stopped
     await _notifyContacts(MessageType.end);
+
+    // Upload stop time
+    await _uploadChanges(
+      _core!.state.capture.incident!.copyWith(
+        stopTime: stopTime,
+      ),
+    );
 
     // STREAM
 
@@ -540,8 +543,8 @@ USER ID: ${_core!.state.capture.incident!.userId}
       "{ADDRESS}": _core!.utils.geocoder.removeTag(
         l?.address,
       ),
-      "{LAT}": l?.lat?.toStringAsFixed(4),
-      "{LONG}": l?.long?.toStringAsFixed(4),
+      "{LAT}": l?.lat?.abs().toStringAsFixed(4),
+      "{LONG}": l?.long?.abs().toStringAsFixed(4),
       "{NAME_POSESSIVE}": _core!.utils.name.genFirstName(user.name, true),
       "{BATTERY}": battery.toString(),
       "{LINK}": "https://live.joinsafe.me/${incident.pubID}",
