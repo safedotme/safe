@@ -153,10 +153,13 @@ class _ContactEditorScreenState extends State<ContactEditorScreen> {
                     [core.state.contact.isAdding ? "add" : "save"],
                 active: true,
                 onTap: handleSave,
-                icon: MutableIcon(
-                  MutableIcons.faceID,
-                  size: Size(18, 18),
-                ),
+                icon: core.state.preferences.biometricsEnabled == null ||
+                        !core.state.preferences.biometricsEnabled!
+                    ? null
+                    : MutableIcon(
+                        MutableIcons.faceID,
+                        size: Size(18, 18),
+                      ),
               ),
               MutableDivider(color: MutableColor.neutral7),
               MutableInputPopupAction(
