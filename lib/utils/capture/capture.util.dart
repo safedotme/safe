@@ -583,14 +583,14 @@ USER ID: ${_core!.state.capture.incident!.userId}
         battery: battery,
       );
 
-      _core!.services.twilio.call(
+      await _core!.services.twilio.call(
         phone: contact.phone,
         message: voiceMsg,
       );
     }
 
     if (!isTutorial) {
-      _core!.services.twilio.messageSMS(
+      await _core!.services.twilio.messageSMS(
         phone: contact.phone,
         message: message,
       );

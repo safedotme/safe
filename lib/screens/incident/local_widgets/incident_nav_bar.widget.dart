@@ -37,20 +37,20 @@ class _IncidentNavBarState extends State<IncidentNavBar> {
   void animate(double offset) {
     // Animate Backdrop (Animate from 100 -> 200)
     double backdroPerc = core.utils.animation.percentBetweenPoints(
-      lowerBound: 250,
-      upperBound: 300,
+      lowerBound: 200,
+      upperBound: 250,
       state: offset,
     );
 
     double textPerc = core.utils.animation.percentBetweenPoints(
-      lowerBound: 275,
-      upperBound: 325,
+      lowerBound: 225,
+      upperBound: 275,
       state: offset,
     );
 
     double borderPerc = core.utils.animation.percentBetweenPoints(
-      lowerBound: 275,
-      upperBound: 300,
+      lowerBound: 250,
+      upperBound: 275,
       state: offset,
     );
 
