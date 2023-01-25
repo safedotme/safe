@@ -18,6 +18,16 @@ class UserServer {
     });
   }
 
+  Future<bool> userExists(String id) async {
+    try {
+      await readFromIdOnce(id: id);
+
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
   Future<User?> readFromIdOnce({required String id}) async {
     var map = await _db.collection(path).doc(id).get();
 

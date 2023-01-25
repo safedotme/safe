@@ -108,6 +108,7 @@ class _PlayBodyState extends State<PlayBody> {
                   widget.incident.name,
                   weight: TypeWeight.bold,
                   size: 20,
+                  align: TextAlign.center,
                 ),
                 SizedBox(height: 2),
                 SizedBox(
@@ -117,6 +118,7 @@ class _PlayBodyState extends State<PlayBody> {
                     maxLines: 1,
                     size: 14,
                     color: MutableColor.neutral2,
+                    align: TextAlign.center,
                   ),
                 ),
               ],

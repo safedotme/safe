@@ -1,5 +1,6 @@
 import 'package:mobx/mobx.dart';
 import 'package:safe/utils/constants/constants.util.dart';
+import 'package:safe/widgets/mutable_action_banner/mutable_action_banner.widget.dart';
 import 'package:safe/widgets/mutable_banner/mutable_banner.widget.dart';
 import 'package:safe/widgets/mutable_overlay/mutable_overlay.widget.dart';
 import 'package:safe/widgets/mutable_permission_card/mutable_permission_card.widget.dart';
@@ -19,6 +20,8 @@ abstract class _AuthStore with Store {
   void setAuthType(AuthType t) => authType = t;
 
   // BANNER RELATED
+  @observable
+  ActionBannerController actionController = ActionBannerController();
 
   @observable
   BannerController bannerController = BannerController();

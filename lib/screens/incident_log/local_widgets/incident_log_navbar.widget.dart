@@ -176,15 +176,18 @@ class _IncidentLogNavBarState extends State<IncidentLogNavBar> {
                           Observer(
                             builder: (_) => MutableAvatar(
                               core.state.incidentLog.user,
-                              onTap: () {
-                                print("Open profile");
-                              },
+                              onTap: () {},
                             ),
                           ),
                           SizedBox(width: 15),
                           MutableNavSafeButton(
                             onTap: () async {
                               HapticFeedback.lightImpact();
+
+                              if (core.state.preferences.isFirstTime) {
+                                core.state.incidentLog.controller.close();
+                                return;
+                              }
 
                               // Checks if incident should be captured
                               bool shouldCapture =

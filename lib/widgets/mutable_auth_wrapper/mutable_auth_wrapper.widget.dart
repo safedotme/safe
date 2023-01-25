@@ -1,8 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart' as Firebase;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
 import 'package:safe/models/user/user.model.dart';
+import 'package:safe/services/analytics/helper_classes/analytics_insight.model.dart';
 import 'package:safe/services/analytics/helper_classes/analytics_log_model.service.dart';
 
 class MutableAuthWrapper extends StatefulWidget {
@@ -32,13 +34,21 @@ class _MutableAuthWrapperState extends State<MutableAuthWrapper> {
     core.services.analytics.log(
       AnalyticsLog(
         channel: "user-register",
-        event: "create_account",
+        event: "create-account",
         icon: "⭐️",
         description: "${user.name} has created an account!",
         tags: {
           "userid": user.id,
           "datetime": DateTime.now().toIso8601String(),
         },
+      ),
+    );
+
+    core.services.analytics.insight(
+      AnalyticsInsight(
+        title: "Users",
+        value: {"\$inc": 1},
+        icon: "🦄",
       ),
     );
   }
@@ -62,6 +72,18 @@ class _MutableAuthWrapperState extends State<MutableAuthWrapper> {
     core.services.server.user.upsert(gen);
   }
 
+  Future<void> createUser(Firebase.User fbUser) async {
+    try {
+      final user = await core.services.server.user.readFromIdOnce(
+        id: fbUser.uid,
+      );
+
+      genUser(user, fbUser);
+    } catch (e) {
+      genUser(null, fbUser);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<Firebase.User?>(
@@ -69,10 +91,7 @@ class _MutableAuthWrapperState extends State<MutableAuthWrapper> {
       builder: (_, snapshot) {
         if (snapshot.connectionState == ConnectionState.active) {
           if (snapshot.data != null) {
-            // Generate data if it doesn't already
-            core.services.server.user
-                .readFromIdOnce(id: snapshot.data!.uid)
-                .then((value) => genUser(value, snapshot.data!));
+            createUser(snapshot.data!);
 
             return widget.home;
           }

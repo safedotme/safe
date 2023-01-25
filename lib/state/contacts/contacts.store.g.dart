@@ -42,6 +42,137 @@ mixin _$ContactStore on _ContactStore, Store {
     });
   }
 
+  late final _$isEditingAtom =
+      Atom(name: '_ContactStore.isEditing', context: context);
+
+  @override
+  bool get isEditing {
+    _$isEditingAtom.reportRead();
+    return super.isEditing;
+  }
+
+  @override
+  set isEditing(bool value) {
+    _$isEditingAtom.reportWrite(value, super.isEditing, () {
+      super.isEditing = value;
+    });
+  }
+
+  late final _$controllerAtom =
+      Atom(name: '_ContactStore.controller', context: context);
+
+  @override
+  PanelController get controller {
+    _$controllerAtom.reportRead();
+    return super.controller;
+  }
+
+  @override
+  set controller(PanelController value) {
+    _$controllerAtom.reportWrite(value, super.controller, () {
+      super.controller = value;
+    });
+  }
+
+  late final _$editorControllerAtom =
+      Atom(name: '_ContactStore.editorController', context: context);
+
+  @override
+  PanelController get editorController {
+    _$editorControllerAtom.reportRead();
+    return super.editorController;
+  }
+
+  @override
+  set editorController(PanelController value) {
+    _$editorControllerAtom.reportWrite(value, super.editorController, () {
+      super.editorController = value;
+    });
+  }
+
+  late final _$editorContactControllerAtom =
+      Atom(name: '_ContactStore.editorContactController', context: context);
+
+  @override
+  EmergencyContactPopupController get editorContactController {
+    _$editorContactControllerAtom.reportRead();
+    return super.editorContactController;
+  }
+
+  @override
+  set editorContactController(EmergencyContactPopupController value) {
+    _$editorContactControllerAtom
+        .reportWrite(value, super.editorContactController, () {
+      super.editorContactController = value;
+    });
+  }
+
+  late final _$editableAtom =
+      Atom(name: '_ContactStore.editable', context: context);
+
+  @override
+  Contact? get editable {
+    _$editableAtom.reportRead();
+    return super.editable;
+  }
+
+  @override
+  set editable(Contact? value) {
+    _$editableAtom.reportWrite(value, super.editable, () {
+      super.editable = value;
+    });
+  }
+
+  late final _$countryCodeSelectorControllerAtom = Atom(
+      name: '_ContactStore.countryCodeSelectorController', context: context);
+
+  @override
+  PanelController get countryCodeSelectorController {
+    _$countryCodeSelectorControllerAtom.reportRead();
+    return super.countryCodeSelectorController;
+  }
+
+  @override
+  set countryCodeSelectorController(PanelController value) {
+    _$countryCodeSelectorControllerAtom
+        .reportWrite(value, super.countryCodeSelectorController, () {
+      super.countryCodeSelectorController = value;
+    });
+  }
+
+  late final _$isAddingAtom =
+      Atom(name: '_ContactStore.isAdding', context: context);
+
+  @override
+  bool get isAdding {
+    _$isAddingAtom.reportRead();
+    return super.isAdding;
+  }
+
+  @override
+  set isAdding(bool value) {
+    _$isAddingAtom.reportWrite(value, super.isAdding, () {
+      super.isAdding = value;
+    });
+  }
+
+  late final _$importContactPopupControllerAtom = Atom(
+      name: '_ContactStore.importContactPopupController', context: context);
+
+  @override
+  PanelController get importContactPopupController {
+    _$importContactPopupControllerAtom.reportRead();
+    return super.importContactPopupController;
+  }
+
+  @override
+  set importContactPopupController(PanelController value) {
+    _$importContactPopupControllerAtom
+        .reportWrite(value, super.importContactPopupController, () {
+      super.importContactPopupController = value;
+    });
+  }
+
   late final _$_ContactStoreActionController =
       ActionController(name: '_ContactStore', context: context);
 
@@ -57,10 +188,51 @@ mixin _$ContactStore on _ContactStore, Store {
   }
 
   @override
+  void setIsEditing(bool v) {
+    final _$actionInfo = _$_ContactStoreActionController.startAction(
+        name: '_ContactStore.setIsEditing');
+    try {
+      return super.setIsEditing(v);
+    } finally {
+      _$_ContactStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void setEditable(Contact c) {
+    final _$actionInfo = _$_ContactStoreActionController.startAction(
+        name: '_ContactStore.setEditable');
+    try {
+      return super.setEditable(c);
+    } finally {
+      _$_ContactStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void setIsAdding(bool v) {
+    final _$actionInfo = _$_ContactStoreActionController.startAction(
+        name: '_ContactStore.setIsAdding');
+    try {
+      return super.setIsAdding(v);
+    } finally {
+      _$_ContactStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 contacts: ${contacts},
-homeWariningController: ${homeWariningController}
+homeWariningController: ${homeWariningController},
+isEditing: ${isEditing},
+controller: ${controller},
+editorController: ${editorController},
+editorContactController: ${editorContactController},
+editable: ${editable},
+countryCodeSelectorController: ${countryCodeSelectorController},
+isAdding: ${isAdding},
+importContactPopupController: ${importContactPopupController}
     ''';
   }
 }

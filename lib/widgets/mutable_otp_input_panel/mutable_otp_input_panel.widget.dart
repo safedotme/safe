@@ -4,6 +4,7 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
 import 'package:safe/utils/constants/constants.util.dart';
+import 'package:safe/widgets/mutable_banner/mutable_banner.widget.dart';
 import 'package:safe/widgets/mutable_button/mutable_button.widget.dart';
 import 'package:safe/widgets/mutable_handle/mutable_handle.dart';
 import 'package:safe/widgets/mutable_pin_code_textfield/mutable_pin_code_textfield.widget.dart';
@@ -217,7 +218,11 @@ class _MutableOtpInputPanelState extends State<MutableOtpInputPanel> {
                           return;
                         }
 
-                        // TODO: Handle "Run out of attempts"
+                        core.state.auth.actionController.trigger(
+                          core.utils.language.langMap[core.state.preferences
+                              .language]!["otp_input_panel"]["attempts_error"],
+                          MessageType.error,
+                        );
                         return;
                       }
                     },

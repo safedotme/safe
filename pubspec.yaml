@@ -47,6 +47,7 @@ dependencies:
   animated_text_kit: ^4.2.2
   rive: ^0.9.0
   location: ^4.4.0
+  confetti: ^0.7.0
   flip_card: ^0.6.0
   flutter_dotenv: ^5.0.2
   image_picker: ^0.8.5+3
@@ -55,6 +56,7 @@ dependencies:
   cloud_firestore: ^4.2.0
   pin_code_fields: ^7.4.0
   firebase_storage: ^11.0.7
+  fluttercontactpicker: ^4.7.0
   flutter_inset_box_shadow: ^1.0.8
   firebase_core: ^2.4.0
   firebase_auth: ^4.2.0
@@ -77,9 +79,7 @@ flutter:
 
   assets:
     - .env
-    - assets/svgs/logo.svg
     - assets/animations/bubbles.riv
-    - assets/svgs/button.svg
     - assets/images/
     - assets/images/welcome/
     - assets/map/style_labeled.txt

@@ -237,6 +237,8 @@ const String kDefaultCountryCode = "+1";
 
 // CONTACT
 const double kContactTimelineWidth = 8;
+const double kContactBottomMargin = 56;
+const double kContactTopMargin = 8;
 
 // NAVBAR
 const double kNavBarBlur = 15;
@@ -250,6 +252,7 @@ const Curve kScrollAnimationCurve = Curves.decelerate;
 // MARGINS
 const double kSideScreenMargin = 15;
 const double kBottomScreenMargin = 40;
+const double kHomeBannerHorizontalSpacing = 15;
 
 // BORDERS
 const double kBorderWidth = 1.5;
@@ -297,6 +300,7 @@ const MutableColor kPanelPopupSubheaderColor = MutableColor.neutral2;
 // AUTH
 const Duration kSMSTimeout = Duration(seconds: 30);
 const int kSMSRetryAttempts = 5;
+const int kUserServerLoadRetries = 5;
 
 enum AuthType {
   signup,
@@ -348,6 +352,10 @@ const double kIncidentLogCardSpacing = 25;
 // -> AVATAR
 const double kEmergencyContactAvatarSize = 24;
 const double kEmergencyContactAvatarSpacing = 3;
+const double kEmergencyContactAvatarPopupSize = 65;
+
+// CONFETTI
+const Duration kConfettiDuration = Duration(seconds: 3);
 
 // MAP
 const EdgeInsets kMapPadding = EdgeInsets.only(bottom: 100, left: 15);

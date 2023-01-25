@@ -47,17 +47,7 @@ class LanguageUtil {
         "error-emptyField/desc": "Please provide your full real name",
         "error-lastName/title": "Hold up! You forgot to add your last name",
         "error-lastName/desc": "Please provide your full real name",
-        "hintNames": [
-          "Chandler Bing",
-          "Ted Mosby",
-          "Eleven Hopper",
-          "Elle Woods",
-          "Regina George",
-          "Merideth Grey",
-          "Derek Shepard",
-          "Daenerys Targaryen",
-          "Erlich Bachman",
-        ],
+        "hintName": "Your name",
         "title": "What should we call you?",
         "desc":
             "Please provide your full real name. It's\nimportant for others to identify you.",
@@ -130,6 +120,8 @@ class LanguageUtil {
         "title": "Enter Phone Number",
         "desc": "We'll send you a SMS code to verify your\n account",
         "buttonText": "Send SMS",
+        "terms":
+            "By creating an account, you agree to Safe's terms of service. Click here to read them.",
         "smsSentMsg": {
           "header": "SMS sent to {PHONE}",
           "body": "Check your SMS messages.",
@@ -150,6 +142,7 @@ class LanguageUtil {
       }
     },
     "otp_input_panel": {
+      "attempts_error": "Run out of SMS attempts. Try again later",
       "header": "Enter Code",
       "desc": "Please enter the code sent to\n {phone}",
       "secured_by_stamp": "Secured by Google",
@@ -162,6 +155,12 @@ class LanguageUtil {
       "incident_recorded_header": {
         true: "Error Capturing Incident",
         false: "Incident Captured",
+      },
+      "acc_created": {
+        "header": "Account Created",
+        "subheader": "Try activating Safe",
+        "desc":
+            "This way, you'll know what to expect in an incident. PS, we won't notify anyone. ",
       },
       "incident_limit": {
         "header": {
@@ -314,9 +313,18 @@ class LanguageUtil {
       },
     },
     "incident": {
+      "auth": {
+        "reason": "Authenticate to view incident",
+        "error": "Unable to authenticate. Try again.",
+      },
       "loading": "Loading incident",
       "downloading_loader": "Exporting incident",
       "downloading_failed": "Exporting failed",
+      "tutorial_contact_warning": {
+        "header": "⚠️ NOTE",
+        "desc":
+            "These contacts were not notified as the incident was a tutorial. They would have been notified if it weren't.",
+      },
       "contacts": {
         "header": "Notified Contacts",
         "notify_tag": "Notified",
@@ -362,6 +370,51 @@ class LanguageUtil {
           "subheader": "Powered by Google"
         },
       },
+    },
+    "contact": {
+      "input": {
+        "errors": {
+          "load": "Unable to load contact.",
+        },
+        "header": "Import Contacts",
+        "desc": "To import, press on the contact's phone number",
+        "buttons": {
+          "import": "Import",
+          "manual": "Add manually",
+        }
+      },
+      "header": "Contacts",
+      "errors": {
+        "capped": "Sorry! Contacts are capped at {AMMOUNT} per person.",
+        "min": "You must have at least one contact.",
+      },
+      "add_button": "Add contact",
+      "edit_button": {
+        "done": "Done",
+        "edit": "Edit",
+      },
+      "editor": {
+        "auth_reason": "Authenticate to add contact",
+        "auth_failed": "FaceID failed. Try again",
+        "phone_invalid": "Phone number is invalid",
+        "success": "Contact saved!",
+        "contact_errors": {
+          "error-emptyField": "To save, name your contact.",
+          "error-lastName": "To save, add a last name.",
+        },
+        "primary_button": {
+          "save": "Save",
+          "add": "Add Contact",
+        },
+        "cancel": "Cancel",
+      },
+      "action_sheet": {
+        "auth_reason": "Authenticate to remove contact",
+        "auth_unavailable": "Unable to authenticate. Try again",
+        "edit": "Edit Info",
+        "remove": "Remove",
+        "cancel": "Cancel"
+      }
     },
     "capture": {
       "hint": [

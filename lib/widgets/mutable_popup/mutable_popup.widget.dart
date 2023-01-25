@@ -122,6 +122,7 @@ class _MutablePopupState extends State<MutablePopup> {
             : null,
         child: GestureDetector(
           onTap: () {
+            if (!widget.backdropTapClose) return;
             controller.close();
           },
           child: Container(
@@ -136,14 +137,21 @@ class _MutablePopupState extends State<MutablePopup> {
                       : null
                   : null,
               child: GestureDetector(
-                onTap: () {},
-                child: widget.type == PopupType.pannel
-                    ? widget.body
-                    : NonPannelBody(
-                        size: size,
-                        style: style,
-                        body: widget.body,
-                      ),
+                onTap: () {
+                  widget.onFreezeInteraction?.call();
+                },
+                child: Container(
+                  color: widget.type == PopupType.input
+                      ? null
+                      : Colors.transparent,
+                  child: widget.type == PopupType.pannel
+                      ? widget.body
+                      : NonPannelBody(
+                          size: size,
+                          style: style,
+                          body: widget.body,
+                        ),
+                ),
               ),
             ),
           ),

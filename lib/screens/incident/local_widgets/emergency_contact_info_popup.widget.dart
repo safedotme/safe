@@ -41,6 +41,7 @@ class _EmergencyContactInfoPopupState extends State<EmergencyContactInfoPopup> {
               ),
               SizedBox(height: 22),
               ContactTimeline(core.state.incident.contacts),
+              SizedBox(height: 20),
             ],
           ),
         ),

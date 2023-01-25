@@ -74,7 +74,9 @@ class _MutableCountryCodeSelectorState extends State<MutableCountryCodeSelector>
       return;
     }
 
-    List<Map<String, String>> resp = core.utils.phone.searchCountry(query);
+    List<Map<String, String>> resp = core.utils.phone.searchCountryFromName(
+      query,
+    );
 
     if (resp.isEmpty) {
       setState(() {
@@ -137,20 +139,18 @@ class _MutableCountryCodeSelectorState extends State<MutableCountryCodeSelector>
                           value != 0 ? fetchListViewHeight() : double.infinity,
                       key: key,
                       child: result.isNotEmpty
-                          ? MutableScrollBar(
-                              child: ListView.separated(
-                                padding: EdgeInsets.symmetric(
-                                  vertical: 32,
-                                  horizontal: kSideScreenMargin,
-                                ),
-                                itemCount: result.length,
-                                separatorBuilder: (_, i) => MutableDivider(),
-                                itemBuilder: (_, i) => CountryCode(
-                                  result[i],
-                                  onTap: () {
-                                    handlePick(result[i]);
-                                  },
-                                ),
+                          ? ListView.separated(
+                              padding: EdgeInsets.symmetric(
+                                vertical: 32,
+                                horizontal: kSideScreenMargin,
+                              ),
+                              itemCount: result.length,
+                              separatorBuilder: (_, i) => MutableDivider(),
+                              itemBuilder: (_, i) => CountryCode(
+                                result[i],
+                                onTap: () {
+                                  handlePick(result[i]);
+                                },
                               ),
                             )
                           : CountryNotFound(),

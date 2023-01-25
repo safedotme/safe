@@ -25,6 +25,7 @@ class _SupportBlockState extends State<SupportBlock> {
     });
 
     core.state.preferences.scrollController.addListener(() {
+      if (!core.state.preferences.scrollController.hasClients) return;
       listenToPosition();
     });
   }

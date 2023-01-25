@@ -84,7 +84,8 @@ class _PlayerProgressIndicatorState extends State<PlayerProgressIndicator> {
                   core.state.incident.player!.play();
                 }
               },
-              child: SizedBox(
+              child: Container(
+                color: Colors.transparent,
                 width: 20,
                 height: 20,
                 child: !core.state.incident.isPlaying

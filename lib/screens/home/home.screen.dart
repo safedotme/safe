@@ -1,27 +1,27 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart' hide BoxShadow;
 import 'package:flutter/services.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:mobx/mobx.dart';
 import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
 import 'package:safe/models/contact/contact.model.dart';
-import 'package:safe/models/user/user.model.dart';
+import 'package:safe/screens/add_contact/local_widgets/import_contact_popup.widget.dart';
 import 'package:safe/screens/capture/capture.screen.dart';
+import 'package:safe/screens/contact/contact.screen.dart';
+import 'package:safe/screens/contact/local_widgets/contact_country_code_selector_controller.widget.dart';
+import 'package:safe/screens/contact_editor/contact_editor.screen.dart';
 import 'package:safe/screens/home/local_widgets/incident_limit_home_banner.widget.dart';
-import 'package:safe/screens/home/local_widgets/incident_recorded_home_banner.widget.dart';
+import 'package:safe/screens/home/local_widgets/event_home_banner.widget.dart.dart';
+import 'package:safe/screens/home/local_widgets/tutorial_banner.widget.dart';
 import 'package:safe/screens/incident/incident.screen.dart';
 import 'package:safe/screens/incident_log/incident_log.screen.dart';
 import 'package:safe/screens/play/play.screen.dart';
 import 'package:safe/screens/settings/settings.screen.dart';
 import 'package:safe/screens/tutorial/tutorial.screen.dart';
-import 'package:safe/services/media_server/media_server.service.dart';
 import 'package:safe/utils/constants/constants.util.dart';
 import 'package:safe/utils/credit/credit.util.dart';
 import 'package:safe/widgets/mutable_action_banner/mutable_action_banner.widget.dart';
-import 'package:safe/widgets/mutable_banner/mutable_banner.widget.dart';
-import 'package:safe/widgets/mutable_overlay/mutable_overlay.widget.dart';
+import 'package:safe/widgets/mutable_confetti_overlay/mutable_confetti_overlay.widget.dart';
 import 'package:safe/widgets/mutable_safe_button/mutable_safe_button.widget.dart';
 import 'package:safe/widgets/mutable_scaffold/mutable_scaffold.widget.dart';
 import 'package:safe/widgets/mutable_text/mutable_text.widget.dart';
@@ -37,6 +37,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   late Core core;
   late MediaQueryData queryData;
+  int userRetries = kUserServerLoadRetries;
 
   @override
   void initState() {
@@ -58,8 +59,8 @@ class _HomeScreenState extends State<HomeScreen> {
     stream.listen(
       (event) {
         WidgetsBinding.instance.addPostFrameCallback((_) async {
-          await core.utils.credit.obtainState(core, contacts: event.length);
           core.state.contact.setContacts(event);
+          await core.utils.credit.obtainState(core);
         });
       },
     );
@@ -80,10 +81,25 @@ class _HomeScreenState extends State<HomeScreen> {
     await core.utils.credit.obtainState(core);
   }
 
-  void userSubscribe() {
-    Stream<User?> stream = core.services.server.user.readFromId(
-      id: core.services.auth.currentUser!.uid,
+  void userSubscribe() async {
+    final uid = core.services.auth.currentUser!.uid;
+
+    final exists = await core.services.server.user.userExists(uid);
+
+    if (!exists) {
+      if (userRetries == 0) return;
+      await Future.delayed(Duration(seconds: 1));
+      userSubscribe();
+      userRetries--;
+
+      return;
+    }
+
+    final stream = core.services.server.user.readFromId(
+      id: uid,
     );
+
+    userRetries = kUserServerLoadRetries;
 
     stream.listen((event) {
       WidgetsBinding.instance.addPostFrameCallback((_) async {
@@ -132,6 +148,10 @@ class _HomeScreenState extends State<HomeScreen> {
     return MutableScaffold(
       overlays: [
         SettingsScreen(),
+        ContactScreen(),
+        ContactEditorScreen(),
+        ImportContactPopup(),
+        ContactCountryCodeSelector(),
         CaptureScreen(),
         TutorialScreen(),
         IncidentScreen(),
@@ -139,6 +159,7 @@ class _HomeScreenState extends State<HomeScreen> {
         MutableActionBanner(
           controller: core.state.preferences.actionController,
         ),
+        MutableConfettiOverlay(),
       ],
       underlays: [
         Padding(
@@ -156,9 +177,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: MutableText(
                   core.utils.language
                           .langMap[core.state.preferences.language]!["home"][
-                      core.state.capture.limErrState != null
-                          ? "header_disabled"
-                          : "header"],
+                      core.state.capture.limErrState == null
+                          ? "header"
+                          : "header_disabled"],
                   style: TypeStyle.h2,
                 ),
               ),
@@ -198,7 +219,14 @@ class _HomeScreenState extends State<HomeScreen> {
                       return;
                     }
 
-                    core.utils.capture.start();
+                    if (core.state.preferences.isFirstTime) {
+                      core.utils.capture.tutorial();
+                      core.state.preferences.setIsFirstTime(false);
+                      core.state.preferences.tutorialBannerController.close();
+                    } else {
+                      core.utils.capture.start();
+                    }
+
                     core.state.capture.controller.open();
                   },
                 ),
@@ -212,7 +240,11 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         Align(
           alignment: Alignment.bottomCenter,
-          child: IncidentRecordedHomeBanner(),
+          child: EventHomeBanner(),
+        ),
+        Align(
+          alignment: Alignment.bottomCenter,
+          child: TutorialBanner(),
         ),
       ],
       body: IncidentLog(),

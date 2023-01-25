@@ -11,6 +11,7 @@ import 'package:safe/widgets/mutable_icon/local_widgets/checkmark.icon.dart';
 import 'package:safe/widgets/mutable_icon/local_widgets/cloud.icon.dart';
 import 'package:safe/widgets/mutable_icon/local_widgets/compass.icon.dart';
 import 'package:safe/widgets/mutable_icon/local_widgets/doc.icon.dart';
+import 'package:safe/widgets/mutable_icon/local_widgets/face_id.icon.dart';
 import 'package:safe/widgets/mutable_icon/local_widgets/film.icon.dart';
 import 'package:safe/widgets/mutable_icon/local_widgets/flashlight.icon.dart';
 import 'package:safe/widgets/mutable_icon/local_widgets/forward.widget.dart';
@@ -26,10 +27,12 @@ import 'package:safe/widgets/mutable_icon/local_widgets/map.icon.dart';
 import 'package:safe/widgets/mutable_icon/local_widgets/menu.icon.dart';
 import 'package:safe/widgets/mutable_icon/local_widgets/next.icon.dart';
 import 'package:safe/widgets/mutable_icon/local_widgets/next_borderless.icon.dart';
+import 'package:safe/widgets/mutable_icon/local_widgets/options.widget.dart';
 import 'package:safe/widgets/mutable_icon/local_widgets/pause.icon.dart';
 import 'package:safe/widgets/mutable_icon/local_widgets/phone.icon.dart';
 import 'package:safe/widgets/mutable_icon/local_widgets/play.icon.dart';
 import 'package:safe/widgets/mutable_icon/local_widgets/play_large.icon.dart';
+import 'package:safe/widgets/mutable_icon/local_widgets/plus.icon.dart';
 import 'package:safe/widgets/mutable_icon/local_widgets/profile.icon.dart';
 import 'package:safe/widgets/mutable_icon/local_widgets/safe.icon.dart';
 import 'package:safe/widgets/mutable_icon/local_widgets/share.icon.dart';
@@ -45,6 +48,7 @@ enum MutableIcons {
   camera,
   film,
   compass,
+  faceID,
   map,
   battery,
   checkmark,
@@ -66,7 +70,9 @@ enum MutableIcons {
   calendar,
   cloud,
   stopRecording,
+  options,
   key,
+  plus,
   safe,
   link,
   hammer,
@@ -87,10 +93,12 @@ class IconUtil {
       MutableIcons.profile: (c) => ProfileIcon(c),
       MutableIcons.playLarge: (c) => PlayLargeIcon(c),
       MutableIcons.safe: (c) => SafeIcon(c),
+      MutableIcons.faceID: (c) => FaceIDIcon(c),
       MutableIcons.heart: (c) => HeartIcon(c),
       MutableIcons.lockCloud: (c) => LockCloudIcon(c),
       MutableIcons.doc: (c) => DocIcon(c),
       MutableIcons.hammer: (c) => HammerIcon(c),
+      MutableIcons.plus: (c) => PlusIcon(c),
       MutableIcons.info: (c) => InfoIcon(c),
       MutableIcons.shield: (c) => ShieldIcon(c),
       MutableIcons.compass: (c) => CompassIcon(c),
@@ -102,6 +110,7 @@ class IconUtil {
       MutableIcons.location: (c) => LocationIcon(c),
       MutableIcons.cloud: (c) => CloudIcon(c),
       MutableIcons.checkmark: (c) => CheckmarkIcon(c),
+      MutableIcons.options: (c) => OptionsIcon(c),
       MutableIcons.share: (c) => ShareIcon(c),
       MutableIcons.key: (c) => KeyIcon(c),
       MutableIcons.gear: (c) => GearIcon(c),

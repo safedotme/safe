@@ -25,6 +25,22 @@ mixin _$AuthStore on _AuthStore, Store {
     });
   }
 
+  late final _$actionControllerAtom =
+      Atom(name: '_AuthStore.actionController', context: context);
+
+  @override
+  ActionBannerController get actionController {
+    _$actionControllerAtom.reportRead();
+    return super.actionController;
+  }
+
+  @override
+  set actionController(ActionBannerController value) {
+    _$actionControllerAtom.reportWrite(value, super.actionController, () {
+      super.actionController = value;
+    });
+  }
+
   late final _$bannerControllerAtom =
       Atom(name: '_AuthStore.bannerController', context: context);
 
@@ -658,6 +674,7 @@ mixin _$AuthStore on _AuthStore, Store {
   String toString() {
     return '''
 authType: ${authType},
+actionController: ${actionController},
 bannerController: ${bannerController},
 bannerState: ${bannerState},
 bannerTitle: ${bannerTitle},

@@ -29,8 +29,14 @@ class _NavigationButtonsState extends State<NavigationButtons> {
                     .langMap[core.state.preferences.language]!["incident_log"]
                 ["contacts_button"],
             onTap: () {
-              //TODO: Implement contact popup
-              print("open contacts popup");
+              final contacts = core.state.contact.contacts;
+
+              if (contacts == null || contacts.isEmpty) {
+                core.state.contact.importContactPopupController.open();
+                return;
+              }
+
+              core.state.contact.controller.open();
             },
           ),
           SizedBox(height: 10),

@@ -13,6 +13,7 @@ class Incident {
   final Stream stream;
   final bool streamAvailable;
   final bool processedFootage;
+  final bool isTutorial;
   final DateTime? stopTime;
   final DateTime datetime;
   final String? path;
@@ -31,6 +32,7 @@ class Incident {
     required this.pubID,
     required this.datetime,
     this.processedFootage = false,
+    this.isTutorial = false,
     this.thumbnail,
     this.streamAvailable = false,
     this.stopTime,
@@ -56,6 +58,7 @@ class Incident {
       id: json["id"],
       userId: json['user_id'],
       name: json["name"],
+      isTutorial: json["is_tutorial"],
       processedFootage: json["processed_footage"],
       stream: Stream.fromJson(json["stream"]),
       pubID: json["pub_id"],
@@ -87,6 +90,7 @@ class Incident {
     String? pubID,
     List<NotifiedContact>? contactLog,
     List<Battery>? battery,
+    bool? isTutorial,
     DateTime? stopTime,
   }) {
     return Incident(
@@ -101,6 +105,7 @@ class Incident {
       stream: stream ?? this.stream,
       stopTime: stopTime ?? this.stopTime,
       path: path ?? this.path,
+      isTutorial: isTutorial ?? this.isTutorial,
       datetime: datetime ?? this.datetime,
       location: location ?? this.location,
       contactLog: contactLog ?? this.contactLog,
@@ -112,6 +117,7 @@ class Incident {
         "id": id,
         "user_id": userId,
         "name": name,
+        "is_tutorial": isTutorial,
         "processed_footage": processedFootage,
         "stream_available": streamAvailable,
         "thumbnail": thumbnail,

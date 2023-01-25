@@ -33,6 +33,10 @@ class _PlayScreenState extends State<PlayScreen> with TickerProviderStateMixin {
       [DeviceOrientation.landscapeRight],
     );
 
+    await SystemChrome.setEnabledSystemUIMode(
+      SystemUiMode.immersiveSticky,
+    );
+
     await Future.delayed(kRotationDuration);
 
     // ⬇️ Animate In
@@ -82,6 +86,10 @@ class _PlayScreenState extends State<PlayScreen> with TickerProviderStateMixin {
     // Always call last (for animation purposes)
     await SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp],
+    );
+
+    SystemChrome.setEnabledSystemUIMode(
+      SystemUiMode.edgeToEdge,
     );
 
     await Future.delayed(kRotationDuration);

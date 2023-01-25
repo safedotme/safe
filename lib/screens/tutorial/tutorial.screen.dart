@@ -294,23 +294,15 @@ class _TutorialScreenState extends State<TutorialScreen> {
                     borderRadius: 15,
                     animateBeforeVoidCallback: true,
                     onTap: () async {
-                      // Log
-                      core.services.analytics.log(AnalyticsLog(
-                        channel: "user-register",
-                        event: "tutorial-finished",
-                        description: "User has finished their tutorial.",
-                        icon: "📘",
-                        tags: {
-                          "userid": core.services.auth.currentUser!.uid,
-                          "datetime": DateTime.now().toIso8601String(),
-                        },
-                      ));
+                      // Opens Incident Log for user to not see contact error
+                      await core.state.incidentLog.controller.open();
 
                       // Close tutorial
                       await core.state.auth.tutorialController.close();
                       core.state.auth.setIsTutorialOpen(false);
+                      core.state.preferences.setIsFirstTime(true);
 
-                      // TODO: Implement with contact flow
+                      core.state.contact.importContactPopupController.open();
                     },
                     text: core.utils.language.langMap[
                         core.state.preferences.language]!["tutorial"]["button"],

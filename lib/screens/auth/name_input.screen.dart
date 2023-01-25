@@ -54,7 +54,9 @@ class _NameInputScreenState extends State<NameInputScreen>
 
     core = Provider.of<Core>(context, listen: false);
 
-    hintName = generateRandomName();
+    hintName =
+        core.utils.language.langMap[core.state.preferences.language]!["auth"]
+            ["name_input"]["hintName"];
 
     // Sync forward & reverse functionality with banner
     core.state.auth.setOnBannerForward(() {
@@ -79,32 +81,19 @@ class _NameInputScreenState extends State<NameInputScreen>
     bool error = false;
 
     // Check if there is a name
-    if (core.state.auth.name.isEmpty) {
+    final res = core.utils.name.validateName(core.state.auth.name);
+
+    if (res["error"]) {
       error = true;
 
       core.state.auth.setBannerState(MessageType.error);
       core.state.auth.setBannerTitle(
         core.utils.language.langMap[core.state.preferences.language]!["auth"]
-            ["name_input"]["error-emptyField/title"],
+            ["name_input"]["${res["reason"]}/title"],
       );
       core.state.auth.setBannerMessage(
         core.utils.language.langMap[core.state.preferences.language]!["auth"]
-            ["name_input"]["error-emptyField/desc"],
-      );
-      core.state.auth.bannerController.show();
-    }
-
-    // Checks if there is a last name
-    if (!core.state.auth.name.contains(" ") && !error) {
-      error = true;
-      core.state.auth.setBannerState(MessageType.error);
-      core.state.auth.setBannerTitle(
-        core.utils.language.langMap[core.state.preferences.language]!["auth"]
-            ["name_input"]["error-lastName/title"],
-      );
-      core.state.auth.setBannerMessage(
-        core.utils.language.langMap[core.state.preferences.language]!["auth"]
-            ["name_input"]["error-lastName/desc"],
+            ["name_input"]["${res["reason"]}/desc"],
       );
       core.state.auth.bannerController.show();
     }
@@ -159,14 +148,6 @@ class _NameInputScreenState extends State<NameInputScreen>
     core.state.auth.setName(capitalized);
   }
 
-  String generateRandomName() {
-    List<String> names =
-        core.utils.language.langMap[core.state.preferences.language]!["auth"]
-            ["name_input"]["hintNames"];
-
-    return names[Random().nextInt(names.length)];
-  }
-
   @override
   Widget build(BuildContext context) {
     queryData = MediaQuery.of(context);
@@ -192,6 +173,7 @@ class _NameInputScreenState extends State<NameInputScreen>
       body: Observer(
         builder: (_) => MutableInputPanel(
           body: MutableTextField(
+            hints: [AutofillHints.name],
             controller: fieldController,
             leadingRight: MutableSubmitTextFieldButton(submit),
             type: TextInputType.name,

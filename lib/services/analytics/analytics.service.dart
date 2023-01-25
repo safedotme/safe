@@ -22,20 +22,27 @@ class AnalyticsService {
     ErrorLogType.geocoderFailed: "geocoder-failed",
   };
 
-  Future<void> log(AnalyticsLog log) => _request(log.toMap(), "log");
-
-  Future<void> insight(AnalyticsInsight insight) =>
-      _request(insight.toMap(), "insight");
-
-  Future<Response> _request(Map body, String type) async {
+  Future<Response> log(AnalyticsLog log) {
     var env = dotenv.env;
     return post(
-      Uri.parse(endpoint + type),
+      Uri.parse("${endpoint}log"),
       headers: {
         "Authorization": "Bearer ${env["LOG_SNAG_TOKEN"]}",
         "Content-Type": "application/json",
       },
-      body: jsonEncode(body),
+      body: jsonEncode(log.toMap()),
+    );
+  }
+
+  Future<Response> insight(AnalyticsInsight insight) async {
+    var env = dotenv.env;
+    return patch(
+      Uri.parse("${endpoint}insight"),
+      headers: {
+        "Authorization": "Bearer ${env["LOG_SNAG_TOKEN"]}",
+        "Content-Type": "application/json",
+      },
+      body: jsonEncode(insight.toMap()),
     );
   }
 }
