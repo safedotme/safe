@@ -45,7 +45,7 @@ class EmergencyMessages {
 
     if (shouldAddLocation) {
       lString =
-          "\n{NAME_POSESSIVE} last recorded location was {ADDRESS}{COORDINATES}.\n";
+          "\n{NAME_POSESSIVE} last recorded location was {ADDRESS} {COORDINATES}.\n";
 
       lString = say
           ? lString.replaceAll("{COORDINATES}", "")
