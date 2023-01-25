@@ -1,7 +1,6 @@
-// UPDATE BEFORE LAUNCH
 final Uri kRequestCountryUrl = Uri.parse(
-  "https://joinsafe.me",
-); // TODO: CHANGE ME
+  "https://sprw.io/stt-5GCMwNFtPhnnpgEBpQDmAF",
+);
 final Uri kSecurityInfoUrl = Uri.parse("https://docs.joinsafe.me/security");
 final Uri kMarkMusicTwitter = Uri.parse("https://twitter.com/markmusic27");
 final Uri kLivestreamQualityInfo = Uri.parse(
@@ -20,4 +19,6 @@ final Uri kPrivacyPolicy = Uri.parse("https://docs.joinsafe.me/privacy");
 final Uri kMediaKit = Uri.parse("https://docs.joinsafe.me/media-kit");
 final Uri kCollaborators = Uri.parse("https://docs.joinsafe.me/collaborators");
 final Uri kHelpCenter = Uri.parse("https://docs.joinsafe.me");
-final Uri kGiveFeedback = Uri.parse("https://joinsafe.me/feedback");
+final Uri kGiveFeedback = Uri.parse(
+  "https://sprw.io/stt-jZ5Gtv3tBmNhWYwWMtEkd7",
+);
