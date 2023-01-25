@@ -47,12 +47,12 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    SvgPicture.asset(
-                      "assets/svgs/button.svg",
-                      height: 55,
-                      width: 55,
+                    Image.asset(
+                      "assets/images/welcome_button.png",
+                      height: 52,
+                      width: 52,
                     ),
-                    SizedBox(width: 10),
+                    SizedBox(width: 8),
                     MutableText(
                       "Safe",
                       size: 34,

@@ -79,9 +79,7 @@ flutter:
 
   assets:
     - .env
-    - assets/svgs/logo.svg
     - assets/animations/bubbles.riv
-    - assets/svgs/button.svg
     - assets/images/
     - assets/images/welcome/
     - assets/map/style_labeled.txt
