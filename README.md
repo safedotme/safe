@@ -3,7 +3,7 @@
     
   </a>
   <p align="center">
-   <img width="125" height="125" src="https://github.com/safedotme/.github/blob/main/profile/logo.png?raw=true" alt="Logo">
+   <img width="125" height="125" src="https://i.ibb.co/8c5VDRr/thumbnail.png" alt="Logo">
   </p>
   <h1 align="center"><b>Safe</b></h1>
   <p align="center">
@@ -103,4 +103,4 @@ Have a question regarding any of these topics? Reach out to me at [mark@joinsafe
 
 |Contributor|Commits| Tags |
 |-----|-----|-----|
-|**[@markmusic27](https://twitter.com/markmusic27)**|300|Creator, Lead Maintainer|
+|**[@markmusic27](https://twitter.com/markmusic27)**|620|Creator, Lead Maintainer|
