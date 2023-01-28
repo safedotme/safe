@@ -1,0 +1,69 @@
+name: safe
+description: A powerful tool for personal and community safety.
+
+publish_to: "none"
+
+version: 1.0.0+1
+
+environment:
+  sdk: ">=2.17.5 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  http: ^0.13.4
+  mobx: ^2.0.7+4
+  flutter_mobx: ^2.0.6+1
+  flutter_dotenv: ^5.0.2
+  cloud_firestore: ^4.2.0
+  firebase_core: ^2.4.0
+  go_router: ^6.0.1
+  provider: ^6.0.3
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  build_runner:
+  mobx_codegen: ^2.0.7
+  flutter_lints: ^2.0.0
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/.env
+    - ../assets/animations/bubbles.riv
+    - ../assets/images/
+    - ../assets/images/welcome/
+    - ../assets/map/style_labeled.txt
+    - ../assets/map/style_unlabeled.txt
+
+  fonts:
+    # SF Pro Rounded
+    - family: RoundedBlack
+      fonts:
+        - asset: assets/fonts/rounded/SF-Pro-Rounded-Black.ttf
+    - family: RoundedBold
+      fonts:
+        - asset: assets/fonts/rounded/SF-Pro-Rounded-Bold.ttf
+    - family: RoundedHeavy
+      fonts:
+        - asset: assets/fonts/rounded/SF-Pro-Rounded-Heavy.ttf
+    - family: RoundedLight
+      fonts:
+        - asset: assets/fonts/rounded/SF-Pro-Rounded-Light.ttf
+    - family: RoundedRegular
+      fonts:
+        - asset: assets/fonts/rounded/SF-Pro-Rounded-Regular.ttf
+    - family: RoundedSemibold
+      fonts:
+        - asset: assets/fonts/rounded/SF-Pro-Rounded-Semibold.ttf
+    - family: RoundedThin
+      fonts:
+        - asset: assets/fonts/rounded/SF-Pro-Rounded-Thin.ttf
+    - family: RoundedUltralight
+      fonts:
+        - asset: assets/fonts/rounded/SF-Pro-Rounded-Ultralight.ttf
+    - family: RoundedMedium
+      fonts:
+        - asset: assets/fonts/rounded/SF-Pro-Rounded-Medium.ttf
