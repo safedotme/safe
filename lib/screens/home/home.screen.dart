@@ -18,6 +18,7 @@ import 'package:safe/screens/incident_log/incident_log.screen.dart';
 import 'package:safe/screens/play/play.screen.dart';
 import 'package:safe/screens/settings/settings.screen.dart';
 import 'package:safe/screens/tutorial/tutorial.screen.dart';
+import 'package:safe/services/analytics/helper_classes/analytics_insight.model.dart';
 import 'package:safe/utils/constants/constants.util.dart';
 import 'package:safe/utils/credit/credit.util.dart';
 import 'package:safe/widgets/mutable_action_banner/mutable_action_banner.widget.dart';
