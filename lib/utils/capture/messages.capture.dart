@@ -1,12 +1,5 @@
-import 'package:safe/models/incident/incident.model.dart';
 import 'package:safe/models/incident/location.model.dart';
-
-enum MessageType {
-  start,
-  batteryCrit,
-  voice,
-  end,
-}
+import 'package:safe/models/incident/notified_contact.model.dart';
 
 class EmergencyMessages {
   static const Map<MessageType, String> messageMap = {
@@ -56,32 +49,6 @@ class EmergencyMessages {
     }
 
     return base.replaceAll(key, lString);
-  }
-
-  static MessageType parseType(String type) {
-    String gen = "";
-    bool record = false;
-
-    for (int i = 0; i < type.length; i++) {
-      if (record) {
-        gen += type[i];
-      }
-
-      if (type[i] == ".") {
-        record = true;
-      }
-    }
-
-    switch (gen) {
-      case "start":
-        return MessageType.start;
-      case "batteryCrit":
-        return MessageType.batteryCrit;
-      case "end":
-        return MessageType.end;
-      default:
-        return MessageType.start;
-    }
   }
 
   static const String contactPhoneTemplateStart = """

@@ -206,13 +206,13 @@ mixin _$PreferencesStore on _PreferencesStore, Store {
       name: '_PreferencesStore.aboutContextMenuController', context: context);
 
   @override
-  ContextMenuController get aboutContextMenuController {
+  custom.ContextMenuController get aboutContextMenuController {
     _$aboutContextMenuControllerAtom.reportRead();
     return super.aboutContextMenuController;
   }
 
   @override
-  set aboutContextMenuController(ContextMenuController value) {
+  set aboutContextMenuController(custom.ContextMenuController value) {
     _$aboutContextMenuControllerAtom
         .reportWrite(value, super.aboutContextMenuController, () {
       super.aboutContextMenuController = value;

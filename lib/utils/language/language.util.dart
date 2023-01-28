@@ -1,6 +1,5 @@
-import 'package:mobx/mobx.dart';
+import 'package:safe/models/incident/notified_contact.model.dart';
 import 'package:safe/services/analytics/analytics.service.dart';
-import 'package:safe/utils/capture/messages.capture.dart';
 import 'package:safe/utils/credit/credit.util.dart';
 import 'package:safe/widgets/mutable_permission_card/mutable_permission_card.widget.dart';
 

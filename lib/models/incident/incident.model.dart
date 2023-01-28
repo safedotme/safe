@@ -42,6 +42,32 @@ class Incident {
     this.path,
   });
 
+  static MessageType parseType(String type) {
+    String gen = "";
+    bool record = false;
+
+    for (int i = 0; i < type.length; i++) {
+      if (record) {
+        gen += type[i];
+      }
+
+      if (type[i] == ".") {
+        record = true;
+      }
+    }
+
+    switch (gen) {
+      case "start":
+        return MessageType.start;
+      case "batteryCrit":
+        return MessageType.batteryCrit;
+      case "end":
+        return MessageType.end;
+      default:
+        return MessageType.start;
+    }
+  }
+
   factory Incident.fromJson(Map<String, dynamic> json) {
     List<Map<String, dynamic>>? _location = json["location"] == null
         ? null
