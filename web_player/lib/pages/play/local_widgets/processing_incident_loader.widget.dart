@@ -60,6 +60,17 @@ class _ProcessingIncidentLoaderState extends State<ProcessingIncidentLoader>
   }
 
   @override
+  void dispose() {
+    if (controller.isAnimating) {
+      controller.stop();
+    }
+
+    controller.dispose();
+
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Observer(
       builder: (_) {
@@ -73,7 +84,7 @@ class _ProcessingIncidentLoaderState extends State<ProcessingIncidentLoader>
               type: MessageType.success,
               header: "Processing Incident",
               description:
-                  "We're loading a stream of the incident to your device. This shouldn't take more than a minute.\n\n⚠ NOTE: Emergency services (ie, 911) have not been notified.",
+                  "We're loading a stream of the incident to your device. This shouldn't take more than a minute.\n\n⚠NOTE: Emergency services (ie, 911) have not been notified.",
             ),
           ),
         );
