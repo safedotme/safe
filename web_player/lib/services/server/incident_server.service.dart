@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:safe/models/incident/incident.model.dart';
 
 class IncidentServer {
   final FirebaseFirestore _db;
@@ -7,13 +8,11 @@ class IncidentServer {
   IncidentServer(this._db);
 
   // -> READ
-  void read(String pubId) async {
-    final query = _db.collection(path).where("id", isEqualTo: pubId);
-
-    try {
-      final val = await query.get();
-    } on FirebaseException catch (e) {
-      print(e);
-    }
+  Stream<Incident> read(String id) {
+    return _db.collection(path).doc(id).snapshots().map(
+          (doc) => Incident.fromJson(
+            doc.data()!,
+          ),
+        );
   }
 }

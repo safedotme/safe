@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
 import 'package:safe/widgets/mutable_page/mutable_page.widget.dart';
@@ -14,6 +15,7 @@ class PlayPage extends StatefulWidget {
   State<PlayPage> createState() => _PlayPageState();
 }
 
+// http://localhost:52667/454cdfb0-9fe0-11ed-a8ef-eb8979f70835
 class _PlayPageState extends State<PlayPage> {
   late Core core;
 
@@ -22,6 +24,10 @@ class _PlayPageState extends State<PlayPage> {
     super.initState();
     core = Provider.of<Core>(context, listen: false);
 
+    if (widget.incidentId == null || widget.incidentId!.isEmpty) {
+      return;
+    }
+
     initServer();
     subscribe();
   }
@@ -29,10 +35,17 @@ class _PlayPageState extends State<PlayPage> {
   void initServer() => core.services.server.init();
 
   void subscribe() {
-    //4fc6c55596cb441eba254d8df9c19f32 TODO: Remove
-
     final stream = core.services.server.incidents.read(
-      "4fc6c55596cb441eba254d8df9c19f32",
+      widget.incidentId!,
+    );
+
+    stream.listen(
+      (incident) {
+        print(incident);
+      },
+      onError: (e) {
+        context.go("/");
+      },
     );
   }
 
