@@ -25,6 +25,21 @@ mixin _$PlayStore on _PlayStore, Store {
     });
   }
 
+  late final _$loadingAtom = Atom(name: '_PlayStore.loading', context: context);
+
+  @override
+  bool get loading {
+    _$loadingAtom.reportRead();
+    return super.loading;
+  }
+
+  @override
+  set loading(bool value) {
+    _$loadingAtom.reportWrite(value, super.loading, () {
+      super.loading = value;
+    });
+  }
+
   late final _$_PlayStoreActionController =
       ActionController(name: '_PlayStore', context: context);
 
@@ -40,9 +55,21 @@ mixin _$PlayStore on _PlayStore, Store {
   }
 
   @override
+  void setLoading(bool v) {
+    final _$actionInfo =
+        _$_PlayStoreActionController.startAction(name: '_PlayStore.setLoading');
+    try {
+      return super.setLoading(v);
+    } finally {
+      _$_PlayStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
-incident: ${incident}
+incident: ${incident},
+loading: ${loading}
     ''';
   }
 }

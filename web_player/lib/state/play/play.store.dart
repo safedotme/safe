@@ -11,4 +11,10 @@ abstract class _PlayStore with Store {
 
   @action
   void setIncident(Incident? i) => incident = i;
+
+  @observable
+  bool loading = true;
+
+  @action
+  void setLoading(bool v) => loading = v;
 }
