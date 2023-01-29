@@ -27,12 +27,11 @@ class MutableMessagePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final queryData = MediaQuery.of(context);
     return MutablePage(
       body: Padding(
         padding: EdgeInsets.fromLTRB(
           38,
-          queryData.size.height * 0.2,
+          80,
           38,
           0,
         ),

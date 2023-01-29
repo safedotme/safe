@@ -19,6 +19,8 @@ class IncidentUtil {
         return incidentTypeMap[t]!;
       }
     }
+
+    return null;
   }
 
   /// [parseType] expects a String formatted as "IncidentType..."

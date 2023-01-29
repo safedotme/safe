@@ -1,19 +1,6 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <!--
-    If you are serving your web app in a path other than the root, change the
-    href value below to reflect the base path you are serving from.
-
-    The path provided below has to start and end with a slash "/" in order for
-    it to work correctly.
-
-    For more details:
-    * https://developer.mozilla.org/en-US/docs/Web/HTML/Element/base
-
-    This is a placeholder for base href that will be replaced by the value of
-    the `--base-href` argument provided to `flutter build`.
-  -->
   <base href="$FLUTTER_BASE_HREF">
 
   <meta charset="UTF-8">
@@ -49,15 +36,19 @@
     }
 
     .indicator {
-      width: 200px;
+      width: 50vw;
     }
 
   </style>
 </head>
 <body bgcolor="#070508" style="overflow: hidden;">
+
+  <!-- Custom Loader -->
   <div class="loader">
     <img class="indicator" src="./assets/loader.gif" />
   </div>
+
+  <!-- Load Flutter Web -->
   <script>
     window.addEventListener('load', function(ev) {
       // Download main.dart.js
@@ -73,5 +64,25 @@
       });
     });
   </script>
+
+  <!-- Initialize Firebase -->
+  <script type="module">
+    // Import the functions you need from the SDKs you need
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.16.0/firebase-app.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyD7AYNQBmV6dYn33VKiADad8xKEbdLREuM",
+      authDomain: "safe-dev-2b409.firebaseapp.com",
+      projectId: "safe-dev-2b409",
+      storageBucket: "safe-dev-2b409.appspot.com",
+      messagingSenderId: "962398910362",
+      appId: "1:962398910362:web:03d5892ec8e25ddb85ec23",
+    };
+  
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+  </script>
+
+  
 </body>
 </html>

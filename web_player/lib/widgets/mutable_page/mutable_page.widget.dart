@@ -10,7 +10,7 @@ class MutablePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: kColorMap[MutableColor.neutral10],
-      body: body,
+      body: SelectionArea(child: body),
     );
   }
 }
