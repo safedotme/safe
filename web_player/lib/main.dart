@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
 import 'package:safe/pages/play/play.page.dart';
+import 'package:safe/widgets/mutable_message_page/mutable_message_page.widget.dart';
 import 'package:safe/widgets/mutable_page/mutable_page.widget.dart';
 import 'package:safe/widgets/mutable_text/mutable_text.widget.dart';
 
@@ -29,10 +30,12 @@ class Safe extends StatelessWidget {
         themeMode: ThemeMode.dark,
         theme: ThemeData.dark(),
         routerConfig: GoRouter(
-          errorBuilder: (ctx, state) => MutablePage(
-            body: Center(
-              child: MutableText("404"),
-            ),
+          errorBuilder: (ctx, state) => MutableMessagePage(
+            type: MessageType.warning,
+            loading: true,
+            header: "Error Loading Incident",
+            description:
+                "This incident does not exist. This is most likely due to ID next to the URL. Check the ID (live.joinsafe.me/{id}) is valid.",
           ),
           routes: [
             GoRoute(
