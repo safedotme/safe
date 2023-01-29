@@ -390,3 +390,5 @@ const double kSettingsComponentSpacing = 45;
 
 // WEB PLAYER
 const double kMessageBannerIconSize = 64;
+
+const Duration kProcessingDuration = Duration(seconds: 6);

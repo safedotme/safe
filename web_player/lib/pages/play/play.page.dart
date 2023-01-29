@@ -1,7 +1,12 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
+import 'package:safe/pages/play/local_widgets/processing_incident_loader.widget.dart';
+import 'package:safe/utils/constants/constants.util.dart';
+import 'package:safe/widgets/mutable_message_page/mutable_message_page.widget.dart';
 import 'package:safe/widgets/mutable_page/mutable_page.widget.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:safe/widgets/mutable_text/mutable_text.widget.dart';
@@ -46,11 +51,14 @@ class _PlayPageState extends State<PlayPage> {
 
     stream.listen(
       // Loads incident to state
-      (incident) {
-        core.state.play.setLoading(false);
+      (incident) async {
         core.state.play.setIncident(
           incident,
         );
+
+        await Future.delayed(kProcessingDuration);
+
+        core.state.play.setLoading(false);
       },
 
       // Sends user to completed or error screen
@@ -68,12 +76,19 @@ class _PlayPageState extends State<PlayPage> {
 
   @override
   Widget build(BuildContext context) {
-    return MutablePage(
-      body: Observer(
-        builder: (_) => Center(
-          child: MutableText(
-            core.state.play.loading ? "loading..." : widget.incidentId!,
-          ),
+    return Observer(
+      builder: (_) => MutablePage(
+        body: Stack(
+          children: [
+            Visibility(
+              visible:
+                  core.state.play.incident != null && !core.state.play.loading,
+              child: Container(
+                color: Colors.red,
+              ),
+            ),
+            ProcessingIncidentLoader(),
+          ],
         ),
       ),
     );

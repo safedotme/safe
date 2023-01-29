@@ -30,7 +30,7 @@ class MutableMessagePage extends StatelessWidget {
       body: Padding(
         padding: EdgeInsets.fromLTRB(
           38,
-          80,
+          190,
           38,
           0,
         ),
