@@ -40,6 +40,22 @@ mixin _$PlayStore on _PlayStore, Store {
     });
   }
 
+  late final _$isCompletedAtom =
+      Atom(name: '_PlayStore.isCompleted', context: context);
+
+  @override
+  bool get isCompleted {
+    _$isCompletedAtom.reportRead();
+    return super.isCompleted;
+  }
+
+  @override
+  set isCompleted(bool value) {
+    _$isCompletedAtom.reportWrite(value, super.isCompleted, () {
+      super.isCompleted = value;
+    });
+  }
+
   late final _$_PlayStoreActionController =
       ActionController(name: '_PlayStore', context: context);
 
@@ -66,10 +82,22 @@ mixin _$PlayStore on _PlayStore, Store {
   }
 
   @override
+  void setIsCompleted(bool v) {
+    final _$actionInfo = _$_PlayStoreActionController.startAction(
+        name: '_PlayStore.setIsCompleted');
+    try {
+      return super.setIsCompleted(v);
+    } finally {
+      _$_PlayStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 incident: ${incident},
-loading: ${loading}
+loading: ${loading},
+isCompleted: ${isCompleted}
     ''';
   }
 }

@@ -17,4 +17,10 @@ abstract class _PlayStore with Store {
 
   @action
   void setLoading(bool v) => loading = v;
+
+  @observable
+  bool isCompleted = false;
+
+  @action
+  void setIsCompleted(bool v) => isCompleted = v;
 }

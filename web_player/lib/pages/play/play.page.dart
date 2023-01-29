@@ -35,19 +35,32 @@ class _PlayPageState extends State<PlayPage> {
   void initServer() => core.services.server.init();
 
   void subscribe() {
+    // Resets values
     core.state.play.setLoading(true);
+    core.state.play.setIsCompleted(false);
+
+    // Creates stream query
     final stream = core.services.server.incidents.read(
       widget.incidentId!,
     );
 
     stream.listen(
+      // Loads incident to state
       (incident) {
         core.state.play.setLoading(false);
         core.state.play.setIncident(
           incident,
         );
       },
+
+      // Sends user to completed or error screen
       onError: (e) {
+        if (core.state.play.incident != null) {
+          core.state.play.setIsCompleted(true);
+        }
+
+        core.state.play.setLoading(true);
+        core.state.play.setIncident(null);
         context.go("/");
       },
     );
