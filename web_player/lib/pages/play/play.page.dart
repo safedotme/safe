@@ -1,15 +1,11 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
+import 'package:safe/pages/play/local_widgets/play_body.widget.dart';
 import 'package:safe/pages/play/local_widgets/processing_incident_loader.widget.dart';
-import 'package:safe/utils/constants/constants.util.dart';
-import 'package:safe/widgets/mutable_message_page/mutable_message_page.widget.dart';
 import 'package:safe/widgets/mutable_page/mutable_page.widget.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:safe/widgets/mutable_text/mutable_text.widget.dart';
 
 class PlayPage extends StatefulWidget {
   final String? incidentId;
@@ -20,7 +16,7 @@ class PlayPage extends StatefulWidget {
   State<PlayPage> createState() => _PlayPageState();
 }
 
-// http://localhost:52667/454cdfb0-9fe0-11ed-a8ef-eb8979f70835
+// http://localhost:52667/454cdfb0-9fe0-11ed-a8ef-eb8979f70835 TODO: DELETE
 class _PlayPageState extends State<PlayPage> {
   late Core core;
 
@@ -56,7 +52,7 @@ class _PlayPageState extends State<PlayPage> {
           incident,
         );
 
-        await Future.delayed(kProcessingDuration);
+        // await Future.delayed(kProcessingDuration); TODO: ADD BACK
 
         core.state.play.setLoading(false);
       },
@@ -83,9 +79,7 @@ class _PlayPageState extends State<PlayPage> {
             Visibility(
               visible:
                   core.state.play.incident != null && !core.state.play.loading,
-              child: Container(
-                color: Colors.red,
-              ),
+              child: PlayBody(),
             ),
             ProcessingIncidentLoader(),
           ],

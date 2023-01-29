@@ -130,3 +130,6 @@ app.*.symbols
 # Media Server
 media_server/serviceAccount.json
 media_server/keys.json
+
+# Web Player
+web_player/web/firebase.js
