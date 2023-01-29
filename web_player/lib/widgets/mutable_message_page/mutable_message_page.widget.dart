@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:safe/utils/constants/constants.util.dart';
 import 'package:safe/widgets/mutable_circular_progress_indicator.widget.dart/local_widgets/animated_circular_progress_indicator.widget.dart';
-import 'package:safe/widgets/mutable_circular_progress_indicator.widget.dart/mutable_circular_progress_indicator.widget.dart';
 import 'package:safe/widgets/mutable_message_icon/mutable_message_icon.widget.dart';
 import 'package:safe/widgets/mutable_page/mutable_page.widget.dart';
 import 'package:safe/widgets/mutable_text/mutable_text.widget.dart';

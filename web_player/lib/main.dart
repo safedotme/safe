@@ -1,7 +1,11 @@
+import 'package:firebase_app_check/firebase_app_check.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
+import 'package:safe/firebase_options.dart';
+import 'package:safe/keys.dart';
 import 'package:safe/pages/messages/incident_not_found.page.dart';
 import 'package:safe/pages/play/play.page.dart';
 import 'package:url_strategy/url_strategy.dart';
@@ -12,6 +16,14 @@ Future<void> main() async {
 
   // Removes # from URL base
   setPathUrlStrategy();
+
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  await FirebaseAppCheck.instance.activate(
+    webRecaptchaSiteKey: kRecaptchaSiteKey,
+  );
+
   runApp(Safe());
 }
 

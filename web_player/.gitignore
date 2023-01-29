@@ -45,3 +45,4 @@ app.*.map.json
 
 # Web Player
 /web/firebase.js
+/lib/keys.dart
