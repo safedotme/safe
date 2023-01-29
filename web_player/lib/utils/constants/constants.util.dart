@@ -387,3 +387,6 @@ const double kMapZoom = 16;
 
 // SETTINGS
 const double kSettingsComponentSpacing = 45;
+
+// WEB PLAYER
+const double kMessageBannerIconSize = 64;

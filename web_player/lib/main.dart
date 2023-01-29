@@ -5,14 +5,15 @@ import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
 import 'package:safe/pages/play/play.page.dart';
 import 'package:safe/widgets/mutable_message_page/mutable_message_page.widget.dart';
-import 'package:safe/widgets/mutable_page/mutable_page.widget.dart';
-import 'package:safe/widgets/mutable_text/mutable_text.widget.dart';
+import 'package:url_strategy/url_strategy.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load(fileName: ".env");
   Paint.enableDithering = true;
 
+  // Removes # from URL base
+  setPathUrlStrategy();
   runApp(Safe());
 }
 
@@ -30,13 +31,7 @@ class Safe extends StatelessWidget {
         themeMode: ThemeMode.dark,
         theme: ThemeData.dark(),
         routerConfig: GoRouter(
-          errorBuilder: (ctx, state) => MutableMessagePage(
-            type: MessageType.warning,
-            loading: true,
-            header: "Error Loading Incident",
-            description:
-                "This incident does not exist. This is most likely due to ID next to the URL. Check the ID (live.joinsafe.me/{id}) is valid.",
-          ),
+          errorBuilder: (ctx, state) => IncidentNotFoundPage(),
           routes: [
             GoRoute(
               path: "/:id",
@@ -45,6 +40,18 @@ class Safe extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+}
+
+class IncidentNotFoundPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MutableMessagePage(
+      type: MessageType.error,
+      header: "Error Loading Incident",
+      description:
+          "This incident does not exist. This is most likely due to ID next to the URL. Check the ID (live.joinsafe.me/#/{id}) is valid.",
     );
   }
 }

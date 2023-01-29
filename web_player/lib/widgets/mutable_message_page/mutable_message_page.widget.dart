@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:safe/utils/constants/constants.util.dart';
+import 'package:safe/widgets/mutable_circular_progress_indicator.widget.dart/local_widgets/animated_circular_progress_indicator.widget.dart';
 import 'package:safe/widgets/mutable_circular_progress_indicator.widget.dart/mutable_circular_progress_indicator.widget.dart';
+import 'package:safe/widgets/mutable_message_icon/mutable_message_icon.widget.dart';
 import 'package:safe/widgets/mutable_page/mutable_page.widget.dart';
 import 'package:safe/widgets/mutable_text/mutable_text.widget.dart';
 
@@ -34,76 +36,44 @@ class MutableMessagePage extends StatelessWidget {
           38,
           0,
         ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            AnimatedCircularProgressIndicator(),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class AnimatedCircularProgressIndicator extends StatefulWidget {
-  @override
-  State<AnimatedCircularProgressIndicator> createState() =>
-      _AnimatedCircularProgressIndicatorState();
-}
-
-class _AnimatedCircularProgressIndicatorState
-    extends State<AnimatedCircularProgressIndicator>
-    with TickerProviderStateMixin {
-  late AnimationController controller;
-  late Animation animation;
-
-  @override
-  void initState() {
-    animate();
-    super.initState();
-  }
-
-  void animate() {
-    controller = AnimationController(
-      vsync: this,
-      duration: Duration(milliseconds: 700),
-    );
-
-    animation = Tween<double>(begin: 0.0, end: 1.0).animate(
-      CurvedAnimation(
-        parent: controller,
-        curve: Curves.ease,
-      ),
-    );
-
-    controller.addListener(() {
-      setState(() {});
-    });
-
-    controller.repeat();
-  }
-
-  @override
-  void dispose() {
-    if (controller.isAnimating) {
-      controller.stop();
-    }
-    controller.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      height: 64,
-      width: 64,
-      child: CustomPaint(
-        painter: MutableCircularProgressIndicator(
-          frontColor: Colors.white,
-          backColor: kColorMap[MutableColor.neutral7]!,
-          strokeWidth: 10,
-          value: animation.value,
+        child: Center(
+          child: ConstrainedBox(
+            constraints: BoxConstraints(
+              maxWidth: 375,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Visibility(
+                  visible: loading,
+                  child: Center(
+                    child: AnimatedCircularProgressIndicator(),
+                  ),
+                ),
+                Visibility(
+                  visible: !loading,
+                  child: Center(
+                    child: MutableMessageIcon(type),
+                  ),
+                ),
+                SizedBox(height: 25),
+                MutableText(
+                  header,
+                  align: TextAlign.center,
+                  size: 20,
+                  weight: TypeWeight.heavy,
+                ),
+                SizedBox(height: 16),
+                MutableText(
+                  description,
+                  align: TextAlign.center,
+                  size: 14,
+                  color: MutableColor.neutral2,
+                ),
+              ],
+            ),
+          ),
         ),
       ),
     );
