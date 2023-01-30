@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
+import 'package:safe/pages/play/local_widgets/video_player.widget.dart';
 import 'package:safe/utils/constants/constants.util.dart';
 
 class StreamView extends StatefulWidget {
@@ -101,9 +102,7 @@ class _StreamViewState extends State<StreamView> with TickerProviderStateMixin {
               },
               child: AspectRatio(
                 aspectRatio: 720 / 1080,
-                child: Container(
-                  color: Colors.blue,
-                ),
+                child: VideoPlayer(),
               ),
             ),
           ),
