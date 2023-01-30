@@ -53,6 +53,21 @@ class _IncidentDataBoxState extends State<IncidentDataBox> {
     return "${mins < 10 ? "0$mins" : mins}:${secs < 10 ? "0$secs" : secs} - $date ($timezone)";
   }
 
+  String generateAddress(Incident i) {
+    String base = "";
+
+    if (i.location == null) return base;
+    if (i.location!.isEmpty) return base;
+    if (i.location![0].address == null) return base;
+
+    String address =
+        core.utils.geocoder.removeTag(i.location![0].address!) ?? "";
+
+    base = address.substring(0, address.indexOf(","));
+
+    return base;
+  }
+
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -64,21 +79,26 @@ class _IncidentDataBoxState extends State<IncidentDataBox> {
         children: [
           LivePill(),
           Spacer(),
-          Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              MutableText(
-                "One Apple Park Way",
-                weight: TypeWeight.bold,
-              ),
-              SizedBox(height: 3),
-              MutableText(
-                timestamp,
-                size: 14,
-                color: MutableColor.neutral2,
-              )
-            ],
+          SizedBox(
+            width: 250,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                MutableText(
+                  generateAddress(core.state.play.incident!),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  weight: TypeWeight.bold,
+                ),
+                SizedBox(height: 3),
+                MutableText(
+                  timestamp,
+                  size: 14,
+                  color: MutableColor.neutral2,
+                )
+              ],
+            ),
           ),
         ],
       ),
