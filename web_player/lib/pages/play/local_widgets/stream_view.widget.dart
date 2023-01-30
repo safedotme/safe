@@ -24,7 +24,7 @@ class _StreamViewState extends State<StreamView> with TickerProviderStateMixin {
     controller = AnimationController(
       vsync: this,
       duration: Duration(
-        milliseconds: 500,
+        milliseconds: 300,
       ),
     );
 
@@ -81,7 +81,7 @@ class _StreamViewState extends State<StreamView> with TickerProviderStateMixin {
               },
               child: Container(
                 color:
-                    kColorMap[MutableColor.neutral10]!.withOpacity(state * 0.8),
+                    kColorMap[MutableColor.neutral10]!.withOpacity(state * 0.5),
               ),
             ),
           ),

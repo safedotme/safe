@@ -1,10 +1,13 @@
 import 'package:agora_rtc_engine/rtc_engine.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
 import 'package:safe/keys.dart';
+import 'package:safe/pages/play/local_widgets/video_player_loader.widget.dart';
 import 'package:safe/services/media_server/media_server.service.dart';
+import 'package:safe/utils/constants/constants.util.dart';
 
 class VideoPlayer extends StatefulWidget {
   @override
@@ -21,7 +24,7 @@ class _VideoPlayerState extends State<VideoPlayer> {
     super.initState();
     core = Provider.of<Core>(context, listen: false);
 
-    initEngine();
+    // initEngine();
   }
 
   Future<void> initEngine() async {
@@ -46,27 +49,12 @@ class _VideoPlayerState extends State<VideoPlayer> {
     // Setup
     engine!.setEventHandler(RtcEngineEventHandler(
       error: (err) {
-        print("error: $err");
-        // _logError(
-        //   event: ErrorLogType.rtcFailed,
-        //   crit: true,
-        //   error: {"error": err, "message": msg}.toString(),
-        // );
-      },
-      userJoined: (uid, elapsed) {
-        print(uid);
+        context.go("/");
       },
       joinChannelSuccess: (channel, uid, elasped) {
-        print("success");
-        // _recordStream();
-
-        // // Triggers animation
-        // if (initFlip) return;
-
-        // initFlip = true;
-
-        // // Hides camera preview to prevent UI bug
-        // _core!.state.capture.hidePreview?.call();
+        setState(() {
+          loaded = true;
+        });
       },
     ));
 
@@ -99,7 +87,34 @@ class _VideoPlayerState extends State<VideoPlayer> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.blue,
+      decoration: BoxDecoration(
+        image: DecorationImage(
+          image: AssetImage("assets/images/stream_loader.png"),
+          fit: BoxFit.cover,
+        ),
+        borderRadius: BorderRadius.circular(15),
+        border: Border.all(
+          width: 4,
+          color: Colors.white.withOpacity(0.15),
+        ),
+      ),
+      child: Stack(
+        children: [
+          Center(
+            child: VideoPlayerLoader(),
+          ),
+          AnimatedOpacity(
+            opacity: loaded ? 1 : 0,
+            duration: Duration(milliseconds: 300),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(10),
+              child: Container(
+                color: Colors.red,
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
