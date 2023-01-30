@@ -20,13 +20,13 @@ class _LivePillState extends State<LivePill> with TickerProviderStateMixin {
   void animate() {
     controller = AnimationController(
       vsync: this,
-      duration: Duration(milliseconds: 1000),
+      duration: Duration(milliseconds: 750),
     );
 
     final a = Tween<double>(begin: 0, end: 1).animate(
       CurvedAnimation(
         parent: controller,
-        curve: Curves.easeOutSine,
+        curve: Curves.ease,
       ),
     );
 
@@ -51,40 +51,37 @@ class _LivePillState extends State<LivePill> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    return Opacity(
-      opacity: 0.1 + 0.9 * state,
-      child: Container(
-        height: 24,
-        padding: EdgeInsets.symmetric(horizontal: 8),
-        decoration: BoxDecoration(
-          color: kColorMap[MutableColor.overlaySecondaryRed],
-          borderRadius: BorderRadius.circular(12),
-          border: Border.all(
-            width: kBorderWidth,
-            color: kColorMap[MutableColor.secondaryRed]!,
+    return Container(
+      height: 24,
+      padding: EdgeInsets.symmetric(horizontal: 8),
+      decoration: BoxDecoration(
+        color: kColorMap[MutableColor.overlaySecondaryRed],
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(
+          width: kBorderWidth,
+          color: kColorMap[MutableColor.secondaryRed]!,
+        ),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Container(
+            height: 10,
+            width: 10,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: kColorMap[MutableColor.secondaryRed]!
+                  .withOpacity(0.1 + 0.9 * state),
+            ),
           ),
-        ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Container(
-              height: 10,
-              width: 10,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: kColorMap[MutableColor.secondaryRed],
-              ),
-            ),
-            SizedBox(width: 4),
-            MutableText(
-              "Live".toUpperCase(),
-              size: 14.4,
-              color: MutableColor.secondaryRed,
-              weight: TypeWeight.heavy,
-              letterSpacing: LetterSpacingType.numeric,
-            ),
-          ],
-        ),
+          SizedBox(width: 4),
+          MutableText(
+            "Live".toUpperCase(),
+            size: 15,
+            color: MutableColor.secondaryRed,
+            weight: TypeWeight.heavy,
+          ),
+        ],
       ),
     );
   }

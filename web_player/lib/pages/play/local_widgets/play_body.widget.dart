@@ -5,6 +5,7 @@ import 'package:google_maps_flutter_web/google_maps_flutter_web.dart';
 import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
 import 'package:safe/pages/play/local_widgets/gradient_overlay.widget.dart';
+import 'package:safe/pages/play/local_widgets/incident_data_box.widget.dart';
 import 'package:safe/pages/play/local_widgets/live_pill.widget.dart';
 import 'package:safe/pages/play/local_widgets/map_box.widget.dart';
 import 'package:safe/utils/constants/constants.util.dart';
@@ -50,34 +51,7 @@ class _PlayBodyState extends State<PlayBody> {
               children: [
                 Align(
                   alignment: Alignment.bottomCenter,
-                  child: SizedBox(
-                    height: 45,
-                    width: double.infinity,
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        LivePill(),
-                        Spacer(),
-                        Column(
-                          mainAxisSize: MainAxisSize.min,
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: [
-                            MutableText(
-                              "One Apple Park Way",
-                              weight: TypeWeight.bold,
-                            ),
-                            SizedBox(height: 3),
-                            MutableText(
-                              "9:41 - 12:30 PM (EST)",
-                              size: 14,
-                              color: MutableColor.neutral2,
-                            )
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
+                  child: IncidentDataBox(),
                 )
               ],
             ),
