@@ -56,6 +56,22 @@ mixin _$PlayStore on _PlayStore, Store {
     });
   }
 
+  late final _$mapControllerAtom =
+      Atom(name: '_PlayStore.mapController', context: context);
+
+  @override
+  GoogleMapController? get mapController {
+    _$mapControllerAtom.reportRead();
+    return super.mapController;
+  }
+
+  @override
+  set mapController(GoogleMapController? value) {
+    _$mapControllerAtom.reportWrite(value, super.mapController, () {
+      super.mapController = value;
+    });
+  }
+
   late final _$_PlayStoreActionController =
       ActionController(name: '_PlayStore', context: context);
 
@@ -93,11 +109,23 @@ mixin _$PlayStore on _PlayStore, Store {
   }
 
   @override
+  void setMapController(GoogleMapController? m) {
+    final _$actionInfo = _$_PlayStoreActionController.startAction(
+        name: '_PlayStore.setMapController');
+    try {
+      return super.setMapController(m);
+    } finally {
+      _$_PlayStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 incident: ${incident},
 loading: ${loading},
-isCompleted: ${isCompleted}
+isCompleted: ${isCompleted},
+mapController: ${mapController}
     ''';
   }
 }

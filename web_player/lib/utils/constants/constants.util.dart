@@ -392,3 +392,4 @@ const double kSettingsComponentSpacing = 45;
 const double kMessageBannerIconSize = 64;
 
 const Duration kProcessingDuration = Duration(seconds: 6);
+const double kMapControlSize = 115;

@@ -1,3 +1,4 @@
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mobx/mobx.dart';
 import 'package:safe/models/incident/incident.model.dart';
 
@@ -23,4 +24,10 @@ abstract class _PlayStore with Store {
 
   @action
   void setIsCompleted(bool v) => isCompleted = v;
+
+  @observable
+  GoogleMapController? mapController;
+
+  @action
+  void setMapController(GoogleMapController? m) => mapController = m;
 }

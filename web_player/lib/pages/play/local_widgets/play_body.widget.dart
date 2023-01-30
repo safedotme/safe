@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:google_maps_flutter_web/google_maps_flutter_web.dart';
 import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
+import 'package:safe/pages/play/local_widgets/map_box.widget.dart';
+import 'package:safe/utils/constants/constants.util.dart';
 
 class PlayBody extends StatefulWidget {
   @override
@@ -18,8 +23,30 @@ class _PlayBodyState extends State<PlayBody> {
 
   @override
   Widget build(BuildContext context) {
+    var queryData = MediaQuery.of(context);
     return Container(
-      color: Colors.red,
+      padding: EdgeInsets.fromLTRB(
+        0,
+        0,
+        0,
+        queryData.viewInsets.bottom,
+      ),
+      child: Stack(
+        children: [
+          MapBox(),
+          Padding(
+            padding: EdgeInsets.fromLTRB(
+              15,
+              queryData.viewInsets.top + 22,
+              15,
+              12,
+            ),
+            child: Stack(
+              children: [],
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
