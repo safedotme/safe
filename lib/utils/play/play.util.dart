@@ -146,7 +146,7 @@ class PlayUtil {
   String? parseBattery(Battery? battery) {
     if (battery == null) return null;
 
-    String state = "${battery.percentage * 100}% ({STATE})";
+    String state = "${(battery.percentage * 100).round()}% ({STATE})";
 
     if (battery.percentage < 0.1) {
       return state.replaceAll(

@@ -8,6 +8,7 @@ import 'package:safe/pages/play/local_widgets/gradient_overlay.widget.dart';
 import 'package:safe/pages/play/local_widgets/incident_data_box.widget.dart';
 import 'package:safe/pages/play/local_widgets/live_pill.widget.dart';
 import 'package:safe/pages/play/local_widgets/map_box.widget.dart';
+import 'package:safe/pages/play/local_widgets/player_data_column.widget.dart';
 import 'package:safe/utils/constants/constants.util.dart';
 import 'package:safe/widgets/mutable_text/mutable_text.widget.dart';
 
@@ -52,6 +53,10 @@ class _PlayBodyState extends State<PlayBody> {
                 Align(
                   alignment: Alignment.bottomCenter,
                   child: IncidentDataBox(),
+                ),
+                Align(
+                  alignment: Alignment.topRight,
+                  child: PlayerDataColumn(),
                 )
               ],
             ),
