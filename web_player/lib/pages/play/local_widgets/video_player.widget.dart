@@ -1,13 +1,14 @@
 import 'package:agora_rtc_engine/rtc_engine.dart';
+import 'package:agora_rtc_engine/rtc_remote_view.dart' as remote;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
+import 'package:safe/models/incident/stream.model.dart' as model;
 import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
 import 'package:safe/keys.dart';
 import 'package:safe/pages/play/local_widgets/video_player_loader.widget.dart';
 import 'package:safe/services/media_server/media_server.service.dart';
-import 'package:safe/utils/constants/constants.util.dart';
 
 class VideoPlayer extends StatefulWidget {
   @override
@@ -18,20 +19,23 @@ class _VideoPlayerState extends State<VideoPlayer> {
   late Core core;
   RtcEngine? engine;
   bool loaded = false;
+  model.Stream? stream;
 
   @override
   void initState() {
     super.initState();
     core = Provider.of<Core>(context, listen: false);
 
-    // initEngine();
+    initEngine();
   }
 
   Future<void> initEngine() async {
     // Ensure Stream Available
-    final stream = core.state.play.incident?.stream;
+    final s = core.state.play.incident?.stream;
 
-    if (stream == null) return;
+    if (s == null) return;
+
+    stream = s;
 
     // Create Engine
     try {
@@ -49,6 +53,7 @@ class _VideoPlayerState extends State<VideoPlayer> {
     // Setup
     engine!.setEventHandler(RtcEngineEventHandler(
       error: (err) {
+        loaded = false;
         context.go("/");
       },
       joinChannelSuccess: (channel, uid, elasped) {
@@ -61,21 +66,21 @@ class _VideoPlayerState extends State<VideoPlayer> {
     await engine!.disableVideo();
     await engine!.disableAudio();
     await engine!.setChannelProfile(ChannelProfile.LiveBroadcasting);
-    await engine!.setClientRole(ClientRole.Audience);
+    await engine!.setClientRole(ClientRole.Broadcaster);
 
     final uid = core.services.media.generateRandomUid();
 
     // Fetch Token
     final token = await core.services.media.generateRTCToken(
-      channelName: stream.channelName,
-      role: TokenRole.subscriber,
+      channelName: s.channelName,
+      role: TokenRole.publisher,
       type: TokenType.userAccount,
       uid: uid,
       onError: (_) {},
     );
 
     // Join Channel
-    await engine!.joinChannel(token, stream.channelName, null, uid);
+    await engine!.joinChannel(token, s.channelName, null, uid);
   }
 
   @override
@@ -103,16 +108,15 @@ class _VideoPlayerState extends State<VideoPlayer> {
           Center(
             child: VideoPlayerLoader(),
           ),
-          AnimatedOpacity(
-            opacity: loaded ? 1 : 0,
-            duration: Duration(milliseconds: 300),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(10),
-              child: Container(
-                color: Colors.red,
-              ),
-            ),
-          ),
+          loaded
+              ? ClipRRect(
+                  borderRadius: BorderRadius.circular(10),
+                  child: remote.SurfaceView(
+                    uid: stream!.userId,
+                    channelId: stream!.channelName,
+                  ),
+                )
+              : SizedBox(),
         ],
       ),
     );
