@@ -4,6 +4,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:google_maps_flutter_web/google_maps_flutter_web.dart';
 import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
+import 'package:safe/pages/play/local_widgets/gradient_overlay.widget.dart';
 import 'package:safe/pages/play/local_widgets/map_box.widget.dart';
 import 'package:safe/utils/constants/constants.util.dart';
 
@@ -31,9 +32,11 @@ class _PlayBodyState extends State<PlayBody> {
         0,
         queryData.viewInsets.bottom,
       ),
+      height: queryData.size.height,
       child: Stack(
         children: [
           MapBox(),
+          GradientOverlay(),
           Padding(
             padding: EdgeInsets.fromLTRB(
               15,

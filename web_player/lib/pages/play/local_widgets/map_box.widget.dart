@@ -48,7 +48,7 @@ class _MapBoxState extends State<MapBox> {
       setState(() {
         markers = {
           Marker(
-            markerId: MarkerId("user"),
+            markerId: MarkerId("${initPos!.latitude}:${initPos!.longitude}"),
             icon: data,
             position: initPos!,
           ),
