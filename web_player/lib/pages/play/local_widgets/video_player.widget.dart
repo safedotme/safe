@@ -63,8 +63,8 @@ class _VideoPlayerState extends State<VideoPlayer> {
       },
     ));
 
-    await engine!.disableVideo();
-    await engine!.disableAudio();
+    await engine!.enableVideo();
+    await engine!.enableAudio();
     await engine!.setChannelProfile(ChannelProfile.LiveBroadcasting);
     await engine!.setClientRole(ClientRole.Broadcaster);
 
@@ -78,6 +78,9 @@ class _VideoPlayerState extends State<VideoPlayer> {
       uid: uid,
       onError: (_) {},
     );
+
+    await engine!.muteLocalAudioStream(true);
+    await engine!.muteLocalVideoStream(true);
 
     // Join Channel
     await engine!.joinChannel(token, s.channelName, null, uid);
