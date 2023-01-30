@@ -9,6 +9,7 @@ import 'package:safe/pages/play/local_widgets/incident_data_box.widget.dart';
 import 'package:safe/pages/play/local_widgets/live_pill.widget.dart';
 import 'package:safe/pages/play/local_widgets/map_box.widget.dart';
 import 'package:safe/pages/play/local_widgets/player_data_column.widget.dart';
+import 'package:safe/pages/play/local_widgets/stream_view.widget.dart';
 import 'package:safe/utils/constants/constants.util.dart';
 import 'package:safe/widgets/mutable_text/mutable_text.widget.dart';
 
@@ -57,9 +58,13 @@ class _PlayBodyState extends State<PlayBody> {
                 Align(
                   alignment: Alignment.topRight,
                   child: PlayerDataColumn(),
-                )
+                ),
               ],
             ),
+          ),
+          Align(
+            alignment: Alignment.topLeft,
+            child: StreamView(),
           ),
         ],
       ),
