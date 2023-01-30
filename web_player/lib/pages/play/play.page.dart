@@ -17,7 +17,6 @@ class PlayPage extends StatefulWidget {
   State<PlayPage> createState() => _PlayPageState();
 }
 
-// http://localhost:52667/8799e5e0-a0dd-11ed-8288-3faada624fe2 TODO: DELETE
 class _PlayPageState extends State<PlayPage> {
   late Core core;
 
