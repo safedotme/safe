@@ -1,11 +1,11 @@
 {
-    "name": "safe_web_player",
-    "short_name": "safe_web_player",
+    "name": "Safe Web",
+    "short_name": "Safe Web",
     "start_url": ".",
     "display": "standalone",
-    "background_color": "#0175C2",
-    "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
+    "background_color": "#1E1E1E",
+    "theme_color": "#1E1E1E",
+    "description": "A violence encounter tool designed to discretely capture unsafe situations, and alert emergency contacts.",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [

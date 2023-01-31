@@ -34,7 +34,7 @@ class _MapBoxState extends State<MapBox> {
 
     var bytes = await core.utils.map.getBytesFromAsset(
       "assets/images/marker.png",
-      30,
+      80,
     );
 
     if (bytes == null) return;

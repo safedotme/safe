@@ -1,5 +1,4 @@
 import 'package:safe/models/incident/incident.model.dart';
-import 'package:safe/utils/capture/messages.capture.dart';
 
 enum MessageType {
   start,

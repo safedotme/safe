@@ -135,6 +135,7 @@ class CaptureUtil {
     await _uploadChanges(
       _core!.state.capture.incident!.copyWith(
         stopTime: stopTime,
+        streamAvailable: false,
       ),
     );
 
@@ -283,21 +284,26 @@ USER ID: ${_core!.state.capture.incident!.userId}
     _initEngine();
 
     String? token = await _core!.services.mediaServer.generateRTCToken(
-        channelName: _core!.state.capture.incident!.stream.channelName,
-        role: TokenRole.publisher,
-        type: TokenType.userAccount,
-        uid: _core!.state.capture.incident!.stream.userId,
-        onError: (e) {
-          _logError(
-            event: ErrorLogType.mediaServerFailed,
-            error: e,
-            crit: true,
-          );
-        });
+      channelName: _core!.state.capture.incident!.stream.channelName,
+      role: TokenRole.publisher,
+      type: TokenType.userAccount,
+      uid: _core!.state.capture.incident!.stream.userId,
+      onError: (e) {
+        _logError(
+          event: ErrorLogType.mediaServerFailed,
+          error: e,
+          crit: true,
+        );
+      },
+    );
 
     if (token == null) {
       _uploadChanges(_core!.state.capture.incident!.copyWith(
         streamAvailable: false,
+      ));
+    } else {
+      _uploadChanges(_core!.state.capture.incident!.copyWith(
+        streamAvailable: true,
       ));
     }
 
@@ -438,9 +444,6 @@ USER ID: ${_core!.state.capture.incident!.userId}
 
       incident = Incident(
         id: incidentId,
-        pubID: _core!.utils.text.removeSymbols(
-          Uuid().v4(),
-        ),
         stream: stream,
         isTutorial: isTutorial,
         userId: _core!.services.auth.currentUser!.uid,
@@ -549,7 +552,7 @@ USER ID: ${_core!.state.capture.incident!.userId}
       "{LONG}": l?.long?.abs().toStringAsFixed(4),
       "{NAME_POSESSIVE}": _core!.utils.name.genFirstName(user.name, true),
       "{BATTERY}": battery.toString(),
-      "{LINK}": "https://live.joinsafe.me/${incident.pubID}",
+      "{LINK}": "https://live.joinsafe.me/${incident.id}",
     };
 
     for (String key in replacementMap.keys) {
