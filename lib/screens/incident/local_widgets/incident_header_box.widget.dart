@@ -5,12 +5,7 @@ import 'package:safe/core.dart';
 import 'package:safe/models/incident/incident.model.dart';
 import 'package:safe/screens/incident/local_widgets/incident_header.widget.dart';
 import 'package:safe/utils/constants/constants.util.dart';
-import 'package:safe/utils/icon/icon.util.dart';
 import 'package:safe/widgets/mutable_cached_image/mutable_cached_image.widget.dart';
-import 'package:safe/widgets/mutable_context_menu/local_widgets/context_menu_item.widget.dart';
-import 'package:safe/widgets/mutable_context_menu/mutable_context_menu.widget.dart';
-import 'package:safe/widgets/mutable_icon/mutable_icon.widget.dart';
-import 'package:safe/widgets/mutable_overlay_button/mutable_overlay_button.widget.dart';
 
 class IncidentHeaderBox extends StatefulWidget {
   final Incident? incident;

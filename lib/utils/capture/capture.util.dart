@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:agora_rtc_engine/agora_rtc_engine.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:intl/intl.dart';
 import 'package:location/location.dart' as api;
 import 'package:safe/core.dart';
@@ -32,6 +33,21 @@ class CaptureUtil {
 
   void initialize(Core core) {
     _core = core;
+  }
+
+  // Resets phone tally from envs
+  void _setPhoneTally() {
+    final keys = dotenv.env.keys.where(
+      (k) => k.contains("TWILIO_PHONE"),
+    );
+
+    List<Map<String, int>> tally = [];
+
+    for (final key in keys) {
+      tally.add({key: 0});
+    }
+
+    _core!.state.capture.setPhoneTally(tally);
   }
 
   //
@@ -75,6 +91,9 @@ class CaptureUtil {
 
     // Will be used to start & stop incident
     isActive = true;
+
+    // Resets phone tally
+    _setPhoneTally();
 
     // Resets error
     if (_core!.state.capture.errorCapturing != null) {
@@ -589,6 +608,8 @@ USER ID: ${_core!.state.capture.incident!.userId}
       await _core!.services.twilio.call(
         phone: contact.phone,
         message: voiceMsg,
+        tally: _core!.state.capture.phoneTally,
+        setTally: _core!.state.capture.setPhoneTally,
       );
     }
 
@@ -596,6 +617,8 @@ USER ID: ${_core!.state.capture.incident!.userId}
       await _core!.services.twilio.messageSMS(
         phone: contact.phone,
         message: message,
+        tally: _core!.state.capture.phoneTally,
+        setTally: _core!.state.capture.setPhoneTally,
       );
     }
 

@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
+import 'dart:math' as math;
 import 'package:safe/utils/text/text.util.dart';
 
 class TwilioService {
@@ -13,13 +14,36 @@ class TwilioService {
     );
   }
 
+  String _selectPhoneNumber(
+    List<Map<String, int>> tally,
+    void Function(List<Map<String, int>>) setTally,
+  ) {
+    Map<String, int> champ = tally[math.Random().nextInt(tally.length)];
+
+    for (final entry in tally) {
+      if (entry.values.first < champ.values.first) {
+        champ = entry;
+      }
+    }
+
+    tally.remove(champ);
+    champ[champ.keys.first] = champ.values.first + 1;
+    tally.add(champ);
+
+    setTally(tally);
+
+    return champ.keys.first;
+  }
+
   Future<Map?> call({
     required String phone,
     required String message,
+    required List<Map<String, int>> tally,
+    required void Function(List<Map<String, int>>) setTally,
   }) async {
     final body = {
       "To": phone,
-      "From": dotenv.env["TWILIO_PHONE"],
+      "From": dotenv.env[_selectPhoneNumber(tally, setTally)],
       "Twiml": "<Response><Say>$message</Say></Response>",
     };
 
@@ -31,11 +55,12 @@ class TwilioService {
   Future<Map<String, dynamic>?> messageSMS({
     required String phone,
     required String message,
+    required List<Map<String, int>> tally,
+    required void Function(List<Map<String, int>>) setTally,
   }) async {
-    // Generates body values to be sent
     final body = {
-      "From": dotenv.env["TWILIO_PHONE"],
       "To": phone,
+      "From": dotenv.env[_selectPhoneNumber(tally, setTally)],
       "Body": TextUtil.removeNonUSCChars(message),
     };
 

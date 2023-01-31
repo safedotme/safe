@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
@@ -10,7 +9,6 @@ import 'package:safe/screens/contact/local_widgets/contacts_screen_header.widget
 import 'package:safe/utils/constants/constants.util.dart';
 import 'package:safe/widgets/mutable_handle/mutable_handle.dart';
 import 'package:safe/widgets/mutable_popup/mutable_popup.widget.dart';
-import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class ContactScreen extends StatefulWidget {
   @override

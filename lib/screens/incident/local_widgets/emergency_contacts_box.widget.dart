@@ -7,10 +7,7 @@ import 'package:safe/screens/incident/local_widgets/emergency_contact_bar.widget
 import 'package:safe/screens/incident/local_widgets/tutorial_incident_contacts_banner.widget.dart';
 import 'package:safe/utils/constants/constants.util.dart';
 import 'package:safe/utils/contacts/contacts.util.dart';
-import 'package:safe/widgets/mutable_button/mutable_button.widget.dart';
 import 'package:safe/widgets/mutable_divider/mutable_divider.widget.dart';
-import 'package:safe/widgets/mutable_emergency_contact_avatar/mutable_emergency_contact_avatar.widget.dart';
-import 'package:safe/widgets/mutable_tag/mutable_tag.widget.dart';
 import 'package:safe/widgets/mutable_text/mutable_text.widget.dart';
 
 class EmergencyContactsBox extends StatefulWidget {
