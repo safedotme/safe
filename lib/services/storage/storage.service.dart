@@ -1,4 +1,5 @@
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/foundation.dart';
 
 class StorageService {
   FirebaseStorage? _client;
@@ -14,7 +15,9 @@ class StorageService {
     try {
       ref = _client!.ref(path);
     } on FirebaseException catch (e) {
-      print(e);
+      if (kDebugMode) {
+        print(e);
+      }
     }
 
     return ref;

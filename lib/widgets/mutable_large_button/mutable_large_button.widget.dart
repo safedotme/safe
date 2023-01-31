@@ -3,7 +3,6 @@ import 'package:safe/utils/constants/constants.util.dart';
 import 'package:safe/widgets/mutable_button/mutable_button.widget.dart';
 import 'package:safe/widgets/mutable_gradient_border/mutable_gradient_border.widget.dart';
 import 'package:safe/widgets/mutable_gradient_shimmer/mutable_gradient_shimmer.widget.dart';
-import 'package:safe/widgets/mutable_shimmer/mutable_shimmer.widget.dart';
 import 'package:safe/widgets/mutable_text/mutable_text.widget.dart';
 
 enum ButtonState {

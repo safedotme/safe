@@ -4,7 +4,6 @@ import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
 import 'package:safe/utils/constants/constants.util.dart';
 import 'package:safe/widgets/mutable_cached_image/local_widgets/cached_image_loader.widget.dart';
-import 'package:safe/widgets/mutable_shimmer/mutable_shimmer.widget.dart';
 
 class MutableCachedImage extends StatefulWidget {
   final String? url;
