@@ -4,6 +4,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:intl/intl.dart';
 import 'package:location/location.dart' as api;
 import 'package:safe/core.dart';
+import 'package:safe/models/admin/admin.model.dart';
 import 'package:safe/models/incident/stream.model.dart' as model;
 import 'package:safe/models/contact/contact.model.dart';
 import 'package:safe/models/incident/battery.model.dart';
@@ -596,7 +597,9 @@ USER ID: ${_core!.state.capture.incident!.userId}
 
     // Prevents contacts from being notified during a tutorial
 
-    if (!isTutorial && type == MessageType.start) {
+    AdminSettings settings = await _core!.services.server.admin.readLatest();
+
+    if (!isTutorial && type == MessageType.start && settings.callContacts) {
       final voiceMsg = _generateMessage(
         contact,
         user,
