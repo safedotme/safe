@@ -1,5 +1,4 @@
-import 'package:flutter/material.dart' hide BoxShadow;
-import 'package:flutter_inset_box_shadow/flutter_inset_box_shadow.dart';
+import 'package:flutter/material.dart';
 import 'package:safe/utils/constants/constants.util.dart';
 
 class ColorUtils {
@@ -25,18 +24,16 @@ class ColorUtils {
   List<BoxShadow> applyGradientShadow(
     double size, {
     bool isColorful = true,
-    double opacity = 1,
+    double? opacity,
   }) {
     double blurRad = (20 / 64) * size;
-    double neutralOffset = (2 / 64) * size;
     double colorOffset = (4 / 64) * size;
-    double lineRad = (1 / 64) * size;
 
     List<BoxShadow> colors = isColorful
         ? List.generate(
             3,
             (i) => BoxShadow(
-              color: kPrimaryGradientColors[2 * i].withOpacity(0.1),
+              color: kPrimaryGradientColors[2 * i].withOpacity(opacity ?? 0.1),
               blurRadius: blurRad,
               offset: Offset(
                 (i.isEven ? -1 : 1) * colorOffset,
@@ -46,26 +43,6 @@ class ColorUtils {
           )
         : [];
 
-    return [
-      ...colors,
-      BoxShadow(
-        offset: Offset(neutralOffset, -neutralOffset),
-        color: Colors.black.withOpacity(0.6 * opacity),
-        blurRadius: blurRad,
-        inset: true,
-      ),
-      BoxShadow(
-        offset: Offset(neutralOffset, neutralOffset),
-        blurRadius: blurRad,
-        color: Colors.white.withOpacity(0.4 * opacity),
-        inset: true,
-      ),
-      BoxShadow(
-        offset: Offset(0, neutralOffset),
-        color: Colors.white.withOpacity(0.7 * opacity),
-        blurRadius: lineRad,
-        inset: true,
-      ),
-    ];
+    return colors;
   }
 }

@@ -49,10 +49,9 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                   children: [
                     Image.asset(
                       "assets/images/welcome_button.png",
-                      height: 52,
-                      width: 52,
+                      height: 70,
+                      width: 70,
                     ),
-                    SizedBox(width: 8),
                     MutableText(
                       "Safe",
                       size: 34,

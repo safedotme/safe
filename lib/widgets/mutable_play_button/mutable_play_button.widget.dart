@@ -31,11 +31,14 @@ class _MutablePlayButtonState extends State<MutablePlayButton> {
         width: 60,
         decoration: BoxDecoration(
           shape: BoxShape.circle,
-          boxShadow: core.utils.color.applyGradientShadow(60, opacity: 0.2),
-          gradient: LinearGradient(
-            colors: kPrimaryGradientColors,
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
+          boxShadow: core.utils.color.applyGradientShadow(100, opacity: 0.25),
+          image: DecorationImage(
+            image: AssetImage("assets/images/gradient.png"),
+            fit: BoxFit.cover,
+          ),
+          border: Border.all(
+            width: 2,
+            color: Colors.white.withOpacity(0.26),
           ),
         ),
         child: Center(

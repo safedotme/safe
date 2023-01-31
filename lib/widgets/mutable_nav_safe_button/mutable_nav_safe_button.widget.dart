@@ -1,5 +1,4 @@
-import 'package:flutter/material.dart' hide BoxShadow, BoxDecoration;
-import 'package:flutter_inset_box_shadow/flutter_inset_box_shadow.dart';
+import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
 import 'package:safe/utils/constants/constants.util.dart';
@@ -17,14 +16,16 @@ class MutableNavSafeButton extends StatelessWidget {
       onTap: onTap,
       animateBeforeVoidCallback: true,
       child: Container(
-        height: kNavButtonSize,
-        width: kNavButtonSize,
+        height: kNavButtonSize + (kBorderWidth * 2),
+        width: kNavButtonSize + (kBorderWidth * 2),
         decoration: BoxDecoration(
           shape: BoxShape.circle,
-          gradient: LinearGradient(
-            colors: kPrimaryGradientColors,
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
+          image: DecorationImage(
+            image: AssetImage("assets/images/gradient.png"),
+          ),
+          border: Border.all(
+            width: kBorderWidth,
+            color: Colors.white.withOpacity(0.3),
           ),
           boxShadow: core.utils.color.applyGradientShadow(kNavButtonSize),
         ),

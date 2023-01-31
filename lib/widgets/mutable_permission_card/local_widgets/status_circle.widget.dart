@@ -1,5 +1,4 @@
-import 'package:flutter/material.dart' hide BoxShadow, BoxDecoration;
-import 'package:flutter_inset_box_shadow/flutter_inset_box_shadow.dart';
+import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
 import 'package:safe/utils/constants/constants.util.dart';
@@ -27,17 +26,18 @@ class _StatusCircleState extends State<StatusCircle> {
       decoration: BoxDecoration(
         border: !widget.isAllowed
             ? Border.all(
-                width: 1.5,
+                width: kBorderWidth,
                 color: kColorMap[MutableColor.neutral4]!,
               )
-            : null,
+            : Border.all(
+                width: kBorderWidth,
+                color: Colors.white.withOpacity(0.3),
+              ),
         boxShadow:
             widget.isAllowed ? core.utils.color.applyGradientShadow(20) : null,
-        gradient: widget.isAllowed
-            ? LinearGradient(
-                colors: kPrimaryGradientColors,
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
+        image: widget.isAllowed
+            ? DecorationImage(
+                image: AssetImage("assets/images/gradient.png"),
               )
             : null,
         shape: BoxShape.circle,
