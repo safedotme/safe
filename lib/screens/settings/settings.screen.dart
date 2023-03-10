@@ -31,6 +31,21 @@ class _SettingsScreenState extends State<SettingsScreen> {
   void initState() {
     super.initState();
     core = Provider.of<Core>(context, listen: false);
+
+    core.state.preferences.scrollController.addListener(() {
+      if (core.state.preferences.aboutContextMenuController.isOpen) {
+        core.state.preferences.aboutContextMenuController.close();
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    if (core.state.preferences.scrollController.hasClients) {
+      core.state.preferences.scrollController.dispose();
+    }
+
+    super.dispose();
   }
 
   @override
@@ -76,18 +91,21 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     color: MutableColor.neutral2,
                     align: TextAlign.center,
                   ),
-                  SizedBox(height: 2),
+                  SizedBox(height: 4),
                   MutableButton(
                     scale: 0.85,
                     onTap: () {
-                      launchUrl(kMarcoCalzadaMemory);
+                      launchUrl(kMarkMusicTwitter);
                     },
-                    child: MutableText(
-                      core.utils.language.langMap[core
-                          .state.preferences.language]!["settings"]["marco"],
-                      size: 13,
-                      color: MutableColor.neutral3,
-                      align: TextAlign.center,
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 40),
+                      child: MutableText(
+                        core.utils.language.langMap[core.state.preferences
+                            .language]!["settings"]["message"],
+                        size: 13,
+                        color: MutableColor.neutral3,
+                        align: TextAlign.center,
+                      ),
                     ),
                   )
                 ],

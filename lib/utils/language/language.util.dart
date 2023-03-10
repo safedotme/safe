@@ -235,7 +235,8 @@ class LanguageUtil {
       "secured": "Secured",
     },
     "settings": {
-      "marco": "In memory of Marco Calzada",
+      "message":
+          '"Our lives begin to end the day we become silent about things that matter" -MLK',
       "header": "Settings",
       "version": "Version {VERSION} - Production",
       "preferences": {
@@ -252,7 +253,7 @@ class LanguageUtil {
           }
         },
         "quality": {
-          "header": "Livestream Quality",
+          "header": "Capped Video Quality",
           "loading": "Loading quality...",
           "template": "High ({DIMENSION}p)"
         },
