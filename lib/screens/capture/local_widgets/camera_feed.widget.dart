@@ -170,7 +170,7 @@ class _CameraFeedState extends State<CameraFeed> with TickerProviderStateMixin {
             ),
           ),
           AnimatedOpacity(
-            duration: Duration(milliseconds: 600),
+            duration: Duration(milliseconds: 400),
             opacity: core.state.capture.engine != null ? 1 : 0,
             child: Align(
               alignment: Alignment.topLeft,
