@@ -86,6 +86,17 @@ class _CameraFeedState extends State<CameraFeed> with TickerProviderStateMixin {
             state;
   }
 
+  double animateLiveBadgeMargin(double state) {
+    double pos = core.utils.animation.percentBetweenPoints(
+      lowerBound: 0.8,
+      upperBound: 1,
+      state: state,
+    );
+
+    return kCaptureLiveBadgeMargin +
+        (kCaptureCameraButtonMargin - kCaptureLiveBadgeMargin).abs() * pos;
+  }
+
   @override
   Widget build(BuildContext context) {
     var query = MediaQuery.of(context);
@@ -158,25 +169,34 @@ class _CameraFeedState extends State<CameraFeed> with TickerProviderStateMixin {
               ),
             ),
           ),
-          Align(
-            alignment: Alignment.topLeft,
-            child: Container(
-              height: 50,
-              width: 84,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(
-                  kCaptureControlBorderRadius,
-                ),
-                gradient: RadialGradient(colors: [
-                  Colors.black.withOpacity(0.6),
-                  Colors.transparent,
-                ], radius: 1, center: Alignment(-0.5, -1)),
-              ),
+          AnimatedOpacity(
+            duration: Duration(milliseconds: 600),
+            opacity: core.state.capture.engine != null ? 1 : 0,
+            child: Align(
               alignment: Alignment.topLeft,
-              padding: EdgeInsets.fromLTRB(8, 8, 0, 0),
-              child: MutableLiveBadge(),
+              child: Container(
+                height: 50,
+                width: 84,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(
+                    kCaptureControlBorderRadius,
+                  ),
+                  gradient: RadialGradient(colors: [
+                    Colors.black.withOpacity(0.6),
+                    Colors.transparent,
+                  ], radius: 1, center: Alignment(-0.5, -1)),
+                ),
+                alignment: Alignment.topLeft,
+                padding: EdgeInsets.fromLTRB(
+                  animateLiveBadgeMargin(core.state.capture.enlargementState),
+                  animateLiveBadgeMargin(core.state.capture.enlargementState),
+                  0,
+                  0,
+                ),
+                child: MutableLiveBadge(),
+              ),
             ),
-          )
+          ),
         ],
       ),
     );
