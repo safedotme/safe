@@ -54,6 +54,7 @@ class _CaptureScreenState extends State<CaptureScreen> {
         core.state.capture.setHintTextIndex(0);
         canRepaint = true;
       },
+      isOpen: true, //TODO: Change me
       isDismissable: false,
       controller: core.state.capture.controller,
       body: Container(

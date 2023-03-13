@@ -7,6 +7,7 @@ import 'package:safe/screens/capture/local_widgets/camera_feed_buttons.widget.da
 import 'package:safe/screens/capture/local_widgets/camera_feed_skeleton.widget.dart';
 import 'package:safe/services/agora/agora.service.dart';
 import 'package:safe/utils/constants/constants.util.dart';
+import 'package:safe/widgets/mutable_live_badge/mutable_live_badge.widget.dart';
 import 'package:safe/widgets/mutable_shimmer/mutable_shimmer.widget.dart';
 
 class CameraFeed extends StatefulWidget {
@@ -157,6 +158,25 @@ class _CameraFeedState extends State<CameraFeed> with TickerProviderStateMixin {
               ),
             ),
           ),
+          Align(
+            alignment: Alignment.topLeft,
+            child: Container(
+              height: 50,
+              width: 84,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(
+                  kCaptureControlBorderRadius,
+                ),
+                gradient: RadialGradient(colors: [
+                  Colors.black.withOpacity(0.6),
+                  Colors.transparent,
+                ], radius: 1, center: Alignment(-0.5, -1)),
+              ),
+              alignment: Alignment.topLeft,
+              padding: EdgeInsets.fromLTRB(8, 8, 0, 0),
+              child: MutableLiveBadge(),
+            ),
+          )
         ],
       ),
     );

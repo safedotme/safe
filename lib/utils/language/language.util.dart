@@ -435,6 +435,7 @@ class LanguageUtil {
         ErrorLogType.twilioFailed:
             "Your contacts could not be notified. Check your internet connection and try capturing again.",
       },
+      "live": "Live",
       "controls": {
         "flip_camera": {"header": "Flip Camera"},
         "flash": {"header": "Flashlight {STATE}"},
