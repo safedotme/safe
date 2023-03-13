@@ -211,7 +211,7 @@ class LanguageUtil {
       "empty": {
         "header": "No Incidents",
         "desc":
-            "There are no inicdents tied to this account. Tap on the Safe button to document one.",
+            "There are no inicdents tied to this account. Tap on the Safe button to capture one.",
       }
     },
     "play": {
@@ -302,7 +302,7 @@ class LanguageUtil {
       "story": {
         "header": "The Safe Story",
         "body":
-            "The Safe App is a social impact venture developed by Mark Music (a high school student). Tap here to learn more.",
+            "The Safe App is a social impact venture developed by Mark Music. Tap here to view his story.",
       },
       "reach_out": {
         "header": "Reach Out",
