@@ -393,6 +393,7 @@ class LanguageUtil {
         "min": "You must have at least one contact.",
       },
       "add_button": "Add contact",
+      "done_button": "Done",
       "edit_button": {
         "done": "Done",
         "edit": "Edit",
