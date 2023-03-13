@@ -60,9 +60,33 @@ class _TutorialBannerState extends State<TutorialBanner> {
                         weight: TypeWeight.bold,
                       ),
                       SizedBox(height: 5),
+                      Row(
+                        children: [
+                          MutableText(
+                            core.utils.language.langMap[core.state.preferences
+                                .language]!["home"]["acc_created"]["desc"][0],
+                            size: 13,
+                            color: MutableColor.neutral2,
+                          ),
+                          MutableText(
+                            core.utils.language.langMap[core.state.preferences
+                                .language]!["home"]["acc_created"]["desc"][1],
+                            size: 13,
+                            color: MutableColor.neutral1,
+                            decoration: TextDecoration.underline,
+                            weight: TypeWeight.bold,
+                          ),
+                          MutableText(
+                            core.utils.language.langMap[core.state.preferences
+                                .language]!["home"]["acc_created"]["desc"][2],
+                            size: 13,
+                            color: MutableColor.neutral2,
+                          ),
+                        ],
+                      ),
                       MutableText(
                         core.utils.language.langMap[core.state.preferences
-                            .language]!["home"]["acc_created"]["desc"],
+                            .language]!["home"]["acc_created"]["desc"][3],
                         size: 13,
                         color: MutableColor.neutral2,
                       ),

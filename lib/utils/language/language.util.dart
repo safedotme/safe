@@ -156,10 +156,14 @@ class LanguageUtil {
         false: "Incident Captured",
       },
       "acc_created": {
-        "header": "Account Created",
-        "subheader": "Try activating Safe",
-        "desc":
-            "This way, you'll know what to expect in an incident. PS, we won't notify anyone. ",
+        "header": "So Now What?",
+        "subheader": "Try pressing the button!",
+        "desc": [
+          "Chill. We ",
+          "won't notify",
+          " your contacts",
+          "or emergency services 🙃.",
+        ],
       },
       "incident_limit": {
         "header": {
@@ -376,10 +380,10 @@ class LanguageUtil {
         "errors": {
           "load": "Unable to load contact.",
         },
-        "header": "Import Contacts",
+        "header": "Add from Contacts",
         "desc": "To import, press on the contact's phone number",
         "buttons": {
-          "import": "Import",
+          "import": "Open Contacts",
           "manual": "Add manually",
         }
       },
