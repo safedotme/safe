@@ -6,7 +6,6 @@ import 'package:safe/models/incident/incident.model.dart';
 import 'package:safe/screens/incident/local_widgets/incident_header.widget.dart';
 import 'package:safe/utils/constants/constants.util.dart';
 import 'package:safe/widgets/mutable_cached_image/mutable_cached_image.widget.dart';
-import 'package:safe/widgets/mutable_text/mutable_text.widget.dart';
 
 class IncidentHeaderBox extends StatefulWidget {
   final Incident? incident;

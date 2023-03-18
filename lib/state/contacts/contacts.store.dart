@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:mobx/mobx.dart';
 import 'package:safe/models/contact/contact.model.dart';
 import 'package:safe/widgets/mutable_emergency_contact_popup/local_widgets/emergency_contact_popup_header.widget.dart';
@@ -50,4 +51,22 @@ abstract class _ContactStore with Store {
 
   @observable
   PanelController importContactPopupController = PanelController();
+
+  @observable
+  PanelController customContactImportController = PanelController();
+
+  @observable
+  FocusNode customContactKeyboardNode = FocusNode();
+
+  @observable
+  List<Map>? rawContacts;
+
+  @observable
+  List<Map> viewContacts = [];
+
+  @action
+  void setViewContacts(List<Map> c) => viewContacts = c;
+
+  @action
+  void setRawContacts(List<Map> r) => rawContacts = r;
 }

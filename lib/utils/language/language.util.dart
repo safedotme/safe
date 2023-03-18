@@ -381,11 +381,15 @@ class LanguageUtil {
           "load": "Unable to load contact.",
         },
         "header": "Add from Contacts",
-        "desc": "To import, press on the contact's phone number",
+        "desc": "Select a contact from your existing list of contacts",
         "buttons": {
-          "import": "Open Contacts",
+          "import": "Import",
           "manual": "Add manually",
-        }
+        },
+      },
+      "import": {
+        "icloud": "iCloud",
+        "cancel": "Cancel",
       },
       "header": "Contacts",
       "errors": {

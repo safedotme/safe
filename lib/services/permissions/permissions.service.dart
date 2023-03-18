@@ -22,6 +22,22 @@ class PermissionsService {
     return disabled;
   }
 
+  Future<bool> checkContactPermission(
+    Core core, {
+    void Function()? onError,
+  }) async {
+    PermissionStatus status = await Permission.contacts.status;
+
+    if (status == PermissionStatus.granted) return true;
+
+    status = await Permission.contacts.request();
+
+    if (status == PermissionStatus.granted) return true;
+
+    onError?.call();
+    return false;
+  }
+
   bool checkPermissions(Core core, {required bool sendError}) {
     List<PermissionType> errors = [];
     Map<PermissionType, PermissionData> permissions =
