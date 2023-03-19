@@ -124,7 +124,8 @@ class _CustomCupertinoContactPopupState
     List<Map> res = [];
 
     for (Map c in raw) {
-      if (c["name"].contains(query)) {
+      String name = c["name"];
+      if (name.toLowerCase().contains(query.toLowerCase())) {
         res.add(c);
       }
     }
