@@ -297,6 +297,9 @@ const TypeStyle kPanelPopupSubheaderStyle = TypeStyle.h5;
 const TypeWeight kPanelPopupSubheaderWeight = TypeWeight.medium;
 const MutableColor kPanelPopupSubheaderColor = MutableColor.neutral2;
 
+// Error
+const double kErrorBannerBorderRadius = 16;
+
 // AUTH
 const Duration kSMSTimeout = Duration(seconds: 30);
 const int kSMSRetryAttempts = 5;

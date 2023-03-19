@@ -22,15 +22,10 @@ class _IncidentNotFoundPageState extends State<IncidentNotFoundPage> {
   Widget build(BuildContext context) {
     return Observer(
       builder: (_) => MutableMessagePage(
-        type: core.state.play.isCompleted
-            ? MessageType.success
-            : MessageType.error,
-        header: core.state.play.isCompleted
-            ? "The Incident has Ended"
-            : "Error Loading Incident",
-        description: core.state.play.isCompleted
-            ? "The user has ended the incident. As an emergency contact, you will shortly receive an SMS message the user's final information."
-            : "This incident does not exist. This is most likely due to ID next to the URL. Check the ID (live.joinsafe.me/{id}) is valid.",
+        type: MessageType.success,
+        header: "The Incident has Ended",
+        description:
+            "The user has ended the incident. As an emergency contact, you will shortly receive an SMS message with a summary of the incident.",
       ),
     );
   }

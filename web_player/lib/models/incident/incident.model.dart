@@ -18,7 +18,6 @@ class Incident {
   final String name;
   final List<IncidentType> type;
   final Stream stream;
-  final bool streamAvailable;
   final bool processedFootage;
   final bool isTutorial;
   final DateTime? stopTime;
@@ -39,7 +38,6 @@ class Incident {
     this.processedFootage = false,
     this.isTutorial = false,
     this.thumbnail,
-    this.streamAvailable = false,
     this.stopTime,
     this.location,
     this.contactLog,
@@ -101,7 +99,6 @@ class Incident {
       thumbnail: json["thumbnail"],
       stopTime:
           json["stop_time"] == null ? null : DateTime.parse(json["stop_time"]),
-      streamAvailable: json["stream_available"],
     );
   }
 
@@ -112,7 +109,6 @@ class Incident {
     List<IncidentType>? type,
     DateTime? datetime,
     String? path,
-    bool? streamAvailable,
     bool? processedFootage,
     Stream? stream,
     String? thumbnail,
@@ -124,7 +120,6 @@ class Incident {
   }) {
     return Incident(
       id: id ?? this.id,
-      streamAvailable: streamAvailable ?? this.streamAvailable,
       userId: userId ?? this.userId,
       name: name ?? this.name,
       type: type ?? this.type,
@@ -147,7 +142,6 @@ class Incident {
         "name": name,
         "is_tutorial": isTutorial,
         "processed_footage": processedFootage,
-        "stream_available": streamAvailable,
         "thumbnail": thumbnail,
         "stop_time": stopTime?.toIso8601String(),
         "stream": stream.toMap(),

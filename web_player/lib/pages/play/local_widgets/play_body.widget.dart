@@ -1,11 +1,18 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
+import 'package:safe/models/incident/incident.model.dart';
+import 'package:safe/models/incident/stream.model.dart' as model;
+import 'package:safe/pages/play/local_widgets/error_banner.widget.dart';
 import 'package:safe/pages/play/local_widgets/gradient_overlay.widget.dart';
 import 'package:safe/pages/play/local_widgets/incident_data_box.widget.dart';
 import 'package:safe/pages/play/local_widgets/map_box.widget.dart';
 import 'package:safe/pages/play/local_widgets/player_data_column.widget.dart';
 import 'package:safe/pages/play/local_widgets/stream_view.widget.dart';
+import 'package:safe/utils/constants/constants.util.dart';
+import 'package:safe/utils/incident/incident.util.dart';
 
 class PlayBody extends StatefulWidget {
   @override
@@ -54,6 +61,13 @@ class _PlayBodyState extends State<PlayBody> {
                   child: PlayerDataColumn(),
                 ),
               ],
+            ),
+          ),
+          Visibility(
+            visible: queryData.size.width < 500 || queryData.size.height < 500,
+            child: Align(
+              alignment: Alignment.bottomCenter,
+              child: ErrorBanner(),
             ),
           ),
           Align(
