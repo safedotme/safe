@@ -15,18 +15,16 @@ class ErrorBanner extends StatelessWidget {
         child: BackdropFilter(
           filter: ImageFilter.blur(sigmaX: 30, sigmaY: 30),
           child: MutableShimmer(
-            animateToColor:
-                kColorMap[MutableColor.secondaryRed]!.withOpacity(0.2),
+            animateToColor: kColorMap[MutableColor.neutral1]!.withOpacity(0.2),
             child: Container(
               width: 295,
               height: 80,
               decoration: BoxDecoration(
-                color: Color(0xff261D1C),
+                color: Color(0xff202020),
                 borderRadius: BorderRadius.circular(kErrorBannerBorderRadius),
                 border: Border.all(
                   width: kBorderWidth,
-                  color:
-                      kColorMap[MutableColor.secondaryRed]!.withOpacity(0.15),
+                  color: Color(0xff989898).withOpacity(0.15),
                 ),
               ),
               padding: EdgeInsets.symmetric(horizontal: 15),
@@ -38,12 +36,12 @@ class ErrorBanner extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Image.asset(
-                        "assets/images/error.png",
+                        "assets/images/flash.png",
                         height: 14,
                       ),
                       SizedBox(width: 2),
                       MutableText(
-                        "Video Stream won't load on an iPhone",
+                        "Watch a video livestream of the incident",
                         size: 14,
                         weight: TypeWeight.semiBold,
                         align: TextAlign.center,
