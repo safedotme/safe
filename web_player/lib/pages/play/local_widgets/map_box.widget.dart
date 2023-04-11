@@ -138,6 +138,16 @@ class _MapBoxState extends State<MapBox> {
                   height: queryData.size.height + kMapControlSize,
                   width: queryData.size.width,
                   child: GoogleMap(
+                    rotateGesturesEnabled: !(queryData.size.width < 500 ||
+                        queryData.size.height < 500),
+                    scrollGesturesEnabled: !(queryData.size.width < 500 ||
+                        queryData.size.height < 500),
+                    zoomControlsEnabled: !(queryData.size.width < 500 ||
+                        queryData.size.height < 500),
+                    zoomGesturesEnabled: !(queryData.size.width < 500 ||
+                        queryData.size.height < 500),
+                    tiltGesturesEnabled: !(queryData.size.width < 500 ||
+                        queryData.size.height < 500),
                     onMapCreated: (c) async {
                       core.state.play.setMapController(c);
                       // Set Map Style

@@ -64,9 +64,25 @@ class _PlayBodyState extends State<PlayBody> {
               child: ErrorBanner(),
             ),
           ),
-          Align(
-            alignment: Alignment.topLeft,
-            child: StreamView(),
+          Visibility(
+            visible: queryData.size.width < 500 || queryData.size.height < 500,
+            child: Center(
+              child: Padding(
+                padding: EdgeInsets.only(top: 95),
+                child: Image.asset(
+                  "assets/map/pin.png",
+                  height: 36,
+                ),
+              ),
+            ),
+          ),
+          Visibility(
+            visible:
+                !(queryData.size.width < 500 || queryData.size.height < 500),
+            child: Align(
+              alignment: Alignment.topLeft,
+              child: StreamView(),
+            ),
           ),
         ],
       ),

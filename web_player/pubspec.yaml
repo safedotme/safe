@@ -14,6 +14,7 @@ dependencies:
   http: ^0.13.4
   mobx: ^2.0.7+4
   flutter_mobx: ^2.0.6+1
+  share_plus: ^6.3.1
   cloud_firestore: ^4.2.0
   firebase_core: ^2.4.0
   google_maps_flutter_web: ^0.4.0+5
@@ -42,6 +43,7 @@ flutter:
 
   assets:
     - assets/images/
+    - assets/map/pin.png
     - assets/map/style_labeled.txt
     - assets/map/style_unlabeled.txt
 

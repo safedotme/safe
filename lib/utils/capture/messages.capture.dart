@@ -90,7 +90,7 @@ This message was sent by the Safe app. Learn more about Safe at joinsafe dot me.
 
 The emergency began at {TIME} and is listed as a {TYPE}.
 {LOCATION}
-Watch a livestream of the incident: {LINK}
+To watch a video stream of the incident, open the following link on a computer/laptop: {LINK}
 
 The app continues to record {NAME_POSESSIVE} camera and track {NAME_POSESSIVE} exact location. You will recieve a message when {NAME} stops capturing the incident.
 
