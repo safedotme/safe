@@ -26,6 +26,36 @@ class _ContactScreenHeaderState extends State<ContactScreenHeader> {
   Widget build(BuildContext context) {
     return Stack(
       children: [
+        Observer(
+          builder: (_) => Align(
+            alignment: Alignment.topLeft,
+            child: MutableButton(
+              scale: 0.9,
+              onTap: () {
+                if (core.state.contact.isEditing) return;
+
+                HapticFeedback.lightImpact();
+                core.state.contact.controller.close();
+              },
+              child: AnimatedOpacity(
+                opacity: core.state.contact.isEditing ? 0 : 1,
+                duration: Duration(milliseconds: 150),
+                child: Container(
+                  height: 30,
+                  width: 40,
+                  color: Colors.transparent,
+                  alignment: Alignment.topLeft,
+                  child: MutableText(
+                    core.utils.language.langMap[core
+                        .state.preferences.language]!["contact"]["done_button"],
+                    color: MutableColor.neutral3,
+                    weight: TypeWeight.bold,
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
         Center(
           child: MutableText(
             core.utils.language

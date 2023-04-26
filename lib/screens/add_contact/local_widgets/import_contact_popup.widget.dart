@@ -1,8 +1,9 @@
+import 'package:contacts_service/contacts_service.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttercontactpicker/fluttercontactpicker.dart' as api;
 import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
-import 'package:safe/models/contact/contact.model.dart';
+import 'package:safe/models/contact/contact.model.dart' as model;
 import 'package:safe/utils/constants/constants.util.dart';
 import 'package:safe/utils/phone/codes.util.dart';
 import 'package:safe/widgets/mutable_banner/mutable_banner.widget.dart';
@@ -46,65 +47,52 @@ class _ImportContactPopupState extends State<ImportContactPopup> {
   void handleImportAdd() async {
     tappedOut = false;
     await core.state.contact.importContactPopupController.close();
-    api.PhoneContact? rawC;
+    final res = await core.services.permissions.checkContactPermission(core);
 
-    try {
-      rawC = await api.FlutterContactPicker.pickPhoneContact();
-    } catch (e) {
+    if (!res) {
       core.state.preferences.actionController.trigger(
         core.utils.language.langMap[core.state.preferences.language]!["contact"]
             ["input"]["errors"]["load"],
         MessageType.error,
       );
-
       return;
     }
 
-    if (rawC.phoneNumber?.number == null) {
-      core.state.preferences.actionController.trigger(
-        core.utils.language.langMap[core.state.preferences.language]!["contact"]
-            ["input"]["errors"]["load"],
-        MessageType.error,
-      );
+    List<Contact> raw = await ContactsService.getContacts();
 
-      return;
+    List<Map> contacts = [];
+
+    for (Contact c in raw) {
+      String? phone;
+      String? name = c.displayName == null
+          ? null
+          : c.displayName == ""
+              ? null
+              : c.displayName;
+
+      if (c.phones != null && c.phones!.isNotEmpty) {
+        phone = formatPhone(c.phones!.first.value ?? "");
+      }
+
+      if (phone != null && name != null) {
+        contacts.add({
+          "name": name,
+          "phone": phone,
+        });
+      }
     }
 
-    final phone = formatPhone(rawC.phoneNumber!.number!);
+    core.state.contact.setRawContacts(contacts);
+    core.state.contact.setViewContacts(contacts);
 
-    if (phone == null) {
-      core.state.preferences.actionController.trigger(
-        core.utils.language.langMap[core.state.preferences.language]!["contact"]
-            ["input"]["errors"]["load"],
-        MessageType.error,
-      );
-
-      return;
-    }
-
-    final contact = Contact(
-      id: Uuid().v1(),
-      userId: core.services.auth.currentUser!.uid,
-      name: rawC.fullName ?? "",
-      phone: phone,
-    );
-
-    core.state.contact.setEditable(contact);
-    core.state.contact.editorContactController.setValues(
-      phone: contact.phone,
-      name: contact.name,
-      code: contact.parsePhone()["code"],
-    );
-    core.state.contact.editorContactController.focus(true);
-    core.state.contact.setIsAdding(true);
-    core.state.contact.editorController.open();
+    core.state.contact.customContactImportController.open();
   }
 
   void handleManualAdd() async {
     tappedOut = false;
     await core.state.contact.importContactPopupController.close();
 
-    final contact = Contact(
+    final contact = model.Contact(
       id: Uuid().v1(),
       userId: core.services.auth.currentUser!.uid,
       name: "",
@@ -128,7 +116,7 @@ class _ImportContactPopupState extends State<ImportContactPopup> {
     return MutablePopup(
       type: PopupType.input,
       controller: core.state.contact.importContactPopupController,
-      height: 374,
+      height: 330,
       onClosed: () {
         if (tappedOut) core.utils.tutorial.handleOnLeave(core);
       },
@@ -141,8 +129,12 @@ class _ImportContactPopupState extends State<ImportContactPopup> {
         ),
         child: Column(
           children: [
-            Image.asset("assets/images/contacts.png"),
-            SizedBox(height: 16),
+            Spacer(),
+            Image.asset(
+              "assets/images/contacts.png",
+              width: 65,
+            ),
+            Spacer(),
             MutableText(
               core.utils.language
                       .langMap[core.state.preferences.language]!["contact"]

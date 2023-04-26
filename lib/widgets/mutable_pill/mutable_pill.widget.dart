@@ -1,11 +1,10 @@
-import 'package:flutter_inset_box_shadow/flutter_inset_box_shadow.dart';
+import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
 import 'package:safe/utils/constants/constants.util.dart';
 import 'package:safe/utils/icon/icon.util.dart';
 import 'package:safe/widgets/mutable_icon/mutable_icon.widget.dart';
 import 'package:safe/widgets/mutable_text/mutable_text.widget.dart';
-import 'package:flutter/material.dart' hide BoxDecoration, BoxShadow;
 
 class MutablePill extends StatefulWidget {
   final String text;
@@ -66,15 +65,20 @@ class _MutablePillState extends State<MutablePill> {
             )
           ]
         ],
+        border: widget.color == null
+            ? Border.all(
+                width: 1,
+                color: Colors.white.withOpacity(0.3),
+              )
+            : null,
         borderRadius: BorderRadius.circular(20),
         color: widget.color != null ? kColorMap[widget.color!] : null,
-        gradient: widget.color != null
-            ? null
-            : LinearGradient(
-                colors: kPrimaryGradientColors,
-                begin: Alignment(-1.5, -1.2),
-                end: Alignment(1, 3.5),
-              ),
+        image: widget.color == null
+            ? DecorationImage(
+                image: AssetImage("assets/images/gradient.png"),
+                fit: BoxFit.cover,
+              )
+            : null,
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,

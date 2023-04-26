@@ -1,6 +1,5 @@
-import 'package:mobx/mobx.dart';
+import 'package:safe/models/incident/notified_contact.model.dart';
 import 'package:safe/services/analytics/analytics.service.dart';
-import 'package:safe/utils/capture/messages.capture.dart';
 import 'package:safe/utils/credit/credit.util.dart';
 import 'package:safe/widgets/mutable_permission_card/mutable_permission_card.widget.dart';
 
@@ -157,10 +156,14 @@ class LanguageUtil {
         false: "Incident Captured",
       },
       "acc_created": {
-        "header": "Account Created",
-        "subheader": "Try activating Safe",
-        "desc":
-            "This way, you'll know what to expect in an incident. PS, we won't notify anyone. ",
+        "header": "So Now What?",
+        "subheader": "Try pressing the button!",
+        "desc": [
+          "Chill. We ",
+          "won't notify",
+          " your contacts",
+          "or emergency services 🙃.",
+        ],
       },
       "incident_limit": {
         "header": {
@@ -212,7 +215,7 @@ class LanguageUtil {
       "empty": {
         "header": "No Incidents",
         "desc":
-            "There are no inicdents tied to this account. Tap on the Safe button to document one.",
+            "There are no inicdents tied to this account. Tap on the Safe button to capture one.",
       }
     },
     "play": {
@@ -236,7 +239,8 @@ class LanguageUtil {
       "secured": "Secured",
     },
     "settings": {
-      "marco": "In memory of Marco Calzada",
+      "message":
+          '"Our lives begin to end the day we become silent about things that matter" -MLK',
       "header": "Settings",
       "version": "Version {VERSION} - Production",
       "preferences": {
@@ -253,7 +257,7 @@ class LanguageUtil {
           }
         },
         "quality": {
-          "header": "Livestream Quality",
+          "header": "Capped Video Quality",
           "loading": "Loading quality...",
           "template": "High ({DIMENSION}p)"
         },
@@ -302,7 +306,7 @@ class LanguageUtil {
       "story": {
         "header": "The Safe Story",
         "body":
-            "The Safe App is a social impact venture developed by Mark Music (a high school student). Tap here to learn more.",
+            "The Safe App is a social impact venture developed by Mark Music. Tap here to view his story.",
       },
       "reach_out": {
         "header": "Reach Out",
@@ -376,12 +380,16 @@ class LanguageUtil {
         "errors": {
           "load": "Unable to load contact.",
         },
-        "header": "Import Contacts",
-        "desc": "To import, press on the contact's phone number",
+        "header": "Add from Contacts",
+        "desc": "Select a contact from your existing list of contacts",
         "buttons": {
           "import": "Import",
           "manual": "Add manually",
-        }
+        },
+      },
+      "import": {
+        "icloud": "iCloud",
+        "cancel": "Cancel",
       },
       "header": "Contacts",
       "errors": {
@@ -389,6 +397,7 @@ class LanguageUtil {
         "min": "You must have at least one contact.",
       },
       "add_button": "Add contact",
+      "done_button": "Done",
       "edit_button": {
         "done": "Done",
         "edit": "Edit",
@@ -430,6 +439,7 @@ class LanguageUtil {
         ErrorLogType.twilioFailed:
             "Your contacts could not be notified. Check your internet connection and try capturing again.",
       },
+      "live": "Live",
       "controls": {
         "flip_camera": {"header": "Flip Camera"},
         "flash": {"header": "Flashlight {STATE}"},

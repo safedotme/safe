@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:archive/archive_io.dart';
 import 'package:csv/csv.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart' as platform;
 import 'package:safe/models/incident/battery.model.dart';
@@ -229,7 +230,9 @@ class ExportService {
       raw.writeFromSync(res.data);
       await raw.close();
     } catch (e) {
-      print(e);
+      if (kDebugMode) {
+        print(e);
+      }
     }
 
     return file;

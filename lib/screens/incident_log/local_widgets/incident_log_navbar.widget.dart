@@ -71,8 +71,6 @@ class _IncidentLogNavBarState extends State<IncidentLogNavBar> {
   }
 
   double genBorderOpacity(double state) {
-    double max = 0.85;
-
     double percentage = core.utils.animation.percentBetweenPoints(
       lowerBound: 0,
       upperBound: 20,

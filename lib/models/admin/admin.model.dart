@@ -5,6 +5,7 @@ class AdminSettings {
   final int frameRate;
   final int defaultContactCap;
   final String id;
+  final bool callContacts;
   final int maxIdleTime;
 
   AdminSettings({
@@ -13,6 +14,7 @@ class AdminSettings {
     required this.dimensionWidth,
     required this.frameRate,
     required this.defaultContactCap,
+    required this.callContacts,
     required this.id,
     required this.maxIdleTime,
   });
@@ -21,6 +23,7 @@ class AdminSettings {
   static final AdminSettings defaultSettings = AdminSettings(
     defaultIncidentCap: 2,
     dimensionHeight: 720,
+    callContacts: false,
     defaultContactCap: 3,
     dimensionWidth: 1280,
     frameRate: 24,
@@ -37,6 +40,7 @@ class AdminSettings {
             defaultIncidentCap: json["default_incident_cap"] ??
                 defaultSettings.defaultIncidentCap,
             maxIdleTime: json["max_idle_time"] ?? defaultSettings.maxIdleTime,
+            callContacts: json["call_contacts"] ?? defaultSettings.maxIdleTime,
             dimensionHeight:
                 json["dimension_height"] ?? defaultSettings.dimensionHeight,
             dimensionWidth:
@@ -51,6 +55,7 @@ class AdminSettings {
       "default_incident_cap": defaultIncidentCap,
       "dimension_height": dimensionHeight,
       "max_idle_time": maxIdleTime,
+      "call_contacts": callContacts,
       "default_contact_cap": defaultContactCap,
       "dimension_width": dimensionWidth,
       "frame_rate": frameRate,

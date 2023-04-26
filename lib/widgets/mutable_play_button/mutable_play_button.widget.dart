@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
-import 'package:safe/utils/constants/constants.util.dart';
 import 'package:safe/widgets/mutable_button/mutable_button.widget.dart';
 
 class MutablePlayButton extends StatefulWidget {
@@ -31,11 +30,14 @@ class _MutablePlayButtonState extends State<MutablePlayButton> {
         width: 60,
         decoration: BoxDecoration(
           shape: BoxShape.circle,
-          boxShadow: core.utils.color.applyGradientShadow(60, opacity: 0.2),
-          gradient: LinearGradient(
-            colors: kPrimaryGradientColors,
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
+          boxShadow: core.utils.color.applyGradientShadow(100, opacity: 0.25),
+          image: DecorationImage(
+            image: AssetImage("assets/images/gradient.png"),
+            fit: BoxFit.cover,
+          ),
+          border: Border.all(
+            width: 2,
+            color: Colors.white.withOpacity(0.26),
           ),
         ),
         child: Center(

@@ -58,7 +58,7 @@
 	<key>NSCameraUsageDescription</key>
 	<string>Used only to record incidents</string>
 	<key>NSContactsUsageDescription</key>
-	<string>contacts</string>
+	<string>Used to import contacts to Safe</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
 	<string>To keep track of your location in incidents</string>
 	<key>NSLocationAlwaysUsageDescription</key>
@@ -105,5 +105,7 @@
 	<false/>
 	<key>kTCCServiceMediaLibrary</key>
 	<string>media</string>
+	<key>UIApplicationSupportsIndirectInputEvents</key>
+	<true/>
 </dict>
 </plist>

@@ -11,7 +11,6 @@ class Incident {
   final String name;
   final List<IncidentType> type;
   final Stream stream;
-  final bool streamAvailable;
   final bool processedFootage;
   final bool isTutorial;
   final DateTime? stopTime;
@@ -19,7 +18,6 @@ class Incident {
   final String? path;
   final String? thumbnail;
   final List<Location>? location;
-  final String pubID;
   final List<NotifiedContact>? contactLog;
   final List<Battery>? battery;
 
@@ -29,18 +27,42 @@ class Incident {
     required this.name,
     required this.type,
     required this.stream,
-    required this.pubID,
     required this.datetime,
     this.processedFootage = false,
     this.isTutorial = false,
     this.thumbnail,
-    this.streamAvailable = false,
     this.stopTime,
     this.location,
     this.contactLog,
     this.battery,
     this.path,
   });
+
+  static MessageType parseType(String type) {
+    String gen = "";
+    bool record = false;
+
+    for (int i = 0; i < type.length; i++) {
+      if (record) {
+        gen += type[i];
+      }
+
+      if (type[i] == ".") {
+        record = true;
+      }
+    }
+
+    switch (gen) {
+      case "start":
+        return MessageType.start;
+      case "batteryCrit":
+        return MessageType.batteryCrit;
+      case "end":
+        return MessageType.end;
+      default:
+        return MessageType.start;
+    }
+  }
 
   factory Incident.fromJson(Map<String, dynamic> json) {
     List<Map<String, dynamic>>? _location = json["location"] == null
@@ -61,7 +83,6 @@ class Incident {
       isTutorial: json["is_tutorial"],
       processedFootage: json["processed_footage"],
       stream: Stream.fromJson(json["stream"]),
-      pubID: json["pub_id"],
       type: _type.map((e) => IncidentUtil.parseType(e)).toList(),
       datetime: DateTime.parse(json["datetime"]),
       location: _location?.map((e) => Location.fromJson(e)).toList(),
@@ -71,7 +92,6 @@ class Incident {
       thumbnail: json["thumbnail"],
       stopTime:
           json["stop_time"] == null ? null : DateTime.parse(json["stop_time"]),
-      streamAvailable: json["stream_available"],
     );
   }
 
@@ -82,12 +102,10 @@ class Incident {
     List<IncidentType>? type,
     DateTime? datetime,
     String? path,
-    bool? streamAvailable,
     bool? processedFootage,
     Stream? stream,
     String? thumbnail,
     List<Location>? location,
-    String? pubID,
     List<NotifiedContact>? contactLog,
     List<Battery>? battery,
     bool? isTutorial,
@@ -95,12 +113,10 @@ class Incident {
   }) {
     return Incident(
       id: id ?? this.id,
-      streamAvailable: streamAvailable ?? this.streamAvailable,
       userId: userId ?? this.userId,
       name: name ?? this.name,
       type: type ?? this.type,
       processedFootage: processedFootage ?? this.processedFootage,
-      pubID: pubID ?? this.pubID,
       thumbnail: thumbnail ?? this.thumbnail,
       stream: stream ?? this.stream,
       stopTime: stopTime ?? this.stopTime,
@@ -119,13 +135,11 @@ class Incident {
         "name": name,
         "is_tutorial": isTutorial,
         "processed_footage": processedFootage,
-        "stream_available": streamAvailable,
         "thumbnail": thumbnail,
         "stop_time": stopTime?.toIso8601String(),
         "stream": stream.toMap(),
         "type": type.map((e) => e.toString()).toList(),
         "datetime": datetime.toIso8601String(),
-        "pub_id": pubID,
         "location":
             location != null ? location!.map((e) => e.toMap()).toList() : null,
         "contact_log": contactLog != null

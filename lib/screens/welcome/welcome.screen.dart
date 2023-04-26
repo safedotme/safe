@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 import 'package:rive/rive.dart';
 import 'package:safe/core.dart';
@@ -49,10 +48,9 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                   children: [
                     Image.asset(
                       "assets/images/welcome_button.png",
-                      height: 52,
-                      width: 52,
+                      height: 70,
+                      width: 70,
                     ),
-                    SizedBox(width: 8),
                     MutableText(
                       "Safe",
                       size: 34,

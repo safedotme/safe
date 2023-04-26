@@ -1,12 +1,5 @@
-import 'package:safe/models/incident/incident.model.dart';
 import 'package:safe/models/incident/location.model.dart';
-
-enum MessageType {
-  start,
-  batteryCrit,
-  voice,
-  end,
-}
+import 'package:safe/models/incident/notified_contact.model.dart';
 
 class EmergencyMessages {
   static const Map<MessageType, String> messageMap = {
@@ -58,32 +51,6 @@ class EmergencyMessages {
     return base.replaceAll(key, lString);
   }
 
-  static MessageType parseType(String type) {
-    String gen = "";
-    bool record = false;
-
-    for (int i = 0; i < type.length; i++) {
-      if (record) {
-        gen += type[i];
-      }
-
-      if (type[i] == ".") {
-        record = true;
-      }
-    }
-
-    switch (gen) {
-      case "start":
-        return MessageType.start;
-      case "batteryCrit":
-        return MessageType.batteryCrit;
-      case "end":
-        return MessageType.end;
-      default:
-        return MessageType.start;
-    }
-  }
-
   static const String contactPhoneTemplateStart = """
 {FULL_NAME} is actively in an emergency.
 
@@ -123,7 +90,7 @@ This message was sent by the Safe app. Learn more about Safe at joinsafe dot me.
 
 The emergency began at {TIME} and is listed as a {TYPE}.
 {LOCATION}
-Watch a livestream of the incident: {LINK}
+To watch a video stream of the incident, open the following link on a computer/laptop: {LINK}
 
 The app continues to record {NAME_POSESSIVE} camera and track {NAME_POSESSIVE} exact location. You will recieve a message when {NAME} stops capturing the incident.
 

@@ -7,7 +7,7 @@ import 'package:safe/screens/capture/local_widgets/camera_feed_buttons.widget.da
 import 'package:safe/screens/capture/local_widgets/camera_feed_skeleton.widget.dart';
 import 'package:safe/services/agora/agora.service.dart';
 import 'package:safe/utils/constants/constants.util.dart';
-import 'package:safe/widgets/mutable_shimmer/mutable_shimmer.widget.dart';
+import 'package:safe/widgets/mutable_live_badge/mutable_live_badge.widget.dart';
 
 class CameraFeed extends StatefulWidget {
   @override
@@ -85,6 +85,17 @@ class _CameraFeedState extends State<CameraFeed> with TickerProviderStateMixin {
             state;
   }
 
+  double animateLiveBadgeMargin(double state) {
+    double pos = core.utils.animation.percentBetweenPoints(
+      lowerBound: 0.8,
+      upperBound: 1,
+      state: state,
+    );
+
+    return kCaptureLiveBadgeMargin +
+        (kCaptureCameraButtonMargin - kCaptureLiveBadgeMargin).abs() * pos;
+  }
+
   @override
   Widget build(BuildContext context) {
     var query = MediaQuery.of(context);
@@ -120,13 +131,17 @@ class _CameraFeedState extends State<CameraFeed> with TickerProviderStateMixin {
                     ),
                   ),
           ),
+          // Opacity(
+          //   opacity: opacity,
+          //   child: MutableShimmer(
+          //     active: opacity != 0,
+          //     animateToColor: kBoxLoaderShimmerColor,
+          //     child: CameraFeedSkeleton(),
+          //   ),
+          // ),
           Opacity(
             opacity: opacity,
-            child: MutableShimmer(
-              active: opacity != 0,
-              animateToColor: kBoxLoaderShimmerColor,
-              child: CameraFeedSkeleton(),
-            ),
+            child: CameraFeedSkeleton(),
           ),
           Visibility(
             visible: core.state.capture.enlargementState > 0.9 &&
@@ -154,6 +169,34 @@ class _CameraFeedState extends State<CameraFeed> with TickerProviderStateMixin {
                   ),
                 ),
                 child: CameraFeedButtons(),
+              ),
+            ),
+          ),
+          AnimatedOpacity(
+            duration: Duration(milliseconds: 400),
+            opacity: core.state.capture.engine != null ? 1 : 0,
+            child: Align(
+              alignment: Alignment.topLeft,
+              child: Container(
+                height: 50,
+                width: 84,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(
+                    kCaptureControlBorderRadius,
+                  ),
+                  gradient: RadialGradient(colors: [
+                    Colors.black.withOpacity(0.6),
+                    Colors.transparent,
+                  ], radius: 1, center: Alignment(-0.5, -1)),
+                ),
+                alignment: Alignment.topLeft,
+                padding: EdgeInsets.fromLTRB(
+                  animateLiveBadgeMargin(core.state.capture.enlargementState),
+                  animateLiveBadgeMargin(core.state.capture.enlargementState),
+                  0,
+                  0,
+                ),
+                child: MutableLiveBadge(),
               ),
             ),
           ),

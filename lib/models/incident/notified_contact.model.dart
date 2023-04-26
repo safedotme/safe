@@ -1,4 +1,11 @@
-import 'package:safe/utils/capture/messages.capture.dart';
+import 'package:safe/models/incident/incident.model.dart';
+
+enum MessageType {
+  start,
+  batteryCrit,
+  voice,
+  end,
+}
 
 class NotifiedContact {
   final String id;
@@ -41,7 +48,7 @@ class NotifiedContact {
         name: json["name"],
         phone: json["phone"],
         messageSent: json["message_sent"],
-        type: EmergencyMessages.parseType(json["type"]),
+        type: Incident.parseType(json["type"]),
         datetime: DateTime.parse(json["datetime"]),
       );
 

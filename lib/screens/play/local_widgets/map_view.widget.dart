@@ -8,7 +8,6 @@ import 'package:safe/models/incident/incident.model.dart';
 import 'package:safe/models/incident/location.model.dart';
 import 'package:safe/utils/constants/constants.util.dart';
 import 'package:safe/widgets/mutable_banner/mutable_banner.widget.dart';
-import 'package:safe/widgets/mutable_text/mutable_text.widget.dart';
 
 class MapView extends StatefulWidget {
   final Incident incident;
@@ -78,7 +77,6 @@ class _MapViewState extends State<MapView> {
 
   @override
   Widget build(BuildContext context) {
-    var queryData = MediaQuery.of(context);
     return Observer(
       builder: (_) => !handleCanLoad(core.state.incident.playPosition)
           ? SizedBox()

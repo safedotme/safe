@@ -4,10 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
 import 'package:safe/models/incident/incident.model.dart';
 import 'package:safe/utils/constants/constants.util.dart';
-import 'package:safe/utils/icon/icon.util.dart';
-import 'package:safe/widgets/mutable_button/mutable_button.widget.dart';
 import 'package:safe/widgets/mutable_cached_image/mutable_cached_image.widget.dart';
-import 'package:safe/widgets/mutable_icon/mutable_icon.widget.dart';
 import 'package:safe/widgets/mutable_incident_card/local_widgets/incident_card_play_button.widget.dart';
 
 class IncidentCardImage extends StatefulWidget {

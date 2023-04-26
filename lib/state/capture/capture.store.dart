@@ -95,6 +95,12 @@ abstract class _CaptureStore with Store {
   void setHidePreview(Function? s) => hidePreview = s;
 
   @observable
+  List<Map<String, int>> phoneTally = [];
+
+  @action
+  void setPhoneTally(List<Map<String, int>> t) => phoneTally = t;
+
+  @observable
   bool isBackCam = true;
 
   @action

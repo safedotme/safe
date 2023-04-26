@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
@@ -28,9 +29,11 @@ class _AuthOtpInputPanelState extends State<AuthOtpInputPanel> {
       phone: core.state.auth.phoneNumber,
       dialCode: core.state.auth.countryDialCode,
       onCodeSend: (verificationId, resentToken) {
-        print(
-          "OPT code has been sent to ${core.state.auth.formattedPhone}. Verification ID: $verificationId",
-        );
+        if (kDebugMode) {
+          print(
+            "OPT code has been sent to ${core.state.auth.formattedPhone}. Verification ID: $verificationId",
+          );
+        }
 
         core.state.auth.setVerificationId(verificationId);
         core.state.auth.setResendToken(resentToken);

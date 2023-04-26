@@ -7,7 +7,6 @@ import 'package:safe/utils/icon/icon.util.dart';
 import 'package:safe/widgets/mutable_button/mutable_button.widget.dart';
 import 'package:safe/widgets/mutable_emergency_contact_avatar/mutable_emergency_contact_avatar.widget.dart';
 import 'package:safe/widgets/mutable_icon/mutable_icon.widget.dart';
-import 'package:safe/widgets/mutable_tag/mutable_tag.widget.dart';
 import 'package:safe/widgets/mutable_text/mutable_text.widget.dart';
 
 class EmergencyContactBar extends StatefulWidget {

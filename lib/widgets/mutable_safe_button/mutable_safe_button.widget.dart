@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart' hide BoxShadow, BoxDecoration;
 import 'package:flutter/services.dart';
-import 'package:flutter_inset_box_shadow/flutter_inset_box_shadow.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
 import 'package:safe/utils/constants/constants.util.dart';
+import 'package:safe/widgets/mutable_safe_button/local_widgets/active_safe_button.widget.dart';
+import 'package:safe/widgets/mutable_safe_button/local_widgets/disabled_safe_button.widget.dart';
 
 class MutableSafeButton extends StatefulWidget {
   final void Function() onTap;
@@ -89,12 +90,6 @@ class _MutableSafeButtonState extends State<MutableSafeButton>
     super.dispose();
   }
 
-  double genOpacity() =>
-      0.1 + (effectAnimation.value * kSafeButtonShadowOpacityScale);
-
-  double genBlur() =>
-      30.0 + (effectAnimation.value * kSafeButtonShadowBlurScale);
-
   @override
   Widget build(BuildContext context) {
     return Observer(
@@ -109,76 +104,9 @@ class _MutableSafeButtonState extends State<MutableSafeButton>
             await animateTap();
             controller.repeat(reverse: true);
           },
-          child: Container(
-            height: kSafeButtonSize,
-            width: kSafeButtonSize,
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: core.state.capture.limErrState == null
-                    ? kPrimaryGradientColors
-                    : kDisabledGradientColors,
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-              ),
-              shape: BoxShape.circle,
-              boxShadow: [
-                ...(core.state.capture.limErrState == null
-                    ? [
-                        // COLORS DROP SHADOWS
-                        BoxShadow(
-                          offset: Offset(4, 4),
-                          blurRadius: genBlur(),
-                          color: kColorMap[MutableColor.primaryPurple]!
-                              .withOpacity(genOpacity()),
-                        ),
-                        BoxShadow(
-                          offset: Offset(4, -4),
-                          blurRadius: genBlur(),
-                          color: kColorMap[MutableColor.primaryRed]!
-                              .withOpacity(genOpacity()),
-                        ),
-                        BoxShadow(
-                          offset: Offset(-4, -4),
-                          blurRadius: genBlur(),
-                          color: kColorMap[MutableColor.primaryYellow]!
-                              .withOpacity(genOpacity()),
-                        ),
-                      ]
-                    : []),
-
-                // NEUTRAL INNER SHADOWS
-                BoxShadow(
-                  offset: Offset(4, -4),
-                  blurRadius: 20,
-                  color: Colors.black.withOpacity(
-                      core.state.capture.limErrState == null ? 0.6 : 0.2),
-                  inset: true,
-                ),
-                BoxShadow(
-                  offset: Offset(-3, 3),
-                  blurRadius: 30,
-                  spreadRadius: 1,
-                  color: Colors.white.withOpacity(
-                      core.state.capture.limErrState == null ? 0.4 : 0.1),
-                  inset: true,
-                ),
-                BoxShadow(
-                  offset: Offset(-2, 2),
-                  blurRadius: 1,
-                  spreadRadius: 0,
-                  color: Colors.white.withOpacity(
-                      core.state.capture.limErrState == null ? 0.6 : 0.2),
-                  inset: true,
-                ),
-              ],
-            ),
-            child: Center(
-              child: Image.asset(
-                "assets/images/${core.state.capture.limErrState == null ? "safe_logo_button" : "safe_disabled_logo_button"}.png",
-                height: kSafeButtonSize * 0.65,
-              ),
-            ),
-          ),
+          child: core.state.capture.limErrState == null
+              ? ActiveSafeButton(effectAnimation.value)
+              : DisabledSafeButton(),
         ),
       ),
     );

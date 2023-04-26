@@ -40,7 +40,7 @@ dependencies:
   flutter_mobx: ^2.0.6+1
   emojis: ^0.9.9
   shimmer: ^2.0.0
-  agora_rtc_engine: ^6.0.0
+  agora_rtc_engine: ^6.1.0
   intl: ^0.17.0
   shared_preferences: ^2.0.15
   dotted_border: ^2.0.0+2
@@ -48,15 +48,12 @@ dependencies:
   rive: ^0.9.0
   location: ^4.4.0
   confetti: ^0.7.0
-  flip_card: ^0.6.0
   flutter_dotenv: ^5.0.2
-  image_picker: ^0.8.5+3
-  flutter_local_notifications: ^9.6.1
   figma_squircle: ^0.5.3
   cloud_firestore: ^4.2.0
   pin_code_fields: ^7.4.0
   firebase_storage: ^11.0.7
-  fluttercontactpicker: ^4.7.0
+  contacts_service: ^0.6.3
   flutter_inset_box_shadow: ^1.0.8
   firebase_core: ^2.4.0
   firebase_auth: ^4.2.0
@@ -114,3 +111,10 @@ flutter:
     - family: RoundedMedium
       fonts:
         - asset: assets/fonts/rounded/SF-Pro-Rounded-Medium.ttf
+    # SF Pro Text
+    - family: TextRegular
+      fonts:
+        - asset: assets/fonts/text/SF-Pro-Text-Regular.ttf
+    - family: TextSemibold
+      fonts:
+        - asset: assets/fonts/text/SF-Pro-Text-Semibold.ttf

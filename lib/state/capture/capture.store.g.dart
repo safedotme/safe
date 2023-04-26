@@ -249,6 +249,22 @@ mixin _$CaptureStore on _CaptureStore, Store {
     });
   }
 
+  late final _$phoneTallyAtom =
+      Atom(name: '_CaptureStore.phoneTally', context: context);
+
+  @override
+  List<Map<String, int>> get phoneTally {
+    _$phoneTallyAtom.reportRead();
+    return super.phoneTally;
+  }
+
+  @override
+  set phoneTally(List<Map<String, int>> value) {
+    _$phoneTallyAtom.reportWrite(value, super.phoneTally, () {
+      super.phoneTally = value;
+    });
+  }
+
   late final _$isBackCamAtom =
       Atom(name: '_CaptureStore.isBackCam', context: context);
 
@@ -560,6 +576,17 @@ mixin _$CaptureStore on _CaptureStore, Store {
   }
 
   @override
+  void setPhoneTally(List<Map<String, int>> t) {
+    final _$actionInfo = _$_CaptureStoreActionController.startAction(
+        name: '_CaptureStore.setPhoneTally');
+    try {
+      return super.setPhoneTally(t);
+    } finally {
+      _$_CaptureStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   void changeCam() {
     final _$actionInfo = _$_CaptureStoreActionController.startAction(
         name: '_CaptureStore.changeCam');
@@ -665,6 +692,7 @@ battery: ${battery},
 engine: ${engine},
 showPreview: ${showPreview},
 hidePreview: ${hidePreview},
+phoneTally: ${phoneTally},
 isBackCam: ${isBackCam},
 enlargementState: ${enlargementState},
 enlargeCameraView: ${enlargeCameraView},

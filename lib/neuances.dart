@@ -20,5 +20,5 @@ final Uri kMediaKit = Uri.parse("https://docs.joinsafe.me/media-kit");
 final Uri kCollaborators = Uri.parse("https://docs.joinsafe.me/collaborators");
 final Uri kHelpCenter = Uri.parse("https://docs.joinsafe.me");
 final Uri kGiveFeedback = Uri.parse(
-  "https://sprw.io/stt-jZ5Gtv3tBmNhWYwWMtEkd7",
+  "https://docs.joinsafe.me/contributors",
 );

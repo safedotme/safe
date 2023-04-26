@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:safe/screens/capture/local_widgets/camera_preview_progress_indicator.widget.dart';
 import 'package:safe/utils/constants/constants.util.dart';
 
 class CameraFeedSkeleton extends StatelessWidget {
@@ -26,10 +27,16 @@ class CameraFeedSkeleton extends StatelessWidget {
             width: kBorderWidth,
             color: kColorMap[MutableColor.neutral7]!,
           ),
-          color: kColorMap[MutableColor.neutral8],
+          image: DecorationImage(
+            image: AssetImage("assets/images/stream_loader.png"),
+            fit: BoxFit.cover,
+          ),
           borderRadius: BorderRadius.circular(
             kCaptureControlBorderRadius,
           ),
+        ),
+        child: Center(
+          child: CameraPreviewProgressIndicator(),
         ),
       ),
     );

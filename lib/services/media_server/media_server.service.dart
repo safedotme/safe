@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert' as conv;
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'package:safe/models/media_server/start_recording_response.model.dart';
@@ -230,7 +231,9 @@ class MediaServer {
         ":65,",
       );
     } catch (e) {
-      print(e);
+      if (kDebugMode) {
+        print(e);
+      }
     }
 
     if (!check65Exists) return null;
@@ -263,7 +266,9 @@ class MediaServer {
       try {
         isError65 = (json?["error"]["response"] as String).contains(":65,");
       } catch (e) {
-        print(e);
+        if (kDebugMode) {
+          print(e);
+        }
       }
 
       shouldStop = retriesUsed || isJsonNull || !isError65;

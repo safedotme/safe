@@ -9,7 +9,6 @@ import 'package:safe/widgets/mutable_country_code_selector/local_widgets/country
 import 'package:safe/widgets/mutable_divider/mutable_divider.widget.dart';
 import 'package:safe/widgets/mutable_handle/mutable_handle.dart';
 import 'package:safe/widgets/mutable_popup/mutable_popup.widget.dart';
-import 'package:safe/widgets/mutable_scrollbar/mutable_scrollbar.widget.dart';
 import 'package:safe/widgets/mutable_text/mutable_text.widget.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 

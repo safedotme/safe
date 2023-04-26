@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:safe/screens/incident/local_widgets/data_point_key.widget.dart';
 import 'package:safe/screens/incident/local_widgets/data_point_wrapper.widget.dart';
 import 'package:safe/utils/constants/constants.util.dart';
-import 'package:safe/utils/icon/icon.util.dart';
 import 'package:safe/widgets/mutable_button/mutable_button.widget.dart';
 import 'package:safe/widgets/mutable_icon/mutable_icon.widget.dart';
 import 'package:safe/widgets/mutable_text/mutable_text.widget.dart';
@@ -69,6 +68,5 @@ class DataPointBox extends StatelessWidget {
         ),
       ),
     );
-    ;
   }
 }

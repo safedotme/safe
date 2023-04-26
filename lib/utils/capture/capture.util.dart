@@ -1,8 +1,10 @@
 import 'dart:async';
 import 'package:agora_rtc_engine/agora_rtc_engine.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:intl/intl.dart';
 import 'package:location/location.dart' as api;
 import 'package:safe/core.dart';
+import 'package:safe/models/admin/admin.model.dart';
 import 'package:safe/models/incident/stream.model.dart' as model;
 import 'package:safe/models/contact/contact.model.dart';
 import 'package:safe/models/incident/battery.model.dart';
@@ -32,6 +34,21 @@ class CaptureUtil {
 
   void initialize(Core core) {
     _core = core;
+  }
+
+  // Resets phone tally from envs
+  void _setPhoneTally() {
+    final keys = dotenv.env.keys.where(
+      (k) => k.contains("TWILIO_PHONE"),
+    );
+
+    List<Map<String, int>> tally = [];
+
+    for (final key in keys) {
+      tally.add({key: 0});
+    }
+
+    _core!.state.capture.setPhoneTally(tally);
   }
 
   //
@@ -75,6 +92,9 @@ class CaptureUtil {
 
     // Will be used to start & stop incident
     isActive = true;
+
+    // Resets phone tally
+    _setPhoneTally();
 
     // Resets error
     if (_core!.state.capture.errorCapturing != null) {
@@ -283,23 +303,18 @@ USER ID: ${_core!.state.capture.incident!.userId}
     _initEngine();
 
     String? token = await _core!.services.mediaServer.generateRTCToken(
-        channelName: _core!.state.capture.incident!.stream.channelName,
-        role: TokenRole.publisher,
-        type: TokenType.userAccount,
-        uid: _core!.state.capture.incident!.stream.userId,
-        onError: (e) {
-          _logError(
-            event: ErrorLogType.mediaServerFailed,
-            error: e,
-            crit: true,
-          );
-        });
-
-    if (token == null) {
-      _uploadChanges(_core!.state.capture.incident!.copyWith(
-        streamAvailable: false,
-      ));
-    }
+      channelName: _core!.state.capture.incident!.stream.channelName,
+      role: TokenRole.publisher,
+      type: TokenType.userAccount,
+      uid: _core!.state.capture.incident!.stream.userId,
+      onError: (e) {
+        _logError(
+          event: ErrorLogType.mediaServerFailed,
+          error: e,
+          crit: true,
+        );
+      },
+    );
 
     await _core!.services.agora.stream(
       _core!.state.capture.engine!,
@@ -438,9 +453,6 @@ USER ID: ${_core!.state.capture.incident!.userId}
 
       incident = Incident(
         id: incidentId,
-        pubID: _core!.utils.text.removeSymbols(
-          Uuid().v4(),
-        ),
         stream: stream,
         isTutorial: isTutorial,
         userId: _core!.services.auth.currentUser!.uid,
@@ -549,7 +561,7 @@ USER ID: ${_core!.state.capture.incident!.userId}
       "{LONG}": l?.long?.abs().toStringAsFixed(4),
       "{NAME_POSESSIVE}": _core!.utils.name.genFirstName(user.name, true),
       "{BATTERY}": battery.toString(),
-      "{LINK}": "https://live.joinsafe.me/${incident.pubID}",
+      "{LINK}": "https://live.joinsafe.me/${incident.id}",
     };
 
     for (String key in replacementMap.keys) {
@@ -574,7 +586,9 @@ USER ID: ${_core!.state.capture.incident!.userId}
 
     // Prevents contacts from being notified during a tutorial
 
-    if (!isTutorial && type == MessageType.start) {
+    AdminSettings settings = await _core!.services.server.admin.readLatest();
+
+    if (!isTutorial && type == MessageType.start && settings.callContacts) {
       final voiceMsg = _generateMessage(
         contact,
         user,
@@ -586,6 +600,8 @@ USER ID: ${_core!.state.capture.incident!.userId}
       await _core!.services.twilio.call(
         phone: contact.phone,
         message: voiceMsg,
+        tally: _core!.state.capture.phoneTally,
+        setTally: _core!.state.capture.setPhoneTally,
       );
     }
 
@@ -593,6 +609,8 @@ USER ID: ${_core!.state.capture.incident!.userId}
       await _core!.services.twilio.messageSMS(
         phone: contact.phone,
         message: message,
+        tally: _core!.state.capture.phoneTally,
+        setTally: _core!.state.capture.setPhoneTally,
       );
     }
 

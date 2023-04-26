@@ -46,10 +46,7 @@ class MutableTextField extends StatelessWidget {
           Expanded(
             child: TextField(
               controller: controller,
-              cursorColor: core.utils.color.translucify(
-                MutableColor.neutral5,
-                Transparency.v64,
-              ),
+              cursorColor: kColorMap[MutableColor.neutral3],
               onChanged: onChange,
 
               // Height is based on fontSize (16)
