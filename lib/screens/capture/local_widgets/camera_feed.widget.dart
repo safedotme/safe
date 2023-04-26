@@ -8,7 +8,6 @@ import 'package:safe/screens/capture/local_widgets/camera_feed_skeleton.widget.d
 import 'package:safe/services/agora/agora.service.dart';
 import 'package:safe/utils/constants/constants.util.dart';
 import 'package:safe/widgets/mutable_live_badge/mutable_live_badge.widget.dart';
-import 'package:safe/widgets/mutable_shimmer/mutable_shimmer.widget.dart';
 
 class CameraFeed extends StatefulWidget {
   @override
@@ -132,13 +131,17 @@ class _CameraFeedState extends State<CameraFeed> with TickerProviderStateMixin {
                     ),
                   ),
           ),
+          // Opacity(
+          //   opacity: opacity,
+          //   child: MutableShimmer(
+          //     active: opacity != 0,
+          //     animateToColor: kBoxLoaderShimmerColor,
+          //     child: CameraFeedSkeleton(),
+          //   ),
+          // ),
           Opacity(
             opacity: opacity,
-            child: MutableShimmer(
-              active: opacity != 0,
-              animateToColor: kBoxLoaderShimmerColor,
-              child: CameraFeedSkeleton(),
-            ),
+            child: CameraFeedSkeleton(),
           ),
           Visibility(
             visible: core.state.capture.enlargementState > 0.9 &&
