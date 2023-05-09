@@ -33,7 +33,7 @@ class LanguageUtil {
           "desc": "Check your messages for the latest OTP code"
         },
         "user_disabled": {
-          "header": "Your account has been desabled",
+          "header": "Your account has been disabled",
           "desc": "Tap here to reach out to Safe's support team"
         },
         "default": {
@@ -215,7 +215,7 @@ class LanguageUtil {
       "empty": {
         "header": "No Incidents",
         "desc":
-            "There are no inicdents tied to this account. Tap on the Safe button to capture one.",
+            "There are no incidents tied to this account. Tap on the Safe button to capture one.",
       }
     },
     "play": {
