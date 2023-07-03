@@ -24,6 +24,10 @@ class LanguageUtil {
           "header": "Hold up! You forgot to add your phone number",
           "desc": "This will be used to verify your account later on",
         },
+        "user-not-exists": {
+          "header": "This account does not exist",
+          "desc": "Don't have an account? Try creating one instead.",
+        },
         "invalid-phone-number": {
           "header": "Hold up! You're phone number is invalid",
           "desc": "Check your phone number before continuing",

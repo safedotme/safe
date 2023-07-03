@@ -128,7 +128,7 @@ class _ContactEditorScreenState extends State<ContactEditorScreen> {
 
           core.state.contact.setEditable(contact);
         },
-        height: 316 -
+        height: 320 -
             (kEmergencyContactAvatarPopupSize *
                 (core.state.contact.isAdding ? 1 : 0)),
         onCodeTap: () {

@@ -149,7 +149,7 @@ class _PlayerProgressIndicatorState extends State<PlayerProgressIndicator> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   SizedBox(
-                    width: 45,
+                    width: 50,
                     child: MutableText(
                       core.state.incident.playTime,
                       weight: TypeWeight.semiBold,

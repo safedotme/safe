@@ -28,6 +28,17 @@ class UserServer {
     }
   }
 
+  Future<bool> userExistsFromPhone(String phone) async {
+    try {
+      var map =
+          await _db.collection(path).where("phone", isEqualTo: phone).get();
+
+      return map.docs.isNotEmpty;
+    } catch (e) {
+      return false;
+    }
+  }
+
   Future<User?> readFromIdOnce({required String id}) async {
     var map = await _db.collection(path).doc(id).get();
 

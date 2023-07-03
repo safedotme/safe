@@ -78,12 +78,24 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen>
     });
   }
 
+  Future<bool> checkUserExists(String phone) {
+    return core.services.server.user.userExistsFromPhone(phone);
+  }
+
   // Generates different hint text based on country
   String handleHint(String code) {
     return core.utils.phone.generateHint(code);
   }
 
   void submit() async {
+    bool userExists = await checkUserExists(
+        "${core.state.auth.countryDialCode} ${core.state.auth.phoneNumber}");
+
+    if (!userExists) {
+      handleError("user-not-exists");
+      return;
+    }
+
     core.state.auth.countryCodeController.close();
     node.unfocus();
 
