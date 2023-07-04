@@ -13,7 +13,7 @@
 		<key>CFBundleIdentifier</key>
 		<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
 		<key>NSFaceIDUsageDescription</key>
-		<string>$(PRODUFLUTTER_BUILD_NAMECT_NAME) Authentication with TouchId or FaceID</string>
+		<string>$(PRODUFLUTTER_BUILD_NAMECT_NAME) Authentication with TouchID or FaceID</string>
 		<key>CFBundleInfoDictionaryVersion</key>
 		<string>6.0</string>
 		<key>CFBundleName</key>
@@ -61,6 +61,16 @@
 		<string>To keep track of your location in incidents</string>
 		<key>NSMicrophoneUsageDescription</key>
 		<string>Used only to record incidents</string>
+
+		<key>NSCalendarsUsageDescription</key>
+		<string>Permission Handler API</string>
+		<key>NSAppleMusicUsageDescription</key>
+		<string>Permission Handler API</string>
+		<key>NSSpeechRecognitionUsageDescription</key>
+		<string>Permission Handler API</string>
+		<key>NSBluetoothAlwaysUsageDescription</key>
+		<string>Permission Handler API</string>
+
 		<key>NSMotionUsageDescription</key>
 		<string>motion</string>
 		<key>UIBackgroundModes</key>
