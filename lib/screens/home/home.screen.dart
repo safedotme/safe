@@ -78,6 +78,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   void permissionSubscribe() async {
     var disabled = await core.services.permissions.getDisabledPermissions(core);
+
     core.state.preferences.setDisabledPermissions(disabled);
     await core.utils.credit.obtainState(core);
   }
