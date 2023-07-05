@@ -11,8 +11,8 @@ const StoppedPage: NextPage = () => {
         </p>
         <div className="h-[16px]" />
         <p className=" mx-[35px] text-center text-[0.875rem] font-[400] text-[#B4B5B9]">
-          The user has stopped capturing the incident. As an emergency contact,
-          you will receive an SMS message the user's final information shortly.
+          {`The user has stopped capturing the incident. As an emergency contact,
+          you will receive an SMS message the user's final information shortly.`}
         </p>
       </div>
     </div>
