@@ -1,9 +1,8 @@
 import { Firestore } from "firebase/firestore";
 import { doc, onSnapshot } from "firebase/firestore";
+import { Incident } from "safe/models/incident.model";
 
-interface Incident {
-    id: string
-}
+
 
 interface IncidentListenerProps {
     db: Firestore, 
@@ -26,6 +25,9 @@ const incidentListen = (props: IncidentListenerProps) => {
 
             props.onFetch({
                 id: data.id,
+                stream: {},
+                location: {},
+                battery: 1,
             });
         },
         (error) => {
