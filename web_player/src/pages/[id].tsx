@@ -46,6 +46,7 @@ const IncidentPage: NextPage = () => {
       <div className="absolute left-0 top-0 h-screen w-screen bg-grey-900">
         <IncidentMap />
       </div>
+      <div className="absolute bottom-0 h-[150px] w-screen bg-gradient-to-t from-grey-700 from-20% to-grey-700/[0] to-100%" />
 
       <div className="hidden opacity-[0]">
         <LoadingBody />
