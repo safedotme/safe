@@ -6,34 +6,67 @@ import { Incident } from "safe/models/incident.model";
 
 interface IncidentListenerProps {
     db: Firestore, 
-    id:string, 
+    id: string, 
     onFetch: (incident: Incident) => void, 
-    onError: () => void,
-    onEnd: () => void,
+    onError: (e: any) => void,
 }
 
 
 const incidentListen = (props: IncidentListenerProps) => {
-    const unsub = onSnapshot(doc(props.db, "incidents", props.id),
-        (doc) => {
-            const data = doc.data();
+    try {
+        const unsub = onSnapshot(doc(props.db, "incidents", props.id),
 
-            if (data == undefined){
-                props.onError();
+        // Listen to changes
+        (doc) => {
+            if (!doc.exists) {
                 return;
             }
 
-            props.onFetch({
-                id: data.id,
-                stream: {},
-                location: {},
-                battery: 1,
-            });
+
+            const data = doc.data();
+
+            if (data == undefined){
+                props.onError("Data is undefined");
+                return;
+            }
+
+            try {
+                const formattedData = {
+                    id: data.id,
+                    stream: {
+                        channelName: data.stream.channel_name,
+                        recordingId: data.stream.recording_id,
+                        resourceId: data.stream.resource_id,
+                        sid: data.stream.sid,
+                        userId: data.stream.user_id,
+                    },
+                    location: {
+                        lat: 0,
+                        long: 0,
+                        speed: 0,
+                        address: "",
+                    },
+                    battery: 1,
+                }
+
+                props.onFetch(formattedData);
+
+            // Catch formatting errors
+            } catch (e) {
+                props.onError(e)
+            }
         },
+
+        // Catch Firestore errors
         (error) => {
-            props.onError();
+            props.onError(error);
         }
     );
+
+    // Catch unexpected errors
+    } catch (e) {
+        props.onError(e)
+    }
 }
 
 export default incidentListen;

@@ -6,7 +6,6 @@ export default {
     extend: {
       fontFamily: {
         display: ["var(--font-sfrounded)"],
-        
       },
       colors: {
         transparent: 'transparent',
