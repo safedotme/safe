@@ -4,21 +4,36 @@ import { doc, getDoc, getFirestore } from "firebase/firestore";
 import { getApp } from "firebase/app";
 import incidentListen from "safe/services/firestore.service";
 import Loader from "safe/components/loader/loader";
+import useIncidentStore from "safe/stores/incident.store";
+import { useEffect } from "react";
 
 const IncidentPage: NextPage = () => {
   // Initialize Router
   const router = useRouter();
 
+  // Initialize Store
+  const store = useIncidentStore();
+
   // Initialize Firestore
-  const db = getFirestore(getApp());
-  incidentListen({
-    db: db,
-    id: router.query.id as string,
-    onFetch: (incident) => {
-      console.log(incident.stream.userId);
-    },
-    onError: (err) => {},
-  });
+
+  useEffect(() => {
+    if (!router.isReady) return;
+
+    const db = getFirestore(getApp());
+
+    incidentListen({
+      db: db,
+      id: router.query.id as string,
+      onFetch: (incident) => {
+        console.log(incident.stream.resourceId);
+
+        store.setIncident(incident);
+      },
+      onError: (err) => {
+        console.log(err);
+      },
+    });
+  }, [router.isReady]);
 
   return (
     <div className="flex h-screen items-center justify-center bg-grey-900">

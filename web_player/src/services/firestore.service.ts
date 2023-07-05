@@ -1,6 +1,7 @@
-import { Firestore } from "firebase/firestore";
+import { DocumentData, Firestore, SnapshotOptions, getDoc } from "firebase/firestore";
 import { doc, onSnapshot } from "firebase/firestore";
 import { Incident } from "safe/models/incident.model";
+import { sortByDateTimeIso } from "safe/utils/sorting.util";
 
 
 
@@ -11,62 +12,74 @@ interface IncidentListenerProps {
     onError: (e: any) => void,
 }
 
+const formatIncident: (data: DocumentData) => Incident | null = (data) => {
 
-const incidentListen = (props: IncidentListenerProps) => {
     try {
-        const unsub = onSnapshot(doc(props.db, "incidents", props.id),
+        const batteryLog: DocumentData[] = data.battery;
+        const locationLog: DocumentData[] = data.location;
 
-        // Listen to changes
+        const location = sortByDateTimeIso(locationLog)[0];
+        const battery = sortByDateTimeIso(batteryLog)[0];
+
+        if (battery == undefined || location == undefined){
+            return null;
+        }
+
+        return {
+            id: data.id,
+            stream: {
+                channelName: data.stream.channel_name,
+                recordingId: data.stream.recording_id,
+                resourceId: data.stream.resource_id,
+                sid: data.stream.sid,
+                userId: data.stream.user_id,
+            },
+            location: {
+                lat: location.lat,
+                long: location.long,
+                speed: location.speed,
+                address: location.address,
+            },
+            battery: battery.percentage,
+        };
+    } catch (err) {
+        return null;
+    }
+}
+
+const incidentListen = async (props: IncidentListenerProps) => {
+    const docRef = doc(props.db, "incidents", props.id)
+
+    onSnapshot(docRef,
+        // Listen to Changes
         (doc) => {
             if (!doc.exists) {
+                props.onError("Document does not exist")
                 return;
             }
 
+            const data = doc.data()
 
-            const data = doc.data();
-
-            if (data == undefined){
-                props.onError("Data is undefined");
+            if (data == undefined) {
+                props.onError("Data is undefined")
                 return;
             }
 
-            try {
-                const formattedData = {
-                    id: data.id,
-                    stream: {
-                        channelName: data.stream.channel_name,
-                        recordingId: data.stream.recording_id,
-                        resourceId: data.stream.resource_id,
-                        sid: data.stream.sid,
-                        userId: data.stream.user_id,
-                    },
-                    location: {
-                        lat: 0,
-                        long: 0,
-                        speed: 0,
-                        address: "",
-                    },
-                    battery: 1,
-                }
+            const incident = formatIncident(data);
 
-                props.onFetch(formattedData);
-
-            // Catch formatting errors
-            } catch (e) {
-                props.onError(e)
+            if (incident == null) {
+                props.onError("Failed to format incident")
+                return;
             }
+
+            props.onFetch(incident);
         },
-
-        // Catch Firestore errors
+        // Listen to Errors
         (error) => {
-            props.onError(error);
+            props.onError(error)
         }
-    );
+    )
 
-    // Catch unexpected errors
-    } catch (e) {
-        props.onError(e)
-    }
 }
 
 export default incidentListen;
