@@ -25,8 +25,11 @@ const formatIncident: (data: DocumentData) => Incident | null = (data) => {
             return null;
         }
 
+        const date = new Date(data.datetime);
+
         return {
             id: data.id,
+            datetime: date,
             stream: {
                 channelName: data.stream.channel_name,
                 recordingId: data.stream.recording_id,

@@ -25,7 +25,8 @@ const IncidentPage: NextPage = () => {
       db: db,
       id: router.query.id as string,
       onFetch: (incident) => {
-        console.log(incident.stream.resourceId);
+        // Add a wait to give users time to read description | wait for at least 5 seconds
+        console.log(incident.datetime);
 
         store.setIncident(incident);
       },
@@ -41,7 +42,7 @@ const IncidentPage: NextPage = () => {
         <Loader />
         <div className="h-[25px]" />
         <p className=" text-[1.25rem] font-[700] text-white">
-          Processing Incident
+          Loading Incident
         </p>
         <div className="h-[16px]" />
         <p className=" mx-[35px] text-center text-[0.875rem] font-[400] text-[#B4B5B9]">

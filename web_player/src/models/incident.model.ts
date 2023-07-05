@@ -1,5 +1,6 @@
 export interface Incident {
     id: string,
+    datetime: Date,
     stream: Stream,
     location: Location,
     battery: number,
