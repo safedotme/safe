@@ -7,6 +7,8 @@ import useIncidentStore from "safe/stores/incident.store";
 import { useEffect } from "react";
 import LoadingBody from "safe/components/LoadingBody";
 import IncidentMap from "safe/components/IncidentMap";
+import GradientOverlay from "safe/components/GradientOverlay";
+import BaseDataBox from "safe/components/BaseDataBox";
 
 const IncidentPage: NextPage = () => {
   // Initialize Router
@@ -46,8 +48,8 @@ const IncidentPage: NextPage = () => {
       <div className="absolute left-0 top-0 h-screen w-screen bg-grey-900">
         <IncidentMap />
       </div>
-      <div className="absolute bottom-0 h-[150px] w-screen bg-gradient-to-t from-grey-700 from-20% to-grey-700/[0] to-100%" />
-
+      <GradientOverlay />
+      <BaseDataBox />
       <div className="hidden opacity-[0]">
         <LoadingBody />
       </div>
