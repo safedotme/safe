@@ -34,7 +34,7 @@ const IncidentPage: NextPage = () => {
       },
       onError: (error) => {
         if (error.toLowerCase().includes("insufficient permissions")) {
-          void router.push("/stopped");
+          void router.push("/error");
           return;
         }
 
