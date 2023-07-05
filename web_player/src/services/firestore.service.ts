@@ -81,6 +81,7 @@ const incidentListen = (props: IncidentListenerProps) => {
         },
         // Listen to Errors
         (error) => {
+            console.log(error) //TODO: Remove me
             props.onError(error.message)
         }
     )

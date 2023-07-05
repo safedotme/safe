@@ -2,7 +2,7 @@ import Loader from "./Loader";
 
 const LoadingBody = () => {
   return (
-    <div className="absolute left-0 top-0 flex h-screen w-screen items-center bg-grey-900">
+    <div className="absolute left-0 top-0 flex h-full w-screen items-center bg-grey-900">
       <div className="mb-[30vh] flex flex-col items-center">
         <Loader />
         <div className="h-[25px]" />
