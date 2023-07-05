@@ -1,6 +1,6 @@
 import { NextPage } from "next";
 import { useRouter } from "next/router";
-import { doc, getDoc, getFirestore } from "firebase/firestore";
+import { getFirestore } from "firebase/firestore";
 import { getApp } from "firebase/app";
 import incidentListen from "safe/services/firestore.service";
 import useIncidentStore from "safe/stores/incident.store";
@@ -30,15 +30,13 @@ const IncidentPage: NextPage = () => {
 
         store.setIncident(incident);
       },
-      onError: (e) => {
-        const error = `${e}`;
-
+      onError: (error) => {
         if (error.toLowerCase().includes("insufficient permissions")) {
-          router.push("/stopped");
+          void router.push("/stopped");
           return;
         }
 
-        router.push("/error");
+        void router.push("/error");
       },
     });
   }, [router.isReady]); // test

@@ -9,14 +9,15 @@ interface IncidentListenerProps {
     db: Firestore, 
     id: string, 
     onFetch: (incident: Incident) => void, 
-    onError: (e: any) => void,
+    onError: (e: string) => void,
 }
 
 const formatIncident: (data: DocumentData) => Incident | null = (data) => {
 
     try {
-        const batteryLog: DocumentData[] = data.battery;
-        const locationLog: DocumentData[] = data.location;
+        const batteryLog = data.battery as DocumentData[];
+        const locationLog = data.location as DocumentData[];
+        const stream = data.stream as DocumentData
 
         const location = sortByDateTimeIso(locationLog)[0];
         const battery = sortByDateTimeIso(batteryLog)[0];
@@ -25,32 +26,33 @@ const formatIncident: (data: DocumentData) => Incident | null = (data) => {
             return null;
         }
 
-        const date = new Date(data.datetime);
+        const date = new Date(data.datetime as string);
+        
 
         return {
-            id: data.id,
+            id: data.id as string,
             datetime: date,
             stream: {
-                channelName: data.stream.channel_name,
-                recordingId: data.stream.recording_id,
-                resourceId: data.stream.resource_id,
-                sid: data.stream.sid,
-                userId: data.stream.user_id,
+                channelName: stream.channel_name as string,
+                recordingId: stream.recording_id as string,
+                resourceId: stream.resource_id as string,
+                sid: stream.sid as string,
+                userId: stream.user_id as string,
             },
             location: {
-                lat: location.lat,
-                long: location.long,
-                speed: location.speed,
-                address: location.address,
+                lat: location.lat as number,
+                long: location.long as number,
+                speed: location.speed as number,
+                address: location.address as string,
             },
-            battery: battery.percentage,
+            battery: battery.percentage as number,
         };
     } catch (err) {
         return null;
     }
 }
 
-const incidentListen = async (props: IncidentListenerProps) => {
+const incidentListen = (props: IncidentListenerProps) => {
     const docRef = doc(props.db, "incidents", props.id)
 
     onSnapshot(docRef,
@@ -79,7 +81,7 @@ const incidentListen = async (props: IncidentListenerProps) => {
         },
         // Listen to Errors
         (error) => {
-            props.onError(error)
+            props.onError(error.message)
         }
     )
 
