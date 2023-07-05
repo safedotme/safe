@@ -41,7 +41,7 @@ const IncidentPage: NextPage = () => {
         router.push("/error");
       },
     });
-  }, [router.isReady]);
+  }, [router.isReady]); // test
 
   return (
     <div className="relative h-screen w-screen">
