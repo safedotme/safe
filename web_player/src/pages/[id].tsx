@@ -74,7 +74,8 @@ const IncidentPage: NextPage = () => {
       </div>
       <GradientOverlay />
       {store.fetched ? <BaseDataBox /> : <div />}
-      <DataColumn />
+      {store.fetched ? <DataColumn /> : <div />}
+
       <div className="hidden opacity-[0]">
         <LoadingBody />
       </div>
