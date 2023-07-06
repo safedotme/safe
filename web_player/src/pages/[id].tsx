@@ -10,6 +10,7 @@ import IncidentMap from "safe/components/IncidentMap";
 import GradientOverlay from "safe/components/GradientOverlay";
 import BaseDataBox from "safe/components/BaseDataBox";
 import { fetchTimezoneFromCoordinates } from "safe/services/timezone.service";
+import DataColumn from "safe/components/DataColumn";
 
 const IncidentPage: NextPage = () => {
   // Initialize Router
@@ -73,6 +74,7 @@ const IncidentPage: NextPage = () => {
       </div>
       <GradientOverlay />
       {store.fetched ? <BaseDataBox /> : <div />}
+      <DataColumn />
       <div className="hidden opacity-[0]">
         <LoadingBody />
       </div>

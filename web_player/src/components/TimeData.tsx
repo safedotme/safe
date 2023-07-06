@@ -7,14 +7,11 @@ import {
 
 const TimeData = () => {
   const store = useIncidentStore();
+  const [localTime, setLocalTime] = useState("");
 
   useEffect(() => {
     const intervalId = setInterval(() => {
-      const duration = getFormattedTimeSinceDate(store.incident?.datetime);
-      const localTime = formatTimeFromDate(store.incident?.datetime);
-
-      store.setDuration(duration);
-      store.setLocalTime(localTime);
+      setLocalTime(formatTimeFromDate(store.incident?.datetime));
     }, 1000);
 
     return () => {
@@ -24,7 +21,7 @@ const TimeData = () => {
 
   return (
     <p className="text-[0.875rem] font-[400] text-[#C7C7C7]">
-      {`Local Time - ${store.localTime} ${store.timezone}`}
+      {`Local Time - ${localTime} ${store.timezone}`}
     </p>
   );
 };
