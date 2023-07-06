@@ -35,7 +35,7 @@ const DataColumn = () => {
       </DataBox>
       <DataBox
         heading="State"
-        data={`${(store.incident?.location.speed! * CONVERSION_COEFF).toFixed(
+        data={`${(store.incident!.location.speed * CONVERSION_COEFF).toFixed(
           2
         )} KMPH`}
       >
