@@ -10,12 +10,11 @@ const TimeData = () => {
 
   useEffect(() => {
     const intervalId = setInterval(() => {
-      // Implement changing logic
       const duration = getFormattedTimeSinceDate(store.incident?.datetime);
       const localTime = formatTimeFromDate(store.incident?.datetime);
 
       store.setDuration(duration);
-      store.setLocalTime(formatTimeFromDate(store.incident?.datetime));
+      store.setLocalTime(localTime);
     }, 1000);
 
     return () => {

@@ -1,5 +1,10 @@
 import { env } from "safe/env.mjs";
 
+interface TimezoneData {
+    status: string,
+    timeZoneName: string | undefined,
+}
+
 export const fetchTimezoneFromCoordinates: (lat: number, lng: number, date: Date) => Promise<string> = async (lat, lng, date) => {
     const base = "https://maps.googleapis.com/maps/api/timezone/json";
     const location = `${lat},${lng}`;
@@ -14,9 +19,9 @@ export const fetchTimezoneFromCoordinates: (lat: number, lng: number, date: Date
             }
         })
 
-        const raw = await res.json();
+        const raw = await res.json() as TimezoneData;
 
-        if (raw.status == "OK"){
+        if (raw.status == "OK" && raw.timeZoneName != undefined){
             return raw.timeZoneName.replace(/[^A-Z]/g, '');
         }
 
