@@ -16,6 +16,7 @@ export const env = createEnv({
     NEXT_PUBLIC_MEASUREMENT_ID: z.string().min(1),
     NEXT_PUBLIC_RECAPTCHA_SITE_KEY: z.string().min(1),
     NEXT_PUBLIC_MAPS_KEY: z.string().min(1),
+    NEXT_PUBLIC_TIMEZONE_KEY: z.string().min(1),
   },
 
   runtimeEnv: {
@@ -29,6 +30,7 @@ export const env = createEnv({
     NEXT_PUBLIC_MEASUREMENT_ID: process.env.NEXT_PUBLIC_MEASUREMENT_ID,
     NEXT_PUBLIC_RECAPTCHA_SITE_KEY: process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY,
     NEXT_PUBLIC_MAPS_KEY: process.env.NEXT_PUBLIC_MAPS_KEY,
+    NEXT_PUBLIC_TIMEZONE_KEY: process.env.NEXT_PUBLIC_TIMEZONE_KEY,
   },
 
   skipValidation: !!process.env.SKIP_ENV_VALIDATION,
