@@ -2,8 +2,8 @@ import { NextPage } from "next";
 
 const StoppedPage: NextPage = () => {
   return (
-    <div className="flex h-screen items-center justify-center bg-grey-900">
-      <div className="mb-[30vh] flex flex-col items-center">
+    <div className="flex h-[100dvh] items-center justify-center bg-grey-900">
+      <div className="mb-[30dvh] flex flex-col items-center">
         <img src="stopped.png" className="h-[80px]" />
         <div className="h-[25px]" />
         <p className=" text-[1.25rem] font-[700] text-white">

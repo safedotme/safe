@@ -2,7 +2,7 @@ import { NextPage } from "next";
 
 const ErrorPage: NextPage = () => {
   return (
-    <div className="flex h-screen items-center justify-center bg-grey-900">
+    <div className="flex h-[100dvh] items-center justify-center bg-grey-900">
       <div className="mb-[30vh] flex flex-col items-center">
         <img src="error.png" className="h-[80px]" />
         <div className="h-[25px]" />

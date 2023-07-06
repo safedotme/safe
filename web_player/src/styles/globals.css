@@ -7,3 +7,20 @@
     height: 100%;
     width: 100%;
 }
+
+*, *::before, *::after {
+  box-sizing: inherit;
+}
+
+html {
+  box-sizing: border-box;
+  overflow-y: hidden;
+  overflow-x: hidden;
+}
+
+html body {
+  padding: 0;
+  margin: 0;
+  overflow-y: inherit;
+  overflow-x: inherit;
+}

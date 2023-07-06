@@ -44,8 +44,8 @@ const IncidentPage: NextPage = () => {
   }, [router.isReady]);
 
   return (
-    <div className="relative h-screen w-screen">
-      <div className="absolute left-0 top-0 h-screen w-screen bg-grey-900">
+    <div className="relative h-[100dvh] w-screen">
+      <div className="absolute left-0 top-0 h-[100dvh] w-screen bg-grey-900">
         <IncidentMap />
       </div>
       <GradientOverlay />
