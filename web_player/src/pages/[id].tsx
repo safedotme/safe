@@ -4,13 +4,17 @@ import { getFirestore } from "firebase/firestore";
 import { getApp } from "firebase/app";
 import incidentListen from "safe/services/firestore.service";
 import useIncidentStore from "safe/stores/incident.store";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import LoadingBody from "safe/components/LoadingBody";
 import IncidentMap from "safe/components/IncidentMap";
 import GradientOverlay from "safe/components/GradientOverlay";
 import BaseDataBox from "safe/components/BaseDataBox";
-import { fetchTimezoneFromCoordinates } from "safe/services/timezone.service";
 import DataColumn from "safe/components/DataColumn";
+import dynamic from "next/dynamic";
+import { Stream } from "safe/models/incident.model";
+const VideoStream = dynamic(() => import("safe/components/VideoStream"), {
+  ssr: false,
+});
 
 const IncidentPage: NextPage = () => {
   // Initialize Router
@@ -18,6 +22,9 @@ const IncidentPage: NextPage = () => {
 
   // Initialize Store
   const store = useIncidentStore();
+
+  // Local State
+  const [stream, setStream] = useState<Stream | null>(null);
 
   // Initialize Firestore
 
@@ -35,6 +42,7 @@ const IncidentPage: NextPage = () => {
 
         if (!store.fetched) {
           store.setFetched(true);
+          setStream(incident.stream);
 
           // Wait 3 sec and display map screen
         }
@@ -75,6 +83,11 @@ const IncidentPage: NextPage = () => {
       <GradientOverlay />
       {store.fetched ? <BaseDataBox /> : <div />}
       {store.fetched ? <DataColumn /> : <div />}
+      {store.fetched && stream != null ? (
+        <VideoStream stream={stream} />
+      ) : (
+        <div />
+      )}
 
       <div className="hidden opacity-[0]">
         <LoadingBody />
