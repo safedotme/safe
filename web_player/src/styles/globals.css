@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  color-scheme: dark;
+}
+
 
 .map-container {
     height: 100%;
@@ -13,12 +17,14 @@
 }
 
 html {
+  background-color: #070508;
   box-sizing: border-box;
   overflow-y: hidden;
   overflow-x: hidden;
 }
 
 html body {
+  background-color: #070508;
   padding: 0;
   margin: 0;
   overflow-y: inherit;
