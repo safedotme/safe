@@ -9,9 +9,11 @@ const LocationDataBox = () => {
   return (
     <DataBox
       heading="State"
-      data={`${(store.incident!.location.speed * CONVERSION_COEFF).toFixed(
-        2
-      )} KMPH`}
+      data={`${
+        store.incident!.location.speed * CONVERSION_COEFF > 2
+          ? "MOVING"
+          : "STATIONARY"
+      }`}
     >
       <div className="mt-[1.5px]">
         <LocationIcon color="#5C5C5C" />
