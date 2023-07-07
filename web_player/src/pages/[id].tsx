@@ -93,10 +93,6 @@ const IncidentPage: NextPage = () => {
       ) : (
         <div />
       )}
-
-      {/* <div className={loading ? `display` : `hidden`}>
-        <LoadingBody />
-      </div> */}
     </div>
   );
 };
