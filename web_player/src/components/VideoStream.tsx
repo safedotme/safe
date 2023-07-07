@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import StreamLoader from "./StreamLoader";
 import {
   AgoraVideoPlayer,
   IAgoraRTCRemoteUser,
@@ -9,7 +8,6 @@ import {
   createMicrophoneAndCameraTracks,
 } from "agora-rtc-react";
 import { Stream } from "safe/models/incident.model";
-import { error } from "console";
 
 interface VideoStreamProps {
   stream: Stream;
@@ -18,6 +16,7 @@ interface VideoStreamProps {
 const VideoStream = (props: VideoStreamProps) => {
   const [isStreaming, setIsStreaming] = useState(false);
   const [streamer, setStreamer] = useState<IAgoraRTCRemoteUser | null>(null);
+  const [isLarge, setIsLarge] = useState(false);
   const client = createClient({ mode: "rtc", codec: "h264" })();
 
   useEffect(() => {
@@ -56,15 +55,32 @@ const VideoStream = (props: VideoStreamProps) => {
   }, []);
 
   return (
-    <div className="absolute left-0 top-0 ml-[16px] mt-[22px] h-[210px] w-[135px] rounded-[15px] bg-white">
+    <div
+      className={`absolute left-0 top-0  mt-[22px] ${
+        isLarge
+          ? "ml-[0px] h-[155vw] w-[100vw]"
+          : "ml-[16px] h-[210px] w-[135px]"
+      }  overflow-hidden rounded-[15px] border-[3px] border-white/[0.2] bg-grey-400/[0.75] backdrop-blur-[20px] transition-all`}
+    >
       {isStreaming ? (
         <AgoraVideoPlayer
           videoTrack={streamer!.videoTrack!}
           key={streamer!.uid}
-          style={{ height: "100%", width: "100%" }}
+          style={{
+            height: "100%",
+            width: "100%",
+          }}
+          onClick={() => {
+            setIsLarge(!isLarge);
+          }}
         />
       ) : (
-        <StreamLoader />
+        <div className="flex h-full">
+          <img
+            src="loader_small.png"
+            className="m-auto h-[35px] animate-spin"
+          />
+        </div>
       )}
     </div>
   );

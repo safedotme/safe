@@ -12,6 +12,7 @@ import BaseDataBox from "safe/components/BaseDataBox";
 import DataColumn from "safe/components/DataColumn";
 import dynamic from "next/dynamic";
 import { Stream } from "safe/models/incident.model";
+import { clearTimeout } from "timers";
 const VideoStream = dynamic(() => import("safe/components/VideoStream"), {
   ssr: false,
 });
@@ -25,6 +26,7 @@ const IncidentPage: NextPage = () => {
 
   // Local State
   const [stream, setStream] = useState<Stream | null>(null);
+  const [loading, setLoading] = useState(true);
 
   // Initialize Firestore
 
@@ -45,6 +47,9 @@ const IncidentPage: NextPage = () => {
           setStream(incident.stream);
 
           // Wait 3 sec and display map screen
+          const timeoutId = setTimeout(() => {
+            setLoading(false);
+          }, 3000);
         }
 
         if (!fetchedTimezone) {
@@ -89,7 +94,7 @@ const IncidentPage: NextPage = () => {
         <div />
       )}
 
-      <div className="hidden opacity-[0]">
+      <div className={loading ? `display` : `hidden`}>
         <LoadingBody />
       </div>
     </div>
