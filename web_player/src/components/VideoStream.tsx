@@ -43,7 +43,6 @@ const VideoStream = (props: VideoStreamProps) => {
     const appId = "53afc3aa11c84a99bdd7444e816d39f3";
     const token =
       "007eJxTYOieMnGNavV9/ssLV2zdK7Jwog/PnkiZy5Oy5W0seLo+HdunwGBqnJiWbJyYaGiYbGGSaGmZlJJibmJikmphaJZibJlmzGiwPKUhkJGB6dodBkYoBPFZGEpSi0sYGABVgR9I";
-    const uid = "0000";
 
     client
       .join(appId, channelName, token, null)
