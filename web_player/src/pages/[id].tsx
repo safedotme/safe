@@ -5,7 +5,6 @@ import { getApp } from "firebase/app";
 import incidentListen from "safe/services/firestore.service";
 import useIncidentStore from "safe/stores/incident.store";
 import { useEffect, useState } from "react";
-import LoadingBody from "safe/components/LoadingBody";
 import IncidentMap from "safe/components/IncidentMap";
 import GradientOverlay from "safe/components/GradientOverlay";
 import BaseDataBox from "safe/components/BaseDataBox";
@@ -26,11 +25,18 @@ const IncidentPage: NextPage = () => {
 
   // Local State
   const [stream, setStream] = useState<Stream | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [isDark, setIsDark] = useState(false);
 
   // Initialize Firestore
 
   useEffect(() => {
+    // Set theme
+    const theme = window.matchMedia("(prefers-color-scheme: dark)");
+    if (theme.matches) {
+      setIsDark(true);
+    }
+
+    // Initialize Incident
     if (!router.isReady) return;
     let fetchedTimezone = false;
 
@@ -45,11 +51,6 @@ const IncidentPage: NextPage = () => {
         if (!store.fetched) {
           store.setFetched(true);
           setStream(incident.stream);
-
-          // Wait 3 sec and display map screen
-          const timeoutId = setTimeout(() => {
-            setLoading(false);
-          }, 3000);
         }
 
         if (!fetchedTimezone) {
@@ -82,14 +83,14 @@ const IncidentPage: NextPage = () => {
 
   return (
     <div className="relative h-[100dvh] w-screen">
-      <div className="absolute left-0 top-0 h-[100dvh] w-screen bg-grey-900">
-        {store.fetched ? <IncidentMap /> : <div />}
+      <div className={`absolute left-0 top-0 h-[100dvh] w-screen`}>
+        {store.fetched ? <IncidentMap isDark={isDark} /> : <div />}
       </div>
-      <GradientOverlay />
-      {store.fetched ? <BaseDataBox /> : <div />}
-      {store.fetched ? <DataColumn /> : <div />}
+      <GradientOverlay isDark={isDark} />
+      {store.fetched ? <BaseDataBox isDark={isDark} /> : <div />}
+      {store.fetched ? <DataColumn isDark={isDark} /> : <div />}
       {store.fetched && stream != null ? (
-        <VideoStream stream={stream} />
+        <VideoStream stream={stream} isDark={isDark} />
       ) : (
         <div />
       )}

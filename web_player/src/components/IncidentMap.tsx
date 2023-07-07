@@ -1,9 +1,13 @@
 import { GoogleMap, MarkerF, useLoadScript } from "@react-google-maps/api";
-import { mapStyles } from "safe/assets/map_styles";
+import { mapStylesDark, mapStylesLight } from "safe/assets/map_styles";
 import { env } from "safe/env.mjs";
 import useIncidentStore from "safe/stores/incident.store";
 
-const IncidentMap = () => {
+interface IncidentMapProps {
+  isDark: boolean;
+}
+
+const IncidentMap = (props: IncidentMapProps) => {
   const script = useLoadScript({
     googleMapsApiKey: env.NEXT_PUBLIC_MAPS_KEY,
   });
@@ -23,7 +27,7 @@ const IncidentMap = () => {
       zoom={17}
       options={{
         disableDefaultUI: true,
-        styles: mapStyles,
+        styles: props.isDark ? mapStylesDark : mapStylesLight,
       }}
     >
       <MarkerF
@@ -31,7 +35,7 @@ const IncidentMap = () => {
           lat: store.incident == null ? 0 : store.incident.location.lat,
           lng: store.incident == null ? 0 : store.incident.location.long,
         }}
-        icon={"pin.svg"}
+        icon={props.isDark ? "pin_dark.svg" : "pin_light.svg"}
       />
     </GoogleMap>
   );

@@ -5,7 +5,11 @@ import {
   getFormattedTimeSinceDate,
 } from "safe/utils/datetime.util";
 
-const TimeData = () => {
+interface TimeDataProps {
+  isDark: boolean;
+}
+
+const TimeData = (props: TimeDataProps) => {
   const store = useIncidentStore();
   const [localTime, setLocalTime] = useState("");
 
@@ -20,7 +24,13 @@ const TimeData = () => {
   }, []);
 
   return (
-    <p className="text-[0.875rem] font-[400] text-[#C7C7C7]">
+    <p
+      className={`text-[0.875rem]  ${
+        props.isDark
+          ? "font-[400] text-[#C7C7C7]"
+          : "font-[500] text-[#5E5E5E] "
+      }`}
+    >
       {`Local Time - ${localTime} ${store.timezone}`}
     </p>
   );

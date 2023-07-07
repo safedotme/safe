@@ -11,6 +11,7 @@ import { Stream } from "safe/models/incident.model";
 
 interface VideoStreamProps {
   stream: Stream;
+  isDark: boolean;
 }
 
 const VideoStream = (props: VideoStreamProps) => {
@@ -60,7 +61,11 @@ const VideoStream = (props: VideoStreamProps) => {
         isLarge
           ? "ml-[0px] h-[155vw] w-[100vw]"
           : "ml-[16px] h-[210px] w-[135px]"
-      }  overflow-hidden rounded-[15px] border-[3px] border-white/[0.2] bg-grey-400/[0.75] backdrop-blur-[20px] transition-all`}
+      }  overflow-hidden rounded-[15px] border-[3px] border-white/[0.2] ${
+        props.isDark
+          ? "bg-grey-400/[0.75] backdrop-blur-[20px]"
+          : " bg-[#ACACAC]/[0.6] backdrop-blur-[10px]"
+      }  transition-all`}
     >
       {isStreaming ? (
         <AgoraVideoPlayer
