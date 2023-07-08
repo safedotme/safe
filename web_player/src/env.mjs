@@ -22,7 +22,6 @@ export const env = createEnv({
     NEXT_PUBLIC_AGORA_CUSTOMER_KEY: z.string().min(1),
     NEXT_PUBLIC_AGORA_CUSTOMER_SECRET: z.string().min(1),
     NEXT_PUBLIC_MEDIA_ENDPOINT: z.string().min(1),
-    NEXT_PUBLIC_MEDIA_KEY: z.string().min(1),
     NEXT_PUBLIC_MEDIA_SECRET: z.string().min(1),
   },
 
@@ -43,7 +42,6 @@ export const env = createEnv({
     NEXT_PUBLIC_AGORA_CUSTOMER_KEY: process.env.NEXT_PUBLIC_AGORA_CUSTOMER_KEY,
     NEXT_PUBLIC_AGORA_CUSTOMER_SECRET: process.env.NEXT_PUBLIC_AGORA_CUSTOMER_SECRET,
     NEXT_PUBLIC_MEDIA_ENDPOINT: process.env.NEXT_PUBLIC_MEDIA_ENDPOINT,
-    NEXT_PUBLIC_MEDIA_KEY: process.env.NEXT_PUBLIC_MEDIA_KEY,
     NEXT_PUBLIC_MEDIA_SECRET: process.env.NEXT_PUBLIC_MEDIA_SECRET,
   },
 

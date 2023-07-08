@@ -12,6 +12,7 @@ import DataColumn from "safe/components/DataColumn";
 import dynamic from "next/dynamic";
 import { Stream } from "safe/models/incident.model";
 import { clearTimeout } from "timers";
+import { fetchTimezoneFromCoordinates } from "safe/services/timezone.service";
 const VideoStream = dynamic(() => import("safe/components/VideoStream"), {
   ssr: false,
 });
@@ -56,18 +57,17 @@ const IncidentPage: NextPage = () => {
         if (!fetchedTimezone) {
           fetchedTimezone = true;
 
-          // TODO: Uncomment
-          // fetchTimezoneFromCoordinates(
-          //   incident.location.lat,
-          //   incident.location.long,
-          //   incident.datetime
-          // )
-          //   .then((timezone) => {
-          //     store.setTimezone(timezone);
-          //   })
-          //   .catch((err) => {
-          //     console.log(err);
-          //   });
+          fetchTimezoneFromCoordinates(
+            incident.location.lat,
+            incident.location.long,
+            incident.datetime
+          )
+            .then((timezone) => {
+              store.setTimezone(timezone);
+            })
+            .catch((err) => {
+              console.log(err);
+            });
         }
       },
       onError: (error) => {

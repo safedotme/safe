@@ -1,119 +1,74 @@
-enum TokenRole { publisher, subscriber }
+import { env } from "safe/env.mjs";
 
-enum MediaAction {
-  getResourceID = "rid",
-  startRecording= "start",
-  stopRecording= "stop",
-  getRTCToken= "rtc",
-  process= "process",
+export enum TokenRole { 
+  publisher = "publisher",
+  subscriber = "subscriber"
+ }
+
+export enum TokenType {
+  uid = "uid",
+  userAccount = "userAccount"
 }
-
-enum TokenType { uid, userAccount }
-
-// Future<String?> generateRTCToken({
-//     required String channelName,
-//     required TokenRole role,
-//     required TokenType type,
-//     required int uid,
-//     required Function(String e) onError,
-//   }) async {
-//     // Get URL parameters
-//     Map<String, String> env = dotenv.env;
-
-//     // URL endpoint
-//     Map<String, String> body = {
-//       "uid": uid.toString(),
-//       "appId": env["AGORA_APP_ID"]!,
-//       "appCertificate": env["AGORA_CERT"]!,
-//       "role": unpackTokenRole(role),
-//       "tokenType": unpackTokenType(type),
-//       "channelName": channelName,
-//     };
-
-//     //Make Request
-//     var json = await _fetch(
-//       MediaAction.getRTCToken,
-//       body,
-//       onError,
-//     );
-
-//     if (json == null) return null;
-
-//     if (json["error"] != null) {
-//       Map? res = await _implementHandleNetworkJitter(
-//         body,
-//         MediaAction.getRTCToken,
-//         json,
-//         onError,
-//       );
-
-//       if (res == null) return null;
-
-//       return json["payload"]["token"];
-//     }
-
-//     return json["payload"]["token"];
-//   }
-
-// String _genCredentials(Map<String, String> env) => _encodeBase64(
-//     "${env["MEDIA_KEY"]}:${env["MEDIA_SECRET"]}",
-//   );
-
-
-
-
-//   Future<Map?> _fetch(MediaAction action, Map<String, dynamic> body,
-//       Function(String e) onError) async {
-//     http.Response? response;
-
-//     // Get URL parameters
-//     Map<String, String> env = dotenv.env;
-
-//     String target = actionMap[action]!;
-
-//     String endpoint =
-//         "${env["MEDIA_ENDPOINT"]!}/$target?key=${_genCredentials(env)}";
-
-//     try {
-//       response =
-//           await http.post(Uri.parse(endpoint), body: conv.json.encode(body));
-//     } catch (e) {
-//       onError(e.toString());
-//     }
-
-//     if (response == null) return null;
-
-//     Map<String, dynamic> json = conv.jsonDecode(response.body);
-
-//     if (response.statusCode != 200) {
-//       var res = {
-//         "status": response.statusCode,
-//         "error": json,
-//       };
-
-//       onError(res.toString());
-
-//       return res;
-//     }
-
-//     return {
-//       "status": response.statusCode,
-//       "error": null,
-//       "payload": json,
-//     };
-//   }
 
 interface RTCTokenProps {
-    channelName: string,
-    role: TokenRole,
-    type: TokenType,
-    uid: number,
+  channelName: string,
+  role: TokenRole,
+  type: TokenType,
+  uid: number,
 }
 
-export const generateRTCToken = (props: RTCTokenProps) => {
-
+interface MediaRTCTokenProps {
+uid: string,
+appId: string,
+appCertificate: string,
+role: string,
+tokenType: string,
+channelName: string
 }
 
-const fetch = async (action: MediaAction, body: Object) => {
-    return;
+interface MediaRTCTokenResponse {
+  token: string
+  status: number
+}
+
+export const generateRandomUid: () => number = () => {
+  let uid = ""
+
+  for (let i = 0; i < 8; i++){
+    const random = Math.floor(Math.random() * 10);
+
+    uid += random
+  }
+
+  return Number(uid);
+}
+
+export const generateRTCToken = async (props: RTCTokenProps) => {
+    const endpoint = `${env.NEXT_PUBLIC_MEDIA_ENDPOINT}/rtc?key=${env.NEXT_PUBLIC_MEDIA_SECRET}`
+
+    const body: MediaRTCTokenProps = {
+      uid: props.uid.toString(),
+      appId: env.NEXT_PUBLIC_AGORA_APP_ID,
+      appCertificate: env.NEXT_PUBLIC_AGORA_CERT,
+      role: props.role,
+      tokenType: props.type,
+      channelName: props.channelName,
+    };
+
+    let response: Response | null = null;
+
+    try {
+      response = await fetch(endpoint, {
+        method: "POST",
+        body: JSON.stringify(body),
+      })
+    } catch (e) {
+      return null
+    }
+
+    if (response == null) return null;
+
+    const result = await response.json() as MediaRTCTokenResponse;
+
+    return result.token;
 }

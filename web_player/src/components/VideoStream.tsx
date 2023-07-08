@@ -2,12 +2,16 @@ import { useEffect, useState } from "react";
 import {
   AgoraVideoPlayer,
   IAgoraRTCRemoteUser,
-  ICameraVideoTrack,
-  IRemoteVideoTrack,
   createClient,
-  createMicrophoneAndCameraTracks,
 } from "agora-rtc-react";
 import { Stream } from "safe/models/incident.model";
+import {
+  TokenRole,
+  TokenType,
+  generateRTCToken,
+  generateRandomUid,
+} from "safe/services/media.service";
+import { env } from "safe/env.mjs";
 
 interface VideoStreamProps {
   stream: Stream;
@@ -39,15 +43,31 @@ const VideoStream = (props: VideoStreamProps) => {
         });
     });
 
-    const channelName = "test";
-    const appId = "53afc3aa11c84a99bdd7444e816d39f3";
-    const token =
-      "007eJxTYOieMnGNavV9/ssLV2zdK7Jwog/PnkiZy5Oy5W0seLo+HdunwGBqnJiWbJyYaGiYbGGSaGmZlJJibmJikmphaJZibJlmzGiwPKUhkJGB6dodBkYoBPFZGEpSi0sYGABVgR9I";
+    const uid = generateRandomUid();
 
-    client
-      .join(appId, channelName, token, null)
-      .then((e) => {
-        return;
+    generateRTCToken({
+      channelName: props.stream.channelName,
+      type: TokenType.userAccount,
+      role: TokenRole.publisher,
+      uid: uid,
+    })
+      .then((token) => {
+        if (token == null) return;
+
+        // Join Call
+        client
+          .join(
+            env.NEXT_PUBLIC_AGORA_APP_ID,
+            props.stream.channelName,
+            token,
+            uid
+          )
+          .then((e) => {
+            return;
+          })
+          .catch((e) => {
+            return;
+          });
       })
       .catch((e) => {
         return;
