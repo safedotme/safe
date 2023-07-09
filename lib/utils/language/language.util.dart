@@ -235,7 +235,11 @@ class LanguageUtil {
           }
         },
         "speed": {
-          "header": "Speed",
+          "header": "State",
+          "state": {
+            "moving": "MOVING",
+            "stationary": "STATIONARY",
+          }
         },
       }
     },
