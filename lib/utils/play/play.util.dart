@@ -182,15 +182,16 @@ class PlayUtil {
   String? parseSpeed(Location? l) {
     if (l == null) return null;
     if (l.speed == null) return null;
-    if (l.speed! < 0) return "0 KM/H";
 
-    String speed = (l.speed! * 3.6).toString();
+    double speed = (l.speed! * 3.6);
 
-    if (!speed.contains(".")) {
-      return "$speed.0 KM/H";
-    }
-
-    return "${speed.substring(0, speed.indexOf(".") + 1)} KM/H";
+    return speed > 2
+        ? core!.utils.language
+                .langMap[core!.state.preferences.language]!["play"]["data_box"]
+            ["speed"]["state"]["moving"]
+        : core!.utils.language
+                .langMap[core!.state.preferences.language]!["play"]["data_box"]
+            ["speed"]["state"]["stationary"];
   }
 
   String parseDate(DateTime t) {
