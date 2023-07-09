@@ -1,5 +1,5 @@
 final Uri kRequestCountryUrl = Uri.parse(
-  "https://sprw.io/stt-5GCMwNFtPhnnpgEBpQDmAF",
+  "https://docs.google.com/forms/d/e/1FAIpQLScKCaevhSDeHdriVrMyN9ehW9Xl8ZhaTWv3DCG2mhYn4GTmcA/viewform?usp=sf_link",
 );
 final Uri kSecurityInfoUrl = Uri.parse("https://docs.joinsafe.me/security");
 final Uri kMarkMusicTwitter = Uri.parse("https://twitter.com/markmusic27");
