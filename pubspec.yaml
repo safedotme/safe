@@ -50,13 +50,13 @@ dependencies:
   confetti: ^0.7.0
   flutter_dotenv: ^5.0.2
   figma_squircle: ^0.5.3
-  cloud_firestore: ^4.2.0
+  cloud_firestore: ^4.8.2
   pin_code_fields: ^7.4.0
-  firebase_storage: ^11.0.7
+  firebase_storage: ^11.2.4
   contacts_service: ^0.6.3
   flutter_inset_box_shadow: ^1.0.8
-  firebase_core: ^2.4.0
-  firebase_auth: ^4.2.0
+  firebase_core: ^2.14.0
+  firebase_auth: ^4.6.3
   share_plus: ^4.0.10
   firebase_app_check: ^0.1.1+6
 

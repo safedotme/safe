@@ -58,6 +58,7 @@ class _IncidentLogState extends State<IncidentLog> {
 
             t.addAll(newMap);
             core.state.incidentLog.setThumbnail(t);
+            setState(() {});
           }
         });
       }

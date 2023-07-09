@@ -24,6 +24,10 @@ class LanguageUtil {
           "header": "Hold up! You forgot to add your phone number",
           "desc": "This will be used to verify your account later on",
         },
+        "user-not-exists": {
+          "header": "This account does not exist",
+          "desc": "Don't have an account? Try creating one instead.",
+        },
         "invalid-phone-number": {
           "header": "Hold up! You're phone number is invalid",
           "desc": "Check your phone number before continuing",
@@ -33,7 +37,7 @@ class LanguageUtil {
           "desc": "Check your messages for the latest OTP code"
         },
         "user_disabled": {
-          "header": "Your account has been desabled",
+          "header": "Your account has been disabled",
           "desc": "Tap here to reach out to Safe's support team"
         },
         "default": {
@@ -215,7 +219,7 @@ class LanguageUtil {
       "empty": {
         "header": "No Incidents",
         "desc":
-            "There are no inicdents tied to this account. Tap on the Safe button to capture one.",
+            "There are no incidents tied to this account. Tap on the Safe button to capture one.",
       }
     },
     "play": {
@@ -231,7 +235,11 @@ class LanguageUtil {
           }
         },
         "speed": {
-          "header": "Speed",
+          "header": "State",
+          "state": {
+            "moving": "MOVING",
+            "stationary": "STATIONARY",
+          }
         },
       }
     },
