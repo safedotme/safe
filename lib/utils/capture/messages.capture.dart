@@ -60,7 +60,7 @@ The emergency began at {TIME} and is listed as a {TYPE}.
 
 {LOCATION_SAY}
 
-We have sent you an SMS message with more information. Watch a livestream of the incident by opening the SMS message.
+You have been sent an SMS message with more information. Watch a livestream of the incident by opening the SMS message.
 
 The app continues to record {NAME_POSESSIVE} camera and track {NAME_POSESSIVE} exact location. You will receive a message when {NAME} stops capturing the incident.
 
@@ -76,7 +76,7 @@ The emergency began at {TIME} and is listed as a {TYPE}.
 
 {LOCATION_SAY}
 
-We have sent you an SMS message with more information. Watch a livestream of the incident by opening the SMS message.
+You have been sent an SMS message with more information. Watch a livestream of the incident by opening the SMS message.
 
 The app continues to record {NAME_POSESSIVE} camera and track {NAME_POSESSIVE} exact location. You will receive a message when {NAME} stops capturing the incident.
 
@@ -90,7 +90,7 @@ This message was sent by the Safe app. Learn more about Safe at joinsafe dot me.
 
 The emergency began at {TIME} and is listed as a {TYPE}.
 {LOCATION}
-To watch a video stream of the incident, open the following link on a computer/laptop: {LINK}
+Watch a video livestream of the incident along with {NAME_POSESSIVE} real-time location and battery life by opening the following link: {LINK}
 
 The app continues to record {NAME_POSESSIVE} camera and track {NAME_POSESSIVE} exact location. You will receive a message when {NAME} stops capturing the incident.
 
