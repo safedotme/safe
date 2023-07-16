@@ -588,6 +588,15 @@ USER ID: ${_core!.state.capture.incident!.userId}
 
     AdminSettings settings = await _core!.services.server.admin.readLatest();
 
+    if (!isTutorial) {
+      await _core!.services.twilio.messageSMS(
+        phone: contact.phone,
+        message: message,
+        tally: _core!.state.capture.phoneTally,
+        setTally: _core!.state.capture.setPhoneTally,
+      );
+    }
+
     if (!isTutorial && type == MessageType.start && settings.callContacts) {
       final voiceMsg = _generateMessage(
         contact,
@@ -600,15 +609,6 @@ USER ID: ${_core!.state.capture.incident!.userId}
       await _core!.services.twilio.call(
         phone: contact.phone,
         message: voiceMsg,
-        tally: _core!.state.capture.phoneTally,
-        setTally: _core!.state.capture.setPhoneTally,
-      );
-    }
-
-    if (!isTutorial) {
-      await _core!.services.twilio.messageSMS(
-        phone: contact.phone,
-        message: message,
         tally: _core!.state.capture.phoneTally,
         setTally: _core!.state.capture.setPhoneTally,
       );

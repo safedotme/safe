@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:safe/core.dart';
 import 'package:safe/utils/constants/constants.util.dart';
 
 class MutableTextField extends StatelessWidget {
@@ -28,8 +26,6 @@ class MutableTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Core core = Provider.of(context, listen: false);
-
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 16),
       decoration: BoxDecoration(

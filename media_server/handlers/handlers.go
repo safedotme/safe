@@ -21,12 +21,20 @@ func StartRecording(c *gin.Context) {
 	authorized := utils.AuthorizeRequest(c)
 
 	if !authorized {
+		c.AbortWithStatusJSON(403, gin.H{
+			"status":  403,
+			"message": "Unauthorized",
+		})
 		return
 	}
 
 	body, err := utils.ParseStartBody(c)
 
 	if err != nil {
+		c.AbortWithStatusJSON(200, gin.H{
+			"status":  200,
+			"message": err.Error(),
+		})
 		return
 	}
 
@@ -130,20 +138,31 @@ func StartRecording(c *gin.Context) {
 // ⬇️ STOP
 
 func StopRecording(c *gin.Context) {
+
 	log.Printf("\n\nStop Recording Request:\n")
 
 	// Will handle response
 	authorized := utils.AuthorizeRequest(c)
 
 	if !authorized {
+		utils.LogError("Unauthorized request", "")
 		return
 	}
 
 	body, err := utils.ParseStopBody(c)
 
 	if err != nil {
+		utils.LogError("An error occurred while parsing the data. "+err.Error(), "")
+
+		c.AbortWithStatusJSON(400, gin.H{
+			"status":  400,
+			"message": err.Error(),
+		})
 		return
 	}
+
+	// Notify server has received request
+	utils.LogStatus("Server has received process request", "processing-request-received", body.IncidentID)
 
 	// Trigger Stop Recording through Agora
 

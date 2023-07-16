@@ -88,12 +88,14 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen>
   }
 
   void submit() async {
-    bool userExists = await checkUserExists(
-        "${core.state.auth.countryDialCode} ${core.state.auth.phoneNumber}");
+    if (core.state.auth.authType == AuthType.login) {
+      bool userExists = await checkUserExists(
+          "${core.state.auth.countryDialCode} ${core.state.auth.phoneNumber}");
 
-    if (!userExists) {
-      handleError("user-not-exists");
-      return;
+      if (!userExists) {
+        handleError("user-not-exists");
+        return;
+      }
     }
 
     core.state.auth.countryCodeController.close();

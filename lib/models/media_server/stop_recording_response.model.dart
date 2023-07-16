@@ -26,4 +26,12 @@ class StopRecordingResponse {
       uploadingStatus: json["uploading_status"],
     );
   }
+
+  Map<String, dynamic> toMap() => {
+        "resource_id": resourceId,
+        "sid": sid,
+        "file_count": files?.length,
+        "uploadingStatus": uploadingStatus,
+        "processed": processed,
+      };
 }
