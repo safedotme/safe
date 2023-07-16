@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:convert' as conv;
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
@@ -99,7 +98,10 @@ class MediaServer {
       onError,
     );
 
-    if (json == null) return null;
+    if (json == null) {
+      onError("An error occurred while fetching from the media server");
+      return null;
+    }
 
     if (json["error"] != null) {
       Map? res = await _implementHandleNetworkJitter(
@@ -109,7 +111,10 @@ class MediaServer {
         onError,
       );
 
-      if (res == null) return null;
+      if (res == null) {
+        onError("Res is null");
+        return null;
+      }
 
       return StopRecordingResponse.fromJson(json["payload"]["response"]);
     }
@@ -337,14 +342,8 @@ class MediaServer {
     String endpoint =
         "${env["MEDIA_ENDPOINT"]!}/$target?key=${_genCredentials(env)}";
 
-    try {
-      response =
-          await http.post(Uri.parse(endpoint), body: conv.json.encode(body));
-    } catch (e) {
-      onError(e.toString());
-    }
-
-    if (response == null) return null;
+    response =
+        await http.post(Uri.parse(endpoint), body: conv.json.encode(body));
 
     Map<String, dynamic> json = conv.jsonDecode(response.body);
 

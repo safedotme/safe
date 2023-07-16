@@ -73,7 +73,7 @@ func LogError(out, incidentId string) {
 		"channel": "error",
 		"event": "media_server_failed",
 		"description": "<description>",
-		"icon": "🚨",
+		"icon": "❗️",
 		"tags": {
 			"incidentid": "<id>"
 		},

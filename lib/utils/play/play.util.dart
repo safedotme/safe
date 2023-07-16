@@ -86,6 +86,7 @@ class PlayUtil {
 
     // ⬇️ Initialize Video Player
     core!.state.incident.setPlayer(
+      // ignore: deprecated_member_use
       VideoPlayerController.network(data["url"]),
     );
 
