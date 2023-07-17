@@ -26,6 +26,7 @@ class MutablePopup extends StatefulWidget {
   final bool enableBorder;
   final double bottomInsets;
   final double maxHeight;
+  final bool isExcited;
 
   final MutablePopupStyle? style;
   final Widget? body;
@@ -37,6 +38,7 @@ class MutablePopup extends StatefulWidget {
   MutablePopup({
     this.type = PopupType.pannel,
     this.enableBorder = true,
+    this.isExcited = false,
     this.onOpened,
     this.bottomInsets = 0,
     this.scrollBuilder,
@@ -148,6 +150,7 @@ class _MutablePopupState extends State<MutablePopup> {
                       ? widget.body
                       : NonPannelBody(
                           size: size,
+                          isExcited: widget.isExcited,
                           style: style,
                           body: widget.body,
                         ),

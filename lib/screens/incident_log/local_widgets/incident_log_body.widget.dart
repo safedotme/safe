@@ -81,9 +81,11 @@ class _IncidentLogBodyState extends State<IncidentLogBody> {
         sortedIncidents.length,
         (i) => Padding(
               padding: EdgeInsets.only(
-                bottom: i + 1 == sortedIncidents.length
-                    ? 0
-                    : kIncidentLogCardSpacing,
+                bottom: !(i + 1 == sortedIncidents.length)
+                    ? kIncidentLogCardSpacing
+                    : sortedIncidents.length > 1
+                        ? 50
+                        : 0,
               ),
               child: MutableIncidentCard(sortedIncidents[i]),
             ) // Add spacing between incidents,

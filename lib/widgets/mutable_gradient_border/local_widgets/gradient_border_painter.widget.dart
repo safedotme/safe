@@ -6,11 +6,13 @@ class GradientBorderPainter extends CustomPainter {
   final Alignment? begin;
   final Alignment? end;
   final double borderRadius;
+  final List<Color>? colors;
 
   GradientBorderPainter({
     required this.width,
     required this.borderRadius,
     this.begin,
+    this.colors,
     this.end,
   });
 
@@ -23,7 +25,7 @@ class GradientBorderPainter extends CustomPainter {
 
     Paint paint = Paint()
       ..shader = LinearGradient(
-        colors: kPrimaryGradientColors,
+        colors: colors ?? kPrimaryGradientColors,
         begin: begin ?? kPrimaryGradientAlignmentBegin,
         end: end ?? kPrimaryGradientAlignmentEnd,
       ).createShader(rect)

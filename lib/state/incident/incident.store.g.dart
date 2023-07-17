@@ -57,6 +57,23 @@ mixin _$IncidentStore on _IncidentStore, Store {
     });
   }
 
+  late final _$widgetShowcasePopupControllerAtom = Atom(
+      name: '_IncidentStore.widgetShowcasePopupController', context: context);
+
+  @override
+  PanelController get widgetShowcasePopupController {
+    _$widgetShowcasePopupControllerAtom.reportRead();
+    return super.widgetShowcasePopupController;
+  }
+
+  @override
+  set widgetShowcasePopupController(PanelController value) {
+    _$widgetShowcasePopupControllerAtom
+        .reportWrite(value, super.widgetShowcasePopupController, () {
+      super.widgetShowcasePopupController = value;
+    });
+  }
+
   late final _$contactPopupControllerAtom =
       Atom(name: '_IncidentStore.contactPopupController', context: context);
 
@@ -467,6 +484,7 @@ mixin _$IncidentStore on _IncidentStore, Store {
 scrollController: ${scrollController},
 overlayController: ${overlayController},
 contacts: ${contacts},
+widgetShowcasePopupController: ${widgetShowcasePopupController},
 contactPopupController: ${contactPopupController},
 contactPopupValuesController: ${contactPopupValuesController},
 incidentId: ${incidentId},

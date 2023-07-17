@@ -5,8 +5,10 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
+import 'package:safe/services/analytics/helper_classes/analytics_log_model.service.dart';
 import 'package:safe/utils/constants/constants.util.dart';
 import 'package:safe/utils/credit/credit.util.dart';
+import 'package:safe/widgets/mutable_banner/mutable_banner.widget.dart';
 import 'package:safe/widgets/mutable_home_message.widget.dart/mutable_home_banner.widget.dart';
 import 'package:safe/widgets/mutable_pill/mutable_pill.widget.dart';
 import 'package:safe/widgets/mutable_text/mutable_text.widget.dart';
@@ -110,7 +112,23 @@ class _IncidentLimitHomeBannerState extends State<IncidentLimitHomeBanner> {
           }
 
           if (core.state.capture.limErrState == LimitErrorState.maxed) {
-            core.state.incidentLog.controller.open();
+            core.services.analytics.log(
+              AnalyticsLog(
+                channel: "request-credits",
+                event: "maxed-credit-request",
+                description: "User has requested incident credits.",
+                tags: {
+                  "userid": core.services.auth.currentUser!.uid,
+                },
+                icon: "💰",
+              ),
+            );
+
+            core.state.preferences.actionController.trigger(
+              core.utils.language.langMap[core.state.preferences.language]![
+                  "credit_request"]["notification"]!,
+              MessageType.success,
+            );
             return;
           }
         },

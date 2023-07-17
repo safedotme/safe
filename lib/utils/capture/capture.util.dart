@@ -562,6 +562,7 @@ USER ID: ${_core!.state.capture.incident!.userId}
       "{NAME_POSESSIVE}": _core!.utils.name.genFirstName(user.name, true),
       "{BATTERY}": battery.toString(),
       "{LINK}": "https://live.joinsafe.me/${incident.id}",
+      "{LINK_END}": "https://download.joinsafe.me/${incident.stream.channelName}",
     };
 
     for (String key in replacementMap.keys) {

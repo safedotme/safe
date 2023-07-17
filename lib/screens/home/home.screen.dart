@@ -15,6 +15,7 @@ import 'package:safe/screens/home/local_widgets/incident_limit_home_banner.widge
 import 'package:safe/screens/home/local_widgets/event_home_banner.widget.dart.dart';
 import 'package:safe/screens/home/local_widgets/tutorial_banner.widget.dart';
 import 'package:safe/screens/incident/incident.screen.dart';
+import 'package:safe/screens/incident/local_widgets/widget_showcase_popup.widget.dart';
 import 'package:safe/screens/incident_log/incident_log.screen.dart';
 import 'package:safe/screens/play/play.screen.dart';
 import 'package:safe/screens/settings/settings.screen.dart';
@@ -153,6 +154,7 @@ class _HomeScreenState extends State<HomeScreen> {
         ContactScreen(),
         ContactEditorScreen(),
         ImportContactPopup(),
+        WidgetShowcasePopup(),
         CustomCupertinoContactPopup(),
         ContactCountryCodeSelector(),
         CaptureScreen(),

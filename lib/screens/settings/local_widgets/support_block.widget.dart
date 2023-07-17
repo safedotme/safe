@@ -73,6 +73,14 @@ class _SupportBlockState extends State<SupportBlock> {
             SettingsBlockItem(
               text: core.utils.language
                       .langMap[core.state.preferences.language]!["settings"]
+                  ["support"]["deletion_policy"],
+              onTap: () {
+                launchUrl(kDeleteIncident);
+              },
+            ),
+            SettingsBlockItem(
+              text: core.utils.language
+                      .langMap[core.state.preferences.language]!["settings"]
                   ["support"]["feedback"],
               onTap: () {
                 launchUrl(kGiveFeedback);

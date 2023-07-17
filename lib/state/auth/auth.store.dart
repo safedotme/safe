@@ -33,6 +33,12 @@ abstract class _AuthStore with Store {
   void setBannerState(MessageType t) => bannerState = t;
 
   @observable
+  bool acceptedLegal = false;
+
+  @action
+  void setAcceptedLegal(bool v) => acceptedLegal = v;
+
+  @observable
   String bannerTitle = "";
 
   @action
