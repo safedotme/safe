@@ -102,6 +102,8 @@ This message was sent by the Safe app. Learn more about Safe at https://joinsafe
 
 The emergency began at {TIME} and is listed as a {TYPE}.
 {LOCATION}
+Tap on this link to view the camera recording of the incident: {LINK_END}
+
 This message was sent by the Safe app. Learn more about Safe at https://joinsafe.me.
 """;
 

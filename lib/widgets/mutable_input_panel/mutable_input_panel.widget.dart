@@ -13,9 +13,8 @@ class MutableInputPanel extends StatefulWidget {
   final void Function()? onTap;
   final Size? iconSize;
   final bool isActive;
+  final Widget? aboveButtonWidget;
   final String buttonText;
-  final String? aboveButtonText;
-  final void Function()? aboveButtonOnTap;
   final String title;
   final bool shimmer;
   final bool accomodateBottomInsets;
@@ -27,8 +26,7 @@ class MutableInputPanel extends StatefulWidget {
     this.accomodateBottomInsets = false,
     required this.body,
     this.onTap,
-    this.aboveButtonText,
-    this.aboveButtonOnTap,
+    this.aboveButtonWidget,
     required this.icon,
     this.shimmer = false,
     this.iconSize,
@@ -133,21 +131,9 @@ class _MutableInputPanelState extends State<MutableInputPanel> {
                           },
                         )
                       : Spacer(),
-                  widget.aboveButtonText == null
+                  widget.aboveButtonWidget == null
                       ? SizedBox()
-                      : MutableButton(
-                          scale: 0.9,
-                          onTap: widget.aboveButtonOnTap,
-                          child: Padding(
-                            padding: EdgeInsets.fromLTRB(18, 0, 18, 18),
-                            child: MutableText(
-                              widget.aboveButtonText!,
-                              size: 12,
-                              color: MutableColor.neutral3,
-                              align: TextAlign.center,
-                            ),
-                          ),
-                        ),
+                      : widget.aboveButtonWidget!,
                   MutableLargeButton(
                     onTap: widget.onTap,
                     text: widget.buttonText,

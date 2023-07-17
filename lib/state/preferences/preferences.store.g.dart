@@ -57,6 +57,38 @@ mixin _$PreferencesStore on _PreferencesStore, Store {
     });
   }
 
+  late final _$seenWidgetPreviewAtom =
+      Atom(name: '_PreferencesStore.seenWidgetPreview', context: context);
+
+  @override
+  bool get seenWidgetPreview {
+    _$seenWidgetPreviewAtom.reportRead();
+    return super.seenWidgetPreview;
+  }
+
+  @override
+  set seenWidgetPreview(bool value) {
+    _$seenWidgetPreviewAtom.reportWrite(value, super.seenWidgetPreview, () {
+      super.seenWidgetPreview = value;
+    });
+  }
+
+  late final _$tutorialCalledAtom =
+      Atom(name: '_PreferencesStore.tutorialCalled', context: context);
+
+  @override
+  bool get tutorialCalled {
+    _$tutorialCalledAtom.reportRead();
+    return super.tutorialCalled;
+  }
+
+  @override
+  set tutorialCalled(bool value) {
+    _$tutorialCalledAtom.reportWrite(value, super.tutorialCalled, () {
+      super.tutorialCalled = value;
+    });
+  }
+
   late final _$tutorialBannerControllerAtom = Atom(
       name: '_PreferencesStore.tutorialBannerController', context: context);
 
@@ -261,6 +293,28 @@ mixin _$PreferencesStore on _PreferencesStore, Store {
   }
 
   @override
+  void setSeenWidgetPreview(bool v) {
+    final _$actionInfo = _$_PreferencesStoreActionController.startAction(
+        name: '_PreferencesStore.setSeenWidgetPreview');
+    try {
+      return super.setSeenWidgetPreview(v);
+    } finally {
+      _$_PreferencesStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void setTutorialCalled(bool v) {
+    final _$actionInfo = _$_PreferencesStoreActionController.startAction(
+        name: '_PreferencesStore.setTutorialCalled');
+    try {
+      return super.setTutorialCalled(v);
+    } finally {
+      _$_PreferencesStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   void setDisabledPermissions(List<Permission> p) {
     final _$actionInfo = _$_PreferencesStoreActionController.startAction(
         name: '_PreferencesStore.setDisabledPermissions');
@@ -321,6 +375,8 @@ mixin _$PreferencesStore on _PreferencesStore, Store {
 language: ${language},
 isFirstTime: ${isFirstTime},
 confettiController: ${confettiController},
+seenWidgetPreview: ${seenWidgetPreview},
+tutorialCalled: ${tutorialCalled},
 tutorialBannerController: ${tutorialBannerController},
 disabledPermissions: ${disabledPermissions},
 actionController: ${actionController},

@@ -89,7 +89,7 @@ class PermissionsService {
     core.state.auth.setBannerTitle(response["header"]);
     core.state.auth.setBannerMessage(response["desc"]);
     core.state.auth.setOnBannerTap(() {
-      // Opens app settings when clicked
+      // Opens app settings when tapped
       openAppSettings();
     });
     core.state.auth.bannerController.show();
