@@ -30,16 +30,13 @@ With the press of a button, begin to record your front camera, upload the footag
   <img src="https://github.com/safedotme/.github/blob/main/profile/banner.png?raw=true" alt="Banner">
   <br />
   <br />
-  <a href="https://discord.gg/WZrjydnM">
-    <img src="https://img.shields.io/discord/992215371442552913?color=%235865F2&label=Discord" />
-  </a>
   <a href="https://twitter.com/safedotme">
     <img src="https://img.shields.io/badge/Twitter-00acee?logo=twitter&logoColor=white" />
   </a>
   <a href="https://github.com/safedotme/safe/blob/main/LICENSE">
   <img src="https://img.shields.io/static/v1?label=Licence&message=GNU%20v3&color=000" />
   </a>
-  <img src="https://img.shields.io/static/v1?label=Stage&message=Alpha&color=2BB4AB" />
+  <img src="https://img.shields.io/badge/Stage-Beta-2BB4AB" />
   <br />
 </p>
 
@@ -47,7 +44,7 @@ With the press of a button, begin to record your front camera, upload the footag
 
 From the start, Safe was designed for the fragile situations where one's safety is the first, and most critical priority. For students, it acts as a necessary tool for alerting authorities of your wearabouts during a school shooting. For people of color, it's a discrete and all-encompassing documentation tool in the case of a traffic stop. **Broadly, it seeks to expose injustice in any form it may present itself.**
 
-On a more personal note, I {[Mark Music](https://twitter.com/markmusic27)} have been devastated by the news of countless school shootings and instances of police brutality in the US. As a 17-year-old latino, gun violence (through school shootings) and other forms of physical discrimination pose a threat to me, my friends, and my family. **Safe was built no one has to succumb to the status quo.**
+On a more personal note, I {[Mark Music](https://twitter.com/markmusic27)} have been devastated by the news of countless school shootings and instances of police brutality in the US. As a 18-year-old latino, gun violence (through school shootings) and other forms of physical discrimination pose a threat to me, my friends, and my family. **Safe was built no one has to succumb to the status quo.**
 
 # Infrastructure
 
