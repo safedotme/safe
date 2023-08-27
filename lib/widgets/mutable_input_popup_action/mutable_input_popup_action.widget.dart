@@ -9,10 +9,12 @@ class MutableInputPopupAction extends StatelessWidget {
   final void Function()? onTap;
   final String text;
   final MutableIcon? icon;
+  final MutableColor secondaryColor;
 
   MutableInputPopupAction({
     required this.text,
     this.onTap,
+    this.secondaryColor = MutableColor.neutral3,
     this.icon,
     this.active = false,
   });
@@ -34,8 +36,8 @@ class MutableInputPopupAction extends StatelessWidget {
                       kPrimaryGradientColors.length - 1,
                     )
                   : [
-                      kColorMap[MutableColor.neutral3]!,
-                      kColorMap[MutableColor.neutral3]!,
+                      kColorMap[secondaryColor]!,
+                      kColorMap[secondaryColor]!,
                     ],
             ).createShader(rect),
             child: Row(

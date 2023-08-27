@@ -157,7 +157,7 @@ class _PlayerProgressIndicatorState extends State<PlayerProgressIndicator> {
                   ),
                   SizedBox(width: 3),
                   SizedBox(
-                    width: 85,
+                    width: 95,
                     child: MutableText(
                       core.state.incident.playDate,
                       size: 12,

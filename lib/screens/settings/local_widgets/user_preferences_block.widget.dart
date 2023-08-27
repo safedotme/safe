@@ -128,6 +128,15 @@ class _UserPreferencesBlockState extends State<UserPreferencesBlock> {
           SettingsBlockItem(
             text: core.utils.language
                     .langMap[core.state.preferences.language]!["settings"]
+                ["preferences"]["widget"]["header"],
+            onTap: () {
+              HapticFeedback.lightImpact();
+              core.state.incident.widgetShowcasePopupController.open();
+            },
+          ),
+          SettingsBlockItem(
+            text: core.utils.language
+                    .langMap[core.state.preferences.language]!["settings"]
                 ["preferences"]["quality"]["header"],
             onTap: () {
               launchUrl(kLivestreamQualityInfo);

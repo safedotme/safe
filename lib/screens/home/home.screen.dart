@@ -1,6 +1,5 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart' hide BoxShadow;
-import 'package:flutter/services.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
@@ -15,6 +14,7 @@ import 'package:safe/screens/home/local_widgets/incident_limit_home_banner.widge
 import 'package:safe/screens/home/local_widgets/event_home_banner.widget.dart.dart';
 import 'package:safe/screens/home/local_widgets/tutorial_banner.widget.dart';
 import 'package:safe/screens/incident/incident.screen.dart';
+import 'package:safe/screens/incident/local_widgets/widget_showcase_popup.widget.dart';
 import 'package:safe/screens/incident_log/incident_log.screen.dart';
 import 'package:safe/screens/play/play.screen.dart';
 import 'package:safe/screens/settings/settings.screen.dart';
@@ -153,6 +153,7 @@ class _HomeScreenState extends State<HomeScreen> {
         ContactScreen(),
         ContactEditorScreen(),
         ImportContactPopup(),
+        WidgetShowcasePopup(),
         CustomCupertinoContactPopup(),
         ContactCountryCodeSelector(),
         CaptureScreen(),
@@ -201,8 +202,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 duration: kFadeInDuration,
                 child: MutableSafeButton(
                   onTap: () async {
-                    HapticFeedback.heavyImpact();
-
                     bool shouldCapture = await core.utils.credit.shouldCapture(
                       TriggerIdentifier.primary,
                       core,

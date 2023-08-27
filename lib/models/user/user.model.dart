@@ -28,6 +28,24 @@ class User {
     );
   }
 
+  User copyWith({
+    String? id,
+    String? name,
+    String? picturePath,
+    String? phone,
+    DateTime? joined,
+    int? credits,
+  }) {
+    return User(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      phone: phone ?? this.phone,
+      picturePath: this.picturePath,
+      joined: joined ?? this.joined,
+      credits: credits ?? this.credits,
+    );
+  }
+
   Map<String, dynamic> toMap() => {
         "id": id,
         "name": name,

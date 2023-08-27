@@ -28,6 +28,10 @@ class LanguageUtil {
           "header": "This account does not exist",
           "desc": "Don't have an account? Try creating one instead.",
         },
+        "not-accepted-legal": {
+          "header": "Hold up! You forgot to accept the terms of service",
+          "desc": "Check the box below and resubmit the form",
+        },
         "invalid-phone-number": {
           "header": "Hold up! You're phone number is invalid",
           "desc": "Check your phone number before continuing",
@@ -124,7 +128,7 @@ class LanguageUtil {
         "desc": "We'll send you a SMS code to verify your\n account",
         "buttonText": "Send SMS",
         "terms":
-            "By creating an account, you agree to Safe's terms of service. Click here to read them.",
+            "By checking this checkbox, you agree to Safe's terms of service. Tap here to read them.",
         "smsSentMsg": {
           "header": "SMS sent to {PHONE}",
           "body": "Check your SMS messages.",
@@ -184,7 +188,7 @@ class LanguageUtil {
           LimitErrorState.noConnection:
               "We cannot capture an incident without an internet connection. Try checking your connection.",
           LimitErrorState.maxed:
-              "No worries, simply delete a previous incident to gain back the ability to capture one.",
+              "For more incidents, tap here to request more incidents from the Safe team.",
           LimitErrorState.missingContacts:
               "Without contacts, no one will be notified when you activate Safe.",
           LimitErrorState.permissions:
@@ -193,13 +197,16 @@ class LanguageUtil {
         },
         "button": {
           LimitErrorState.emergency: "Emergency Activate",
-          LimitErrorState.maxed: "Delete an Incident",
+          LimitErrorState.maxed: "Request More",
           LimitErrorState.missingContacts: "Add Contacts",
           LimitErrorState.permissions: "Go to Settings",
           LimitErrorState.noConnection: "Go to Settings",
           null: ""
         },
       }
+    },
+    "credit_request": {
+      "notification": "The team has been notified",
     },
     "contacts": {
       "types": {
@@ -212,6 +219,12 @@ class LanguageUtil {
     "tutorial": {"button": "Add a Contact"},
     "incident_log": {
       "header": "Incident Log",
+      "widget_showcase": {
+        "header": "Add the Safe Widget",
+        "desc": "Seamlessly activate Safe from\nyour lock-screen",
+        "confirm": "Got it!",
+        "learn_more": "How to add →",
+      },
       "counter": "{count} Incidents",
       "subheader": "All Incidents",
       "contacts_button": "Contacts",
@@ -264,6 +277,9 @@ class LanguageUtil {
             "notify": "Notify",
           }
         },
+        "widget": {
+          "header": "Add Lock Screen Widget",
+        },
         "quality": {
           "header": "Capped Video Quality",
           "loading": "Loading quality...",
@@ -286,6 +302,7 @@ class LanguageUtil {
           "collaborators": "Collaborators",
           "media_kit": "Media Kit",
         },
+        "deletion_policy": "Delete an Incident",
         "help": "Help",
         "feedback": "Give feedback"
       },
@@ -306,15 +323,18 @@ class LanguageUtil {
           "modal": {
             "header": "Delete Account",
             "desc":
-                "Deleting an account is currently unavailable due to the highly sensitive nature of Safe accounts and the information they store. We're actively working on finding a secure way make this possible.",
-            "button": "Ok",
+                "All data tied to this account will be lost. This action is irreversable.",
+            "button": "Delete",
+            "cancel": "Cancel",
           },
+          "loader": "Deleting account",
+          "failed": "Failed to delete account",
         },
       },
       "story": {
         "header": "The Safe Story",
         "body":
-            "The Safe App is a social impact venture developed by Mark Music. Tap here to view his story.",
+            "The Safe App is a social impact venture developed by a teenager in Costa Rica. Tap here to view Mark's story.",
       },
       "reach_out": {
         "header": "Reach Out",

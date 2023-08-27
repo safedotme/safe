@@ -123,6 +123,11 @@ enum MutableColor {
   overlaySecondaryRed,
   overlaySecondaryYellow,
 
+  excitedPrimary,
+  excitedBackground,
+  excitedBorder,
+  excitedGrey,
+
   iosGrey,
   iosDarkGrey,
   mapBackground,
@@ -144,6 +149,12 @@ const Map<MutableColor, Color> kColorMap = {
   // -> OS SPECIFIC
   MutableColor.iosGrey: Color(0xff1E1920),
   MutableColor.iosDarkGrey: Color(0xff252525),
+
+  // -> EXCITED STATE COLORS
+  MutableColor.excitedPrimary: Color(0XFFE53872),
+  MutableColor.excitedBackground: Color(0xff0C0A0A),
+  MutableColor.excitedBorder: Color(0xff27141C),
+  MutableColor.excitedGrey: Color(0xff7A6066),
 
   // -> MAP SPECIFIC
   MutableColor.mapBackground: Color(0xff1e1e1e),
@@ -260,6 +271,9 @@ const double kBorderWidth = 1.5;
 // LARGE BUTTON
 const double kLargeButtonHeight = 50;
 const double kLargeButtonBorderRadius = kLargeButtonHeight / 2;
+
+// EXCITED STATE VALUES
+const double kExcitedBorderWidth = 2.5;
 
 // BUTTONS
 const double kScaleDownButtonPercentage = 0.97;

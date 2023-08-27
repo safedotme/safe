@@ -77,6 +77,16 @@ class _MutableAuthWrapperState extends State<MutableAuthWrapper> {
         id: fbUser.uid,
       );
 
+      if (user == null) {
+        genUser(null, fbUser);
+        return;
+      }
+
+      if (user.name.isEmpty) {
+        genUser(null, fbUser);
+        return;
+      }
+
       genUser(user, fbUser);
     } catch (e) {
       genUser(null, fbUser);

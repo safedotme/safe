@@ -83,7 +83,7 @@ The app continues to record {NAME_POSESSIVE} camera and track {NAME_POSESSIVE} e
 This message was sent by the Safe app. Learn more about Safe at joinsafe dot me.
 """;
 
-  static const String contactMessageTemplateStart = """
+  static const String contactLongMessageTemplateStart = """
 {FULL_NAME} is actively in an emergency.
 
 {NAME} listed you, {FULL_CONTACT_NAME}, as an emergency contact.
@@ -97,15 +97,17 @@ The app continues to record {NAME_POSESSIVE} camera and track {NAME_POSESSIVE} e
 This message was sent by the Safe app. Learn more about Safe at https://joinsafe.me.
 """;
 
-  static const String contactMessageTemplateEnd = """
+  static const String contactLongMessageTemplateEnd = """
 {NAME} has stopped capturing the incident at {TIME_END}.
 
 The emergency began at {TIME} and is listed as a {TYPE}.
 {LOCATION}
+Tap on this link to view the camera recording of the incident: {LINK_END}
+
 This message was sent by the Safe app. Learn more about Safe at https://joinsafe.me.
 """;
 
-  static const String contactMessageBatteryTemplate = """
+  static const String contactLongMessageBatteryTemplate = """
 {NAME_POSESSIVE} battery is at {BATTERY}%, which is dangerously low.
 
 When it runs out, the app will stop capturing the incident.
@@ -115,5 +117,25 @@ The app continues to record {NAME_POSESSIVE} camera and track {NAME_POSESSIVE} e
 You will receive a message when {NAME} stops capturing the incident.
 
 This message was sent by the Safe app. Learn more about Safe at https://joinsafe.me.
+""";
+
+// SHORT
+
+  static const String contactMessageTemplateStart = """
+{FULL_NAME} is actively in an emergency. 
+
+Watch a livestream of the incident here: {LINK}
+""";
+
+  static const String contactMessageBatteryTemplate = """
+{NAME_POSESSIVE} battery is at {BATTERY}%, which is dangerously low.
+
+When it runs out, the app will stop capturing the incident.
+""";
+
+  static const String contactMessageTemplateEnd = """
+{NAME} has stopped capturing the incident at {TIME_END}.
+
+View the incident here: {LINK_END}
 """;
 }

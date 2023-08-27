@@ -94,6 +94,10 @@ class AuthService {
         return core.utils.language
                 .langMap[core.state.preferences.language]!["auth"]
             ["firebase_errors"][error];
+      case "not-accepted-legal":
+        return core.utils.language
+                .langMap[core.state.preferences.language]!["auth"]
+            ["firebase_errors"][error];
       case "invalid-verification-code":
         return core.utils.language
                 .langMap[core.state.preferences.language]!["auth"]

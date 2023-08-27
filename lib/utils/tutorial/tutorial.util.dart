@@ -20,6 +20,14 @@ class TutorialUtil {
   Future<void> handleOnLeave(Core core) async {
     if (!core.state.preferences.isFirstTime) return;
 
+    if (core.state.preferences.tutorialCalled) return;
+
+    if (!core.state.preferences.seenWidgetPreview) {
+      core.state.incident.widgetShowcasePopupController.open();
+      core.state.preferences.setSeenWidgetPreview(true);
+      return;
+    }
+
     await core.state.incidentLog.controller.close();
 
     if (core.state.capture.limErrState != null) {
@@ -31,6 +39,8 @@ class TutorialUtil {
     // Trigger fireworks and success message
     core.state.preferences.confettiController.play();
     core.state.preferences.tutorialBannerController.open();
+
+    core.state.preferences.setTutorialCalled(true);
   }
 
   void handleCaptureTutorial(Core core) {

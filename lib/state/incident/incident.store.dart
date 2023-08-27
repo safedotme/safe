@@ -26,6 +26,9 @@ abstract class _IncidentStore with Store {
   void setContacts(List<NotifiedContact> c) => contacts = c;
 
   @observable
+  PanelController widgetShowcasePopupController = PanelController();
+
+  @observable
   PanelController contactPopupController = PanelController();
 
   @observable

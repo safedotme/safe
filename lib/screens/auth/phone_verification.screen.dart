@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
-import 'package:safe/neuances.dart';
+import 'package:safe/screens/auth/local_widgets/legal_checkpoint.widget.dart';
 import 'package:safe/utils/constants/constants.util.dart';
 import 'package:safe/utils/icon/icon.util.dart';
 import 'package:safe/widgets/mutable_banner/mutable_banner.widget.dart';
@@ -11,7 +11,6 @@ import 'package:safe/widgets/mutable_popup/mutable_popup.widget.dart';
 import 'package:safe/widgets/mutable_submit_textfield_button/mutable_submit_textfield_button.widget.dart';
 import 'package:safe/widgets/mutable_text_field/local_widgets/phone_extention_display.widget.dart';
 import 'package:safe/widgets/mutable_text_field/mutable_text_field.widget.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class PhoneVerificationScreen extends StatefulWidget {
   @override
@@ -88,6 +87,11 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen>
   }
 
   void submit() async {
+    if (!core.state.auth.acceptedLegal) {
+      handleError("not-accepted-legal");
+      return;
+    }
+
     if (core.state.auth.authType == AuthType.login) {
       bool userExists = await checkUserExists(
           "${core.state.auth.countryDialCode} ${core.state.auth.phoneNumber}");
@@ -237,12 +241,7 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen>
             ],
           ),
         ),
-        aboveButtonText: core.utils.language
-                .langMap[core.state.preferences.language]!["auth"]
-            ["phone_verification"]["terms"],
-        aboveButtonOnTap: () {
-          launchUrl(kTermsOfService);
-        },
+        aboveButtonWidget: LegalCheckpoint(),
         resizeToAvoidBottomInsets: true,
         // Display related properties
         title: core.utils.language

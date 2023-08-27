@@ -34,6 +34,18 @@ abstract class _PreferencesStore with Store {
   );
 
   @observable
+  bool seenWidgetPreview = false;
+
+  @action
+  void setSeenWidgetPreview(bool v) => seenWidgetPreview = v;
+
+  @observable
+  bool tutorialCalled = false;
+
+  @action
+  void setTutorialCalled(bool v) => tutorialCalled = v;
+
+  @observable
   PanelController tutorialBannerController = PanelController();
 
   @observable

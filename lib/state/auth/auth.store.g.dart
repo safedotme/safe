@@ -73,6 +73,22 @@ mixin _$AuthStore on _AuthStore, Store {
     });
   }
 
+  late final _$acceptedLegalAtom =
+      Atom(name: '_AuthStore.acceptedLegal', context: context);
+
+  @override
+  bool get acceptedLegal {
+    _$acceptedLegalAtom.reportRead();
+    return super.acceptedLegal;
+  }
+
+  @override
+  set acceptedLegal(bool value) {
+    _$acceptedLegalAtom.reportWrite(value, super.acceptedLegal, () {
+      super.acceptedLegal = value;
+    });
+  }
+
   late final _$bannerTitleAtom =
       Atom(name: '_AuthStore.bannerTitle', context: context);
 
@@ -484,6 +500,17 @@ mixin _$AuthStore on _AuthStore, Store {
   }
 
   @override
+  void setAcceptedLegal(bool v) {
+    final _$actionInfo = _$_AuthStoreActionController.startAction(
+        name: '_AuthStore.setAcceptedLegal');
+    try {
+      return super.setAcceptedLegal(v);
+    } finally {
+      _$_AuthStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   void setBannerTitle(String t) {
     final _$actionInfo = _$_AuthStoreActionController.startAction(
         name: '_AuthStore.setBannerTitle');
@@ -677,6 +704,7 @@ authType: ${authType},
 actionController: ${actionController},
 bannerController: ${bannerController},
 bannerState: ${bannerState},
+acceptedLegal: ${acceptedLegal},
 bannerTitle: ${bannerTitle},
 bannerMessage: ${bannerMessage},
 onBannerTap: ${onBannerTap},
