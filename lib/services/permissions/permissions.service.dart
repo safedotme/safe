@@ -1,3 +1,4 @@
+import 'package:location/location.dart' as location;
 import 'package:permission_handler/permission_handler.dart';
 import 'package:safe/core.dart';
 import 'package:safe/widgets/mutable_banner/mutable_banner.widget.dart';
@@ -6,7 +7,6 @@ import 'package:safe/widgets/mutable_permission_card/mutable_permission_card.wid
 class PermissionsService {
   Future<List<Permission>> getDisabledPermissions(Core core) async {
     Map<Permission, PermissionStatus> statuses = await [
-      Permission.location,
       Permission.camera,
       Permission.microphone,
     ].request();
@@ -14,12 +14,38 @@ class PermissionsService {
     List<Permission> disabled = [];
 
     for (Permission key in statuses.keys) {
-      if (statuses[key] != PermissionStatus.granted) {
+      if (!(_determinePermissionFollowthrough(statuses[key]))) {
         disabled.add(key);
       }
     }
 
+    var locationStatus = await location.Location().requestPermission();
+
+    if (!(locationStatus == location.PermissionStatus.granted ||
+        locationStatus == location.PermissionStatus.grantedLimited)) {
+      disabled.add(Permission.locationWhenInUse);
+    }
+
     return disabled;
+  }
+
+  bool _determinePermissionFollowthrough(PermissionStatus? s) =>
+      s == PermissionStatus.granted || s == PermissionStatus.provisional;
+
+  Future<bool> checkContactPermission(
+    Core core, {
+    void Function()? onError,
+  }) async {
+    PermissionStatus status = await Permission.contacts.status;
+
+    if (status == PermissionStatus.granted) return true;
+
+    status = await Permission.contacts.request();
+
+    if (status == PermissionStatus.granted) return true;
+
+    onError?.call();
+    return false;
   }
 
   bool checkPermissions(Core core, {required bool sendError}) {
@@ -86,11 +112,20 @@ class PermissionsService {
 
     // Permission status defaults to denied
     if (request && status == PermissionStatus.denied) {
-      status = await Permission.locationWhenInUse.request();
+      var requestedStatus = await location.Location().requestPermission();
+
+      status = requestedStatus == location.PermissionStatus.granted ||
+              requestedStatus == location.PermissionStatus.grantedLimited
+          ? PermissionStatus.granted
+          : PermissionStatus.denied;
     }
 
     switch (status) {
       case PermissionStatus.granted:
+        return {
+          "status": true,
+        };
+      case PermissionStatus.provisional:
         return {
           "status": true,
         };

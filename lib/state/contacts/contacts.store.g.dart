@@ -173,6 +173,72 @@ mixin _$ContactStore on _ContactStore, Store {
     });
   }
 
+  late final _$customContactImportControllerAtom = Atom(
+      name: '_ContactStore.customContactImportController', context: context);
+
+  @override
+  PanelController get customContactImportController {
+    _$customContactImportControllerAtom.reportRead();
+    return super.customContactImportController;
+  }
+
+  @override
+  set customContactImportController(PanelController value) {
+    _$customContactImportControllerAtom
+        .reportWrite(value, super.customContactImportController, () {
+      super.customContactImportController = value;
+    });
+  }
+
+  late final _$customContactKeyboardNodeAtom =
+      Atom(name: '_ContactStore.customContactKeyboardNode', context: context);
+
+  @override
+  FocusNode get customContactKeyboardNode {
+    _$customContactKeyboardNodeAtom.reportRead();
+    return super.customContactKeyboardNode;
+  }
+
+  @override
+  set customContactKeyboardNode(FocusNode value) {
+    _$customContactKeyboardNodeAtom
+        .reportWrite(value, super.customContactKeyboardNode, () {
+      super.customContactKeyboardNode = value;
+    });
+  }
+
+  late final _$rawContactsAtom =
+      Atom(name: '_ContactStore.rawContacts', context: context);
+
+  @override
+  List<Map<dynamic, dynamic>>? get rawContacts {
+    _$rawContactsAtom.reportRead();
+    return super.rawContacts;
+  }
+
+  @override
+  set rawContacts(List<Map<dynamic, dynamic>>? value) {
+    _$rawContactsAtom.reportWrite(value, super.rawContacts, () {
+      super.rawContacts = value;
+    });
+  }
+
+  late final _$viewContactsAtom =
+      Atom(name: '_ContactStore.viewContacts', context: context);
+
+  @override
+  List<Map<dynamic, dynamic>> get viewContacts {
+    _$viewContactsAtom.reportRead();
+    return super.viewContacts;
+  }
+
+  @override
+  set viewContacts(List<Map<dynamic, dynamic>> value) {
+    _$viewContactsAtom.reportWrite(value, super.viewContacts, () {
+      super.viewContacts = value;
+    });
+  }
+
   late final _$_ContactStoreActionController =
       ActionController(name: '_ContactStore', context: context);
 
@@ -221,6 +287,28 @@ mixin _$ContactStore on _ContactStore, Store {
   }
 
   @override
+  void setViewContacts(List<Map<dynamic, dynamic>> c) {
+    final _$actionInfo = _$_ContactStoreActionController.startAction(
+        name: '_ContactStore.setViewContacts');
+    try {
+      return super.setViewContacts(c);
+    } finally {
+      _$_ContactStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void setRawContacts(List<Map<dynamic, dynamic>> r) {
+    final _$actionInfo = _$_ContactStoreActionController.startAction(
+        name: '_ContactStore.setRawContacts');
+    try {
+      return super.setRawContacts(r);
+    } finally {
+      _$_ContactStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 contacts: ${contacts},
@@ -232,7 +320,11 @@ editorContactController: ${editorContactController},
 editable: ${editable},
 countryCodeSelectorController: ${countryCodeSelectorController},
 isAdding: ${isAdding},
-importContactPopupController: ${importContactPopupController}
+importContactPopupController: ${importContactPopupController},
+customContactImportController: ${customContactImportController},
+customContactKeyboardNode: ${customContactKeyboardNode},
+rawContacts: ${rawContacts},
+viewContacts: ${viewContacts}
     ''';
   }
 }

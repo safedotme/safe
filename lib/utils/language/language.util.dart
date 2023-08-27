@@ -24,6 +24,10 @@ class LanguageUtil {
           "header": "Hold up! You forgot to add your phone number",
           "desc": "This will be used to verify your account later on",
         },
+        "user-not-exists": {
+          "header": "This account does not exist",
+          "desc": "Don't have an account? Try creating one instead.",
+        },
         "invalid-phone-number": {
           "header": "Hold up! You're phone number is invalid",
           "desc": "Check your phone number before continuing",
@@ -33,7 +37,7 @@ class LanguageUtil {
           "desc": "Check your messages for the latest OTP code"
         },
         "user_disabled": {
-          "header": "Your account has been desabled",
+          "header": "Your account has been disabled",
           "desc": "Tap here to reach out to Safe's support team"
         },
         "default": {
@@ -156,10 +160,14 @@ class LanguageUtil {
         false: "Incident Captured",
       },
       "acc_created": {
-        "header": "Account Created",
-        "subheader": "Try activating Safe",
-        "desc":
-            "This way, you'll know what to expect in an incident. PS, we won't notify anyone. ",
+        "header": "So Now What?",
+        "subheader": "Try pressing the button!",
+        "desc": [
+          "Chill. We ",
+          "won't notify",
+          " your contacts",
+          "or emergency services 🙃.",
+        ],
       },
       "incident_limit": {
         "header": {
@@ -211,7 +219,7 @@ class LanguageUtil {
       "empty": {
         "header": "No Incidents",
         "desc":
-            "There are no inicdents tied to this account. Tap on the Safe button to capture one.",
+            "There are no incidents tied to this account. Tap on the Safe button to capture one.",
       }
     },
     "play": {
@@ -227,7 +235,11 @@ class LanguageUtil {
           }
         },
         "speed": {
-          "header": "Speed",
+          "header": "State",
+          "state": {
+            "moving": "MOVING",
+            "stationary": "STATIONARY",
+          }
         },
       }
     },
@@ -376,12 +388,16 @@ class LanguageUtil {
         "errors": {
           "load": "Unable to load contact.",
         },
-        "header": "Import Contacts",
-        "desc": "To import, press on the contact's phone number",
+        "header": "Add from Contacts",
+        "desc": "Select a contact from your existing list of contacts",
         "buttons": {
           "import": "Import",
           "manual": "Add manually",
-        }
+        },
+      },
+      "import": {
+        "icloud": "iCloud",
+        "cancel": "Cancel",
       },
       "header": "Contacts",
       "errors": {
@@ -389,6 +405,7 @@ class LanguageUtil {
         "min": "You must have at least one contact.",
       },
       "add_button": "Add contact",
+      "done_button": "Done",
       "edit_button": {
         "done": "Done",
         "edit": "Edit",
@@ -430,6 +447,7 @@ class LanguageUtil {
         ErrorLogType.twilioFailed:
             "Your contacts could not be notified. Check your internet connection and try capturing again.",
       },
+      "live": "Live",
       "controls": {
         "flip_camera": {"header": "Flip Camera"},
         "flash": {"header": "Flashlight {STATE}"},

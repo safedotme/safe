@@ -371,6 +371,8 @@ const Color kCaptureTextShimmerLightColor = Color(0xffBFBFBF);
 const double kCaptureControlBorderRadius = 8;
 const double kCameraPreviewWidthPercentage = 0.3;
 const double kControlBoxBodyHeight = 150;
+const double kCaptureCameraButtonMargin = 15;
+const double kCaptureLiveBadgeMargin = 8;
 
 // -> LOCATION TIMEOUT
 const Duration kCaptureStreamTimeout = Duration(seconds: 20);

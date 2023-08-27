@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
+import 'package:safe/utils/constants/constants.util.dart';
 import 'package:safe/utils/icon/icon.util.dart';
 import 'package:safe/widgets/mutable_icon/mutable_icon.widget.dart';
 import 'package:safe/widgets/mutable_overlay_button/mutable_overlay_button.widget.dart';
@@ -41,7 +42,7 @@ class _CameraFeedButtonsState extends State<CameraFeedButtons> {
     return Align(
       alignment: Alignment.topCenter,
       child: Padding(
-        padding: EdgeInsets.all(15),
+        padding: EdgeInsets.all(kCaptureCameraButtonMargin),
         child: Observer(
           builder: (context) => Row(
             mainAxisAlignment: MainAxisAlignment.end,

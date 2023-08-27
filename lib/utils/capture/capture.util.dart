@@ -155,7 +155,6 @@ class CaptureUtil {
     await _uploadChanges(
       _core!.state.capture.incident!.copyWith(
         stopTime: stopTime,
-        streamAvailable: false,
       ),
     );
 
@@ -316,16 +315,6 @@ USER ID: ${_core!.state.capture.incident!.userId}
         );
       },
     );
-
-    if (token == null) {
-      _uploadChanges(_core!.state.capture.incident!.copyWith(
-        streamAvailable: false,
-      ));
-    } else {
-      _uploadChanges(_core!.state.capture.incident!.copyWith(
-        streamAvailable: true,
-      ));
-    }
 
     await _core!.services.agora.stream(
       _core!.state.capture.engine!,

@@ -151,6 +151,7 @@ class _MutableOtpInputPanelState extends State<MutableOtpInputPanel> {
           node.unfocus();
         },
         onOpened: () {
+          node.requestFocus();
           handleAttempt();
         },
         maxHeight:

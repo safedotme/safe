@@ -5,6 +5,7 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
 import 'package:safe/core.dart';
 import 'package:safe/models/contact/contact.model.dart';
+import 'package:safe/screens/add_contact/local_widgets/custom_cupertino_contact_popup.widget.dart';
 import 'package:safe/screens/add_contact/local_widgets/import_contact_popup.widget.dart';
 import 'package:safe/screens/capture/capture.screen.dart';
 import 'package:safe/screens/contact/contact.screen.dart';
@@ -77,6 +78,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   void permissionSubscribe() async {
     var disabled = await core.services.permissions.getDisabledPermissions(core);
+
     core.state.preferences.setDisabledPermissions(disabled);
     await core.utils.credit.obtainState(core);
   }
@@ -151,6 +153,7 @@ class _HomeScreenState extends State<HomeScreen> {
         ContactScreen(),
         ContactEditorScreen(),
         ImportContactPopup(),
+        CustomCupertinoContactPopup(),
         ContactCountryCodeSelector(),
         CaptureScreen(),
         TutorialScreen(),
