@@ -16,7 +16,7 @@ class EraseServer {
     List<Contact> contacts = core.state.contact.contacts ?? [];
 
     for (Contact c in contacts) {
-      await core.services.server.contacts.delete(c.id);
+      await core.services.server.contacts.delete(c.id); 
     }
 
     // Erase user
