@@ -94,7 +94,7 @@ Any help or contributions with Safe would be highly appreciated ❤️. Feel fre
 
 Please refer to the [contributing guide](https://github.com/safedotme/safe/blob/main/CONTRIBUTING.md) for how to install and run Safe from sources.
 
-Have a question regarding any of these topics? Reach out to me at [mark@joinsafe.me](mailto:mark@joinsafe.me) or join our [Discord Server](https://discord.gg/WZrjydnM) and ask questions there 🙂
+Have a question regarding any of these topics? Reach out to me at [me@markmusic.io](mailto:me@markmusic.io) or join our [Discord Server](https://discord.gg/WZrjydnM) and ask questions there 🙂
 
 # Contributors
 
