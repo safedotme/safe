@@ -22,6 +22,8 @@ Safe is an open source mobile platorm to discretely capture incidents with ease,
 <br/>
 <br/>
 
+<iframe width="560" height="315" src="https://www.youtube.com/embed/47e1Iq88Ki4" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
 > NOTE: Safe is under active development, most of the listed features are still in testing and could be altered.
 
 With the press of a button, begin to record your front camera, upload the footage to the cloud in real-time, track your exact location, notify your emergency contacts through SMS and Whatsapp, and alert 911 if necessary. Emergency contacts (*and 911*) will receive a video and location livestream of the incident while also getting access to key information such as realtime updates of your battery life.
