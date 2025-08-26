@@ -22,7 +22,7 @@ Safe is an open source mobile platorm to discretely capture incidents with ease,
 <br/>
 <br/>
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/47e1Iq88Ki4" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+[![Watch on YouTube](https://img.youtube.com/vi/47e1Iq88Ki4/0.jpg)](https://youtu.be/47e1Iq88Ki4?si=Xdh5mepPS4ACOzX2)
 
 > NOTE: Safe is under active development, most of the listed features are still in testing and could be altered.
 
