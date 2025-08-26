@@ -9,7 +9,7 @@
   <p align="center">
   A powerful tool for personal and community safety.
     <br />
-    <a href="https://joinsafe.me"><strong>joinsafe.me »</strong></a>
+    <a href="https://landing-page-j9i9qxm8h-safe.vercel.app/"><strong>Landing Page »</strong></a>
     <br />
     <br />
     <b>Available for </b>
